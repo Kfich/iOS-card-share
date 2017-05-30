@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="FgI-Xx-RTU" customClass="BusinessCardView" customModule="Unify" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="327" height="215"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kevin Fich" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JuO-kN-bXS">
+                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="777-666-5555" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="bMV-qs-Qva">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="TUh-De-h5W"/>
+                        <constraint firstAttribute="width" constant="128" id="yHA-Gf-dsC"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="555-555-5555" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="h99-DG-H8p">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="EOx-l2-UXB"/>
+                        <constraint firstAttribute="width" constant="128" id="tVg-7Y-ywk"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="kfich7@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="L1L-tF-Ns7">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="128" id="SFb-d5-LXX"/>
+                        <constraint firstAttribute="height" constant="35" id="rTF-Mz-Jca"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_call" translatesAutoresizingMaskIntoConstraints="NO" id="ify-4N-hAm">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="642-ao-czn"/>
+                        <constraint firstAttribute="height" constant="35" id="TFo-9g-rKD"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_call" translatesAutoresizingMaskIntoConstraints="NO" id="ZC2-mT-e4G">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="E8s-e7-Aah"/>
+                        <constraint firstAttribute="width" constant="35" id="LKY-YA-gHh"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quickMail" translatesAutoresizingMaskIntoConstraints="NO" id="apc-Ra-90N">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="3bV-7c-y2C"/>
+                        <constraint firstAttribute="width" constant="35" id="bz7-of-r6A"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="throwback" translatesAutoresizingMaskIntoConstraints="NO" id="wod-pJ-Sb4">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="150" id="lFi-3C-UXi"/>
+                        <constraint firstAttribute="width" constant="150" id="obj-Vr-xM4"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YOK-os-7zS">
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YzK-av-Q9t">
+                            <frame key="frameInset" minX="76" width="46" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="TW"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KyW-xi-M0c">
+                            <frame key="frameInset" minX="130" width="46" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="LI"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="woo-UI-cDv">
+                            <frame key="frameInset" minX="184" minY="1" width="46" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="IG"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Pr-d8-cUC">
+                            <frame key="frameInset" minX="22" width="46" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="FB"/>
+                        </button>
+                    </subviews>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xsk-eK-jnb">
+                    <color key="backgroundColor" red="0.33333333329999998" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="cFQ-d5-vFj"/>
+                        <constraint firstAttribute="width" constant="87" id="fae-iX-qeC"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstItem="YOK-os-7zS" firstAttribute="top" secondItem="wod-pJ-Sb4" secondAttribute="bottom" constant="8" symbolic="YES" id="1Fc-q3-r4P"/>
+                <constraint firstItem="Xsk-eK-jnb" firstAttribute="top" secondItem="FgI-Xx-RTU" secondAttribute="top" constant="18" id="256-Ri-v5D"/>
+                <constraint firstItem="ZC2-mT-e4G" firstAttribute="top" secondItem="h99-DG-H8p" secondAttribute="top" id="5cS-BF-Z4N"/>
+                <constraint firstItem="YOK-os-7zS" firstAttribute="leading" secondItem="FgI-Xx-RTU" secondAttribute="leading" constant="42" id="BlK-gr-bLf"/>
+                <constraint firstItem="YOK-os-7zS" firstAttribute="top" secondItem="apc-Ra-90N" secondAttribute="bottom" constant="22" id="CXZ-v0-h7f"/>
+                <constraint firstItem="bMV-qs-Qva" firstAttribute="leading" secondItem="h99-DG-H8p" secondAttribute="leading" id="Izc-io-8sM"/>
+                <constraint firstItem="YOK-os-7zS" firstAttribute="top" secondItem="FgI-Xx-RTU" secondAttribute="top" constant="178" id="NzJ-h4-Oqx"/>
+                <constraint firstItem="ZC2-mT-e4G" firstAttribute="leading" secondItem="apc-Ra-90N" secondAttribute="leading" id="P1a-Ea-7Cc"/>
+                <constraint firstItem="h99-DG-H8p" firstAttribute="leading" secondItem="L1L-tF-Ns7" secondAttribute="leading" id="PoK-Iv-Fud"/>
+                <constraint firstItem="apc-Ra-90N" firstAttribute="top" secondItem="ZC2-mT-e4G" secondAttribute="bottom" constant="3" id="Q6c-sW-ulq"/>
+                <constraint firstItem="JuO-kN-bXS" firstAttribute="leading" secondItem="ify-4N-hAm" secondAttribute="leading" id="RSA-VO-dT5"/>
+                <constraint firstAttribute="trailing" secondItem="JuO-kN-bXS" secondAttribute="trailing" id="XVd-vU-end"/>
+                <constraint firstItem="ify-4N-hAm" firstAttribute="top" secondItem="JuO-kN-bXS" secondAttribute="bottom" constant="8" symbolic="YES" id="Yxz-8u-yXL"/>
+                <constraint firstItem="ify-4N-hAm" firstAttribute="top" secondItem="bMV-qs-Qva" secondAttribute="top" id="b3b-D5-hB5"/>
+                <constraint firstItem="wod-pJ-Sb4" firstAttribute="leading" secondItem="FgI-Xx-RTU" secondAttribute="leading" id="bCp-x6-xkC"/>
+                <constraint firstItem="bMV-qs-Qva" firstAttribute="leading" secondItem="ify-4N-hAm" secondAttribute="trailing" constant="8" symbolic="YES" id="dxs-yA-k0H"/>
+                <constraint firstAttribute="bottom" secondItem="YOK-os-7zS" secondAttribute="bottom" constant="6" id="fRH-Z1-FKM"/>
+                <constraint firstAttribute="trailing" secondItem="YOK-os-7zS" secondAttribute="trailing" constant="33" id="gvH-Ff-MQW"/>
+                <constraint firstItem="Xsk-eK-jnb" firstAttribute="leading" secondItem="wod-pJ-Sb4" secondAttribute="leading" id="iQT-pn-N6V"/>
+                <constraint firstItem="JuO-kN-bXS" firstAttribute="top" secondItem="FgI-Xx-RTU" secondAttribute="top" constant="16" id="kL9-TI-hEg"/>
+                <constraint firstItem="ZC2-mT-e4G" firstAttribute="top" secondItem="ify-4N-hAm" secondAttribute="bottom" constant="3" id="lj2-84-KK9"/>
+                <constraint firstItem="JuO-kN-bXS" firstAttribute="trailing" secondItem="bMV-qs-Qva" secondAttribute="trailing" id="mpL-V6-UAI"/>
+                <constraint firstItem="ify-4N-hAm" firstAttribute="leading" secondItem="ZC2-mT-e4G" secondAttribute="leading" id="n4i-FH-xHc"/>
+                <constraint firstItem="apc-Ra-90N" firstAttribute="top" secondItem="L1L-tF-Ns7" secondAttribute="top" id="sFp-Ob-a6e"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="cardTypeLabel" destination="Xsk-eK-jnb" id="X3J-V0-s7K"/>
+                <outlet property="contactImageView" destination="wod-pJ-Sb4" id="Qhf-G9-8qh"/>
+                <outlet property="emailIconImage" destination="apc-Ra-90N" id="Pge-QB-SvY"/>
+                <outlet property="emailLabel" destination="L1L-tF-Ns7" id="c9l-ev-4QF"/>
+                <outlet property="mediaButton1" destination="2Pr-d8-cUC" id="04S-u3-yyA"/>
+                <outlet property="mediaButton2" destination="YzK-av-Q9t" id="yZ0-rc-447"/>
+                <outlet property="mediaButton3" destination="KyW-xi-M0c" id="LC4-2u-68i"/>
+                <outlet property="mediaButton4" destination="woo-UI-cDv" id="z9K-kB-5QF"/>
+                <outlet property="nameLabel" destination="JuO-kN-bXS" id="NOA-Ef-UCV"/>
+                <outlet property="optionalIconImage" destination="ZC2-mT-e4G" id="JbH-oJ-PQN"/>
+                <outlet property="optionalLabel" destination="h99-DG-H8p" id="5kU-OE-GEb"/>
+                <outlet property="phoneIconImage" destination="ify-4N-hAm" id="yej-Jj-snx"/>
+                <outlet property="phoneNumberLabel" destination="bMV-qs-Qva" id="9vw-eQ-sOe"/>
+            </connections>
+            <point key="canvasLocation" x="-309.5" y="-196.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_call" width="24" height="24"/>
+        <image name="quickMail" width="1353" height="903"/>
+        <image name="throwback" width="604" height="453"/>
+    </resources>
+</document>

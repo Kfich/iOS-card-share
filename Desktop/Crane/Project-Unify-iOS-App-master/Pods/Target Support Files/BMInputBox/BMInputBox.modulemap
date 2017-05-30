@@ -1,0 +1,6 @@
+framework module BMInputBox {
+  umbrella header "BMInputBox-umbrella.h"
+
+  export *
+  module * { export * }
+}
