@@ -16,6 +16,8 @@ import BMInputBox
 
 class ProfileTableViewController: UITableViewController, CLLocationManagerDelegate  {
     
+    // Properties
+    // ============================================
     
     var jsonGlobal: [String:Any]?
     var tableData: [String] = []
@@ -23,8 +25,13 @@ class ProfileTableViewController: UITableViewController, CLLocationManagerDelega
     var selectedProfiles: [Int] = []
     
     
+    // IBOutlets
+    // ============================================
+    
     @IBOutlet weak var EditOrSave: UIBarButtonItem!
     
+    
+    // Page Setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,111 +50,10 @@ class ProfileTableViewController: UITableViewController, CLLocationManagerDelega
         getProfile()
     }
     
-    
-    
-    
-    
-    
-    
-    
-    func getProfile()
-    {
-       
-            
-            
-            let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/getProfile")!
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-            
-            let paramString = "uuid=\(global_uuid!)"
-        
-            request.httpBody = paramString.data(using: String.Encoding.utf8)
-            
-            let task = session.dataTask(with: request as URLRequest) {
-                (
-                data, response, error) in
-                
-                guard let data = data, let _:URLResponse = response, error == nil else {
-                    print("error")
-                    return
-                }
-                
-                do {
-                
-                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
-                    
-                    //let contact = ContactRecord(json: json)
-                    
-                    print(json)
-                    
-                    //let jsonParsed = parsedData["currently"] as! [String:Any]
-                    self.jsonGlobal = json
-                    
-                    
-                    
 
-                    
-                    for (key, value) in json {
-                        print("\(key) ->> \(value) ")
-                        
-                        if key != "givenName"
-                        {
-                            if let str = value as? String {
-                                // obj is a String. Do something with str
-                                self.tableData.append(key)
-                            }
-                            else {
-                                // obj is not a String
-                            }
-                            
-                           
-                            
-                        }
-                        
-                        
-                    }
-                    
-                    print(json.count)
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-
-                    
-                    
-                    }
-                    
-                    
-                } catch let error {
-                    
-                    print(error.localizedDescription)
-                }
-
-                
-            }
-        
-            task.resume()
-            
-            
-            
-        }
     
-    
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        selectedProfiles.append(indexPath.row)
-        
-        EditOrSave.title = "Create Card"
-       
-        
-        
-    }
-    
-    
+    // IBActions / Buttons Pressed
+    // ============================================
     
     @IBAction func editBtn_click(_ sender: Any) {
         
@@ -184,16 +90,9 @@ class ProfileTableViewController: UITableViewController, CLLocationManagerDelega
                     self.EditOrSave.title = "Edit"
                         self.tableView.reloadData()
                     
-                    
-
-                    
                 }
                 
             }
-            
-            
-
-            
         }
         
         
@@ -201,41 +100,7 @@ class ProfileTableViewController: UITableViewController, CLLocationManagerDelega
         
     }
     
-    
-   
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        
-        print(">Passing Contact Card Data")
-        print(sender)
-        
-        if segue.identifier == "editProfileSegue"
-        {
-            
-            let nextScene =  segue.destination as! EditProfileTableViewController
-            
-            nextScene.jsonGlobal = self.jsonGlobal
-            nextScene.tableData = self.tableData
-            
-            
-        }
-        
-        
-        
-        
-        
-    }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    // Tableview DataSource && Delegate Methods
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -271,6 +136,15 @@ class ProfileTableViewController: UITableViewController, CLLocationManagerDelega
         
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        selectedProfiles.append(indexPath.row)
+        
+        EditOrSave.title = "Create Card"
+        
+        
+        
+    }
     
     
     //MARK: UITableViewDelegate
@@ -301,4 +175,114 @@ class ProfileTableViewController: UITableViewController, CLLocationManagerDelega
     }
     
     
+    // Custom Methods
+    // ============================================
+    
+    func getProfile(){
+        
+        
+        let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/getProfile")!
+        let session = URLSession.shared
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+        
+        let paramString = "uuid=\(global_uuid!)"
+        
+        request.httpBody = paramString.data(using: String.Encoding.utf8)
+        
+        let task = session.dataTask(with: request as URLRequest) {
+            (
+            data, response, error) in
+            
+            guard let data = data, let _:URLResponse = response, error == nil else {
+                print("error")
+                return
+            }
+            
+            do {
+                
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    
+                    //let contact = ContactRecord(json: json)
+                    
+                    print(json)
+                    
+                    //let jsonParsed = parsedData["currently"] as! [String:Any]
+                    self.jsonGlobal = json
+                    
+                    
+                    for (key, value) in json {
+                        print("\(key) ->> \(value) ")
+                        
+                        if key != "givenName"
+                        {
+                            if let str = value as? String {
+                                // obj is a String. Do something with str
+                                self.tableData.append(key)
+                            }
+                            else {
+                                // obj is not a String
+                            }
+                            
+                        }
+                        
+                        
+                    }
+                    
+                    print(json.count)
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        
+                    }
+                    
+                }
+                
+                
+            } catch let error {
+                
+                print(error.localizedDescription)
+            }
+        }
+        
+        task.resume()
+        
+    }
+    
+    
+
+    // Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
+        print(">Passing Contact Card Data")
+        print(sender)
+        
+        if segue.identifier == "editProfileSegue"
+        {
+            
+            let nextScene =  segue.destination as! EditProfileTableViewController
+            
+            nextScene.jsonGlobal = self.jsonGlobal
+            nextScene.tableData = self.tableData
+            
+            
+        }
+        
+    }
+    
+    
+    
+    
 }
+
+
+
+
+
+
+
+

@@ -12,6 +12,7 @@ import MapKit
 import CoreLocation
 
 
+
 class QuickShareViewController: UIViewController {
     
     // Properties
@@ -20,33 +21,16 @@ class QuickShareViewController: UIViewController {
     
     // IBOutlets
     // ------------------------------------------
+    
+    @IBOutlet var businessCardView: BusinessCardView!
+    
+    @IBOutlet var saveToContactsSwitch: UISwitch!
 
     @IBOutlet weak var saveBtn: UIButton!
     
     @IBOutlet weak var indicator: InstagramActivityIndicator!
     
     @IBOutlet var cardView: UIView!
-    
-    @IBOutlet var cardViewContactImage: UIImageView!
-    
-    
-    // Labels
-
-    @IBOutlet var cardTypeLabel: UILabel!
-    
-    @IBOutlet var cardViewNameLabel: UILabel!
-    
-    @IBOutlet var cardViewPhoneLabel: UILabel!
-    
-    @IBOutlet var cardViewEmailLabel: UILabel!
-    
-    @IBOutlet var cardViewOptionLabel: UILabel!
-    
-    @IBOutlet var phoneIconImage: UIImageView!
-    
-    @IBOutlet var emailIconImage: UIImageView!
-    
-    @IBOutlet var optionalIconImage: UIImageView!
     
     
     // Text fields
@@ -83,25 +67,51 @@ class QuickShareViewController: UIViewController {
     
     // IBActions / Buttons pressed
     // ------------------------------------------
+    
+    @IBAction func saveToContactsSelected(_ sender: AnyObject) {
+        
+        // Configure saving logics
+        
+        print("\n\nSAVE TO CONTACTS\n\n")
+    }
+    
+    
 
     
     @IBAction func saveBtn_click(_ sender: Any) {
         
-        // Configure the actual send actions
+        // Here, configure form validation 
         
-        DispatchQueue.main.async {
-            self.indicator.startAnimating()
-        }
-        
-        let delayInSeconds = 4.0
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+        if (recipientTextField.text == nil || firstNameTextField.text == nil || lastNameTextField.text == nil || emailTextField.text == nil) {
             
-            self.indicator.stopAnimating()
+            // form invalid 
             
-            self.dismiss(animated: true, completion: nil)
-        
+            let message = "Please enter valid contact information"
+            
+            //showOKAlertView("", message: message)
+            
+            
+        }else{
+            
+            // Configure the actual send actions
+            
+            DispatchQueue.main.async {
+                self.indicator.startAnimating()
+                
+                // send the data
+            }
+            
+            let delayInSeconds = 3.0
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+                
+                self.indicator.stopAnimating()
+                
+                self.dismiss(animated: true, completion: nil)
+                
+            }
+
+            
         }
-        
     }
     
     
@@ -109,6 +119,11 @@ class QuickShareViewController: UIViewController {
         
         self.dismiss(animated: true, completion: nil)
     }
+    
+    // Custom Methods
+    
+    
+
     
     
 }

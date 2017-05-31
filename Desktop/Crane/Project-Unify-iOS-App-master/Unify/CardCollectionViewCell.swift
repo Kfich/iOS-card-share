@@ -11,6 +11,20 @@ import UIKit
 
 class CardCollectionViewCell: UICollectionViewCell {
     
+    // Properties
+    // ----------------------------------
+    
+    
+    // IBOutlets
+    // ----------------------------------
+    
+    // KFich Edits
+    // Use the view created as a template to render in the collection view
+    @IBOutlet var businessCardView: BusinessCardView!
+    
+    
+    // Previous collection cell
+    
     @IBOutlet weak var cardName: UILabel!
     
     @IBOutlet weak var cardSelectedBtn: UIButton!
@@ -23,6 +37,8 @@ class CardCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var cardEmail: UILabel!
     
+    
+    // Init 
     
     override func awakeFromNib() {
         super.awakeFromNib()

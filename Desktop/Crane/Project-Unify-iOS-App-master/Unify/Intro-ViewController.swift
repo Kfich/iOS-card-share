@@ -18,7 +18,7 @@ class IntroViewController: UIViewController {
     // ----------------------------------------
 
     var active_card_unify_uuid: String?
-    
+    //var businessCard = BusinessCardView()
     
     
     // IBOutlets
@@ -65,12 +65,16 @@ class IntroViewController: UIViewController {
         
         super.viewWillAppear(true)
         
+        //self.contactCard.awakeFromNib()
+        //self.recipientCard.awakeFromNib()
+        
+        
+        // Testing booleans
+        ContactManager.sharedManager.userArrivedFromContactList = true
+        ContactManager.sharedManager.userArrivedFromRecipients = true
+        
+        
         // Bool to track navigation patterns to dictate views appropriately from contact list
-        
-        self.contactCard.awakeFromNib()
-        self.recipientCard.awakeFromNib()
-        
-        
         if ContactManager.sharedManager.userArrivedFromContactList {
             
             contactCard.isHidden = false
@@ -119,6 +123,14 @@ class IntroViewController: UIViewController {
             contactCard.isHidden = false
 
         }
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Populate cards 
+        
         
     }
     
@@ -184,6 +196,17 @@ class IntroViewController: UIViewController {
     
     func configureViews(){
         
+        // Configure cards
+        self.contactCard.layer.cornerRadius = 10.0
+        self.contactCard.clipsToBounds = true
+        self.contactCard.layer.borderWidth = 2.0
+        self.contactCard.layer.borderColor = UIColor.lightGray.cgColor
+        
+        self.recipientCard.layer.cornerRadius = 10.0
+        self.recipientCard.clipsToBounds = true
+        self.recipientCard.layer.borderWidth = 2.0
+        self.recipientCard.layer.borderColor = UIColor.lightGray.cgColor
+        
         // Add radius config & border color
         self.addContactView.layer.cornerRadius = 10.0
         self.addContactView.clipsToBounds = true
@@ -214,11 +237,11 @@ class IntroViewController: UIViewController {
         self.contactCard.optionalLabel.text = "1+ (123)-345-6789"
         
         
-        self.recipientCard.infoLabel.text = "PERSONAL"
-        self.recipientCard.contactImageView.image = UIImage(named: "throwback.jpg")
-        self.contactCard.nameLabel.text = "Harold Fich"
-        self.recipientCard.phoneNumberLabel.text = "1+ (123)-345-6789"
-        self.recipientCard.emailLabel.text = "harold.fich12@gmail.com"
+        self.recipientCard.infoLabel.text = "This is my job description"
+        self.recipientCard.contactImageView.image = UIImage(named: "search.jpg")
+        self.recipientCard.nameLabel.text = "Kevin Fich"
+        self.recipientCard.phoneNumberLabel.text = "1+ (123)-665-9909"
+        self.recipientCard.emailLabel.text = "kev.fich12@gmail.com"
         
 
         

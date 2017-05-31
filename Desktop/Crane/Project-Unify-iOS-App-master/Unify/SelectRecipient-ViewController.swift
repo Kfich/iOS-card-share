@@ -15,7 +15,7 @@ import CoreLocation
 import Skeleton
 
 
-class SelectRecipientViewController: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, UISearchResultsUpdating, SearchProgressDelegate   {
+class SelectRecipientViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, UISearchBarDelegate, UISearchResultsUpdating, SearchProgressDelegate   {
     
     // Properties
     // ----------------------------------------------
@@ -32,8 +32,21 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
     let placeholder = UIImage(named: "white")
     
     
-    // IBOutlets / Buttons Pressed
+    // IBOutlets
     // ----------------------------------------------
+    @IBOutlet var contactsTableView: UITableView!
+    
+    @IBOutlet var listSegmentController: UISegmentedControl!
+    
+    
+    // IBActions
+    // ----------------------------------------------
+    
+    @IBAction func switchContactList(_ sender: AnyObject) {
+        
+        print("LIST ALTERNATING")
+    }
+    
     
     
     // View Config
@@ -59,11 +72,11 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
         addObservers()
         
         // Tableview settings
-        tableView.isScrollEnabled = false
-        tableView.separatorStyle = .none
+        contactsTableView.isScrollEnabled = false
+        contactsTableView.separatorStyle = .none
         
         let nib = UINib(nibName: String(describing: SkeletonCell.self), bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: String(describing: SkeletonCell.self))
+        contactsTableView.register(nib, forCellReuseIdentifier: String(describing: SkeletonCell.self))
         
         
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -96,7 +109,7 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
         searchController.searchBar.placeholder = NSLocalizedString("search_bar_placeholder", comment: "")
         
         // Add the search bar
-        tableView.tableHeaderView = self.searchController!.searchBar
+        contactsTableView.tableHeaderView = self.searchController!.searchBar
         definesPresentationContext = true
         searchController!.searchBar.sizeToFit()
         
@@ -142,7 +155,7 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
             contactsHits.append(contentsOf: results.hits)
         }
         originIsLocal = results.content["origin"] as? String == "local"
-        self.tableView.reloadData()
+        self.contactsTableView.reloadData()
     }
     
     
@@ -150,7 +163,7 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
     
     // MARK: - Table view data source
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
@@ -158,7 +171,7 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
     
     //MARK: - UITableViewDataSource
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
         
        /* if contactsHits.count == 0
         {
@@ -174,12 +187,12 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
     }
     
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return SelectRecipientViewController.kRowHeight
     }
     
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if contactsHits.count == 0
         {
@@ -244,7 +257,7 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
     
     //MARK: - UITableViewDelegate
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         if contactsHits.count == 0
         {
@@ -310,7 +323,7 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
     }
     
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set arrival from contacts to true
         ContactManager.sharedManager.userArrivedFromContactList = true
@@ -322,9 +335,12 @@ class SelectRecipientViewController: UITableViewController, CLLocationManagerDel
             
             // Navigate appropriately
             
-            dismiss(animated: true, completion: nil)
+            navigationController?.popViewController(animated: true)
         }else{
-            self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
+            
+            dismiss(animated: true, completion: nil)
+            
+            //self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
         }
         
         

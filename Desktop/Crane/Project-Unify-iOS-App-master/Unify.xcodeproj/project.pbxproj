@@ -30,7 +30,7 @@
 		1CB31C971E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C961E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift */; };
 		1CB31C991E9406EB00A0C4A5 /* Contacts-TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C981E9406EB00A0C4A5 /* Contacts-TableViewController.swift */; };
 		1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C9A1E9407B000A0C4A5 /* Intro-ViewController.swift */; };
-		1CB31C9D1E94087100A0C4A5 /* SelectRecipiant-ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C9C1E94087100A0C4A5 /* SelectRecipiant-ViewController.swift */; };
+		1CB31C9D1E94087100A0C4A5 /* SelectRecipient-ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C9C1E94087100A0C4A5 /* SelectRecipient-ViewController.swift */; };
 		1CB31C9F1E94092000A0C4A5 /* Activity-ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31C9E1E94092000A0C4A5 /* Activity-ViewController.swift */; };
 		1CB31CA11E940A0B00A0C4A5 /* Profile-TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31CA01E940A0B00A0C4A5 /* Profile-TableViewController.swift */; };
 		1CB31CA31E940B4200A0C4A5 /* TabBar-ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31CA21E940B4200A0C4A5 /* TabBar-ViewController.swift */; };
@@ -51,6 +51,11 @@
 		FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738331EDDD6CD0074200F /* BusinessCardView.xib */; };
 		FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738351EDDDE0F0074200F /* ContactCardView.swift */; };
 		FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738371EDDDE240074200F /* ContactCardView.xib */; };
+		FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C801EDF395000E37E0C /* ProfileViewController.swift */; };
+		FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */; };
+		FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */; };
+		FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */; };
+		FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,7 +85,7 @@
 		1CB31C961E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCellNew.swift; sourceTree = "<group>"; };
 		1CB31C981E9406EB00A0C4A5 /* Contacts-TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Contacts-TableViewController.swift"; sourceTree = "<group>"; };
 		1CB31C9A1E9407B000A0C4A5 /* Intro-ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Intro-ViewController.swift"; sourceTree = "<group>"; };
-		1CB31C9C1E94087100A0C4A5 /* SelectRecipiant-ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SelectRecipiant-ViewController.swift"; sourceTree = "<group>"; };
+		1CB31C9C1E94087100A0C4A5 /* SelectRecipient-ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SelectRecipient-ViewController.swift"; sourceTree = "<group>"; };
 		1CB31C9E1E94092000A0C4A5 /* Activity-ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Activity-ViewController.swift"; sourceTree = "<group>"; };
 		1CB31CA01E940A0B00A0C4A5 /* Profile-TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Profile-TableViewController.swift"; sourceTree = "<group>"; };
 		1CB31CA21E940B4200A0C4A5 /* TabBar-ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TabBar-ViewController.swift"; sourceTree = "<group>"; };
@@ -106,6 +111,13 @@
 		FB3738331EDDD6CD0074200F /* BusinessCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessCardView.xib; sourceTree = "<group>"; };
 		FB3738351EDDDE0F0074200F /* ContactCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCardView.swift; sourceTree = "<group>"; };
 		FB3738371EDDDE240074200F /* ContactCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCardView.xib; sourceTree = "<group>"; };
+		FBE76C801EDF395000E37E0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCardViewController.swift; sourceTree = "<group>"; };
+		FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		FBE76C861EDF4A2900E37E0C /* AFBlurSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFBlurSegue.h; sourceTree = "<group>"; };
+		FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFBlurSegue.m; sourceTree = "<group>"; };
+		FBE76C881EDF4A2900E37E0C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,7 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				1CB31C9A1E9407B000A0C4A5 /* Intro-ViewController.swift */,
-				1CB31C9C1E94087100A0C4A5 /* SelectRecipiant-ViewController.swift */,
+				1CB31C9C1E94087100A0C4A5 /* SelectRecipient-ViewController.swift */,
 				1CB31CA61E94273E00A0C4A5 /* QuickShare-ViewController.swift */,
 			);
 			name = Intro;
@@ -251,9 +263,12 @@
 		FB3738211EDDBD2E0074200F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				FBE76C801EDF395000E37E0C /* ProfileViewController.swift */,
 				1CB31CA01E940A0B00A0C4A5 /* Profile-TableViewController.swift */,
 				1C31040B1E94A1F700F4D70D /* EditProfile-TableViewController.swift */,
 				1C3104191E95B06600F4D70D /* EditProfileHeader.swift */,
+				FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */,
+				FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -287,6 +302,10 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FBE76C861EDF4A2900E37E0C /* AFBlurSegue.h */,
+				FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */,
+				FBE76C881EDF4A2900E37E0C /* UIImage+ImageEffects.h */,
+				FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */,
 				FB3738251EDDCE970074200F /* TPKeyboardAvoidingScrollView.h */,
 				FB3738261EDDCE970074200F /* TPKeyboardAvoidingScrollView.m */,
 				FB3738271EDDCE970074200F /* UIScrollView+TPKeyboardAvoidingAdditions.h */,
@@ -442,12 +461,14 @@
 			files = (
 				1CB31C8F1E93946D00A0C4A5 /* InstagramActivityIndicator.swift in Sources */,
 				1CDD50A51E914CF40073B893 /* Home-TableViewController.swift in Sources */,
+				FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */,
 				1C31041A1E95B06600F4D70D /* EditProfileHeader.swift in Sources */,
 				FB37382A1EDDCE970074200F /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				1CAE5B861E913A06006EFF40 /* ViewController.swift in Sources */,
 				1C3104141E959DB700F4D70D /* ProfileHeaderCell.swift in Sources */,
 				1C3104101E94B7FC00F4D70D /* FollowUp-ViewController.swift in Sources */,
 				1CB31CB21E94358200A0C4A5 /* Helpers.swift in Sources */,
+				FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */,
 				1CB31C991E9406EB00A0C4A5 /* Contacts-TableViewController.swift in Sources */,
 				FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */,
 				1CB31CB31E94358200A0C4A5 /* AlgoliaManager.swift in Sources */,
@@ -467,15 +488,18 @@
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
 				1CB31CB11E94358200A0C4A5 /* ContactRecord.swift in Sources */,
 				1CB31C951E93C6A700A0C4A5 /* CardCollectionViewCell.swift in Sources */,
+				FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */,
 				1CAE5B841E913A06006EFF40 /* AppDelegate.swift in Sources */,
 				1C31040C1E94A1F700F4D70D /* EditProfile-TableViewController.swift in Sources */,
 				1CB31CA71E94273E00A0C4A5 /* QuickShare-ViewController.swift in Sources */,
+				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				1CB31CA31E940B4200A0C4A5 /* TabBar-ViewController.swift in Sources */,
 				FB37381B1EDDBB660074200F /* ContactProfileViewController.swift in Sources */,
+				FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */,
 				FB3738191EDDBA730074200F /* ContactManager.swift in Sources */,
-				1CB31C9D1E94087100A0C4A5 /* SelectRecipiant-ViewController.swift in Sources */,
+				1CB31C9D1E94087100A0C4A5 /* SelectRecipient-ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

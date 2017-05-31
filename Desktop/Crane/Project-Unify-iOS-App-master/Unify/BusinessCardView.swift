@@ -13,9 +13,12 @@ class BusinessCardView: UIView {
     // Properties
     // ==================================
     
+    var name = ""
     
     // IBOutlets
     // ==================================
+    @IBOutlet var view: UIView!
+
     
     // Imageview 
     @IBOutlet var contactImageView: UIImageView!
@@ -46,13 +49,13 @@ class BusinessCardView: UIView {
     override func awakeFromNib() {
         print("awakeFromNib")
         super.awakeFromNib()
-        self.configureViews()
+        //self.configureViews()
 
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.configureViews()
+        //self.configureViews()
 
         
         // Configure the view for display
@@ -60,18 +63,25 @@ class BusinessCardView: UIView {
     
     convenience init() {
         self.init(frame: CGRect.zero)
-        self.configureViews()
+        //self.configureViews()
 
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        //self.configureViews()
+        
+        Bundle.main.loadNibNamed("BusinessCardView", owner: self, options: nil)
+        self.addSubview(self.view)
+        //view.frame = self.bounds
         self.configureViews()
+
 
     }
     
+    
     // Loads a XIB file into a view and returns this view.
-    private func viewFromNibForClass() -> UIView {
+   /* private func viewFromNibForClass() -> UIView {
         
         let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
@@ -84,48 +94,41 @@ class BusinessCardView: UIView {
          */
         
         return view
-    }
+    }*/
     
     // Custom Methods
     // ==================================
 
     func configureViews(){
         
-        let view = viewFromNibForClass()
         
-        view.frame = bounds
+        // Test to see if view is being drawn 
         
-        // Auto-layout stuff.
-        view.autoresizingMask = [
-            UIViewAutoresizing.flexibleWidth,
-            UIViewAutoresizing.flexibleHeight
-        ]
+        print("\n\nTHIS IS THE BUSINESS CARD\n\n")
         
-        // Show the view.
-        addSubview(view)
         
         // Add radius config & border color
         self.contactImageView.layer.cornerRadius = 10.0
         self.contactImageView.clipsToBounds = true
-        self.contactImageView.layer.borderWidth = 2.0
+        self.contactImageView.layer.borderWidth = 1.0
         self.contactImageView.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
         self.phoneIconImage.layer.cornerRadius = 10.0
         self.phoneIconImage.clipsToBounds = true
-        self.phoneIconImage.layer.borderWidth = 2.0
+        self.phoneIconImage.layer.borderWidth = 0.50
         self.phoneIconImage.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
         self.emailIconImage.layer.cornerRadius = 10.0
         self.emailIconImage.clipsToBounds = true
-        self.emailIconImage.layer.borderWidth = 2.0
+        self.emailIconImage.layer.borderWidth = 0.50
         self.emailIconImage.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
         self.optionalIconImage.layer.cornerRadius = 10.0
         self.optionalIconImage.clipsToBounds = true
-        self.optionalIconImage.layer.borderWidth = 2.0
+        self.optionalIconImage.layer.borderWidth = 0.50
         self.optionalIconImage.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
@@ -137,25 +140,25 @@ class BusinessCardView: UIView {
         // Add radius config & border color
         self.mediaButton1.layer.cornerRadius = 10.0
         self.mediaButton1.clipsToBounds = true
-        self.mediaButton1.layer.borderWidth = 2.0
+        self.mediaButton1.layer.borderWidth = 1.0
         self.mediaButton1.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
         self.mediaButton2.layer.cornerRadius = 10.0
         self.mediaButton2.clipsToBounds = true
-        self.mediaButton2.layer.borderWidth = 2.0
+        self.mediaButton2.layer.borderWidth = 1.0
         self.mediaButton2.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
         self.mediaButton3.layer.cornerRadius = 10.0
         self.mediaButton3.clipsToBounds = true
-        self.mediaButton3.layer.borderWidth = 2.0
+        self.mediaButton3.layer.borderWidth = 1.0
         self.mediaButton3.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
         self.mediaButton4.layer.cornerRadius = 10.0
         self.mediaButton4.clipsToBounds = true
-        self.mediaButton4.layer.borderWidth = 2.0
+        self.mediaButton4.layer.borderWidth = 1.0
         self.mediaButton4.layer.borderColor = UIColor.lightGray.cgColor
         
     }
