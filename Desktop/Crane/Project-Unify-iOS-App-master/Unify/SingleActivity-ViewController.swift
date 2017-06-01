@@ -13,15 +13,26 @@ import UIDropDown
 
 class SingleActivityViewController: UIViewController {
     
+    // Properties
+    // ------------------------------------------
     
     var active_card_unify_uuid: String?
+    
 
+    
+    // IBOutlets
+    // ------------------------------------------
+    
+    @IBOutlet var businessCardView: BusinessCardView!
+    
+    @IBOutlet var contactCardView: ContactCardView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         
+        // Background view configuration
         
         UIGraphicsBeginImageContext(self.view.frame.size)
         UIImage(named: "background")?.draw(in: self.view.bounds)
@@ -32,12 +43,44 @@ class SingleActivityViewController: UIViewController {
         
         self.view.backgroundColor = UIColor(patternImage: image)
         
-       
+        // View configuration 
+        configureViews()
+        }
+    
+    
+
+    // IBOActions / Buttons Pressed
+    // ------------------------------------------
+    
+    @IBAction func followUpBtn_click(_ sender: Any) {
         
         
-}
+        self.performSegue(withIdentifier: "activityFollowUpSegue", sender: self)
+
+    }
 
     
+    // Custom Methods
+    
+    func configureViews(){
+        
+        // Configure cards
+        self.businessCardView.layer.cornerRadius = 10.0
+        self.businessCardView.clipsToBounds = true
+        self.businessCardView.layer.borderWidth = 2.0
+        self.businessCardView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        self.contactCardView.layer.cornerRadius = 10.0
+        self.contactCardView.clipsToBounds = true
+        self.contactCardView.layer.borderWidth = 2.0
+        self.contactCardView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        
+        
+    }
+
+    
+    // Navigation 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -53,23 +96,7 @@ class SingleActivityViewController: UIViewController {
             nextScene.active_card_unify_uuid = "\(self.active_card_unify_uuid!)" as! String?
             
         }
-        
-        
-        
-        
-        
     }
-
-    
-    @IBAction func followUpBtn_click(_ sender: Any) {
-        
-        
-        self.performSegue(withIdentifier: "activityFollowUpSegue", sender: self)
-
-    }
-
-    
-    
     
 
 

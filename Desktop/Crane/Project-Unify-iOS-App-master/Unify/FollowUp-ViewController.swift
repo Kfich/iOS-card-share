@@ -16,10 +16,18 @@ import MessageUI
 
 class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
     
+    // Properties 
+    // ---------------------------------------
+
     var active_card_unify_uuid: String?
     
-   
+    // IBOutlets
+    // ---------------------------------------
+    @IBOutlet var contactCardView: ContactCardView!
     
+    
+    
+    // Page Setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,17 +43,19 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         
         self.view.backgroundColor = UIColor(patternImage: image)
         
+        // View config 
+        configureViews()
         
         
     }
     
+    // IBActions / Buttons Pressed
+    // ---------------------------------------
     
     @IBAction func scheduleMeeting_click(_ sender: Any) {
         
         print("open calendar app with as much pre-populated data possible")
     }
-    
-   
     
 
     @IBAction func sendTextBtn_click(_ sender: Any) {
@@ -68,23 +78,6 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         
     }
     
-    
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult){
-        
-        print(result)
-        
-        self.dismiss(animated: true) { () -> Void in
-            
-        }
-    }
-
-    
-    
-    
-    
-    
-    
-    
     @IBAction func sendEmailBtn_click(_ sender: Any) {
         
         let mailClass:AnyClass?=NSClassFromString("MFMailComposeViewController")
@@ -105,7 +98,31 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         }
     }
     
+    // Custom Methods
+    // --------------------------------
     
+    // Custom Methods
+    
+    func configureViews(){
+        
+        // Configure cards
+        self.contactCardView.layer.cornerRadius = 10.0
+        self.contactCardView.clipsToBounds = true
+        self.contactCardView.layer.borderWidth = 2.0
+        self.contactCardView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        
+        
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult){
+        
+        print(result)
+        
+        self.dismiss(animated: true) { () -> Void in
+            
+        }
+    }
     
     func launchMailAppOnDevice()
     {
@@ -138,16 +155,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     }
     
     
-    
-    
-
-
-    
-    
-    
-    
-
-
+    // Navigation
 
 
 }
