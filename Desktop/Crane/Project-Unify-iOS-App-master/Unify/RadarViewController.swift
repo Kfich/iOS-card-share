@@ -1,6 +1,10 @@
 //
-//  TableViewController.swift
-
+//  RadarViewController.swift
+//  Unify
+//
+//  Created by Kevin Fich on 6/2/17.
+//  Copyright © 2017 Crane by Elly. All rights reserved.
+//
 
 import Firebase
 import UIKit
@@ -15,21 +19,27 @@ import SwiftAddressBook
 import SwiftyJSON
 import Alamofire
 
-class HomeTableViewController: UITableViewController, CLLocationManagerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource  {
+
+class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocationManagerDelegate {
     
     // Properties
-    // ------------------------------------
-
-    var store: CNContactStore!
-    var updateLocation_tick = 5
-    var parallaxEffect: RKParallaxEffect!
+    // -------------------------------------------
     
+    // Phone Contact Store
+    var store: CNContactStore!
+    // Location
+    var updateLocation_tick = 5
+    var myLocation:CLLocationCoordinate2D?
     let locationManager = CLLocationManager()
     
-    var myLocation:CLLocationCoordinate2D?
+    let halo = PulsingHaloLayer()
     
-    var radarStatus: Bool = false
+    // Anime
+    var parallaxEffect: RKParallaxEffect!
 
+    // Status check
+    var radarStatus: Bool = false
+    
     
     let keysToFetch = [
         CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
@@ -39,22 +49,52 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         CNContactThumbnailImageDataKey] as [Any]
     
     
+    // IBOutlet
+    // -------------------------------------------
+    
+    @IBOutlet var rootView: UIView!
+    @IBOutlet var radarOnLabel: UILabel!
+    @IBOutlet var radarOffLabel: UILabel!
+    
+    @IBOutlet var radarImageView: UIButton!
+    
+    @IBOutlet var radarButton: UIButton!
+    
+    @IBOutlet var pulseView: UIView!
     
     
-    // IBOutlets
-    // ------------------------------------------------------------------------
-    
-    @IBOutlet weak var homeView: UIView!
-    
-    @IBOutlet weak var radarBtn: UIButton!
-    
-    @IBOutlet weak var pageControl: UIPageControl!
-    
-    @IBOutlet weak var pulseView: UIView!
-    
+    // View Setup
 
-    // IBActions
-    // ------------------------------------------------------------------------
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+        
+        // Hide radar label
+        radarOnLabel.isHidden = true
+        
+        // Graphics config
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "background")?.draw(in: self.view.bounds)
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
+        UIGraphicsEndImageContext()
+        
+        self.view.backgroundColor = UIColor(patternImage: image)
+        
+        //self.view.backgroundColor = UIColor(patternImage: image)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // IBActions / Buttons Pressed
+    // -------------------------------------------
+    
+    
     
     @IBAction func showEmailRecipient(_ sender: AnyObject) {
         
@@ -71,8 +111,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     
-    
-    @IBAction func radarBtn_click(_ sender: Any) {
+    @IBAction func radarButtonSelected(_ sender: AnyObject) {
         
         print("activate radar")
         
@@ -80,17 +119,28 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         {
             radarStatus = false
             pulseMe(status: "hide")
-            self.radarBtn.setTitle("Radar off", for: .normal)
             self.locationManager.stopUpdatingLocation()
             
+            // Hide on label and set image
+            self.radarOnLabel.isHidden = true
+            self.radarOffLabel.isHidden = false
+            self.radarButton.setBackgroundImage(UIImage(named:"radar_off.png"), for: UIControlState.normal)
+            
+            // End anime
+            stopPulseAnimation()
             
             
         } else {
             
             radarStatus = true
             pulseMe(status: "show")
-            self.radarBtn.setTitle("Radar on", for: .normal)
             self.locationManager.startUpdatingLocation()
+            
+            // Toggle labels and set image
+            self.radarOnLabel.isHidden = false
+            self.radarOffLabel.isHidden = true
+            self.radarButton.setBackgroundImage(UIImage(named:"radar_on.png"), for: UIControlState.normal)
+
         }
         
         
@@ -103,115 +153,134 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             notifyFunction()
             
         }
+    }
+    
+    
+    // Pull up Delegate Protocols
+    // -------------------------------------------
+    
+    func pullUpViewController(_ vc: ISHPullUpViewController, update edgeInsets: UIEdgeInsets, forContentViewController _: UIViewController) {
+        // update edgeInsets
+        rootView.layoutMargins = edgeInsets
         
-        
-        
+        // call layoutIfNeeded right away to participate in animations
+        // this method may be called from within animation blocks
+        rootView.layoutIfNeeded()
+    }
+    
+    
+    // Pulsing animation
+    // -------------------------------------------
+    
+    func stopPulseAnimation() {
+        halo.removeAllAnimations()
+        halo.shouldResume = false
         
     }
     
-    // Page Configuration 
-    // ------------------------------------------------------------------------
-
+    func pulseMe(status: String?){
+        
+        halo.position.y = pulseView.frame.height / 2
+        halo.position.x = pulseView.frame.width / 2
+        halo.haloLayerNumber = 3;
+        
+        halo.radius = 100;
+        
+        halo.backgroundColor = UIColor.white.cgColor
+        
+        
+        pulseView.layer.addSublayer(halo)
+        halo.start()
+        
+        
+        plotPerson(distance: 5, direction: -4)
+        
+        //plotPerson(distance: 7, direction: 10)
+        
+        /*
+         pulseView.frame = CGRect.init(x: 0, y: 0, width: 100, height: 200)
+         
+         self.homeView.addSubview(pulseView)
+         
+         
+         pulseView.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+         pulseView.colors = [(UIColor.white.cgColor as? Any), (UIColor.black.cgColor as? Any), (UIColor.white.cgColor as? Any)]
+         pulseView.locations = [(0.3), (0.5), (0.7)]
+         pulseView.startPoint = CGPoint(x: CGFloat(0), y: CGFloat(0.5))
+         pulseView.endPoint = CGPoint(x: CGFloat(1), y: CGFloat(0.5))
+         pulseView.minRadius = 0
+         pulseView.maxRadius = 100
+         pulseView.duration = 3
+         pulseView.count = 6
+         pulseView.lineWidth = 3.0
+         
+         
+         pulseView.startAnimation()
+         */
+        
+    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    // Radar
+    // -------------------------------------------------------------------
+    
+    func plotPerson(distance: Int, direction: Int)
+    {
         
-        store = CNContactStore()
-
-        checkContactsAccess()
+        //let image = UIImage(named: "")
+        //let imageView = UIImageView(image: image!)
         
-        print("before", self.pageControl.frame.origin.y)
-        self.pageControl.frame.origin.y = self.homeView.frame.height / 4
-        print("after", self.pageControl.frame.origin.y)
-       
+        let imageView = UIImageView()
         
-        /*
-        let containerView:UIView = UIView(frame:CGRect(x: 10, y: 100, width: 300, height: 400))
-        self.tableView = UITableView(frame: containerView.bounds, style: .plain)
-        containerView.backgroundColor = UIColor.clear
-        containerView.layer.shadowColor = UIColor.darkGray.cgColor
-        containerView.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-        containerView.layer.shadowOpacity = 1.0
-        containerView.layer.shadowRadius = 2
+        imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 80, height: 80)
         
-        self.tableView.layer.cornerRadius = 10
-        self.tableView.layer.masksToBounds = true
-        self.view.addSubview(containerView)
-        containerView.addSubview(self.tableView)
-        */
+        imageView.backgroundColor = .black
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-
-        /*
-        FIRApp.configure()
-
-        var ref: FIRDatabaseReference!
+        imageView.layer.cornerRadius = imageView.frame.size.width/2
+        imageView.clipsToBounds = true
         
-        ref = FIRDatabase.database().reference()
-        */
-        //self.ref.child("radar/location").setValue(username)
-
+        let hover = CABasicAnimation(keyPath: "position")
         
-        // Ask for Authorisation from the User.
-        if radarStatus == true
-        {
+        hover.isAdditive = true
+        hover.fromValue = NSValue(cgPoint: CGPoint.zero)
         
-            if CLLocationManager.locationServicesEnabled() {
-                locationManager.delegate = self
-                locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                locationManager.startUpdatingLocation()
-            }
+        let xx = Int(random: -5..<5)
+        let yy = Int(random: -5..<5)
         
+        print(">>\(xx, yy)")
+        
+        hover.toValue = NSValue(cgPoint: CGPoint(x: xx, y: yy))
+        hover.autoreverses = true
+        hover.duration = 0.5
+        hover.repeatCount = Float.infinity
+        
+        imageView.layer.add(hover, forKey: "myHoverAnimation")
+        
+        
+        // Adding image of contact to map screen
+        //self.homeView.addSubview(imageView)
+    }
+    
+    func centerMap(_ center:CLLocationCoordinate2D){
+        self.saveCurrentLocation(center)
+        
+    }
+    
+    // User Data Access Permissions
+    // -------------------------------------------------------------------
+    
+    func requestRadarAccess(){
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
         }
-
-    }
-
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Add a background view to the table view
-        //let backgroundImage = UIImage(named: "background")
-        //let imageView = UIImageView(image: backgroundImage)
-        //self.tableView.backgroundView = imageView
-        
-        
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
         
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        parallaxEffect = RKParallaxEffect(tableView: tableView)
-        parallaxEffect.isParallaxEffectEnabled = true
-        parallaxEffect.isFullScreenTapGestureRecognizerEnabled = false
-        parallaxEffect.isFullScreenPanGestureRecognizerEnabled = true
-        
-        
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Show the navigation bar on other view controllers
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
-    // User Authorization
-    // ------------------------------------
-
     
     private func checkContactsAccess() {
         switch CNContactStore.authorizationStatus(for: .contacts) {
@@ -235,7 +304,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
     }
     
-
+    
     private func requestContactsAccess() {
         
         store.requestAccess(for: .contacts) {granted, error in
@@ -249,7 +318,6 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
     }
     
-    
     // This method is called when the user has granted access to their address book data.
     private func accessGrantedForContacts() {
         //Update UI for grated state.
@@ -259,20 +327,103 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     
+    
+    // Location Managment
+    // -----------------------------------------------------------
+    
+    func saveCurrentLocation(_ center:CLLocationCoordinate2D){
+        let message = "\(center.latitude) , \(center.longitude)"
+        print(message)
+        
+        let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
+        
+        
+        // Geocode Location
+        let geocoder = CLGeocoder()
+        
+        let paramString = "latitude=\(center.latitude)&longitude=\(center.longitude)&uuid=\(global_uuid!)"
+        
+        
+        self.updateLocation(param: paramString)
+        
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            // Process Response
+            if let placemarks = placemarks, let placemark = placemarks.first {
+                print( placemark.compactAddress)
+            }
+        }
+        
+        
+        // self.lable.text = message
+        //myLocation = center
+    }
+    
+    
+    func updateLocation(param: String){
+        updateLocation_tick = updateLocation_tick + 1
+        
+        if updateLocation_tick > 5
+        {
+            updateLocation_tick = 0
+            
+            
+            let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/geoservice")!
+            let session = URLSession.shared
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+            
+            let paramString = param
+            
+            request.httpBody = paramString.data(using: String.Encoding.utf8)
+            
+            let task = session.dataTask(with: request as URLRequest) {
+                (
+                data, response, error) in
+                
+                guard let data = data, let _:URLResponse = response, error == nil else {
+                    print("error")
+                    return
+                }
+                
+                let dataString =  String(data: data, encoding: String.Encoding.utf8)
+                print(dataString)
+                
+                
+            }
+            
+            task.resume()
+            
+            
+            
+        }
+    }
+    
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        
+        self.centerMap(locValue)
+        
+    }
 
+    
+    
     
     // Networking
     // ------------------------------------------------------------------------
-
+    
     
     func uploadContactRecords(contacts: [Any?])
     {
         print("uploaded to contacts \(contacts.count)")
-   
+        
         print("------------------------------")
-    
+        
     }
-
+    
     
     func createRequestBodyWith(parameters:[String:NSObject], filePathKey:String, boundary:String) -> NSData{
         
@@ -320,7 +471,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         
         
-        
+        // LocalHost URL Link
         let url = NSURL(string: "http://localhost:5000/storeImages")
         
         var request = URLRequest(url: url! as URL)
@@ -380,39 +531,39 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
         
         /*
-        let parameters = ["name": rname]
-        
-        Alamofire.upload(multipartFormData: { multipartFormData in
-            multipartFormData.append(imgData, withName: "\(rname).jpg", fileName: "\(rname).jpg", mimeType: "image/jpg")
-            for (key, value) in parameters {
-                multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
-            }
-        },
-                         to:"http://localhost:5000/storeImages")
-        { (result) in
-            switch result {
-            case .success(let upload, _, _):
+         let parameters = ["name": rname]
          
-                upload.uploadProgress(closure: { (progress) in
-                    print("Upload Progress: \(progress.fractionCompleted)")
-                })
-                
-                upload.responseJSON { response in
-                    print("\n\n\n\n success...")
-                    print(response.result.value)  
-                }
-                
-            case .failure(let encodingError):
-                print("\n\n\n\n error....")
-                print(encodingError)  
-            }
-        }
-        */
+         Alamofire.upload(multipartFormData: { multipartFormData in
+         multipartFormData.append(imgData, withName: "\(rname).jpg", fileName: "\(rname).jpg", mimeType: "image/jpg")
+         for (key, value) in parameters {
+         multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
+         }
+         },
+         to:"http://localhost:5000/storeImages")
+         { (result) in
+         switch result {
+         case .success(let upload, _, _):
+         
+         upload.uploadProgress(closure: { (progress) in
+         print("Upload Progress: \(progress.fractionCompleted)")
+         })
+         
+         upload.responseJSON { response in
+         print("\n\n\n\n success...")
+         print(response.result.value)
+         }
+         
+         case .failure(let encodingError):
+         print("\n\n\n\n error....")
+         print(encodingError)
+         }
+         }
+         */
         
     }
     
     
-    // Function called to retrieve contacts and sort to find user 
+    // Function called to retrieve contacts and sort to find user
     
     func retrieveContactsWithStore(store: CNContactStore) {
         do {
@@ -422,7 +573,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             SwiftAddressBook.requestAccessWithCompletion({ (success, error) -> Void in
                 if success {
                     //do something with swiftAddressBook
-                   
+                    
                     _ = [Any?]()
                     var jsonRecord = [JSON]()
                     var jsonRecordOutput : JSON = ["process" : "success"]
@@ -431,7 +582,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                     if let people = swiftAddressBook?.allPeople {
                         
                         for person in people {
-                         
+                            
                             var personJsonRecord : JSON = ["id": person.recordID, "uuid_associated": global_uuid]
                             
                             
@@ -447,19 +598,19 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                             //if (person.birthday != nil)         {  personJsonRecord["birthday"] = person.birthday }
                             
                             //if (person.hasImageData() == true)  {  importRecord["imageData"] = person.image }
-
+                            
                             //if (person.phoneNumbers != nil)     {  importRecord["phoneNumbers"] = person.phoneNumbers }
                             //if (person.emails != nil)           {  importRecord["emails"] = person.emails }
                             //if (person.socialProfiles != nil)   {  importRecord["socialProfiles"] = person.socialProfiles }
                             //if (person.addresses != nil)        {  importRecord["addresses"] = person.addresses }
-
+                            
                             
                             // Pull image data using uuid
-   
+                            
                             if (person.hasImageData() == true){
                                 
                                 self.uploadUserThumb(image: person.image!, recordId: person.recordID)
-
+                                
                                 personJsonRecord["profilePicture_local"].stringValue = "\(global_uuid!)-\(person.recordID).jpg"
                                 
                                 //let imageData: NSData = UIImageJPEGRepresentation(person.image!, 0.4)! as NSData
@@ -467,19 +618,19 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                                 
                                 
                             }
-
+                            
                             // Populate phone records
                             
                             if ( person.phoneNumbers != nil){
                                 
-
-                                for numb in person.phoneNumbers! {
                                 
+                                for numb in person.phoneNumbers! {
+                                    
                                     
                                     let recordNum = String(numb.id)
                                     
                                     let phoneRecord : JSON = [recordNum : ["value": "", "label": ""]]
-
+                                    
                                     personJsonRecord["phoneNumbers"] = phoneRecord
                                     
                                     let path: [JSONSubscriptType] = ["phoneNumbers",recordNum]
@@ -487,7 +638,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                                     personJsonRecord[path]["value"].stringValue = numb.value
                                     
                                     if (numb.label != nil){ personJsonRecord[path]["label"].stringValue = numb.label! }
-        
+                                    
                                     
                                 }
                             }
@@ -516,7 +667,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                                     
                                 }
                             }
-
+                            
                             // Pull social profile information
                             if ( person.socialProfiles != nil){
                                 
@@ -543,15 +694,15 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                                 
                             }
                             
-
+                            
                             // Output person object as string value
                             let strval = String(records)
                             print(">>>", strval)
                             jsonRecordOutput[strval].object = personJsonRecord.object
                             records = records + 1
                             jsonRecord.append(personJsonRecord)
-
-                           
+                            
+                            
                             
                         }
                         
@@ -562,37 +713,37 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
                         
                         
                         
-                       // do {
-                            //var json = try JSONSerialization.jsonObject(with: jsonRecordOutput, options: [])
+                        // do {
+                        //var json = try JSONSerialization.jsonObject(with: jsonRecordOutput, options: [])
                         
                         //https://unifyalphaapi.herokuapp.com
                         
                         // Post dictionary object to endpoint
                         
-                            Alamofire.request("http://localhost:5000/importContactRecords", method: .post, parameters: jsonRecordOutput.dictionaryValue, encoding: URLEncoding.default, headers:["Content-Type" : "application/x-www-form-urlencoded"])
-                                .responseJSON { response in
+                        Alamofire.request("http://localhost:5000/importContactRecords", method: .post, parameters: jsonRecordOutput.dictionaryValue, encoding: URLEncoding.default, headers:["Content-Type" : "application/x-www-form-urlencoded"])
+                            .responseJSON { response in
+                                
+                                print(response)
+                                
+                                switch response.result {
+                                case .failure(let error):
+                                    print(error)
                                     
-                                    print(response)
-                                    
-                                    switch response.result {
-                                    case .failure(let error):
-                                        print(error)
-                                        
-                                        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
-                                            print(responseString)
-                                        }
-                                    case .success(let responseObject):
-                                        print(responseObject)
+                                    if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
+                                        print(responseString)
                                     }
-                            }
-
-
-                       // }
-                       // catch {
-                       //     print(error)
-                       // }
+                                case .success(let responseObject):
+                                    print(responseObject)
+                                }
+                        }
                         
-                      
+                        
+                        // }
+                        // catch {
+                        //     print(error)
+                        // }
+                        
+                        
                         
                         //self.uploadContactRecords(contacts: fullRecord)
                         
@@ -609,59 +760,59 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
             
             
             /*
-            let contactStore = CNContactStore()
-            var contacts = [CNContact]()
-            var vcardFromContacts = NSData()
-            
-            let fetchRequest = CNContactFetchRequest(keysToFetch:[CNContactVCardSerialization.descriptorForRequiredKeys()])
-            
-            do{
-                try contactStore.enumerateContacts(with: fetchRequest, usingBlock: {
-                    contact, cursor in
-            
-                    //CNContactVCardSerialization
+             let contactStore = CNContactStore()
+             var contacts = [CNContact]()
+             var vcardFromContacts = NSData()
              
-                    contacts.append(contact)
-
-                })
-            } catch {
-                print("Get contacts \(error)")
-            }
-            */
+             let fetchRequest = CNContactFetchRequest(keysToFetch:[CNContactVCardSerialization.descriptorForRequiredKeys()])
+             
+             do{
+             try contactStore.enumerateContacts(with: fetchRequest, usingBlock: {
+             contact, cursor in
+             
+             //CNContactVCardSerialization
+             
+             contacts.append(contact)
+             
+             })
+             } catch {
+             print("Get contacts \(error)")
+             }
+             */
             
             
             //self.uploadContactRecords(contacts:    contacts    )
             
             
             /*
-            let contactStore = CNContactStore()
-           
-            
-            // Get all the containers
-            var allContainers: [CNContainer] = []
-            do {
-                allContainers = try contactStore.containers(matching: nil)
-            } catch {
-                print("Error fetching containers")
-            }
-            
-            var results: [CNContact] = []
-            
-            // Iterate all containers and append their contacts to our results array
-            for container in allContainers {
-                let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
-                
-                do {
-                    let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: [CNContactVCardSerialization.descriptorForRequiredKeys()])
-                    results.append(contentsOf: containerResults)
-                } catch {
-                    print("Error fetching results for container")
-                }
-            }
-            
+             let contactStore = CNContactStore()
+             
+             
+             // Get all the containers
+             var allContainers: [CNContainer] = []
+             do {
+             allContainers = try contactStore.containers(matching: nil)
+             } catch {
+             print("Error fetching containers")
+             }
+             
+             var results: [CNContact] = []
+             
+             // Iterate all containers and append their contacts to our results array
+             for container in allContainers {
+             let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+             
+             do {
+             let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: [CNContactVCardSerialization.descriptorForRequiredKeys()])
+             results.append(contentsOf: containerResults)
+             } catch {
+             print("Error fetching results for container")
+             }
+             }
+             
              self.uploadContactRecords(contacts:    results    )
-            
-            */
+             
+             */
             
             
         } catch {
@@ -670,7 +821,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     }
     
     
-    
+    // Retrieve contacts from DB
     func getContacts() {
         let store = CNContactStore()
         
@@ -688,353 +839,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         }
     }
     
-
-    
-    // Radar
-    // -------------------------------------------------------------------
-    
-    func plotPerson(distance: Int, direction: Int)
-    {
-        
-        //let image = UIImage(named: "")
-        //let imageView = UIImageView(image: image!)
-        
-        let imageView = UIImageView()
-        
-        imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 80, height: 80)
-        
-        imageView.backgroundColor = .black
-        
-        imageView.layer.cornerRadius = imageView.frame.size.width/2
-        imageView.clipsToBounds = true
-        
-        let hover = CABasicAnimation(keyPath: "position")
-        
-        hover.isAdditive = true
-        hover.fromValue = NSValue(cgPoint: CGPoint.zero)
-        
-        let xx = Int(random: -5..<5)
-        let yy = Int(random: -5..<5)
-       
-        print(">>\(xx, yy)")
-        
-        hover.toValue = NSValue(cgPoint: CGPoint(x: xx, y: yy))
-        hover.autoreverses = true
-        hover.duration = 0.5
-        hover.repeatCount = Float.infinity
-        
-        imageView.layer.add(hover, forKey: "myHoverAnimation")
-
-        
-        self.homeView.addSubview(imageView)
-        
-    }
-    
-    // Pulsing animation
-    
-    func pulseMe(status: String?){
-        
-     
-        let halo = PulsingHaloLayer()
-        halo.position = pulseView.center
-        halo.haloLayerNumber = 3;
-        
-        halo.radius = 100;
-        
-        halo.backgroundColor = UIColor.white.cgColor
-        
-        
-        pulseView.layer.addSublayer(halo)
-        halo.start()
-        
-        
-        plotPerson(distance: 5, direction: -4)
-        
-        //plotPerson(distance: 7, direction: 10)
-        
-            /*
-        pulseView.frame = CGRect.init(x: 0, y: 0, width: 100, height: 200)
-     
-        self.homeView.addSubview(pulseView)
-
-        
-        pulseView.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        pulseView.colors = [(UIColor.white.cgColor as? Any), (UIColor.black.cgColor as? Any), (UIColor.white.cgColor as? Any)]
-        pulseView.locations = [(0.3), (0.5), (0.7)]
-        pulseView.startPoint = CGPoint(x: CGFloat(0), y: CGFloat(0.5))
-        pulseView.endPoint = CGPoint(x: CGFloat(1), y: CGFloat(0.5))
-        pulseView.minRadius = 0
-        pulseView.maxRadius = 100
-        pulseView.duration = 3
-        pulseView.count = 6
-        pulseView.lineWidth = 3.0
-
-        
-        pulseView.startAnimation()
-        */
-        
-    }
-    
-    
-    func requestRadarAccess(){
-        self.locationManager.requestAlwaysAuthorization()
-        
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-        }
-
-    }
-    
-    
-    
-    func centerMap(_ center:CLLocationCoordinate2D){
-        self.saveCurrentLocation(center)
-
-    }
-    
-    func saveCurrentLocation(_ center:CLLocationCoordinate2D){
-        let message = "\(center.latitude) , \(center.longitude)"
-        print(message)
-        
-        let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
-        
-        
-        // Geocode Location
-        let geocoder = CLGeocoder()
-        
-        let paramString = "latitude=\(center.latitude)&longitude=\(center.longitude)&uuid=\(global_uuid!)"
-        
-
-        self.updateLocation(param: paramString)
-        
-        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
-            // Process Response
-            if let placemarks = placemarks, let placemark = placemarks.first {
-                print( placemark.compactAddress)
-            }
-        }
-        
-        
-       // self.lable.text = message
-        //myLocation = center
-    }
-    
-    
-    
-    
-    // Location Managment
-    // -----------------------------------------------------------
-    
-    func updateLocation(param: String){
-        updateLocation_tick = updateLocation_tick + 1
-        
-        if updateLocation_tick > 5
-        {
-            updateLocation_tick = 0
-       
-        
-            let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/geoservice")!
-            let session = URLSession.shared
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        
-            let paramString = param
-        
-                request.httpBody = paramString.data(using: String.Encoding.utf8)
-
-                let task = session.dataTask(with: request as URLRequest) {
-                (
-                data, response, error) in
-                
-                guard let data = data, let _:URLResponse = response, error == nil else {
-                    print("error")
-                    return
-                }
-                
-                let dataString =  String(data: data, encoding: String.Encoding.utf8)
-                print(dataString)
-                
-                    
-            }
-            
-            task.resume()
-            
-            
-            
-         }
-    }
-    
-    
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        
-        self.centerMap(locValue)
-
-    }
-
-    
-    
-    // Tableview Delegate & Data Source
-    // -----------------------------------------------------------
-    
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1;
-        
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // if you use prototype cells
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCardTableCell") as! HomeCardTableCell
-        
-        // Configure tableview cells
-
-        cell.collectionView.delegate = self
-        cell.collectionView.dataSource = self
-        
-        cell.collectionView.layer.masksToBounds = true;
-        cell.collectionView.layer.cornerRadius = 8;
-        
-        cell.collectionView.frame = CGRect(x: cell.collectionView.frame.origin.x + 11, y: cell.collectionView.frame.origin.y, width: UIScreen.main.bounds.size.width - 22, height: cell.collectionView.frame.height)
-
-        return cell
-    }
-    
-    
-    // Collection View Delegate & Data Source
-    // -----------------------------------------------------------
-    
-
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        self.pageControl.currentPage = indexPath.row
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let kWhateverHeightYouWant = (collectionView.bounds.size.width) * 2.8
-        
-        print("sized \(kWhateverHeightYouWant)")
-        
-        return CGSize(  (collectionView.bounds.size.width) , CGFloat(collectionView.bounds.size.height))
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        print("5")
-        return 5.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout
-        collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        print(">3")
-        return 3.0
-    }
-    
-    
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        
-        print("items 3")
-        return 3
-    }
-
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        
-        if indexPath.row == 2
-        {
-            print("add new card")
-            
-        } else {
-            
-            print("activate card")
-        }
-        
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        print(indexPath.row)
-        
-        if indexPath.row == 0
-        {
-            
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCollectionViewCell",
-                                                          for: indexPath as IndexPath) as! CardCollectionViewCell
-            
-            
-            cell.cardName.text = "Default"
-            
-            if (global_givenName != nil){ cell.cardDisplayName.text = global_givenName! }
-            if (global_phone != nil){ cell.cardPhone.text = global_phone! }
-            if (global_email != nil){ cell.cardEmail.text = global_email! }
-            if (global_image != nil){ cell.cardImage.image = global_image! }
-            
-            /*
-             var global_uuid: String?
-             var global_phone: String?
-             var global_image: UIImage?
-             var global_givenName: String?
-             var global_email: String?
-             
-             @IBOutlet weak var cardName: UILabel!
-             
-             @IBOutlet weak var cardSelectedBtn: UIButton!
-             
-             @IBOutlet weak var cardImage: UIImageView!
-             
-             @IBOutlet weak var cardDisplayName: UILabel!
-             
-             @IBOutlet weak var cardPhone: UILabel!
-             
-             @IBOutlet weak var cardEmail: UILabel!
-             
-             */
-
-            
-            return cell
-            
-        } else if indexPath.row != 2
-        {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCollectionViewCell",
-                                                          for: indexPath as IndexPath)
-            
-        
-            //cell.frame = CGRect(origin: CGFloat(collectionView.bounds.size.width), size: CGFloat(160))
-            //cell.backgroundColor = .red
-            
-            return cell
-        } else {
-            
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCollectionViewCellNew",
-                                                          for: indexPath as IndexPath)
-            
-            //cell.backgroundColor = .red
-            
-            return cell
-        }
-        
-    }
-    
-
-    // Custom Methods
+    // Notifications
     // ------------------------------------------------------------
     
     
@@ -1071,13 +876,16 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         
     }
 
-   
+    
+    // Navigation
+    // ------------------------------------------------------------
+
     /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
     */
@@ -1087,7 +895,7 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
 
 // Extensions
 // ------------------------------------------------------------
-/*
+
 extension CGRect{
     init(_ x:CGFloat,_ y:CGFloat,_ width:CGFloat,_ height:CGFloat) {
         self.init(x:x,y:y,width:width,height:height)
@@ -1160,4 +968,3 @@ extension Int {
         self = Int(min + arc4random_uniform(max - min)) - offset
     }
 }
-*/
