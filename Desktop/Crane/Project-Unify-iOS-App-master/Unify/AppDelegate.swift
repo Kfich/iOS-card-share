@@ -9,6 +9,8 @@
 import Reachability
 import UIKit
 import Firebase
+import Fabric
+import Crashlytics
 
 
 var global_uuid: String?
@@ -32,6 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         FIRApp.configure()
+        
+        // Crash reporting with fabric 
+        Fabric.with([Crashlytics.self])
         
         // Listen for network reachability changes.
         self.reachability = Reachability.forInternetConnection()

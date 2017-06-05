@@ -57,6 +57,8 @@
 		FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738331EDDD6CD0074200F /* BusinessCardView.xib */; };
 		FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738351EDDDE0F0074200F /* ContactCardView.swift */; };
 		FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738371EDDDE240074200F /* ContactCardView.xib */; };
+		FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */; };
+		FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */; };
 		FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C801EDF395000E37E0C /* ProfileViewController.swift */; };
 		FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */; };
 		FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */; };
@@ -126,6 +128,8 @@
 		FB3738331EDDD6CD0074200F /* BusinessCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessCardView.xib; sourceTree = "<group>"; };
 		FB3738351EDDDE0F0074200F /* ContactCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCardView.swift; sourceTree = "<group>"; };
 		FB3738371EDDDE240074200F /* ContactCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCardView.xib; sourceTree = "<group>"; };
+		FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FBE76C801EDF395000E37E0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCardViewController.swift; sourceTree = "<group>"; };
 		FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -140,7 +144,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */,
 				741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */,
+				FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +164,8 @@
 		1CAE5B771E913A06006EFF40 = {
 			isa = PBXGroup;
 			children = (
+				FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */,
+				FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */,
 				1CAE5B821E913A06006EFF40 /* Unify */,
 				1CAE5B811E913A06006EFF40 /* Products */,
 				E2413DAB352DCCE5D39D2704 /* Pods */,
@@ -362,6 +370,7 @@
 				1CAE5B7E1E913A06006EFF40 /* Resources */,
 				C8CE2E590FEEF545EB7BC0F8 /* [CP] Embed Pods Frameworks */,
 				371983F0C32DBAF8547256DA /* [CP] Copy Pods Resources */,
+				FB95D4C11EE5ADDE009D58EA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -475,6 +484,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Unify/Pods-Unify-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		FB95D4C11EE5ADDE009D58EA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/Fabric.framework/run\" 87087b87e0e600943ae1006ff0df0c6a97b9b8f1 101bd20ca9497336bdf59be0494647295c3f5ad8a39582d476b096121b4e9f99";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -656,6 +678,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				DEVELOPMENT_TEAM = WLFGCQXG8T;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -676,6 +702,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				DEVELOPMENT_TEAM = WLFGCQXG8T;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
