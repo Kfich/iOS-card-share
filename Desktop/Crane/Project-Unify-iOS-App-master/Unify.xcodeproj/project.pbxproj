@@ -64,6 +64,9 @@
 		FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */; };
 		FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */; };
 		FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */; };
+		FBF8712D1EE71B0800243CE2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712C1EE71B0800243CE2 /* User.swift */; };
+		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
+		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -137,6 +140,9 @@
 		FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFBlurSegue.m; sourceTree = "<group>"; };
 		FBE76C881EDF4A2900E37E0C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		FBF8712C1EE71B0800243CE2 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		FBF8712F1EE71B3D00243CE2 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		FBF871311EE71F0100243CE2 /* ContactCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +192,7 @@
 			children = (
 				1CBB3B7D1EA8E803003DE715 /* Unify.entitlements */,
 				1C31041B1E95BA9200F4D70D /* GoogleService-Info.plist */,
+				FBF8712E1EE71B0E00243CE2 /* Class_Files */,
 				1CB31CAC1E94336500A0C4A5 /* Algolia */,
 				1CAE5B851E913A06006EFF40 /* ViewController.swift */,
 				FB3738301EDDD69A0074200F /* CustomViews */,
@@ -357,6 +364,16 @@
 			name = CustomViews;
 			sourceTree = "<group>";
 		};
+		FBF8712E1EE71B0E00243CE2 /* Class_Files */ = {
+			isa = PBXGroup;
+			children = (
+				FBF8712C1EE71B0800243CE2 /* User.swift */,
+				FBF8712F1EE71B3D00243CE2 /* Transaction.swift */,
+				FBF871311EE71F0100243CE2 /* ContactCard.swift */,
+			);
+			name = Class_Files;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -511,6 +528,7 @@
 				1C31041A1E95B06600F4D70D /* EditProfileHeader.swift in Sources */,
 				FB37382A1EDDCE970074200F /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				1CAE5B861E913A06006EFF40 /* ViewController.swift in Sources */,
+				FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */,
 				1C3104141E959DB700F4D70D /* ProfileHeaderCell.swift in Sources */,
 				FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */,
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
@@ -525,6 +543,7 @@
 				1C3104181E95AFEA00F4D70D /* EditableContactCell.swift in Sources */,
 				1C3104161E95A87900F4D70D /* ProfileContactCell.swift in Sources */,
 				1C3104121E9536D100F4D70D /* SingleActivity-ViewController.swift in Sources */,
+				FBF8712D1EE71B0800243CE2 /* User.swift in Sources */,
 				1CB31CAB1E942C1C00A0C4A5 /* SkeletonCell.swift in Sources */,
 				1CB31CA11E940A0B00A0C4A5 /* Profile-TableViewController.swift in Sources */,
 				1CB31C911E9399D400A0C4A5 /* CreateAccount-ViewController.swift in Sources */,
@@ -532,6 +551,7 @@
 				1CB31C8D1E93539A00A0C4A5 /* PhoneVerificationPin-ViewController.swift in Sources */,
 				1CB31C931E93C04D00A0C4A5 /* HomeCardTableCell.swift in Sources */,
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
+				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
 				FB37382D1EDDD59D0074200F /* BusinessCardView.swift in Sources */,
 				1CB31C971E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift in Sources */,
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,

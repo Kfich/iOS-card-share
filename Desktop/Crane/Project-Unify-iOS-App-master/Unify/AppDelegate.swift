@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Check if user logged in, if not kick back to home vc
         
-        let userLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
+       /* let userLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         
         if (userLoggedIn && (storedUUID != nil)){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TabBarViewController
             window!.rootViewController = homeViewController
         }
-        
+        */
         
       
         
