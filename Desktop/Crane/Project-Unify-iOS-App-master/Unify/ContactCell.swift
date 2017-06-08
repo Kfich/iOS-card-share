@@ -49,16 +49,35 @@ class ContactCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var bio: UILabel!
+    @IBOutlet var phone: UILabel!
+    @IBOutlet var email: UILabel!
+    
+    
+    // Media buttons
+    
+    @IBOutlet var mediaButton1: UIImageView!
+    @IBOutlet var mediaButton2: UIImageView!
+    @IBOutlet var mediaButton3: UIImageView!
+    @IBOutlet var mediaButton4: UIImageView!
+    @IBOutlet var mediaButton5: UIImageView!
+    @IBOutlet var mediaButton6: UIImageView!
+    @IBOutlet var mediaButton7: UIImageView!
+    
+    
     
     // IBActions / Buttons pressed
     // --------------------------------------
     
+    /*
     @IBAction func imageViewSelected(_ sender: AnyObject) {
         
         // Post notification when item selected
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactIntroSelected"), object: self)
         
-    }
+    }*/
+    
+    
+    
     
     
 

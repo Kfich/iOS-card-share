@@ -38,7 +38,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     // View Config
     
-    fileprivate static let kRowHeight: CGFloat = 85
+    fileprivate static let kRowHeight: CGFloat = 190
     
     override func viewWillAppear(_ animated: Bool) {
         // Show nav bar
@@ -59,15 +59,15 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         addObservers()
         
         // Tableview settings
-        tableView.isScrollEnabled = false
-        tableView.separatorStyle = .none
+        //tableView.isScrollEnabled = false
+        //tableView.separatorStyle = .none
         
         let nib = UINib(nibName: String(describing: SkeletonCell.self), bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: String(describing: SkeletonCell.self))
         
         
         UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         
@@ -76,7 +76,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         self.view.backgroundColor = UIColor(patternImage: image)
         
         self.automaticallyAdjustsScrollViewInsets = false
-        
+ 
         DispatchQueue.main.async {
             //self.tableView.contentInset = UIEdgeInsets(top: 20, left: 10, bottom: 0, right: 10)
         }
@@ -151,7 +151,14 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if contactsHits.count == 0
+        {
+            return Int(view.bounds.height/ContactsTableViewController.kRowHeight) + 1
+            
+        } else {
+            
+            return contactsHits.count
+        }
     }
 
     
@@ -159,7 +166,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     //MARK: - UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
-        
+        /*
         if contactsHits.count == 0
         {
             return Int(view.bounds.height/ContactsTableViewController.kRowHeight) + 1
@@ -167,7 +174,8 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         } else {
             
              return contactsHits.count
-        }
+        }*/
+        return 1
         
     }
  
@@ -188,10 +196,10 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
                 
                 //rcell.backgroundColor = .clear
                 
-                let baseColor = cell.titlePlaceholderView.backgroundColor!
+                /*let baseColor = cell.titlePlaceholderView.backgroundColor!
                 gradientLayer.colors = [baseColor.cgColor,
                                         baseColor.brightened(by: 0.93).cgColor,
-                                        baseColor.cgColor]
+                                        baseColor.cgColor]*/
             }
             
             return cell
@@ -215,10 +223,20 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             
             // Temp config for testing
            
+            cell.posterImageView.image = UIImage(named: "throwback.jpg")
             cell.titleLabel.text = "KDot"
             cell.bio.text = "This is the BIO Label"
-            cell.posterImageView.image = UIImage(named: "search.jpg")
+            cell.email.text = "kev@crane.ai"
+            cell.phone.text = "+1(347)-234-7890"
             
+            // Round out images
+            configureViews(cell: cell)
+            
+            // Add radius config & border color
+            cell.layer.cornerRadius = 10.0
+            cell.clipsToBounds = true
+            cell.layer.borderWidth = 1.0
+            cell.layer.borderColor = UIColor.lightGray.cgColor
             
             
             /*
@@ -240,6 +258,17 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     }
     
+    // Headers for table sections
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 15
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let containerView = UIView()
+        containerView.backgroundColor = UIColor.clear
+        return containerView
+    }
+    
     //MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -253,11 +282,11 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             
             //real contact cell
             //let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath)
-            UIGraphicsBeginImageContext(self.view.frame.size)
-            UIImage(named: "background")?.draw(in: self.view.bounds)
+            /*UIGraphicsBeginImageContext(self.view.frame.size)
+            UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
             let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
             UIGraphicsEndImageContext()
-            self.view.backgroundColor = UIColor(patternImage: image)
+            self.view.backgroundColor = UIColor(patternImage: image)*/
             
             
             
@@ -322,13 +351,59 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             
             dismiss(animated: true, completion: nil)
         }else{
-            self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
+            
+            // Delete this segue
+            //self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
         }
         
         
     }
     
     // Custom Methods
+    
+    func configureViews(cell: ContactCell){
+        // Add radius config & border color
+        cell.mediaButton1.layer.cornerRadius = 20.0
+        cell.mediaButton1.clipsToBounds = true
+        cell.mediaButton1.layer.borderWidth = 1.0
+        cell.mediaButton1.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        cell.mediaButton2.layer.cornerRadius = 20.0
+        cell.mediaButton2.clipsToBounds = true
+        cell.mediaButton2.layer.borderWidth = 1.0
+        cell.mediaButton2.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        cell.mediaButton3.layer.cornerRadius = 20.0
+        cell.mediaButton3.clipsToBounds = true
+        cell.mediaButton3.layer.borderWidth = 1.0
+        cell.mediaButton3.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        cell.mediaButton4.layer.cornerRadius = 20.0
+        cell.mediaButton4.clipsToBounds = true
+        cell.mediaButton4.layer.borderWidth = 1.0
+        cell.mediaButton4.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        cell.mediaButton5.layer.cornerRadius = 20.0
+        cell.mediaButton5.clipsToBounds = true
+        cell.mediaButton5.layer.borderWidth = 1.0
+        cell.mediaButton5.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        cell.mediaButton6.layer.cornerRadius = 20.0
+        cell.mediaButton6.clipsToBounds = true
+        cell.mediaButton6.layer.borderWidth = 1.0
+        cell.mediaButton6.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        cell.mediaButton7.layer.cornerRadius = 20.0
+        cell.mediaButton7.clipsToBounds = true
+        cell.mediaButton7.layer.borderWidth = 1.0
+        cell.mediaButton7.layer.borderColor = UIColor.lightGray.cgColor
+    }
     
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(ContactsTableViewController.showIntroViewController), name: NSNotification.Name(rawValue: "ContactIntroSelected"), object: nil)

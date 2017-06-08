@@ -13,6 +13,16 @@ class ActivityCardTableCell: UITableViewCell {
     
     
     @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet var recipientProfileImage: UIImageView!
+    
+    @IBOutlet var followupButton: UIButton!
+    
+    @IBOutlet var contactLabel: UILabel!
+    @IBOutlet var recipientLabel: UILabel!
+    @IBOutlet var dateLabel: UILabel!
+    @IBOutlet var locationLabel: UILabel!
+    
+    
   
     @IBOutlet weak var activityMessage: UILabel!
     

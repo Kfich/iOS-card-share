@@ -43,7 +43,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Graphics config
         UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         
@@ -99,15 +99,37 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         return 100
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellID") as! ActivityCardTableCell
+        
+        // config cell
+        configureViews(cell: cell)
 
         
         return cell
     }
     
+    // View Configuration
+    
+    func configureViews(cell: ActivityCardTableCell){
+        // Add radius config & border color
+        // Add radius config & border color
+        cell.profileImage.layer.cornerRadius = 20.0
+        cell.profileImage.clipsToBounds = true
+        cell.profileImage.layer.borderWidth = 1.0
+        cell.profileImage.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        cell.recipientProfileImage.layer.cornerRadius = 20.0
+        cell.recipientProfileImage.clipsToBounds = true
+        cell.recipientProfileImage.layer.borderWidth = 1.0
+        cell.recipientProfileImage.layer.borderColor = UIColor.lightGray.cgColor
+    }
     
     // Navigation
     

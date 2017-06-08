@@ -20,7 +20,12 @@ public class Transaction{
     var recipient : User = User()
     var senderCard : ContactCard = ContactCard()
     var recipientCard : ContactCard = ContactCard()
-    var notes : String = ""
+    
+    // Make a dict [string:any] due to timestamps
+    var notes : [String : Any]?
+    
+    // Hashtags
+    var tags : [String]?
     
     // Retrieve user and cards IDs in order to populate the 
     // objects above
@@ -41,7 +46,7 @@ public class Transaction{
         transactionId = snapshot["trans_id"] as! String
         date = snapshot["date"] as! String
         location = snapshot["location"] as! String
-        notes = snapshot["notes"] as! String
+        //notes = snapshot["notes"] as! String
         recipientId = snapshot["recipient_id"] as! String
         senderId = snapshot["sender_id"] as! String
         recipientCardId = snapshot["recipient_card_id"] as! String
@@ -104,14 +109,14 @@ public class Transaction{
     func setTransactionLocation(loc : String){
         location = loc
     }
-    
+    /*
     func getNotes()->String{
         return notes
     }
     
     func setNotes(note : String){
         notes = note
-    }
+    }*/
     
     // Recipient & Sender logics
     

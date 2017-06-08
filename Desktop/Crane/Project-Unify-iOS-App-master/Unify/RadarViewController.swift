@@ -62,6 +62,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     @IBOutlet var pulseView: UIView!
     
+    @IBOutlet var smsButton: UIButton!
+    
+    @IBOutlet var emailButton: UIButton!
+    
     
     // View Setup
 
@@ -73,8 +77,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Hide radar label
         radarOnLabel.isHidden = true
         
+        // Setup views 
+        configureViews()
+        
         // Graphics config
-        UIGraphicsBeginImageContext(self.view.frame.size)
+       /* UIGraphicsBeginImageContext(self.view.frame.size)
         UIImage(named: "background")?.draw(in: self.view.bounds)
         
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
@@ -83,7 +90,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         self.view.backgroundColor = UIColor(patternImage: image)
         
-        //self.view.backgroundColor = UIColor(patternImage: image)
+        //self.view.backgroundColor = UIColor(patternImage: image)*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -874,6 +881,22 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Present dialog
         self.present(popup, animated: true, completion: nil)
         
+    }
+    
+    // View Configuration
+    
+    func configureViews(){
+        // Add radius config & border color
+        smsButton.layer.cornerRadius = 20.0
+        smsButton.clipsToBounds = true
+        smsButton.layer.borderWidth = 1.0
+        smsButton.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Add radius config & border color
+        emailButton.layer.cornerRadius = 20.0
+        emailButton.clipsToBounds = true
+        emailButton.layer.borderWidth = 1.0
+        emailButton.layer.borderColor = UIColor.lightGray.cgColor
     }
 
     
