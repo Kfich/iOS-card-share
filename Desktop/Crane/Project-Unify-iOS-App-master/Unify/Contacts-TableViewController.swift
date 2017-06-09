@@ -41,10 +41,14 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     fileprivate static let kRowHeight: CGFloat = 190
     
     override func viewWillAppear(_ animated: Bool) {
-        // Show nav bar
         super.viewWillAppear(true)
+        
+        // Show and Configure Nav bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
+        // Set color
+        let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
+        self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
     }
     
     override func viewDidLoad() {
@@ -65,7 +69,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         let nib = UINib(nibName: String(describing: SkeletonCell.self), bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: String(describing: SkeletonCell.self))
         
-        
+        /*
         UIGraphicsBeginImageContext(self.view.frame.size)
         UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
@@ -75,7 +79,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         
         self.view.backgroundColor = UIColor(patternImage: image)
         
-        self.automaticallyAdjustsScrollViewInsets = false
+        self.automaticallyAdjustsScrollViewInsets = false*/
  
         DispatchQueue.main.async {
             //self.tableView.contentInset = UIEdgeInsets(top: 20, left: 10, bottom: 0, right: 10)
@@ -100,7 +104,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         definesPresentationContext = true
         searchController!.searchBar.sizeToFit()
         
-        searchController!.searchBar.barStyle = UIBarStyle.black
+        searchController!.searchBar.barStyle = UIBarStyle.default
 
         // Configure search progress monitoring.
         searchProgressController = SearchProgressController(searcher: contactSearcher)
@@ -187,7 +191,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if contactsHits.count == 0
+        /*if contactsHits.count == 0
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SkeletonCell.self), for: indexPath) as! SkeletonCell
             
@@ -204,7 +208,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             
             return cell
             
-        } else {
+        } else {*/
             
             //real contact cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! ContactCell
@@ -224,19 +228,21 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             // Temp config for testing
            
             cell.posterImageView.image = UIImage(named: "throwback.jpg")
-            cell.titleLabel.text = "KDot"
-            cell.bio.text = "This is the BIO Label"
+            cell.bio.text = "Kevin Dot"
+            cell.titleLabel.text = "This is the BIO Label"
             cell.email.text = "kev@crane.ai"
             cell.phone.text = "+1(347)-234-7890"
+            cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+            cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+            cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+            cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+            cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+            cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+            cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
             
             // Round out images
             configureViews(cell: cell)
             
-            // Add radius config & border color
-            cell.layer.cornerRadius = 10.0
-            cell.clipsToBounds = true
-            cell.layer.borderWidth = 1.0
-            cell.layer.borderColor = UIColor.lightGray.cgColor
             
             
             /*
@@ -254,7 +260,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             */
             
             return cell
-        }
+        //}
     
     }
     
@@ -273,12 +279,12 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if contactsHits.count == 0
+        /*if contactsHits.count == 0
         {
             let skeletonCell = cell as! SkeletonCell
             skeletonCell.slide(to: .right)
             
-        } else {
+        } else {*/
             
             //real contact cell
             //let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath)
@@ -290,7 +296,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             
             
             
-            
+           /*
             cell.contentView.backgroundColor = UIColor.clear
             
             let whiteRoundedView : UIView = UIView(frame: CGRect(5, 10, self.view.frame.size.width - 10, ContactsTableViewController.kRowHeight - 10))
@@ -302,9 +308,9 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             // whiteRoundedView.layer.shadowOpacity = 0.2
             
             cell.contentView.addSubview(whiteRoundedView)
-            cell.contentView.sendSubview(toBack: whiteRoundedView)
+            cell.contentView.sendSubview(toBack: whiteRoundedView)*/
             
-        }
+        //}
         
     }
     
@@ -352,8 +358,10 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             dismiss(animated: true, completion: nil)
         }else{
             
-            // Delete this segue
-            //self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
+            // Show contact profile and set arrival to false
+            self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
+            ContactManager.sharedManager.userArrivedFromContactList = true
+
         }
         
         
@@ -363,46 +371,22 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     func configureViews(cell: ContactCell){
         // Add radius config & border color
-        cell.mediaButton1.layer.cornerRadius = 20.0
-        cell.mediaButton1.clipsToBounds = true
-        cell.mediaButton1.layer.borderWidth = 1.0
-        cell.mediaButton1.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
-        cell.mediaButton2.layer.cornerRadius = 20.0
-        cell.mediaButton2.clipsToBounds = true
-        cell.mediaButton2.layer.borderWidth = 1.0
-        cell.mediaButton2.layer.borderColor = UIColor.lightGray.cgColor
+        cell.cardWrapperView.layer.cornerRadius = 12.0
+        cell.cardWrapperView.clipsToBounds = true
+        cell.cardWrapperView.layer.borderWidth = 1.5
+        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
         
-        // Add radius config & border color
-        cell.mediaButton3.layer.cornerRadius = 20.0
-        cell.mediaButton3.clipsToBounds = true
-        cell.mediaButton3.layer.borderWidth = 1.0
-        cell.mediaButton3.layer.borderColor = UIColor.lightGray.cgColor
+        // Config tool bar 
+        cell.mediaButtonToolBar.backgroundColor = UIColor.white
+        // Set shadow on the container view
+        cell.mediaButtonToolBar.layer.shadowColor = UIColor.black.cgColor
+        cell.mediaButtonToolBar.layer.shadowOpacity = 1.5
+        cell.mediaButtonToolBar.layer.shadowOffset = CGSize.zero
+        cell.mediaButtonToolBar.layer.shadowRadius = 2
         
-        // Add radius config & border color
-        cell.mediaButton4.layer.cornerRadius = 20.0
-        cell.mediaButton4.clipsToBounds = true
-        cell.mediaButton4.layer.borderWidth = 1.0
-        cell.mediaButton4.layer.borderColor = UIColor.lightGray.cgColor
-        
-        // Add radius config & border color
-        cell.mediaButton5.layer.cornerRadius = 20.0
-        cell.mediaButton5.clipsToBounds = true
-        cell.mediaButton5.layer.borderWidth = 1.0
-        cell.mediaButton5.layer.borderColor = UIColor.lightGray.cgColor
-        
-        // Add radius config & border color
-        cell.mediaButton6.layer.cornerRadius = 20.0
-        cell.mediaButton6.clipsToBounds = true
-        cell.mediaButton6.layer.borderWidth = 1.0
-        cell.mediaButton6.layer.borderColor = UIColor.lightGray.cgColor
-        
-        // Add radius config & border color
-        cell.mediaButton7.layer.cornerRadius = 20.0
-        cell.mediaButton7.clipsToBounds = true
-        cell.mediaButton7.layer.borderWidth = 1.0
-        cell.mediaButton7.layer.borderColor = UIColor.lightGray.cgColor
+      
     }
     
     func addObservers() {

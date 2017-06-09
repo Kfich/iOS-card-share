@@ -187,11 +187,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func pulseMe(status: String?){
         
+        // Set coordinates for the pulse view
         halo.position.y = pulseView.frame.height / 2
         halo.position.x = pulseView.frame.width / 2
         halo.haloLayerNumber = 3;
         
-        halo.radius = 100;
+        // Set radius
+        halo.radius = 250;
         
         halo.backgroundColor = UIColor.white.cgColor
         

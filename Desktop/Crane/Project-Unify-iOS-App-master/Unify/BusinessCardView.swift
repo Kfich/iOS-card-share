@@ -38,10 +38,13 @@ class BusinessCardView: UIView {
     
     @IBOutlet var cardTypeLabel: UILabel!
     // Social Media
-    @IBOutlet var mediaButton1: UIButton!
-    @IBOutlet var mediaButton2: UIButton!
-    @IBOutlet var mediaButton3: UIButton!
-    @IBOutlet var mediaButton4: UIButton!
+    @IBOutlet var mediaButton1: UIBarButtonItem!
+    @IBOutlet var mediaButton2: UIBarButtonItem!
+    @IBOutlet var mediaButton3: UIBarButtonItem!
+    @IBOutlet var mediaButton4: UIBarButtonItem!
+    @IBOutlet var mediaButton5: UIBarButtonItem!
+    @IBOutlet var mediaButton6: UIBarButtonItem!
+    @IBOutlet var mediaButton7: UIBarButtonItem!
     
 
     // Init 
@@ -108,37 +111,20 @@ class BusinessCardView: UIView {
         
         
         // Add radius config & border color
-        self.contactImageView.layer.cornerRadius = 10.0
-        self.contactImageView.clipsToBounds = true
-        self.contactImageView.layer.borderWidth = 1.0
-        self.contactImageView.layer.borderColor = UIColor.lightGray.cgColor
+        self.view.layer.cornerRadius = 12.0
+        self.view.clipsToBounds = true
+        self.view.layer.borderWidth = 1.5
+        self.view.layer.borderColor = UIColor.white.cgColor
+        
         
         // Add radius config & border color
-        self.phoneIconImage.layer.cornerRadius = 10.0
-        self.phoneIconImage.clipsToBounds = true
-        self.phoneIconImage.layer.borderWidth = 0.50
-        self.phoneIconImage.layer.borderColor = UIColor.lightGray.cgColor
-        
-        // Add radius config & border color
-        self.emailIconImage.layer.cornerRadius = 10.0
-        self.emailIconImage.clipsToBounds = true
-        self.emailIconImage.layer.borderWidth = 0.50
-        self.emailIconImage.layer.borderColor = UIColor.lightGray.cgColor
-        
-        // Add radius config & border color
-        self.optionalIconImage.layer.cornerRadius = 10.0
-        self.optionalIconImage.clipsToBounds = true
-        self.optionalIconImage.layer.borderWidth = 0.50
-        self.optionalIconImage.layer.borderColor = UIColor.lightGray.cgColor
-        
-        // Add radius config & border color
-        self.cardTypeLabel.layer.cornerRadius = 10.0
+        self.cardTypeLabel.layer.cornerRadius = 8.0
         self.cardTypeLabel.clipsToBounds = true
-        self.cardTypeLabel.layer.borderWidth = 2.0
-        self.cardTypeLabel.layer.borderColor = UIColor.lightGray.cgColor
+        self.cardTypeLabel.layer.borderWidth = 0.75
+        self.cardTypeLabel.layer.borderColor = UIColor.white.cgColor
         
         // Add radius config & border color
-        self.mediaButton1.layer.cornerRadius = 10.0
+        /*self.mediaButton1.layer.cornerRadius = 10.0
         self.mediaButton1.clipsToBounds = true
         self.mediaButton1.layer.borderWidth = 1.0
         self.mediaButton1.layer.borderColor = UIColor.lightGray.cgColor
@@ -159,7 +145,7 @@ class BusinessCardView: UIView {
         self.mediaButton4.layer.cornerRadius = 10.0
         self.mediaButton4.clipsToBounds = true
         self.mediaButton4.layer.borderWidth = 1.0
-        self.mediaButton4.layer.borderColor = UIColor.lightGray.cgColor
+        self.mediaButton4.layer.borderColor = UIColor.lightGray.cgColor*/
         
     }
 

@@ -12,8 +12,10 @@ import UIKit
 class ActivityCardTableCell: UITableViewCell {
     
     
+    @IBOutlet var cardWrapperView: UIView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet var recipientProfileImage: UIImageView!
+    @IBOutlet var followupViewContainer: UIView!
     
     @IBOutlet var followupButton: UIButton!
     

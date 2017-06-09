@@ -45,23 +45,25 @@ class ContactCell: UITableViewCell {
     
     // IBOutlets
     // --------------------------------------
+    @IBOutlet var cardWrapperView: UIView!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var bio: UILabel!
     @IBOutlet var phone: UILabel!
     @IBOutlet var email: UILabel!
+    @IBOutlet var mediaButtonToolBar: UIToolbar!
     
     
     // Media buttons
     
-    @IBOutlet var mediaButton1: UIImageView!
-    @IBOutlet var mediaButton2: UIImageView!
-    @IBOutlet var mediaButton3: UIImageView!
-    @IBOutlet var mediaButton4: UIImageView!
-    @IBOutlet var mediaButton5: UIImageView!
-    @IBOutlet var mediaButton6: UIImageView!
-    @IBOutlet var mediaButton7: UIImageView!
+    @IBOutlet var mediaButton1: UIBarButtonItem!
+    @IBOutlet var mediaButton2: UIBarButtonItem!
+    @IBOutlet var mediaButton3: UIBarButtonItem!
+    @IBOutlet var mediaButton4: UIBarButtonItem!
+    @IBOutlet var mediaButton5: UIBarButtonItem!
+    @IBOutlet var mediaButton6: UIBarButtonItem!
+    @IBOutlet var mediaButton7: UIBarButtonItem!
     
     
     

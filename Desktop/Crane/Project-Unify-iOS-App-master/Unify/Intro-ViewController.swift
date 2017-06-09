@@ -33,7 +33,7 @@ class IntroViewController: UIViewController {
     
     // Custom Views pulled from xib
     @IBOutlet var contactCard: BusinessCardView!
-    @IBOutlet var recipientCard: ContactCardView!
+    @IBOutlet var recipientCard: BusinessCardView!
     
     // Nav
     @IBOutlet var backButton: UIButton!
@@ -70,8 +70,8 @@ class IntroViewController: UIViewController {
         
         
         // Testing booleans
-        ContactManager.sharedManager.userArrivedFromContactList = true
-        ContactManager.sharedManager.userArrivedFromRecipients = true
+        //ContactManager.sharedManager.userArrivedFromContactList = true
+        //ContactManager.sharedManager.userArrivedFromRecipients = true
         
         
         // Bool to track navigation patterns to dictate views appropriately from contact list
@@ -105,7 +105,7 @@ class IntroViewController: UIViewController {
         // Configure background image graphics
         
         UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         
@@ -197,18 +197,18 @@ class IntroViewController: UIViewController {
     func configureViews(){
         
         // Configure cards
-        self.contactCard.layer.cornerRadius = 10.0
-        self.contactCard.clipsToBounds = true
-        self.contactCard.layer.borderWidth = 2.0
-        self.contactCard.layer.borderColor = UIColor.lightGray.cgColor
+        self.contactCard.view.layer.cornerRadius = 12.0
+        self.contactCard.view.clipsToBounds = true
+        self.contactCard.view.layer.borderWidth = 2.0
+        self.contactCard.view.layer.borderColor = UIColor.white.cgColor
         
-        self.recipientCard.layer.cornerRadius = 10.0
-        self.recipientCard.clipsToBounds = true
-        self.recipientCard.layer.borderWidth = 2.0
-        self.recipientCard.layer.borderColor = UIColor.lightGray.cgColor
+        self.recipientCard.view.layer.cornerRadius = 12.0
+        self.recipientCard.view.clipsToBounds = true
+        self.recipientCard.view.layer.borderWidth = 2.0
+        self.recipientCard.view.layer.borderColor = UIColor.white.cgColor
         
         // Add radius config & border color
-        self.addContactView.layer.cornerRadius = 10.0
+       /* self.addContactView.layer.cornerRadius = 10.0
         self.addContactView.clipsToBounds = true
         self.addContactView.layer.borderWidth = 2.0
         self.addContactView.layer.borderColor = UIColor.lightGray.cgColor
@@ -217,7 +217,7 @@ class IntroViewController: UIViewController {
         self.addRecipientView.layer.cornerRadius = 10.0
         self.addRecipientView.clipsToBounds = true
         self.addRecipientView.layer.borderWidth = 2.0
-        self.addRecipientView.layer.borderColor = UIColor.lightGray.cgColor
+        self.addRecipientView.layer.borderColor = UIColor.lightGray.cgColor*/
 
         
         
@@ -229,6 +229,7 @@ class IntroViewController: UIViewController {
     
     func populateCards(){
         
+        // Senders card
         self.contactCard.cardTypeLabel.text = "PERSONAL"
         self.contactCard.contactImageView.image = UIImage(named: "throwback.jpg")
         self.contactCard.nameLabel.text = "Harold Fich"
@@ -236,12 +237,12 @@ class IntroViewController: UIViewController {
         self.contactCard.emailLabel.text = "harold.fich12@gmail.com"
         self.contactCard.optionalLabel.text = "1+ (123)-345-6789"
         
-        
-        self.recipientCard.infoLabel.text = "This is my job description"
+        // Recipients card
         self.recipientCard.contactImageView.image = UIImage(named: "search.jpg")
         self.recipientCard.nameLabel.text = "Kevin Fich"
         self.recipientCard.phoneNumberLabel.text = "1+ (123)-665-9909"
-        self.recipientCard.emailLabel.text = "kev.fich12@gmail.com"
+        self.recipientCard.optionalLabel.text = "kev.fich12@gmail.com"
+        self.recipientCard.emailLabel.text = "kev.fich12@aol.com"
         
 
         
