@@ -34,7 +34,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Configure tableview
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.estimatedSectionHeaderHeight = 8.0
+        //tableView.estimatedSectionHeaderHeight = 8.0
         self.automaticallyAdjustsScrollViewInsets = false
         // Set a header for the table view
        // let header = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
@@ -55,6 +55,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Add segment control to navigation bar
         self.navigationBar.titleView = segmentedControl
+        
+        
+        // Set graphics for background of tableview
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
+        UIGraphicsEndImageContext()
+        
+        self.tableView.backgroundColor = UIColor(patternImage: image)
 
         
         // Set tint on main nav bar
@@ -84,10 +96,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         return v
     }
-    
+    /*
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 8
-    }
+        return 2
+    }*/
     
     
     //MARK: UITableViewDataSource
@@ -106,10 +118,19 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+        // Check what cell is needed
+        var cell = UITableViewCell()
+        
+        if indexPath.section % 2 == 0 {
+            cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+            configureViewsForIntro(cell: cell as! ActivityCardTableCell)
+        }else{
+            cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+            configureViewsForConnection(cell: cell as! ActivityCardTableCell)
+        }
         
         // config cell
-        configureViewsForIntro(cell: cell)
+        
 
         
         return cell
@@ -120,14 +141,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func configureViewsForIntro(cell: ActivityCardTableCell){
         // Add radius config & border color
         // Add radius config & border color
-        cell.profileImage.layer.cornerRadius = 55.0
+        cell.profileImage.layer.cornerRadius = 35.0
         cell.profileImage.clipsToBounds = true
         cell.profileImage.layer.borderWidth = 1.5
         cell.profileImage.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
 
         
         // Add radius config & border color
-        cell.recipientProfileImage.layer.cornerRadius = 55.0
+        cell.recipientProfileImage.layer.cornerRadius = 35.0
         cell.recipientProfileImage.clipsToBounds = true
         cell.recipientProfileImage.layer.borderWidth = 1.5
         cell.recipientProfileImage.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
@@ -154,14 +175,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func configureViewsForConnection(cell: ActivityCardTableCell){
         // Add radius config & border color
         // Add radius config & border color
-        cell.connectionOwnerProfileImage.layer.cornerRadius = 55.0
+        cell.connectionOwnerProfileImage.layer.cornerRadius = 35.0
         cell.connectionOwnerProfileImage.clipsToBounds = true
         cell.connectionOwnerProfileImage.layer.borderWidth = 1.5
         cell.connectionOwnerProfileImage.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
         
         
         // Add radius config & border color
-        cell.connectionRecipientImageView.layer.cornerRadius = 55.0
+        cell.connectionRecipientImageView.layer.cornerRadius = 35.0
         cell.connectionRecipientImageView.clipsToBounds = true
         cell.connectionRecipientImageView.layer.borderWidth = 1.5
         cell.connectionRecipientImageView.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor

@@ -25,6 +25,30 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     // ---------------------------------------
     @IBOutlet var contactCardView: ContactCardView!
     
+    @IBOutlet var cardWrapperView: UIView!
+    
+    @IBOutlet var profileCardWrapperView: UIView!
+    
+    
+    // Labels
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var numberLabel: UILabel!
+    @IBOutlet var emailLabel: UILabel!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var profileImageView: UIImageView!
+    @IBOutlet var socialMediaToolBar: UIToolbar!
+    
+    
+    // Buttons
+    
+    @IBOutlet var mediaButton1: UIBarButtonItem!
+    @IBOutlet var mediaButton2: UIBarButtonItem!
+    @IBOutlet var mediaButton3: UIBarButtonItem!
+    
+    @IBOutlet var mediaButton4: UIBarButtonItem!
+    @IBOutlet var mediaButton5: UIBarButtonItem!
+    @IBOutlet var mediaButton6: UIBarButtonItem!
+    @IBOutlet var mediaButton7: UIBarButtonItem!
     
     
     // Page Setup
@@ -33,7 +57,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         super.viewDidLoad()
         
         
-        
+        // Configure background color with image
         UIGraphicsBeginImageContext(self.view.frame.size)
         UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
@@ -44,7 +68,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         self.view.backgroundColor = UIColor(patternImage: image)
         
         // View config 
-        //configureViews()
+        configureViews()
         
         
     }
@@ -106,11 +130,18 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     func configureViews(){
         
         // Configure cards
-        self.contactCardView.layer.cornerRadius = 10.0
-        self.contactCardView.clipsToBounds = true
-        self.contactCardView.layer.borderWidth = 2.0
-        self.contactCardView.layer.borderColor = UIColor.lightGray.cgColor
+        self.profileCardWrapperView.layer.cornerRadius = 12.0
+        self.profileCardWrapperView.clipsToBounds = true
+        self.profileCardWrapperView.layer.borderWidth = 1.5
+        self.profileCardWrapperView.layer.borderColor = UIColor.lightGray.cgColor
         
+        mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        mediaButton7.image = UIImage(named: "icn-social-facebook.png")
         
         
     }
@@ -126,23 +157,25 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     
     func launchMailAppOnDevice()
     {
+        /*
         let recipients:NSString="";
         let body:NSString="follow up"
         var email:NSString="example@unifiy.demo"
         email=email.addingPercentEscapes(using: String.Encoding.utf8.rawValue)! as NSString
-        UIApplication.shared.openURL(NSURL(string: email as String)! as URL)
+        UIApplication.shared.openURL(NSURL(string: email as String)! as URL)*/
     }
     
     
     func displayComposerSheet()
     {
+        /*
         let picker: MFMailComposeViewController=MFMailComposeViewController()
         picker.mailComposeDelegate=self;
         picker .setSubject("follow up")
         picker.setMessageBody("follow up", isHTML: true)
         let data: NSData = UIImagePNGRepresentation(UIImage(named: "images.jpg")!)! as NSData
         picker.addAttachmentData(data as Data, mimeType: "image/png", fileName: "images.png")
-        self.present(picker, animated: true, completion: nil)
+        self.present(picker, animated: true, completion: nil)*/
     }
     
     

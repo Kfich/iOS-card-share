@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "btn-message-blue.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icn-mail-blue.png",
       "scale" : "2x"
     },
     {

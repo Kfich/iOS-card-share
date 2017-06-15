@@ -53,7 +53,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // -------------------------------------------
     
     @IBOutlet var rootView: UIView!
-    @IBOutlet var radarOnLabel: UILabel!
+    //@IBOutlet var radarOnLabel: UILabel!
     @IBOutlet var radarOffLabel: UILabel!
     
     @IBOutlet var radarImageView: UIButton!
@@ -75,7 +75,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Do any additional setup after loading the view.
         
         // Hide radar label
-        radarOnLabel.isHidden = true
+        //radarOnLabel.isHidden = true
         
         // Setup views 
         configureViews()
@@ -128,11 +128,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             pulseMe(status: "hide")
             self.locationManager.stopUpdatingLocation()
             
-            // Hide on label and set image
-            self.radarOnLabel.isHidden = true
-            self.radarOffLabel.isHidden = false
-            self.radarButton.setBackgroundImage(UIImage(named:"radar_off.png"), for: UIControlState.normal)
-            
+            // Configure Label text and set image
+            //self.radarOnLabel.isHidden = true
+            self.radarOffLabel.text = "radar off"
+            self.radarButton.setImage(UIImage(named:"radar_off.png"), for: UIControlState.normal)
+        
             // End anime
             stopPulseAnimation()
             
@@ -144,9 +144,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.locationManager.startUpdatingLocation()
             
             // Toggle labels and set image
-            self.radarOnLabel.isHidden = false
-            self.radarOffLabel.isHidden = true
-            self.radarButton.setBackgroundImage(UIImage(named:"radar_on.png"), for: UIControlState.normal)
+            //self.radarOnLabel.isHidden = false
+            self.radarOffLabel.text = "radar on"
+            self.radarButton.setImage(UIImage(named:"radar_on.png"), for: UIControlState.normal)
 
         }
         

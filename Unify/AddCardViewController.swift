@@ -13,6 +13,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     // Properties
     // ----------------------------------------
+    @IBOutlet var collectionView: UICollectionView!
     
     let reuseIdentifier = "cardViewCell"
     
@@ -44,7 +45,30 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         // Do any additional setup after loading the view.
         
         // Configure done button in nav bar
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCards))
+        /*navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCards))*/
+        
+        // Set graphics for background of view
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
+        UIGraphicsEndImageContext()
+        
+        self.view.backgroundColor = UIColor(patternImage: image)
+        
+        // Set graphics for background of collection view
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "backgroundGradient")?.draw(in: self.collectionView.bounds)
+        
+        let image2: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
+        UIGraphicsEndImageContext()
+        
+        self.collectionView.backgroundColor = UIColor(patternImage: image2)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,14 +93,17 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
+        
+        
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
         //cell.businessCardView = self.cards[indexPath.item]
         // Add radius config & border color
-        cell.contentView.layer.cornerRadius = 10.0
+        /*cell.contentView.layer.cornerRadius = 10.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 2.0
-        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor*/
         
+        configureViews(cell: cell)
         
         
         //cell.backgroundColor = UIColor.cyan // make cell more visible in our example project
@@ -99,6 +126,33 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         print("Add card button works!")
     }
     
+    func configureViews(cell: CardCollectionViewCell){
+        // Add radius config & border color
+        
+        // Add radius config & border color
+        cell.cardWrapperView.layer.cornerRadius = 12.0
+        cell.cardWrapperView.clipsToBounds = true
+        cell.cardWrapperView.layer.borderWidth = 1.5
+        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        
+        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+
+        // Config tool bar
+        /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
+         // Set shadow on the container view
+         cell.mediaButtonToolBar.layer.shadowColor = UIColor.black.cgColor
+         cell.mediaButtonToolBar.layer.shadowOpacity = 1.5
+         cell.mediaButtonToolBar.layer.shadowOffset = CGSize.zero
+         cell.mediaButtonToolBar.layer.shadowRadius = 2*/
+        
+        
+    }
 
     /*
     // MARK: - Navigation

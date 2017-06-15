@@ -72,21 +72,21 @@ class SelectRecipientViewController: UIViewController,UITableViewDelegate, UITab
         addObservers()
         
         // Tableview settings
-        contactsTableView.isScrollEnabled = false
+        //contactsTableView.isScrollEnabled = false
         contactsTableView.separatorStyle = .none
         
         let nib = UINib(nibName: String(describing: SkeletonCell.self), bundle: nil)
         contactsTableView.register(nib, forCellReuseIdentifier: String(describing: SkeletonCell.self))
         
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
+        UIGraphicsBeginImageContext(self.contactsTableView.frame.size)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         
         UIGraphicsEndImageContext()
         
-        self.view.backgroundColor = UIColor(patternImage: image)
+        self.contactsTableView.backgroundColor = UIColor(patternImage: image)
         
         self.automaticallyAdjustsScrollViewInsets = false
         
@@ -244,8 +244,8 @@ class SelectRecipientViewController: UIViewController,UITableViewDelegate, UITab
             
             // Temp config for testing
             
-            cell.posterImageView.image = UIImage(named: "throwback.jpg")
-            cell.bio.text = "Kevin Dot"
+            cell.posterImageView.image = UIImage(named: "search.png")
+            cell.bio.text = "Sally May"
             cell.titleLabel.text = "This is the BIO Label"
             cell.email.text = "kev@crane.ai"
             cell.phone.text = "+1(347)-234-7890"

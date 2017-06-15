@@ -78,6 +78,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         UIGraphicsEndImageContext()
         
         self.cardCollectionView.backgroundColor = UIColor(patternImage: image)
+        self.scrollView.backgroundColor = UIColor(patternImage: image)
+        
+        // Config collectionView
+        
         
     }
     
@@ -118,10 +122,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
         //cell.businessCardView = self.cards[indexPath.item]
         // Add radius config & border color
-        cell.contentView.layer.cornerRadius = 10.0
+        /*cell.contentView.layer.cornerRadius = 10.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 2.0
-        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor*/
+        
+        configureViews(cell: cell)
         
         
         
@@ -155,7 +161,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, minimumHeightForBottomViewController bottomVC: UIViewController) -> CGFloat {
          /*topView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height;*/
-        return 75.0
+        return 60.0
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, targetHeightForBottomViewController bottomVC: UIViewController, fromCurrentHeight height: CGFloat) -> CGFloat {
@@ -176,13 +182,31 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Custom Methods
     
-    func configureViews(){
+    func configureViews(cell: CardCollectionViewCell){
+        // Add radius config & border color
         
-        // Configure cards
-        self.businessCardView.layer.cornerRadius = 10.0
-        self.businessCardView.clipsToBounds = true
-        self.businessCardView.layer.borderWidth = 2.0
-        self.businessCardView.layer.borderColor = UIColor.lightGray.cgColor
+        // Add radius config & border color
+        cell.cardWrapperView.layer.cornerRadius = 12.0
+        cell.cardWrapperView.clipsToBounds = true
+        cell.cardWrapperView.layer.borderWidth = 1.5
+        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        
+        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        
+        // Config tool bar
+        /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
+         // Set shadow on the container view
+         cell.mediaButtonToolBar.layer.shadowColor = UIColor.black.cgColor
+         cell.mediaButtonToolBar.layer.shadowOpacity = 1.5
+         cell.mediaButtonToolBar.layer.shadowOffset = CGSize.zero
+         cell.mediaButtonToolBar.layer.shadowRadius = 2*/
+        
         
     }
     

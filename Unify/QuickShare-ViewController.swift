@@ -21,6 +21,7 @@ class QuickShareViewController: UIViewController {
     
     // IBOutlets
     // ------------------------------------------
+    @IBOutlet var cardWrapperView: UIView!
     
     @IBOutlet var businessCardView: BusinessCardView!
     
@@ -51,7 +52,7 @@ class QuickShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // Configure background graphics and coloring
         UIGraphicsBeginImageContext(self.view.frame.size)
         UIImage(named: "background")?.draw(in: self.view.bounds)
         
@@ -61,7 +62,11 @@ class QuickShareViewController: UIViewController {
         
         self.view.backgroundColor = UIColor(patternImage: image)
         
+        // Stop loading action
         self.indicator.stopAnimating()
+        
+        // View setup 
+        configureViews()
 
     }
     
@@ -122,6 +127,17 @@ class QuickShareViewController: UIViewController {
     
     // Custom Methods
     
+    func configureViews(){
+        
+        // Configure cards
+        self.cardWrapperView.layer.cornerRadius = 12.0
+        self.cardWrapperView.clipsToBounds = true
+        self.cardWrapperView.layer.borderWidth = 1.5
+        self.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        
+        
+        
+    }
     
 
     

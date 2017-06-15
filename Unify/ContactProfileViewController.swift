@@ -33,11 +33,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     @IBOutlet var contactImageView: UIImageView!
     
-    @IBOutlet var smsButton: UIButton!
+    @IBOutlet var smsButton: UIBarButtonItem!
     
-    @IBOutlet var emailButton: UIButton!
+    @IBOutlet var emailButton: UIBarButtonItem!
     
-    @IBOutlet var callButton: UIButton!
+    @IBOutlet var callButton: UIBarButtonItem!
     
     
     
@@ -95,11 +95,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         self.view.backgroundColor = UIColor(patternImage: image)
 
         
-        
-        // Hide nav bar 
-        
-        //self.navigationController?.navigationBar.isHidden = true
-        
+        // Config navigation bar
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        // Set color to nav bar
+        let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
+        self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -175,7 +175,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     func populateCards(){
         
         // Senders card
-        contactImageView.image = UIImage(named: "throwback.jpg")
+        contactImageView.image = UIImage(named: "throwback.png")
         nameLabel.text = "Harold Fich"
         phoneLabel.text = "1+ (123)-345-6789"
         emailLabel.text = "Kev.fich12@gmail.com"
@@ -194,6 +194,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         self.profileInfoTableView.clipsToBounds = true
         self.profileInfoTableView.layer.borderWidth = 2.0
         self.profileInfoTableView.layer.borderColor = UIColor.white.cgColor
+        
+        smsButton.image = UIImage(named: "btn-chat-blue")
+        emailButton.image = UIImage(named: "btn-message-blue")
+        callButton.image = UIImage(named: "btn-call-blue")
     }
     
 

@@ -22,6 +22,7 @@ class CardCollectionViewCell: UICollectionViewCell {
     // Use the view created as a template to render in the collection view
     @IBOutlet var businessCardView: BusinessCardView!
     
+    @IBOutlet var cardWrapperView: UIView!
     
     // Previous collection cell
     

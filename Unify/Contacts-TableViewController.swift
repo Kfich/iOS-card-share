@@ -45,8 +45,8 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         
         // Show and Configure Nav bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
-        // Set color
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        // Set color to nav bar
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
     }
@@ -227,18 +227,17 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             
             // Temp config for testing
            
-            cell.posterImageView.image = UIImage(named: "throwback.jpg")
+            cell.posterImageView.image = UIImage(named: "throwback.png")
             cell.bio.text = "Kevin Dot"
             cell.titleLabel.text = "This is the BIO Label"
             cell.email.text = "kev@crane.ai"
             cell.phone.text = "+1(347)-234-7890"
-            cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
-            cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
-            cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
-            cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
-            cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
-            cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-            cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        
+        
+        
+            // Add media buttons
+            configureMediaForButtonOnCell(cell: cell)
+        
             
             // Round out images
             configureViews(cell: cell)
@@ -345,9 +344,8 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Set arrival from contacts to true
         ContactManager.sharedManager.userArrivedFromContactList = true
-        
+
         if ContactManager.sharedManager.userArrivedFromIntro{
             // Perform information transfer
             // -> Give contact record to the manager
@@ -356,11 +354,12 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             // Navigate appropriately
             
             dismiss(animated: true, completion: nil)
+            ContactManager.sharedManager.userArrivedFromIntro = false
         }else{
             
             // Show contact profile and set arrival to false
             self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
-            ContactManager.sharedManager.userArrivedFromContactList = true
+            ContactManager.sharedManager.userArrivedFromContactList = false
 
         }
         
@@ -379,14 +378,32 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
         
         // Config tool bar 
-        cell.mediaButtonToolBar.backgroundColor = UIColor.white
+        /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
         // Set shadow on the container view
         cell.mediaButtonToolBar.layer.shadowColor = UIColor.black.cgColor
         cell.mediaButtonToolBar.layer.shadowOpacity = 1.5
         cell.mediaButtonToolBar.layer.shadowOffset = CGSize.zero
-        cell.mediaButtonToolBar.layer.shadowRadius = 2
+        cell.mediaButtonToolBar.layer.shadowRadius = 2*/
         
       
+    }
+    
+    func configureMediaForButtonOnCell(cell: ContactCell) {
+        
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named:"icn-social-facebook.png"), for: .normal)
+        button.sizeToFit()
+        let item = UIBarButtonItem(customView: button)
+        
+        //cell.mediaButton1.customView = item.customView
+        
+        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
     }
     
     func addObservers() {

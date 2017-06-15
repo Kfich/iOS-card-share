@@ -33,10 +33,13 @@ class IntroViewController: UIViewController {
     
     // Custom Views pulled from xib
     @IBOutlet var contactCard: UIView!
+    @IBOutlet var contactCardWrapperView: UIView!
+    
     @IBOutlet var recipientCard: UIView!
+    @IBOutlet var recipientCardWrapperView: UIView!
     
     // Nav
-    @IBOutlet var backButton: UIButton!
+    
     
     
     // Labels
@@ -72,6 +75,9 @@ class IntroViewController: UIViewController {
         // Testing booleans
         //ContactManager.sharedManager.userArrivedFromContactList = true
         //ContactManager.sharedManager.userArrivedFromRecipients = true
+        
+        // Config nav bar 
+        self.navigationController?.navigationBar.isHidden = true
         
         
         // Bool to track navigation patterns to dictate views appropriately from contact list
@@ -195,15 +201,15 @@ class IntroViewController: UIViewController {
     func configureViews(){
         
         // Configure cards
-        /*self.contactCard.view.layer.cornerRadius = 12.0
-        self.contactCard.view.clipsToBounds = true
-        self.contactCard.view.layer.borderWidth = 2.0
-        self.contactCard.view.layer.borderColor = UIColor.white.cgColor
+        self.contactCardWrapperView.layer.cornerRadius = 12.0
+        self.contactCardWrapperView.clipsToBounds = true
+        self.contactCardWrapperView.layer.borderWidth = 1.5
+        self.contactCardWrapperView.layer.borderColor = UIColor.white.cgColor
         
-        self.recipientCard.view.layer.cornerRadius = 12.0
-        self.recipientCard.view.clipsToBounds = true
-        self.recipientCard.view.layer.borderWidth = 2.0
-        self.recipientCard.view.layer.borderColor = UIColor.white.cgColor*/
+        self.recipientCardWrapperView.layer.cornerRadius = 12.0
+        self.recipientCardWrapperView.clipsToBounds = true
+        self.recipientCardWrapperView.layer.borderWidth = 1.5
+        self.recipientCardWrapperView.layer.borderColor = UIColor.white.cgColor
         
         // Add radius config & border color
        /* self.addContactView.layer.cornerRadius = 10.0
