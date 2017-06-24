@@ -38,7 +38,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     // View Config
     
-    fileprivate static let kRowHeight: CGFloat = 190
+    fileprivate static let kRowHeight: CGFloat = 50
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -68,6 +68,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         
         let nib = UINib(nibName: String(describing: SkeletonCell.self), bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: String(describing: SkeletonCell.self))
+        tableView.separatorStyle = .none
         
         /*
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -155,15 +156,18 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if contactsHits.count == 0
+        /*if contactsHits.count == 0
         {
             return Int(view.bounds.height/ContactsTableViewController.kRowHeight) + 1
             
         } else {
             
             return contactsHits.count
-        }
+         }*/
+        
+        return 1
     }
+    
 
     
     
@@ -179,7 +183,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
             
              return contactsHits.count
         }*/
-        return 1
+        return 10
         
     }
  
@@ -229,9 +233,9 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
            
             cell.posterImageView.image = UIImage(named: "throwback.png")
             cell.bio.text = "Kevin Dot"
-            cell.titleLabel.text = "This is the BIO Label"
-            cell.email.text = "kev@crane.ai"
-            cell.phone.text = "+1(347)-234-7890"
+            //cell.titleLabel.text = "This is the BIO Label"
+            //cell.email.text = "kev@crane.ai"
+            //cell.phone.text = "+1(347)-234-7890"
         
         
         
@@ -264,15 +268,17 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     }
     
     // Headers for table sections
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 15
-    }
     
+    /*override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 1
+    }*/
+    
+    /*
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let containerView = UIView()
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 2))
         containerView.backgroundColor = UIColor.clear
         return containerView
-    }
+    }*/
     
     //MARK: - UITableViewDelegate
     
@@ -372,10 +378,10 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         // Add radius config & border color
         
         // Add radius config & border color
-        cell.cardWrapperView.layer.cornerRadius = 12.0
+        /*cell.cardWrapperView.layer.cornerRadius = 12.0
         cell.cardWrapperView.clipsToBounds = true
         cell.cardWrapperView.layer.borderWidth = 1.5
-        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor*/
         
         // Config tool bar 
         /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
@@ -390,7 +396,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
     
     func configureMediaForButtonOnCell(cell: ContactCell) {
         
-        let button = UIButton(type: .system)
+        /*let button = UIButton(type: .system)
         button.setImage(UIImage(named:"icn-social-facebook.png"), for: .normal)
         button.sizeToFit()
         let item = UIBarButtonItem(customView: button)
@@ -403,7 +409,7 @@ class ContactsTableViewController: UITableViewController, CLLocationManagerDeleg
         cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
         cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
         cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")*/
     }
     
     func addObservers() {

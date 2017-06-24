@@ -182,7 +182,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         
         // Add radius config & border color
-        cell.connectionRecipientImageView.layer.cornerRadius = 35.0
+        cell.connectionRecipientImageView.layer.cornerRadius = 35.0 
         cell.connectionRecipientImageView.clipsToBounds = true
         cell.connectionRecipientImageView.layer.borderWidth = 1.5
         cell.connectionRecipientImageView.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor

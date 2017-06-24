@@ -83,9 +83,9 @@ class IntroViewController: UIViewController {
         // Bool to track navigation patterns to dictate views appropriately from contact list
         if ContactManager.sharedManager.userArrivedFromContactList {
             
-            contactCard.isHidden = false
+            //contactCard.isHidden = false
         }else{
-            contactCard.isHidden = true
+            //contactCard.isHidden = true
             
         }
         
@@ -93,10 +93,10 @@ class IntroViewController: UIViewController {
         
         if ContactManager.sharedManager.userArrivedFromRecipients {
             
-            recipientCard.isHidden = false
+           // recipientCard.isHidden = false
             
         }else{
-            recipientCard.isHidden = true
+           // recipientCard.isHidden = true
             
         }
         
@@ -108,14 +108,14 @@ class IntroViewController: UIViewController {
         
         // Configure background image graphics
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
+       /* UIGraphicsBeginImageContext(self.view.frame.size)
         UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         
         UIGraphicsEndImageContext()
         
-        self.view.backgroundColor = UIColor(patternImage: image)
+        self.view.backgroundColor = UIColor(patternImage: image)*/
         
         
         // Check if uuid active
@@ -201,7 +201,7 @@ class IntroViewController: UIViewController {
     func configureViews(){
         
         // Configure cards
-        self.contactCardWrapperView.layer.cornerRadius = 12.0
+       /* self.contactCardWrapperView.layer.cornerRadius = 12.0
         self.contactCardWrapperView.clipsToBounds = true
         self.contactCardWrapperView.layer.borderWidth = 1.5
         self.contactCardWrapperView.layer.borderColor = UIColor.white.cgColor
@@ -209,7 +209,7 @@ class IntroViewController: UIViewController {
         self.recipientCardWrapperView.layer.cornerRadius = 12.0
         self.recipientCardWrapperView.clipsToBounds = true
         self.recipientCardWrapperView.layer.borderWidth = 1.5
-        self.recipientCardWrapperView.layer.borderColor = UIColor.white.cgColor
+        self.recipientCardWrapperView.layer.borderColor = UIColor.white.cgColor*/
         
         // Add radius config & border color
        /* self.addContactView.layer.cornerRadius = 10.0

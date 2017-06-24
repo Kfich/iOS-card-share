@@ -96,7 +96,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
 
         
         // Config navigation bar
-        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: Int(0.0/255.0), green: Int(97.0/255.0), blue: Int(140.0/255.0))
+        
         // Set color to nav bar
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
@@ -134,7 +135,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
          return contactsHits.count
          }*/
         
-        return 3
+        return 10
         
     }
     
@@ -145,17 +146,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         var cell = UITableViewCell()
         //var cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath)
         
-        if indexPath.row == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath)
-        }
+       
+        cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath)
         
-        if indexPath.row == 1 {
-            cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath)
-        }
-        
-        if indexPath.row == 2{
-            cell = tableView.dequeueReusableCell(withIdentifier: "MutualInfoCell", for: indexPath)
-        }
       
         return cell
     }

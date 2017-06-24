@@ -66,7 +66,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Config swipe gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
-        handleView.addGestureRecognizer(tapGesture)
+        //handleView.addGestureRecognizer(tapGesture)
         
         // Set graphics for background of view
         
@@ -156,12 +156,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // we "calculate" the cached value here
         // and perform the snapping in ..targetHeightForBottomViewController..
         //halfWayPoint = totalHeight / 2.0
-        return 350.0
+        return 205
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, minimumHeightForBottomViewController bottomVC: UIViewController) -> CGFloat {
          /*topView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height;*/
-        return 60.0
+        return 205
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, targetHeightForBottomViewController bottomVC: UIViewController, fromCurrentHeight height: CGFloat) -> CGFloat {
@@ -215,7 +215,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, didChangeTo state: ISHPullUpState) {
         //topLabel.text = textForState(state);
-        handleView.setState(ISHPullUpHandleView.handleState(for: state), animated: firstAppearanceCompleted)
+        //handleView.setState(ISHPullUpHandleView.handleState(for: state), animated: firstAppearanceCompleted)
     }
     
     private func textForState(_ state: ISHPullUpState) -> String {
