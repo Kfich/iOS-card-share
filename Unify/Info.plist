@@ -70,5 +70,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SanFranciscoDisplayBold.ttf</string>
+		<string>SanFranciscoDisplayMedium.ttf</string>
+		<string>SanFranciscoDisplayRegular.ttf</string>
+		<string>SanFranciscoTextRegular.ttf</string>
+		<string>SanFranciscoTextBold.ttf</string>
+	</array>
 </dict>
 </plist>

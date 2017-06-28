@@ -62,25 +62,15 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Make sure not locked
-        //pullUpController.isLocked = false
+        pullUpController.isLocked = true
         
-        // Config swipe gesture
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
-        //handleView.addGestureRecognizer(tapGesture)
         
-        // Set graphics for background of view
-        
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.cardCollectionView.backgroundColor = UIColor(patternImage: image)
-        self.scrollView.backgroundColor = UIColor(patternImage: image)
-        
-        // Config collectionView
+        // Set background image on collectionview
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        self.cardCollectionView.backgroundView = bgImage
+
         
         
     }
@@ -119,6 +109,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
+        cell.backgroundColor = UIColor.clear
+        
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
         //cell.businessCardView = self.cards[indexPath.item]
         // Add radius config & border color
@@ -156,12 +148,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // we "calculate" the cached value here
         // and perform the snapping in ..targetHeightForBottomViewController..
         //halfWayPoint = totalHeight / 2.0
-        return 205
+        return 225
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, minimumHeightForBottomViewController bottomVC: UIViewController) -> CGFloat {
          /*topView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height;*/
-        return 205
+        return 225
+        
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, targetHeightForBottomViewController bottomVC: UIViewController, fromCurrentHeight height: CGFloat) -> CGFloat {

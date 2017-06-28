@@ -889,13 +889,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func configureViews(){
         // Add radius config & border color
-        smsButton.layer.cornerRadius = 20.0
+        smsButton.layer.cornerRadius = 27.0
         smsButton.clipsToBounds = true
         smsButton.layer.borderWidth = 1.0
         smsButton.layer.borderColor = UIColor.lightGray.cgColor
         
         // Add radius config & border color
-        emailButton.layer.cornerRadius = 20.0
+        emailButton.layer.cornerRadius = 27.0
         emailButton.clipsToBounds = true
         emailButton.layer.borderWidth = 1.0
         emailButton.layer.borderColor = UIColor.lightGray.cgColor

@@ -43,6 +43,8 @@
 		1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31CB01E94358200A0C4A5 /* ContactCell.swift */; };
 		1CDD50A51E914CF40073B893 /* Home-TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */; };
 		741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */; };
+		FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */; };
+		FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */; };
 		FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */; };
 		FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34081EE1B5F9003B5A73 /* ISHPullUpHandleView.m */; };
 		FB1A340D1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A340A1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m */; };
@@ -153,6 +155,18 @@
 		C72C6F2CF4B43BDC0BCB93EC /* Pods-Unify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unify.release.xcconfig"; path = "Pods/Target Support Files/Pods-Unify/Pods-Unify.release.xcconfig"; sourceTree = "<group>"; };
 		C8E9B2DD0A4B9BD2E00CAF19 /* Pods-Unify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unify.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Unify/Pods-Unify.debug.xcconfig"; sourceTree = "<group>"; };
 		D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Unify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB0812FF1F02B00800CF14BE /* SanFranciscoDisplayBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayBold.ttf; sourceTree = "<group>"; };
+		FB0813001F02B00800CF14BE /* SanFranciscoDisplayMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayMedium.ttf; sourceTree = "<group>"; };
+		FB0813011F02B00800CF14BE /* SanFranciscoDisplayRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayRegular.ttf; sourceTree = "<group>"; };
+		FB0813021F02B00800CF14BE /* SanFranciscoDisplayThin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayThin.ttf; sourceTree = "<group>"; };
+		FB0813031F02B00800CF14BE /* SanFranciscoDisplayUltralight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayUltralight.ttf; sourceTree = "<group>"; };
+		FB0813041F02B00800CF14BE /* SanFranciscoTextBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoTextBold.ttf; sourceTree = "<group>"; };
+		FB0813051F02B00800CF14BE /* SanFranciscoTextHeavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoTextHeavy.ttf; sourceTree = "<group>"; };
+		FB0813061F02B00800CF14BE /* SanFranciscoTextMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoTextMedium.ttf; sourceTree = "<group>"; };
+		FB0813071F02B00800CF14BE /* SanFranciscoTextRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoTextRegular.ttf; sourceTree = "<group>"; };
+		FB0813081F02B00800CF14BE /* SanFranciscoTextThin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoTextThin.ttf; sourceTree = "<group>"; };
+		FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListViewController.swift; sourceTree = "<group>"; };
+		FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListCell.swift; sourceTree = "<group>"; };
 		FB1A34051EE1B5F9003B5A73 /* ISHPullUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpViewController.h; sourceTree = "<group>"; };
 		FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISHPullUpViewController.m; sourceTree = "<group>"; };
 		FB1A34071EE1B5F9003B5A73 /* ISHPullUpHandleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpHandleView.h; sourceTree = "<group>"; };
@@ -235,6 +249,7 @@
 		1CAE5B821E913A06006EFF40 /* Unify */ = {
 			isa = PBXGroup;
 			children = (
+				FB0812FD1F02AFF800CF14BE /* Resources */,
 				1CBB3B7D1EA8E803003DE715 /* Unify.entitlements */,
 				1C31041B1E95BA9200F4D70D /* GoogleService-Info.plist */,
 				1CAE5B851E913A06006EFF40 /* ViewController.swift */,
@@ -280,6 +295,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		FB0812FD1F02AFF800CF14BE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FB0812FF1F02B00800CF14BE /* SanFranciscoDisplayBold.ttf */,
+				FB0813001F02B00800CF14BE /* SanFranciscoDisplayMedium.ttf */,
+				FB0813011F02B00800CF14BE /* SanFranciscoDisplayRegular.ttf */,
+				FB0813021F02B00800CF14BE /* SanFranciscoDisplayThin.ttf */,
+				FB0813031F02B00800CF14BE /* SanFranciscoDisplayUltralight.ttf */,
+				FB0813041F02B00800CF14BE /* SanFranciscoTextBold.ttf */,
+				FB0813051F02B00800CF14BE /* SanFranciscoTextHeavy.ttf */,
+				FB0813061F02B00800CF14BE /* SanFranciscoTextMedium.ttf */,
+				FB0813071F02B00800CF14BE /* SanFranciscoTextRegular.ttf */,
+				FB0813081F02B00800CF14BE /* SanFranciscoTextThin.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		FB37381C1EDDBC080074200F /* Auth */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +335,7 @@
 				1CB31C961E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift */,
 				1CB31CA81E942BC500A0C4A5 /* SkeletonCell.xib */,
 				1CB31CAA1E942C1C00A0C4A5 /* SkeletonCell.swift */,
+				FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -323,6 +356,7 @@
 				FB3738221EDDBD640074200F /* Manager */,
 				1CB31C981E9406EB00A0C4A5 /* Contacts-TableViewController.swift */,
 				FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */,
+				FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -634,6 +668,7 @@
 				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
 				FB37382D1EDDD59D0074200F /* BusinessCardView.swift in Sources */,
 				1CB31C971E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift in Sources */,
+				FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */,
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
 				1CB31CB11E94358200A0C4A5 /* ContactRecord.swift in Sources */,
@@ -647,6 +682,7 @@
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
+				FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */,
 				1CB31CA31E940B4200A0C4A5 /* TabBar-ViewController.swift in Sources */,
 				FB37381B1EDDBB660074200F /* ContactProfileViewController.swift in Sources */,
 				FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */,

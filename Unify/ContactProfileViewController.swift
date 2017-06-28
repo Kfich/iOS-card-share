@@ -20,23 +20,26 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBOutlet var followupActionToolbar: UIToolbar!
     @IBOutlet var socialMediaToolbar: UIToolbar!
     @IBOutlet var cardWrapperView: UIView!
+    @IBOutlet var cardShadowView: UIView!
+    @IBOutlet var contactOutreachToolbar: UIToolbar!
     
+    // Outreach toolbar
+    @IBOutlet var outreachChatButton: UIBarButtonItem!
+    @IBOutlet var outreachCallButton: UIBarButtonItem!
+    @IBOutlet var outreachMailButton: UIBarButtonItem!
+    
+    
+    // Tableview
     @IBOutlet var profileInfoTableView: UITableView!
     
+    // Card info outlets
     @IBOutlet var nameLabel: UILabel!
-    
     @IBOutlet var titleLabel: UILabel!
-    
     @IBOutlet var emailLabel: UILabel!
-    
     @IBOutlet var phoneLabel: UILabel!
-    
     @IBOutlet var contactImageView: UIImageView!
-    
     @IBOutlet var smsButton: UIBarButtonItem!
-    
     @IBOutlet var emailButton: UIBarButtonItem!
-    
     @IBOutlet var callButton: UIBarButtonItem!
     
     
@@ -67,6 +70,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         // configure call 
     }
+    
     
     
     
@@ -135,7 +139,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
          return contactsHits.count
          }*/
         
-        return 10
+        return 8
         
     }
     
@@ -155,12 +159,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     //MARK: - UITableViewDelegate
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-                
-        
-    }
+
     
     // Custom Methods
     // -------------------------------------------
@@ -188,11 +187,39 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         self.profileInfoTableView.layer.borderWidth = 2.0
         self.profileInfoTableView.layer.borderColor = UIColor.white.cgColor
         
+        // Set shadow on the container view
+        
+        addDropShadow()
+        
+        
+        // Toolbar button config
+        
+        outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
+        
+        outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
+        
+        outreachCallButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
+        
+        
+        
+        // Config buttons
         smsButton.image = UIImage(named: "btn-chat-blue")
         emailButton.image = UIImage(named: "btn-message-blue")
         callButton.image = UIImage(named: "btn-call-blue")
     }
     
+    func addDropShadow(scale: Bool = true) {
+        
+        cardShadowView.layer.masksToBounds = false
+        cardShadowView.layer.shadowColor = UIColor.black.cgColor
+        cardShadowView.layer.shadowOpacity = 0.5
+        cardShadowView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        cardShadowView.layer.shadowRadius = 1
+        
+        cardShadowView.layer.shadowPath = UIBezierPath(rect: cardShadowView.bounds).cgPath
+        cardShadowView.layer.shouldRasterize = true
+        cardShadowView.layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
 
     /*
     // MARK: - Navigation

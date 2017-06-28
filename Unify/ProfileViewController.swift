@@ -110,7 +110,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
          return contactsHits.count
          }*/
         
-        return 3
+        return 8
         
     }
     
@@ -118,19 +118,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = UITableViewCell()
-        
-        if indexPath.row == 0 {
-             cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath)
-        }
-        
-        if indexPath.row == 1 {
-             cell = tableView.dequeueReusableCell(withIdentifier: "ProfileInfoCell", for: indexPath)
-        }
-        
-        if indexPath.row == 2{
-             cell = tableView.dequeueReusableCell(withIdentifier: "ProfileMutualInfoCell", for: indexPath)
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath)
         
         return cell
     }
@@ -157,12 +145,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.profileCardWrapperView.clipsToBounds = true
         self.profileCardWrapperView.layer.borderWidth = 2.0
         self.profileCardWrapperView.layer.borderColor = UIColor.white.cgColor
-        
-        self.viewCardsButton.layer.cornerRadius = 12.0
-        self.viewCardsButton.clipsToBounds = true
-        self.viewCardsButton.layer.borderWidth = 0.5
-        self.viewCardsButton.layer.borderColor = UIColor.white.cgColor
-        
+               
         self.profileInfoTableView.layer.cornerRadius = 12.0
         self.profileInfoTableView.clipsToBounds = true
         self.profileInfoTableView.layer.borderWidth = 0.5

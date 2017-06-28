@@ -44,7 +44,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Init and configure segment controller
         segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: tableView.frame.width - 20, height: 30))
         // Set tint
-        segmentedControl.tintColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)
+        segmentedControl.tintColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         segmentedControl.insertSegment(withTitle: "All", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Introductions", at: 1, animated: false)
@@ -66,7 +66,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         UIGraphicsEndImageContext()
         
-        self.tableView.backgroundColor = UIColor(patternImage: image)
+        self.view.backgroundColor = UIColor(patternImage: image)
 
         
         // Set tint on main nav bar
@@ -80,7 +80,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.performSegue(withIdentifier: "showFollowupSegue", sender: indexPath.row)
+        self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
         
         
     }
@@ -88,32 +88,45 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     //MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // Config container view
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
+        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        let v = UIView()
-            v.backgroundColor = .clear
+        // Create section header buttons
+        let imageName = "icn-time.png"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        imageView.frame = CGRect(x: 10, y: 3, width: 15, height: 15)
         
-            // View between sections
+        // Add label to the view
+        let lbl = UILabel(frame: CGRect(35, 3, 100, 15))
+        lbl.text = "3 hours"
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor.white
+        lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(4))
         
-        return v
+        // Add subviews
+        containerView.addSubview(lbl)
+        containerView.addSubview(imageView)
+
+        return containerView
     }
-    /*
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 2
-    }*/
+   
     
+   
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20.0
+    }
+ 
     
     //MARK: UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 50
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 15
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -121,7 +134,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Check what cell is needed
         var cell = UITableViewCell()
         
-        if indexPath.section % 2 == 0 {
+        if indexPath.row % 2 == 0 {
             cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
             configureViewsForIntro(cell: cell as! ActivityCardTableCell)
         }else{
@@ -141,6 +154,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func configureViewsForIntro(cell: ActivityCardTableCell){
         // Add radius config & border color
         // Add radius config & border color
+        /*
         cell.profileImage.layer.cornerRadius = 35.0
         cell.profileImage.clipsToBounds = true
         cell.profileImage.layer.borderWidth = 1.5
@@ -166,7 +180,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         
         /*cell.followupViewContainer.layer.shadowPath = UIBezierPath(rect: cell.followupViewContainer.bounds).cgPath*/
-        
+        */
         
 
         
@@ -175,7 +189,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func configureViewsForConnection(cell: ActivityCardTableCell){
         // Add radius config & border color
         // Add radius config & border color
-        cell.connectionOwnerProfileImage.layer.cornerRadius = 35.0
+        
+        /*cell.connectionOwnerProfileImage.layer.cornerRadius = 35.0
         cell.connectionOwnerProfileImage.clipsToBounds = true
         cell.connectionOwnerProfileImage.layer.borderWidth = 1.5
         cell.connectionOwnerProfileImage.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
@@ -202,7 +217,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         /*cell.followupViewContainer.layer.shadowPath = UIBezierPath(rect: cell.followupViewContainer.bounds).cgPath*/
         
         
-        
+        */
         
     }
 

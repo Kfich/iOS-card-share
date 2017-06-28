@@ -84,7 +84,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
 
     @IBAction func sendTextBtn_click(_ sender: Any) {
         
-        
+        /*
         let composeVC = MFMessageComposeViewController()
         if(MFMessageComposeViewController .canSendText())
         {
@@ -99,11 +99,12 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
             self.present(composeVC, animated: true, completion: nil)
        
         }
-        
+        */
     }
     
     @IBAction func sendEmailBtn_click(_ sender: Any) {
         
+        /*
         let mailClass:AnyClass?=NSClassFromString("MFMailComposeViewController")
         if(mailClass != nil)
         {
@@ -120,7 +121,16 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         {
             launchMailAppOnDevice()
         }
+    
+        */
     }
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        
+        // Handle navigation on button press 
+        navigationController?.popViewController(animated: true)
+    }
+    
     
     // Custom Methods
     // --------------------------------

@@ -13,7 +13,6 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     // Properties
     // ----------------------------------------
-    @IBOutlet var collectionView: UICollectionView!
     
     let reuseIdentifier = "cardViewCell"
     
@@ -23,12 +22,16 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     var cards = [BusinessCardView()]
     //cards = [card1, card2, card3]
-
+    
+    
     
     // IBOutlets
     // ----------------------------------------
-    
-    // IBActions / Buttons pressed
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var contactPageControl: UIPageControl!
+
+
+    // IBActions
     // ----------------------------------------
     
     @IBAction func backButtonPressed(_ sender: AnyObject){
@@ -44,31 +47,14 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
 
         // Do any additional setup after loading the view.
         
-        // Configure done button in nav bar
-        /*navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCards))*/
+       // Configure background image for collectionview
         
-        // Set graphics for background of view
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        self.collectionView?.backgroundView = bgImage
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)
-        
-        // Set graphics for background of collection view
-        
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "backgroundGradient")?.draw(in: self.collectionView.bounds)
-        
-        let image2: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.collectionView.backgroundColor = UIColor(patternImage: image2)
-        
+            
     }
 
     override func didReceiveMemoryWarning() {
@@ -116,6 +102,11 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Set page control to index
+        self.contactPageControl.currentPage = indexPath.row
     }
     
     // Custom methods
