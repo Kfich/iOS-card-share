@@ -163,7 +163,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         nameLabel.text = "Harold Fich"
         numberLabel.text = "1+ (123)-345-6789"
         emailLabel.text = "Kev.fich12@gmail.com"
-        titleLabel.text = "Founder & CEO, CleanSwipe LLC"
+        titleLabel.text = "Founder & CEO, CleanSwipe"
         
         mediaButton1.image = UIImage(named: "icn-social-twitter.png")
         mediaButton2.image = UIImage(named: "icn-social-facebook.png")

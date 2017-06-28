@@ -69,6 +69,7 @@
 		FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */; };
 		FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */; };
 		FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */; };
+		FBE807461F04159700A05292 /* CardSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807451F04159700A05292 /* CardSelectionViewController.swift */; };
 		FBF8712D1EE71B0800243CE2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712C1EE71B0800243CE2 /* User.swift */; };
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
@@ -197,6 +198,7 @@
 		FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFBlurSegue.m; sourceTree = "<group>"; };
 		FBE76C881EDF4A2900E37E0C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		FBE807451F04159700A05292 /* CardSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardSelectionViewController.swift; sourceTree = "<group>"; };
 		FBF8712C1EE71B0800243CE2 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBF8712F1EE71B3D00243CE2 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		FBF871311EE71F0100243CE2 /* ContactCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 				FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */,
 				FB1A34121EE1BC88003B5A73 /* RadarContainerViewController.swift */,
 				FB1A34141EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift */,
+				FBE807451F04159700A05292 /* CardSelectionViewController.swift */,
 			);
 			name = Radar;
 			sourceTree = "<group>";
@@ -653,6 +656,7 @@
 				FB1A34151EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift in Sources */,
 				1CB31C991E9406EB00A0C4A5 /* Contacts-TableViewController.swift in Sources */,
 				FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */,
+				FBE807461F04159700A05292 /* CardSelectionViewController.swift in Sources */,
 				1CB31CB31E94358200A0C4A5 /* AlgoliaManager.swift in Sources */,
 				1C3104181E95AFEA00F4D70D /* EditableContactCell.swift in Sources */,
 				1C3104161E95A87900F4D70D /* ProfileContactCell.swift in Sources */,

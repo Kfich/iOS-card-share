@@ -1,14 +1,14 @@
 //
-//  ContactProfileViewController.swift
+//  CardSelectionViewController.swift
 //  Unify
 //
-//  Created by Kevin Fich on 5/24/17.
+//  Created by Kevin Fich on 6/28/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
 import UIKit
 
-class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource {
     
     // Properties
     // --------------------------------------------
@@ -50,7 +50,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBAction func backButtonPressed(_ sender: AnyObject) {
         
         //dismiss(animated: true, completion: nil)
-        self.navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func smsSelected(_ sender: AnyObject) {
@@ -68,17 +68,22 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     }
     @IBAction func callSelected(_ sender: AnyObject) {
         
-        // configure call 
+        // configure call
     }
     
     
     
-    
-    // Page Setup
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
+        // Do any additional setup after loading the view.
+    }
+
+    // Page Setup
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
- 
+        
         // Do any additional setup after loading the view.
         
         // Config Views
@@ -97,7 +102,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         UIGraphicsEndImageContext()
         
         self.view.backgroundColor = UIColor(patternImage: image)
-
+        
         
         // Config navigation bar
         self.navigationController?.navigationBar.barTintColor = UIColor(red: Int(0.0/255.0), green: Int(97.0/255.0), blue: Int(140.0/255.0))
@@ -106,18 +111,14 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        
-        self.navigationController?.navigationBar.isHidden = false 
-    }
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -143,23 +144,21 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
     }
     
-
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var cell = UITableViewCell()
         //var cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath)
         
-       
+        
         cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath)
         
-      
+        
         return cell
     }
-    
-    //MARK: - UITableViewDelegate
-    
 
+    
     
     // Custom Methods
     // -------------------------------------------
@@ -175,7 +174,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     }
     
     func configureViews(){
-        // Round out the vards here 
+        // Round out the vards here
         // Configure cards
         self.cardWrapperView.layer.cornerRadius = 12.0
         self.cardWrapperView.clipsToBounds = true
@@ -188,17 +187,15 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         self.profileInfoTableView.layer.borderColor = UIColor.white.cgColor
         
         // Set shadow on the container view
-        
-        addDropShadow()
-        
+                
         
         // Toolbar button config
         
-        outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
         
-        outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
         
-        outreachCallButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        outreachCallButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
         
         
         
@@ -208,20 +205,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         callButton.image = UIImage(named: "btn-message-blue")
         emailButton.image = UIImage(named: "btn-call-blue")
     }
-    
-    func addDropShadow(scale: Bool = true) {
-        
-        cardShadowView.layer.masksToBounds = false
-        cardShadowView.layer.shadowColor = UIColor.black.cgColor
-        cardShadowView.layer.shadowOpacity = 0.5
-        cardShadowView.layer.shadowOffset = CGSize(width: -1, height: 1)
-        cardShadowView.layer.shadowRadius = 1
-        
-        cardShadowView.layer.shadowPath = UIBezierPath(rect: cardShadowView.bounds).cgPath
-        cardShadowView.layer.shouldRasterize = true
-        cardShadowView.layer.rasterizationScale = scale ? UIScreen.main.scale : 1
-    }
 
+    
+    
     /*
     // MARK: - Navigation
 

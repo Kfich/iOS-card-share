@@ -133,6 +133,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
+        
+        // Show Selected Card
+        performSegue(withIdentifier: "showSelectedCard", sender: self)
     }
 
     

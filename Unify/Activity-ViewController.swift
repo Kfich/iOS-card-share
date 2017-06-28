@@ -89,21 +89,21 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     //MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // Config container view
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
         containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         // Create section header buttons
         let imageName = "icn-time.png"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 10, y: 3, width: 15, height: 15)
+        imageView.frame = CGRect(x: 10, y: 10, width: 12, height: 12)
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(35, 3, 100, 15))
+        let lbl = UILabel(frame: CGRect(30, 9, 100, 15))
         lbl.text = "3 hours"
         lbl.textAlignment = .left
         lbl.textColor = UIColor.white
-        lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(4))
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
         
         // Add subviews
         containerView.addSubview(lbl)
@@ -115,7 +115,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20.0
+        return 32.0
     }
  
     

@@ -2,25 +2,22 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "btn-call-blue.png",
+      "filename" : "add-card.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "btn-call-blue@2x.png",
+      "filename" : "add-card@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "btn-call-blue@3x.png",
+      "filename" : "add-card@3x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
-  },
-  "properties" : {
-    "template-rendering-intent" : "original"
   }
 }

@@ -76,6 +76,9 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         // View config 
         configureViews()
         
+        // Test data for cards 
+        populateCards()
+        
         
     }
     
@@ -149,8 +152,9 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         self.profileCardWrapperView.layer.cornerRadius = 12.0
         self.profileCardWrapperView.clipsToBounds = true
         self.profileCardWrapperView.layer.borderWidth = 1.5
-        self.profileCardWrapperView.layer.borderColor = UIColor.lightGray.cgColor
+        self.profileCardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
+        // Assign media buttons 
         mediaButton1.image = UIImage(named: "icn-social-twitter.png")
         mediaButton2.image = UIImage(named: "icn-social-facebook.png")
         mediaButton3.image = UIImage(named: "icn-social-harvard.png")
@@ -159,8 +163,23 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         mediaButton6.image = UIImage(named: "icn-social-twitter.png")
         mediaButton7.image = UIImage(named: "icn-social-facebook.png")
         
-        
+        // Config buttons for chat, call, email
+        chatButton.image = UIImage(named: "btn-chat-blue")
+        emailButton.image = UIImage(named: "btn-message-blue")
+        callButton.image = UIImage(named: "btn-call-blue")
     }
+    
+    func populateCards(){
+        
+        // Senders card
+        profileImageView.image = UIImage(named: "throwback.png")
+        nameLabel.text = "Harold Fich"
+        numberLabel.text = "1+ (123)-345-6789"
+        emailLabel.text = "Kev.fich12@gmail.com"
+        titleLabel.text = "Founder & CEO, CleanSwipe"
+    }
+
+    
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult){
         
