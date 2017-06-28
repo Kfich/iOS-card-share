@@ -39,7 +39,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     @IBOutlet var socialMediaToolBar: UIToolbar!
     
     
-    // Buttons
+    // Buttons on social toolbar
     
     @IBOutlet var mediaButton1: UIBarButtonItem!
     @IBOutlet var mediaButton2: UIBarButtonItem!
@@ -49,6 +49,12 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     @IBOutlet var mediaButton5: UIBarButtonItem!
     @IBOutlet var mediaButton6: UIBarButtonItem!
     @IBOutlet var mediaButton7: UIBarButtonItem!
+    
+    // Buttons on contact bar 
+    
+    @IBOutlet var chatButton: UIBarButtonItem!
+    @IBOutlet var callButton: UIBarButtonItem!
+    @IBOutlet var emailButton: UIBarButtonItem!
     
     
     // Page Setup

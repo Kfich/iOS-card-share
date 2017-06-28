@@ -80,14 +80,10 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
         
-        
-        // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        //cell.businessCardView = self.cards[indexPath.item]
-        // Add radius config & border color
-        /*cell.contentView.layer.cornerRadius = 10.0
-        cell.contentView.clipsToBounds = true
-        cell.contentView.layer.borderWidth = 2.0
-        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor*/
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        cell.backgroundView = bgImage
         
         configureViews(cell: cell)
         
