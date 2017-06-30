@@ -16,13 +16,13 @@ public class Transaction{
     var transactionId : String = ""
     var date : String = ""
     var location : String = ""
-    var sender : User = User()
-    var recipient : User = User()
+    //var sender : User = User()
+    //var recipient : User = User()
     var senderCard : ContactCard = ContactCard()
     var recipientCard : ContactCard = ContactCard()
     
     // Make a dict [string:any] due to timestamps
-    var notes : [String : Any]?
+    var notes : [String : String]?
     
     // Hashtags
     var tags : [String]?
@@ -43,7 +43,7 @@ public class Transaction{
     
     init(snapshot: NSDictionary) {
         
-        transactionId = snapshot["trans_id"] as! String
+        transactionId = snapshot["uuid"] as! String
         date = snapshot["date"] as! String
         location = snapshot["location"] as! String
         //notes = snapshot["notes"] as! String
@@ -62,14 +62,14 @@ public class Transaction{
     
     func toAnyObject() -> NSDictionary {
         return [
-            "trans_id": transactionId,
+            "uuid": transactionId,
             "date": setTransactionDate(),
             "location": location,
             "sender_id": senderId,
             "sender_card_id": senderCardId,
             "recipient_id": recipientId,
             "recipient_card_id": recipientCardId,
-            "notes": notes
+            "notes": notes ?? ["notes" : ""]
         ]
     }
     
@@ -120,12 +120,13 @@ public class Transaction{
     
     // Recipient & Sender logics
     
+    /*
     func getSender()->User{
         return sender
     }
     func setSender(senderObject : User){
         sender = senderObject
-    }
+    }*/
     
     func getSenderId()->String{
         return senderId
@@ -141,13 +142,13 @@ public class Transaction{
     func setSendercard(cardObject : ContactCard){
         senderCard = cardObject
     }
-    
+    /*
     func getRecipient()->User{
         return recipient
     }
     func setRecipient(recipientObject : User){
         recipient = recipientObject
-    }
+    }*/
     
     func getRecipientId()->String{
         return recipientId

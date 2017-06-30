@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.5</string>
+	<string>0.6</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>Fabric</key>
@@ -49,6 +49,14 @@
 	<string>To find new people nearby</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To create your Unifty Profile Picture Image</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SanFranciscoDisplayBold.ttf</string>
+		<string>SanFranciscoDisplayMedium.ttf</string>
+		<string>SanFranciscoDisplayRegular.ttf</string>
+		<string>SanFranciscoTextRegular.ttf</string>
+		<string>SanFranciscoTextBold.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -69,14 +77,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SanFranciscoDisplayBold.ttf</string>
-		<string>SanFranciscoDisplayMedium.ttf</string>
-		<string>SanFranciscoDisplayRegular.ttf</string>
-		<string>SanFranciscoTextRegular.ttf</string>
-		<string>SanFranciscoTextBold.ttf</string>
 	</array>
 </dict>
 </plist>

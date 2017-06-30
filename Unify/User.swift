@@ -13,13 +13,12 @@ public class User{
     // Properties
     // ---------------------------------
     
-    var password : String = ""
     var userId : String = ""
     var firstName : String = ""
     var lastName : String = ""
     var fullName : String = ""
-    var email : String = ""
-    var mobileNumber : String = ""
+    var emails : [[String : String]]?
+    var phoneNumbers : [[String : String]]?
     
     // Cards suite
     var cards = [ContactCard]()
@@ -28,20 +27,23 @@ public class User{
     
     init() {}
     
-    init(firstName first:String, lastName last:String, email emailAddress:String){
+    init(firstName first:String, lastName last:String, email emailAddress:[[String : String]]){
         
         firstName = first
         lastName  = last
-        email = emailAddress
+        emails = emailAddress
         
     }
     
     init(snapshot: NSDictionary) {
+        
         userId = snapshot["uuid"] as! String
-        firstName = snapshot["first_name"] as! String
-        lastName = snapshot["last_name"] as! String
-        email = snapshot["email"] as! String
-        mobileNumber = snapshot["mobile_number"] as! String
+        firstName = snapshot["first_name"] as? String ?? ""
+        lastName = snapshot["last_name"] as? String ?? ""
+        emails = snapshot["emails"] as? [[String : String]]
+        phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]]
+        
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
@@ -56,11 +58,15 @@ public class User{
         return [
             "first_name": firstName,
             "last_name": lastName,
-            "email": email,
-            "uuid": userId
+            "email": emails ?? [["" : ""]],
+            "uuid": userId,
+            "mobile_numbers" : phoneNumbers ?? [["number" : ""]],
+            "email" : emails ?? [["email":""]]
+            
         ]
     }
     
+    // Names
     func getName()->String{
         return firstName + " " + lastName
     }
@@ -71,49 +77,43 @@ public class User{
         lastName = last
     }
     
-    func getEmail()->String{
-        return email
-    }
-    
-    func setEmail(personEmail : String){
-        
-        email = personEmail
-        
-    }
-    
+    // UUIDs
     func getUserId()->String{
         return userId
     }
-    
+    // String for setting ID generated on API server
     func setUserId(newId : String){
         
         userId = newId
     }
     
-    func getMobileNumber()->String{
-        return mobileNumber
+    // Emails
+    func getEmailRecords()->[[String : String]]{
+        return emails!
     }
     
-    func setMobileNumber(newNumber : String){
-        
-        mobileNumber = newNumber
+    func setEmailRecords(emailRecords : [[String : String]]){
+        emails = emailRecords
     }
     
-    
-    func setPassword(pass : String){
-        
-        password = pass
+    // Phone Numbers
+    func getPhoneRecords()->[[String : String]]{
+        return phoneNumbers!
     }
     
+    func setPhoneRecords(phoneRecords : [[String : String]]){
+        phoneNumbers = phoneRecords
+    }
     // Testing
     
     func printUser(){
         print("\n")
         print("UserId :" + userId)
         print("Name :" + fullName)
-        print("Email :" + email)
-        print("Password : " + password)
-        print("Mobile Number : " + mobileNumber)
+        print("Email :" )
+        print(emails ?? [["email" : ""]])
+        print("Mobile Number : ")
+        print(phoneNumbers ?? ["number" : ""])
         
         
     }

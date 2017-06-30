@@ -8,48 +8,38 @@
 
 import Foundation
 
-import Foundation
-
 public class ContactCard{
     
     // Properties
     // ---------------------------------
     
-    var cardId : String = ""
-    var type : String = ""
-    var cardName : String = ""
-    var email : [String : String]?
-    var phone : [String : String]?
-    var title : String = ""
-    var cardHolderName : String = ""
+    var cardId : String?
+    var cardName : String?
+    var cardHolderName : String?
+    var imageURL : Data?
+    var image : UIImage?
+    var profileDictionary : [String : Any]?
+    
+    // Card Profile Object containing all associated info
+    
+    var cardProfile : CardProfile = CardProfile()
+    
     
     // Init
     
     init() {}
     
-    /*
-    init(firstName first:String, lastName last:String, email emailAddress:String){
-        
-        firstName = first
-        lastName  = last
-        email = emailAddress
-        
-    }*/
     
-    
+    // Init from server 
     init(snapshot: NSDictionary) {
-        cardId = snapshot["card_id"] as! String
-        type = snapshot["card_type"] as! String
-        cardName = snapshot["card_name"] as! String
-        email = snapshot["email"] as? Dictionary
-        phone = snapshot["phone"] as? Dictionary
-        // To get full username
-        title = snapshot["card_title"] as! String
-        cardHolderName = snapshot["card_holder_name"] as! String
+        cardId = snapshot["uuid"] as? String
+        cardName = snapshot["card_name"] as? String
+        cardHolderName = snapshot["card_holder_name"] as? String
+        imageURL = snapshot["image_url"] as? Data
+        profileDictionary = snapshot["card_profile"] as? [String : Any]
         
-        // Testing to see if populated
-
-        // printContactCard()
+        // Test if card populated
+        printCard()
     }
     
     
@@ -57,38 +47,33 @@ public class ContactCard{
     
     func toAnyObject() -> NSDictionary {
         return [
-            "card_id": cardId,
-            "card_type": type,
-            "card_name": cardName,
-            "email": email,
-            "phone": phone,
-            "title": title,
-            "card_holder_name": cardHolderName
+            "uuid": cardId ?? "",
+            "card_name": cardName ?? "",
+            "card_holder_name": cardHolderName ?? "",
+            "image_url" : imageURL ?? Data(),
+            "card_profile" : profileDictionary ?? ["card_profile" : ""]
+            
+            
         ]
     }
     
     // Getters:Setters
     // ---------------------------------
     
+    // Cards
     func getCardId()->String{
-        return cardId
+        return cardId ?? ""
     }
+    
+    // Card ID gets set on server
     
     func setCardId(id : String){
         cardId = randomString(length: 10) as String
     }
     
-    func getType()->String{
-        return type
-    }
-    
-    func setType(typeString : String){
-        type = typeString
-    }
-    
     // Name associated with card itself, not owner 
     func getCardName()->String{
-        return cardName
+        return cardName ?? ""
     }
     
     func setCardName(cName : String){
@@ -97,37 +82,23 @@ public class ContactCard{
     
     // Card Holder
     func getCardholderName()->String{
-        return cardHolderName
+        return cardHolderName ?? ""
     }
     
     func setCardholderName(holderName : String){
         cardHolderName = holderName
     }
     
-    func getTitle()->String{
-        return title
+    // Profile
+    func getCardProfile()->[String : Any]{
+        return profileDictionary ?? [String : Any]()
     }
     
-    func setTitle(titleString : String){
-        title = titleString
+    func setCardProfile(profileRecord : [String : String]){
+        profileDictionary = profileRecord
     }
+
     
-    // Dictionary parsing for email and phone records
-    func getEmailRecords()->[String : String]{
-        return email!
-    }
-    
-    func setEmailRecords(emailRecords : [String : String]){
-        email = emailRecords
-    }
-    
-    func getPhoneRecords()->[String : String]{
-        return phone!
-    }
-    
-    func setPhoneRecords(phoneRecords : [String : String]){
-        phone = phoneRecords
-    }
     
     
     // Custom Methods
@@ -154,18 +125,15 @@ public class ContactCard{
     
     // Testing
     
-    func printUser(){
+    func printCard(){
         print("\n")
-        print("CardId :" + cardId)
-        print("Card Name :" + cardName)
-        print("CardHolder Name :" + cardHolderName)
-        print("Card Type :" + type)
-        print("Title : " + title)
-        print("\n\n=====================\n :")
+        print("CardId :" + cardId!)
+        print("Card Name :" + cardName!)
+        print("CardHolder Name :" + cardHolderName!)
         print("")
-        print(email)
-        print("")
-        print(phone)
+        print("Card Profile :")
+        print(profileDictionary ?? ["profle" : "nil"])
+       
     }
 
 }

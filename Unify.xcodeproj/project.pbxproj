@@ -70,6 +70,7 @@
 		FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C871EDF4A2900E37E0C /* AFBlurSegue.m */; };
 		FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */; };
 		FBE807461F04159700A05292 /* CardSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807451F04159700A05292 /* CardSelectionViewController.swift */; };
+		FBE807491F0566F300A05292 /* CardProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807481F0566F300A05292 /* CardProfile.swift */; };
 		FBF8712D1EE71B0800243CE2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712C1EE71B0800243CE2 /* User.swift */; };
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
@@ -199,6 +200,7 @@
 		FBE76C881EDF4A2900E37E0C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		FBE807451F04159700A05292 /* CardSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardSelectionViewController.swift; sourceTree = "<group>"; };
+		FBE807481F0566F300A05292 /* CardProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardProfile.swift; sourceTree = "<group>"; };
 		FBF8712C1EE71B0800243CE2 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBF8712F1EE71B3D00243CE2 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		FBF871311EE71F0100243CE2 /* ContactCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				FBF8712C1EE71B0800243CE2 /* User.swift */,
 				FBF8712F1EE71B3D00243CE2 /* Transaction.swift */,
 				FBF871311EE71F0100243CE2 /* ContactCard.swift */,
+				FBE807481F0566F300A05292 /* CardProfile.swift */,
 			);
 			name = Class_Files;
 			sourceTree = "<group>";
@@ -676,6 +679,7 @@
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
 				1CB31CB11E94358200A0C4A5 /* ContactRecord.swift in Sources */,
+				FBE807491F0566F300A05292 /* CardProfile.swift in Sources */,
 				FB1A34131EE1BC88003B5A73 /* RadarContainerViewController.swift in Sources */,
 				1CB31C951E93C6A700A0C4A5 /* CardCollectionViewCell.swift in Sources */,
 				FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */,
