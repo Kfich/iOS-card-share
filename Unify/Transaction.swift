@@ -13,6 +13,7 @@ public class Transaction{
     // Properties
     // ---------------------------------
     
+    var scope : String = "transaction"
     var transactionId : String = ""
     var date : String = ""
     var location : String = ""
@@ -76,7 +77,18 @@ public class Transaction{
     // Getters:Setters
     // ---------------------------------
     
+    // Scope
+    // Scope
+    func getScope()->String{
+        return scope
+    }
     
+    func setScope(value : String){
+        scope = value
+    }
+    
+    
+    // UUID
     func getTransactionId()->String{
         return transactionId
     }
@@ -85,6 +97,8 @@ public class Transaction{
         transactionId = randomString(length: 10) as String
     }
     
+    
+    // Dates
     func getDate()->String{
         return date
     }

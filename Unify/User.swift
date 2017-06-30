@@ -13,6 +13,7 @@ public class User{
     // Properties
     // ---------------------------------
     
+    var scope : String = "user"
     var userId : String = ""
     var firstName : String = ""
     var lastName : String = ""
@@ -42,6 +43,7 @@ public class User{
         lastName = snapshot["last_name"] as? String ?? ""
         emails = snapshot["emails"] as? [[String : String]]
         phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]]
+        scope = snapshot["scope"] as? String ?? ""
         
         
         // To get full username
@@ -61,9 +63,20 @@ public class User{
             "email": emails ?? [["" : ""]],
             "uuid": userId,
             "mobile_numbers" : phoneNumbers ?? [["number" : ""]],
-            "email" : emails ?? [["email":""]]
+            "email" : emails ?? [["email":""]],
+            "scope" : scope
             
         ]
+    }
+
+    // Scope
+    func getScope()->String{
+        return scope
+    }
+    
+    func setScope(value : String){
+        
+        scope = value
     }
     
     // Names
@@ -107,6 +120,8 @@ public class User{
     // Testing
     
     func printUser(){
+        print("")
+        print("Scope :" + scope)
         print("\n")
         print("UserId :" + userId)
         print("Name :" + fullName)

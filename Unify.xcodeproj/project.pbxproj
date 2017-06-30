@@ -71,6 +71,9 @@
 		FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */; };
 		FBE807461F04159700A05292 /* CardSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807451F04159700A05292 /* CardSelectionViewController.swift */; };
 		FBE807491F0566F300A05292 /* CardProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807481F0566F300A05292 /* CardProfile.swift */; };
+		FBE807531F06C07C00A05292 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE8074D1F06C07C00A05292 /* Connection.m */; };
+		FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE807501F06C07C00A05292 /* JSONResponseSerializerWithData.m */; };
+		FBE807551F06C07C00A05292 /* NSData+PKCS12.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE807511F06C07C00A05292 /* NSData+PKCS12.m */; };
 		FBF8712D1EE71B0800243CE2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712C1EE71B0800243CE2 /* User.swift */; };
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
@@ -201,6 +204,13 @@
 		FBE76C891EDF4A2900E37E0C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		FBE807451F04159700A05292 /* CardSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardSelectionViewController.swift; sourceTree = "<group>"; };
 		FBE807481F0566F300A05292 /* CardProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardProfile.swift; sourceTree = "<group>"; };
+		FBE8074C1F06C07C00A05292 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
+		FBE8074D1F06C07C00A05292 /* Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
+		FBE8074E1F06C07C00A05292 /* ConnectionURLS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionURLS.h; sourceTree = "<group>"; };
+		FBE8074F1F06C07C00A05292 /* NSData+PKCS12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+PKCS12.h"; sourceTree = "<group>"; };
+		FBE807501F06C07C00A05292 /* JSONResponseSerializerWithData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONResponseSerializerWithData.m; sourceTree = "<group>"; };
+		FBE807511F06C07C00A05292 /* NSData+PKCS12.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+PKCS12.m"; sourceTree = "<group>"; };
+		FBE807521F06C07C00A05292 /* JSONResponseSerializerWithData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONResponseSerializerWithData.h; sourceTree = "<group>"; };
 		FBF8712C1EE71B0800243CE2 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBF8712F1EE71B3D00243CE2 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		FBF871311EE71F0100243CE2 /* ContactCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
@@ -253,6 +263,7 @@
 		1CAE5B821E913A06006EFF40 /* Unify */ = {
 			isa = PBXGroup;
 			children = (
+				FBE8074B1F06C06C00A05292 /* Networking */,
 				FB0812FD1F02AFF800CF14BE /* Resources */,
 				1CBB3B7D1EA8E803003DE715 /* Unify.entitlements */,
 				1C31041B1E95BA9200F4D70D /* GoogleService-Info.plist */,
@@ -458,6 +469,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FBE8074B1F06C06C00A05292 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				FBE8074C1F06C07C00A05292 /* Connection.h */,
+				FBE8074D1F06C07C00A05292 /* Connection.m */,
+				FBE8074E1F06C07C00A05292 /* ConnectionURLS.h */,
+				FBE8074F1F06C07C00A05292 /* NSData+PKCS12.h */,
+				FBE807501F06C07C00A05292 /* JSONResponseSerializerWithData.m */,
+				FBE807511F06C07C00A05292 /* NSData+PKCS12.m */,
+				FBE807521F06C07C00A05292 /* JSONResponseSerializerWithData.h */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
 		FBF8712E1EE71B0E00243CE2 /* Class_Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -654,9 +679,11 @@
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
 				1C3104101E94B7FC00F4D70D /* FollowUp-ViewController.swift in Sources */,
 				1CB31CB21E94358200A0C4A5 /* Helpers.swift in Sources */,
+				FBE807551F06C07C00A05292 /* NSData+PKCS12.m in Sources */,
 				FB1A340D1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m in Sources */,
 				FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */,
 				FB1A34151EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift in Sources */,
+				FBE807531F06C07C00A05292 /* Connection.m in Sources */,
 				1CB31C991E9406EB00A0C4A5 /* Contacts-TableViewController.swift in Sources */,
 				FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */,
 				FBE807461F04159700A05292 /* CardSelectionViewController.swift in Sources */,
@@ -688,6 +715,7 @@
 				1CB31CA71E94273E00A0C4A5 /* QuickShare-ViewController.swift in Sources */,
 				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
+				FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */,
