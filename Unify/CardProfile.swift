@@ -140,9 +140,12 @@ public class CardProfile{
     
     func printProfle(){
         print("\n")
-        print("Bio :" + bio!)
-        print("Work Info :" + workInfo!)
-        print("Title :" + title!)
+        print("Bio :")
+        print(bio ?? "")
+        print("Work Info :")
+        print(workInfo ?? "")
+        print("Title :")
+        print(title ?? "")
         print("Emails : ")
         print(emails ?? [["email" : ""]])
         print("Phones : ")
@@ -157,7 +160,6 @@ public class CardProfile{
         print(websites ?? ["site":""])
         print("Organizations : ")
         print(organizations ?? ["name":""])
-        
         
     }
     

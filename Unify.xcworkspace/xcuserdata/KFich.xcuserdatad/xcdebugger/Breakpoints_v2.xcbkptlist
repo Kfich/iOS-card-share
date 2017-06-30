@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarViewController.swift"
-            timestampString = "518645791.516868"
+            timestampString = "520547077.327312"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "stopPulseAnimation()"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarPullUpCardViewController.swift"
-            timestampString = "520362105.340042"
+            timestampString = "520547077.327312"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "pullUpViewController(_:minimumHeightForBottomViewController:)"
             landmarkType = "7">
          </BreakpointContent>

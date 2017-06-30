@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qm7-hw-6AV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Wt1-Uw-E1x">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -5277,6 +5277,19 @@
                                                 <color key="textColor" white="1" alpha="0.59663955479452058" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iLz-Ij-yyb">
+                                                <rect key="frame" x="8" y="159" width="99" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="99" id="OLy-qH-cfm"/>
+                                                    <constraint firstAttribute="height" constant="30" id="voS-9r-XxB"/>
+                                                </constraints>
+                                                <state key="normal" title="Add new card ">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="addCard:" destination="ToP-Xd-t3l" eventType="touchUpInside" id="TWH-2I-g6R"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="1PT-rN-ikJ" firstAttribute="top" secondItem="reK-k5-yI2" secondAttribute="bottom" constant="43" id="1aD-xy-IvL"/>
@@ -5285,8 +5298,10 @@
                                             <constraint firstItem="1PT-rN-ikJ" firstAttribute="bottom" secondItem="npg-g1-aXt" secondAttribute="bottom" constant="4" id="9Ow-Op-Y3m"/>
                                             <constraint firstItem="Zrm-D0-44V" firstAttribute="leading" secondItem="oqB-lr-BSg" secondAttribute="leading" constant="16" id="ACN-6u-dHr"/>
                                             <constraint firstItem="reK-k5-yI2" firstAttribute="centerX" secondItem="1PT-rN-ikJ" secondAttribute="centerX" id="IEj-5a-hvX"/>
+                                            <constraint firstItem="iLz-Ij-yyb" firstAttribute="leading" secondItem="oqB-lr-BSg" secondAttribute="leading" constant="8" id="S3j-Nt-A4T"/>
                                             <constraint firstAttribute="trailing" secondItem="npg-g1-aXt" secondAttribute="trailing" constant="16" id="VFb-Yv-039"/>
                                             <constraint firstAttribute="trailing" secondItem="reK-k5-yI2" secondAttribute="trailing" id="dJi-Mv-3vn"/>
+                                            <constraint firstItem="Zrm-D0-44V" firstAttribute="top" secondItem="iLz-Ij-yyb" secondAttribute="bottom" constant="56" id="lbH-Ca-Oi8"/>
                                             <constraint firstItem="reK-k5-yI2" firstAttribute="leading" secondItem="oqB-lr-BSg" secondAttribute="leading" id="rsK-IY-SyO"/>
                                             <constraint firstAttribute="bottom" secondItem="1PT-rN-ikJ" secondAttribute="bottom" constant="8" id="tDF-5b-wS7"/>
                                         </constraints>
@@ -6806,6 +6821,9 @@
                                                         <state key="normal" title="Done">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="doneCreatingCard:" destination="j5R-8u-hRu" eventType="touchUpInside" id="3xY-47-hka"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>

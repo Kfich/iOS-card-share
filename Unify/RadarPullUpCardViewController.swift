@@ -13,6 +13,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Properties
     // ---------------------------------------
+    var currentUser = User()
+    
     
     let reuseIdentifier = "cardViewCell"
     private var firstAppearanceCompleted = false
@@ -70,7 +72,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         bgImage.image = UIImage(named: "backgroundGradient");
         bgImage.contentMode = .scaleToFill
         self.cardCollectionView.backgroundView = bgImage
-
         
         
     }
@@ -100,7 +101,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.cards.count
-        return 4
+        return currentUser.cards.count
     }
     
     // make a cell for each cell index path
@@ -112,18 +113,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.backgroundColor = UIColor.clear
         
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        //cell.businessCardView = self.cards[indexPath.item]
-        // Add radius config & border color
-        /*cell.contentView.layer.cornerRadius = 10.0
-        cell.contentView.clipsToBounds = true
-        cell.contentView.layer.borderWidth = 2.0
-        cell.contentView.layer.borderColor = UIColor.lightGray.cgColor*/
+        let card = currentUser.cards[indexPath.row]
         
-        configureViews(cell: cell)
+        // Assign card values to the cell 
         
         
         
-        //cell.backgroundColor = UIColor.cyan // make cell more visible in our example project
+        //configureViews(cell: cell)
         
         return cell
     }
@@ -206,6 +202,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
     }
     
+    
+
     
     // MARK: ISHPullUpStateDelegate
     

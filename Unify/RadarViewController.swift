@@ -25,6 +25,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // Properties
     // -------------------------------------------
     
+    var currentUser = User()
+    
     // Phone Contact Store
     var store: CNContactStore!
     // Location
@@ -74,23 +76,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
 
         // Do any additional setup after loading the view.
         
-        // Hide radar label
-        //radarOnLabel.isHidden = true
         
         // Setup views 
         configureViews()
         
-        // Graphics config
-       /* UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
         
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)
-        
-        //self.view.backgroundColor = UIColor(patternImage: image)*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,6 +92,71 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // IBActions / Buttons Pressed
     // -------------------------------------------
     
+    
+    // TESTING -----------------------------
+    
+    @IBAction func addCard(_ sender: Any) {
+        
+        // Test user 
+        testUser()
+        
+        // Show add card vc
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
+        self.present(controller, animated: true, completion: nil)
+
+        
+    }
+    
+    
+    
+    func testUser(){
+        // Test current user object
+        
+        currentUser.firstName = "Kevin"
+        currentUser.lastName = "Fich"
+        currentUser.userId = "54321"
+        currentUser.fullName = currentUser.getName()
+        currentUser.emails?.append(["email": "kfich7@aol.com"])
+        currentUser.emails?.append(["email": "kfich7@gmail.com"])
+        currentUser.phoneNumbers?.append(["phone": "1234567890"])
+        currentUser.phoneNumbers?.append(["phone": "0987654321"])
+        currentUser.phoneNumbers?.append(["phone": "6463597308"])
+        currentUser.scope = "user"
+        
+        let parameters = currentUser.toAnyObject()
+        
+        
+        // Print to test
+        print("Current User")
+        currentUser.printUser()
+        
+        
+        // Print as dictionary
+        print("\nAs Dictionary")
+        print(currentUser.toAnyObject())
+        
+        
+        // Send current user to DB
+        Connection(configuration: nil).createUserCall(parameters as! [AnyHashable : Any], completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Create User Response: \(response)\n\n")
+                
+                // Here you set the id for the user and resubmit the object
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - Create User Error: \(error)\n\n")
+            }
+        })
+        
+        
+    }
+    
+    // Testing --------------------------------
     
     
     @IBAction func showEmailRecipient(_ sender: AnyObject) {

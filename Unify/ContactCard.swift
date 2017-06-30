@@ -27,7 +27,12 @@ public class ContactCard{
     
     // Init
     
-    init() {}
+    init() {
+        cardId = "1234567890"
+        cardHolderName = ""
+        cardName = "Card 1"
+    
+    }
     
     
     // Init from server 
@@ -127,12 +132,15 @@ public class ContactCard{
     
     func printCard(){
         print("\n")
+        
+        
         print("CardId :" + cardId!)
         print("Card Name :" + cardName!)
         print("CardHolder Name :" + cardHolderName!)
         print("")
         print("Card Profile :")
-        print(profileDictionary ?? ["profle" : "nil"])
+        
+        cardProfile.printProfle()
        
     }
 

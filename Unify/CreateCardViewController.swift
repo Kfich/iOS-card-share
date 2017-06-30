@@ -57,11 +57,16 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet var mediaButton7: UIBarButtonItem!
     
     
+    
+    
 
     // Page Setup
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
+        
         // Do any additional setup after loading the view.
         
         emails = ["kfich7@gmail.com", "kfich7@aol.com", "bazzucablaster@gmail.com" ]
@@ -82,6 +87,40 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     // IBActions
+    @IBAction func doneCreatingCard(_ sender: Any) {
+        
+        // Assign temp card id
+        card.cardId = "1234567890"
+        
+        // Print card to see if generated
+        card.printCard()
+        card.cardProfile.printProfle()
+        
+        // Add card to current user object card suite
+        currentUser.cards.append(card)
+        
+        let parameters = card.toAnyObject()
+        print("\n\n")
+        print(card.toAnyObject())
+        
+        // Save card to DB
+        Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print(response)
+                
+                // Here you set the id for the card and resubmit the object
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message 
+            }
+        }
+
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
     
 
     /*
@@ -182,7 +221,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             return cell
         case 7:
             cell.titleLabel.text = "Organizations \(indexPath.row)"
-            cell.descriptionLabel.text = bios[indexPath.row]
+            cell.descriptionLabel.text = organizations[indexPath.row]
             return cell
         default:
             return cell
@@ -209,10 +248,19 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             card.cardProfile.workInfo = workInformation[indexPath.row]
         case 2:
             card.cardProfile.title = titles[indexPath.row]
+            
+            // Assign label value
+            self.titleLabel.text = titles[indexPath.row]
         case 3:
             card.cardProfile.phoneNumbers?.append(["phone_\(indexPath.row)" : phoneNumbers[indexPath.row]])
+            
+            // Assign label value
+            self.numberLabel.text = phoneNumbers[indexPath.row]
         case 4:
             card.cardProfile.emails?.append(["email_\(indexPath.row)" : emails[indexPath.row]])
+            
+            // Assign label value
+            self.emailLabel.text = emails[indexPath.row]
         case 5:
             card.cardProfile.socialLinks?.append(["link_\(indexPath.row)" : socialLinks[indexPath.row]])
         case 6:
@@ -227,5 +275,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Print card to test
         card.printCard()
     }
+    
+    
 
 }
