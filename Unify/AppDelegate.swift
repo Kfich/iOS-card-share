@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         
         // Listen for network reachability changes.
+        
         self.reachability = Reachability.forInternetConnection()
         self.reachability.reachableBlock = {
             (reachability: Reachability?) -> Void in
@@ -63,10 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             global_uuid = storedUUID
         }
-        
+ 
         // Check if user logged in, if not kick back to home vc
         
-       /* let userLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
+        let userLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         
         if (userLoggedIn && (storedUUID != nil)){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -74,8 +75,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TabBarViewController
             window!.rootViewController = homeViewController
         }
-        */
         
+ 
       
         
         return true

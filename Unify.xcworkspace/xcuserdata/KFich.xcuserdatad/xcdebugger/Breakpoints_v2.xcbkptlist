@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/User.swift"
-            timestampString = "520532692.30595"
+            timestampString = "520539308.627781"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "toAnyObject()"
             landmarkType = "7">
          </BreakpointContent>

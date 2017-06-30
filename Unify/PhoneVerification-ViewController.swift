@@ -41,7 +41,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         
         UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
         
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         

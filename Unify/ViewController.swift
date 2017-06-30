@@ -34,7 +34,7 @@ class ViewController: UIViewController {
             
             
             
-            let firstPage = OnboardingContentViewController(title: "Unify", body: "Welcome to Unify", image: UIImage(named: "logotemp"), buttonText: "Next") { () -> Void in
+            let firstPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen1"), buttonText: "Next") { () -> Void in
                 // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                 
                 
@@ -44,20 +44,20 @@ class ViewController: UIViewController {
             
            
             
-            let secondPage = OnboardingContentViewController(title: "Import", body: "Easily import your network contacts into Unify", image: UIImage(named: "ic_photos"), buttonText: "Next") { () -> Void in
+            let secondPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen2"), buttonText: "Next") { () -> Void in
                 // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                 
                 onboardingVC?.moveNextPage()
             }
             
-            let thirdPage = OnboardingContentViewController(title: "Categorize", body: "Effortlessly organize your entire network contacts", image: UIImage(named: "ic_photos"), buttonText: "Next") { () -> Void in
+            let thirdPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen3"), buttonText: "Next") { () -> Void in
                 // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                 
                 onboardingVC?.moveNextPage()
             }
             
             
-            let forthPage = OnboardingContentViewController(title: "Share & Exchange", body: "Effortlessly organize your entire network contact", image: UIImage(named: "ic_photos"), buttonText: "Get Started") { () -> Void in
+            let forthPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen4"), buttonText: "Get Started") { () -> Void in
                 // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                 
                 
@@ -93,7 +93,7 @@ class ViewController: UIViewController {
             forthPage.actionButton.layer.cornerRadius = 8
 
             
-            onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "background"), contents: [firstPage, secondPage, thirdPage, forthPage])
+            onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "backgroundGradient"), contents: [firstPage, secondPage, thirdPage, forthPage])
             
             
             self.present(onboardingVC!, animated: true, completion: nil)
@@ -108,7 +108,7 @@ class ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         
-        let nextScene =  segue.destination as! PhoneVerificationViewController
+        //let nextScene =  segue.destination as! PhoneVerificationViewController
         
         
         
@@ -271,7 +271,7 @@ class ViewController: UIViewController {
     
 
     
-    
+    // Pull contacts and sync to server
     
     func retrieveContactsWithStore(store: CNContactStore) {
         do {
