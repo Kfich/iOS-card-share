@@ -51,6 +51,9 @@
 		FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */; };
 		FB1A34131EE1BC88003B5A73 /* RadarContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34121EE1BC88003B5A73 /* RadarContainerViewController.swift */; };
 		FB1A34151EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34141EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift */; };
+		FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE451F0D667B006A997D /* PMAlertAction.swift */; };
+		FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE461F0D667B006A997D /* PMAlertController.swift */; };
+		FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB24EE471F0D667B006A997D /* PMAlertController.xib */; };
 		FB3738191EDDBA730074200F /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738181EDDBA730074200F /* ContactManager.swift */; };
 		FB37381B1EDDBB660074200F /* ContactProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */; };
 		FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3738261EDDCE970074200F /* TPKeyboardAvoidingScrollView.m */; };
@@ -184,6 +187,9 @@
 		FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarViewController.swift; sourceTree = "<group>"; };
 		FB1A34121EE1BC88003B5A73 /* RadarContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarContainerViewController.swift; sourceTree = "<group>"; };
 		FB1A34141EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarPullUpCardViewController.swift; sourceTree = "<group>"; };
+		FB24EE451F0D667B006A997D /* PMAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMAlertAction.swift; sourceTree = "<group>"; };
+		FB24EE461F0D667B006A997D /* PMAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMAlertController.swift; sourceTree = "<group>"; };
+		FB24EE471F0D667B006A997D /* PMAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMAlertController.xib; sourceTree = "<group>"; };
 		FB3738181EDDBA730074200F /* ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
 		FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactProfileViewController.swift; sourceTree = "<group>"; };
 		FB3738251EDDCE970074200F /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
@@ -269,18 +275,17 @@
 		1CAE5B821E913A06006EFF40 /* Unify */ = {
 			isa = PBXGroup;
 			children = (
-				FBE807581F06D18400A05292 /* SupportingFiles */,
 				FBE8074B1F06C06C00A05292 /* Networking */,
 				FB0812FD1F02AFF800CF14BE /* Resources */,
 				1CBB3B7D1EA8E803003DE715 /* Unify.entitlements */,
 				1C31041B1E95BA9200F4D70D /* GoogleService-Info.plist */,
 				1CAE5B851E913A06006EFF40 /* ViewController.swift */,
 				FBE8075B1F06D61200A05292 /* Cards */,
+				FB3738221EDDBD640074200F /* Manager */,
 				FBF8712E1EE71B0E00243CE2 /* Class_Files */,
 				1CB31CAC1E94336500A0C4A5 /* Algolia */,
 				FB3738301EDDD69A0074200F /* CustomViews */,
 				FB37382B1EDDCE9E0074200F /* Helpers */,
-				1CB31C8E1E93946D00A0C4A5 /* InstagramActivityIndicator.swift */,
 				FB37381F1EDDBCFD0074200F /* Contacts */,
 				FB3738241EDDBE0E0074200F /* Radar */,
 				FB3738231EDDBDFC0074200F /* Activity */,
@@ -378,7 +383,6 @@
 		FB37381F1EDDBCFD0074200F /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				FB3738221EDDBD640074200F /* Manager */,
 				1CB31C981E9406EB00A0C4A5 /* Contacts-TableViewController.swift */,
 				FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */,
 				FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */,
@@ -441,6 +445,10 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FB24EE451F0D667B006A997D /* PMAlertAction.swift */,
+				FB24EE461F0D667B006A997D /* PMAlertController.swift */,
+				FB24EE471F0D667B006A997D /* PMAlertController.xib */,
+				1CB31C8E1E93946D00A0C4A5 /* InstagramActivityIndicator.swift */,
 				FB1A34051EE1B5F9003B5A73 /* ISHPullUpViewController.h */,
 				FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */,
 				FB1A34071EE1B5F9003B5A73 /* ISHPullUpHandleView.h */,
@@ -491,13 +499,6 @@
 				FBE807521F06C07C00A05292 /* JSONResponseSerializerWithData.h */,
 			);
 			name = Networking;
-			sourceTree = "<group>";
-		};
-		FBE807581F06D18400A05292 /* SupportingFiles */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		FBE8075B1F06D61200A05292 /* Cards */ = {
@@ -564,6 +565,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -621,6 +625,7 @@
 				1C31041C1E95BA9200F4D70D /* GoogleService-Info.plist in Resources */,
 				1CB31CA91E942BC500A0C4A5 /* SkeletonCell.xib in Resources */,
 				1CAE5B891E913A06006EFF40 /* Main.storyboard in Resources */,
+				FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,6 +728,7 @@
 				1CB31CA11E940A0B00A0C4A5 /* Profile-TableViewController.swift in Sources */,
 				1CB31C911E9399D400A0C4A5 /* CreateAccount-ViewController.swift in Sources */,
 				1CB31C9F1E94092000A0C4A5 /* Activity-ViewController.swift in Sources */,
+				FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */,
 				1CB31C8D1E93539A00A0C4A5 /* PhoneVerificationPin-ViewController.swift in Sources */,
 				1CB31C931E93C04D00A0C4A5 /* HomeCardTableCell.swift in Sources */,
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
@@ -743,6 +749,7 @@
 				1CB31CA71E94273E00A0C4A5 /* QuickShare-ViewController.swift in Sources */,
 				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
+				FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */,
 				FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,

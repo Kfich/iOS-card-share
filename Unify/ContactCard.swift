@@ -29,9 +29,10 @@ public class ContactCard{
     
     init() {
         cardId = "1234567890"
-        cardHolderName = ""
+        cardHolderName = "Kevin Fich"
         cardName = "Card 1"
     
+        
     }
     
     
@@ -56,8 +57,7 @@ public class ContactCard{
             "card_name": cardName ?? "",
             "card_holder_name": cardHolderName ?? "",
             "image_url" : imageURL ?? Data(),
-            "card_profile" : profileDictionary ?? ["card_profile" : ""]
-            
+            "card_profile" : cardProfile.toAnyObject()
             
         ]
     }
@@ -102,7 +102,6 @@ public class ContactCard{
     func setCardProfile(profileRecord : [String : String]){
         profileDictionary = profileRecord
     }
-
     
     
     

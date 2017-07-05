@@ -81,6 +81,16 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         firstAppearanceCompleted = true;
     }
     
+    // Custom Methods
+    // For sending notifications to the default center for other VC's that are listening
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.newCardAdded), name: NSNotification.Name(rawValue: "CardCreated"), object: nil)
+    }
+    
+    // Selector for observer function
+    func newCardAdded() {
+        print("New Card Added")
+    }
     
     
     
@@ -201,9 +211,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         
     }
-    
-    
-
     
     // MARK: ISHPullUpStateDelegate
     

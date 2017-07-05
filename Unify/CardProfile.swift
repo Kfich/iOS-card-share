@@ -15,36 +15,58 @@ public class CardProfile{
     var bio : String?
     var workInfo : String?
     var title : String?
-    var emails : [[String : String]]?
-    var phoneNumbers : [[String : String]]?
-    var socialLinks : [[String : String]]?
-    var tags : [[String : String]]?
-    var notes : [[String : String]]?
-    var websites : [[String : String]]?
-    var organizations : [[String : String]]?
-
+    var emails = [[String : String]]()
+    var phoneNumbers = [[String : String]]()
+    var socialLinks = [[String : String]]()
+    var tags = [[String : String]]()
+    var notes = [[String : String]]()
+    var websites = [[String : String]]()
+    var organizations = [[String : String]]()
+    
+    // Profile images
+    var images = [[String : Any]]()
     
     // Initializers
     
     init(){}
     
+    // Init with JSON Snapshot
     init(snapshot: NSDictionary) {
         
         bio = snapshot["bio"] as? String
         workInfo = snapshot["work_info"] as? String
         title = snapshot["title"] as? String
-        emails = snapshot["emails"] as? [[String : String]]
-        phoneNumbers = snapshot["phone_numbers"] as? [[String : String]]
-        socialLinks = snapshot["social_links"] as? [[String : String]]
-        tags = snapshot["tags"] as? [[String : String]]
-        notes = snapshot["notes"] as? [[String : String]]
-        websites = snapshot["websites"] as? [[String : String]]
-        organizations = snapshot["organizations"] as? [[String : String]]
+        emails = snapshot["emails"] as! [[String : String]]
+        phoneNumbers = snapshot["phone_numbers"] as! [[String : String]]
+        socialLinks = snapshot["social_links"] as! [[String : String]]
+        tags = snapshot["tags"] as! [[String : String]]
+        notes = snapshot["notes"] as! [[String : String]]
+        websites = snapshot["websites"] as! [[String : String]]
+        organizations = snapshot["organizations"] as! [[String : String]]
+        images = snapshot["images"] as! [[String : Any]]
         
         
         // Testing to see if populated
     
     }
+    
+    // Exporting the object
+    func toAnyObject() -> NSDictionary {
+        return [
+            "bio": bio ?? "",
+            "work_info": workInfo ?? "",
+            "title": title ?? "",
+            "emails" : emails,
+            "phone_numbers" : phoneNumbers,
+            "social_links" : socialLinks,
+            "tags" : tags,
+            "notes" : notes,
+            "websites" : websites,
+            "organizations" : organizations,
+            "images" : images
+        ]
+    }
+    
     
     // Bio
     func getBio()->String{
@@ -74,65 +96,74 @@ public class CardProfile{
     
     // Emails
     func getEmailRecords()->[[String : String]]{
-        return emails!
+        return emails
     }
     
-    func setEmailRecords(emailRecords : [[String : String]]){
-        emails = emailRecords
+    func setEmailRecords(emailRecords : [String : String]){
+        emails.append(emailRecords)
     }
     
     // Phone Numbers
     func getPhoneRecords()->[[String : String]]{
-        return phoneNumbers!
+        return phoneNumbers
     }
     
-    func setPhoneRecords(phoneRecords : [[String : String]]){
-        phoneNumbers = phoneRecords
+    func setPhoneRecords(phoneRecords : [String : String]){
+        phoneNumbers.append(phoneRecords)
     }
     
     // Links
     func getSocialLinks()->[[String : String]]{
-        return socialLinks ?? [["link" : ""]]
+        return socialLinks
     }
     
-    func setSocialLinks(socialRecords : [[String : String]]){
-        socialLinks = socialRecords
+    func setSocialLinks(socialRecords : [String : String]){
+        socialLinks.append(socialRecords)
     }
     
     // Tags
     func getTags()->[[String : String]]{
-        return tags!
+        return tags
     }
     
-    func setTags(tagRecords : [[String : String]]){
-        tags = tagRecords
+    func setTags(tagRecords : [String : String]){
+        tags.append(tagRecords)
     }
 
     // Notes
     func getNotes()->[[String : String]]{
-        return notes!
+        return notes
     }
     
-    func setNotes(noteRecords : [[String : String]]){
-        notes = noteRecords
+    func setNotes(noteRecords : [String : String]){
+        notes.append(noteRecords)
     }
     
     // Websites
     func getWebsites()->[[String : String]]{
-        return websites!
+        return websites
     }
     
-    func setWebsites(websiteRecords : [[String : String]]){
-        websites = websiteRecords
+    func setWebsites(websiteRecords : [String : String]){
+        websites.append(websiteRecords)
     }
     
     // Organizations
     func getOrganizations()->[[String : String]]{
-        return organizations!
+        return organizations
     }
     
-    func setOrganizations(organizationRecords : [[String : String]]){
-        organizations = organizationRecords
+    func setOrganizations(organizationRecords : [String : String]){
+        organizations.append(organizationRecords)
+    }
+    
+    // Images
+    func getImages()->[[String : Any]]{
+        return images
+    }
+    
+    func setImages(imageRecords : [String : Any]){
+        images.append(imageRecords)
     }
     
     
@@ -147,19 +178,22 @@ public class CardProfile{
         print("Title :")
         print(title ?? "")
         print("Emails : ")
-        print(emails ?? [["email" : ""]])
+        print(emails)
         print("Phones : ")
-        print(phoneNumbers ?? ["number":""])
+        print(phoneNumbers as Any)
         print("Social Links : ")
-        print(socialLinks ?? ["link":""])
+        print(socialLinks as Any)
         print("Tags : ")
-        print(tags ?? ["tag":""])
+        print(tags as Any)
         print("Notes : ")
-        print(notes ?? ["note":""])
+        print(notes as Any)
         print("Websites : ")
-        print(websites ?? ["site":""])
+        print(websites as Any)
         print("Organizations : ")
-        print(organizations ?? ["name":""])
+        print(organizations as Any)
+        
+        print("Images : ")
+        print(images as Any)
         
     }
     

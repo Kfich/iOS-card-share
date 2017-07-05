@@ -128,16 +128,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         
         // Print to test
-        print("Current User")
-        currentUser.printUser()
+        //print("Current User")
+        //currentUser.printUser()
         
         
         // Print as dictionary
-        print("\nAs Dictionary")
+        print("\nUser As Dictionary")
         print(currentUser.toAnyObject())
         
         
         // Send current user to DB
+        
+        /*
         Connection(configuration: nil).createUserCall(parameters as! [AnyHashable : Any], completionBlock: { response, error in
             if error == nil {
                 
@@ -152,7 +154,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 print("\n\nConnection - Create User Error: \(error)\n\n")
             }
         })
-        
+        */
         
     }
     

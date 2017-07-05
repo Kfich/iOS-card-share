@@ -44,6 +44,7 @@ class CreateAccountViewController: UIViewController {
     @IBAction func AddProfilePicture_click(_ sender: Any) {
         
         
+        
         photo.onPhoto = { (image: UIImage?) -> Void in
             print("Selected image")
             

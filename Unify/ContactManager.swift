@@ -17,11 +17,19 @@ class ContactManager{
     
     static let sharedManager = ContactManager()
     
+    // Nav management for notifications
     var userArrivedFromContactList = false
     var userArrivedFromRadar = false
     var userArrivedFromIntro = false
-    
     var userArrivedFromRecipients = false
+    var userDidCreateCard = false
+    
+    // Card and User Objects
+    var currentUser = User()
+    var selectedCard = ContactCard()
+    var currentUserCards = [ContactCard]()
+    
+    
     
     // Initialize class
     init() {
@@ -37,6 +45,10 @@ class ContactManager{
         userArrivedFromContactList = false
         
     }
+    
+    // Networking 
+    
+    
     
     
 }
