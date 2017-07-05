@@ -13,6 +13,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     // Properties
     // --------------------------------------------
     
+    var selectedCard = ContactCard()
+    
     var active_card_unify_uuid: String?
     
     // IBOutlets
@@ -164,13 +166,18 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     // -------------------------------------------
     
     func populateCards(){
+        // Senders card config
         
-        // Senders card
-        contactImageView.image = UIImage(named: "throwback.png")
-        nameLabel.text = "Harold Fich"
-        phoneLabel.text = "1+ (123)-345-6789"
-        emailLabel.text = "Kev.fich12@gmail.com"
-        titleLabel.text = "Founder & CEO, CleanSwipe"
+        // Populate image view
+        let imageData = selectedCard.cardProfile.images[0]["image_data"]
+        contactImageView.image = UIImage(data: imageData as! Data)
+        // Populate label fields
+        nameLabel.text = selectedCard.cardHolderName
+        phoneLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"]
+        emailLabel.text = selectedCard.cardProfile.emails[0]["phone"]
+        titleLabel.text = selectedCard.cardProfile.title
+        
+        // Here, parse data to populate tableview
     }
     
     func configureViews(){

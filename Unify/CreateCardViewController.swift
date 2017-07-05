@@ -175,18 +175,26 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     // Sending card to server
     @IBAction func doneCreatingCard(_ sender: Any) {
         
+        
         // Print card to see if generated
         card.printCard()
         //card.cardProfile.printProfle()
         
+        // Add card to manager object card suite
+        ContactManager.sharedManager.currentUserCards.append(card)
+        print("\n\nUSER Cards\n\n\(ContactManager.sharedManager.currentUserCards)")
+        print("\n\nUSER CARD COUNT\n\n\(ContactManager.sharedManager.currentUserCards.count)")
+        
         // Add card to current user object card suite
         currentUser.cards.append(card)
         
+        
+        // Send to server
+        
+        /*
         let parameters = card.toAnyObject()
-        
-        
         print("\n\nTHE CARD TO ANY - PARAMS")
-        print(parameters)
+        print(parameters)*/
         
         // Save card to DB
         
@@ -350,29 +358,29 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             self.titleLabel.text = titles[indexPath.row]
         case 3:
             
-            card.cardProfile.emails.append(["email_\(emails.count)" : emails[indexPath.row]])
+            card.cardProfile.emails.append(["email" : emails[indexPath.row]])
             print(card.cardProfile.emails as Any)
             // Assign label value
             self.emailLabel.text = emails[indexPath.row]
            
         case 4:
             // Add dictionary value to cardProfile
-            card.cardProfile.setPhoneRecords(phoneRecords: ["phone_\(phoneNumbers.count)" : phoneNumbers[indexPath.row]])
+            card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
             // Print for testing
             print(card.cardProfile.phoneNumbers as Any)
             // Assign label value
             self.numberLabel.text = phoneNumbers[indexPath.row]
             
         case 5:
-            card.cardProfile.socialLinks.append(["link_\(socialLinks.count)" : socialLinks[indexPath.row]])
+            card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
             // Print for test
             print(card.cardProfile.socialLinks as Any)
         case 6:
-            card.cardProfile.websites.append(["website_\(websites.count)" : websites[indexPath.row]])
+            card.cardProfile.websites.append(["website" : websites[indexPath.row]])
             // Print for test
             print(card.cardProfile.websites as Any)
         case 7:
-            card.cardProfile.organizations.append(["organization_\(organizations.count)" : organizations[indexPath.row]])
+            card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
             // Print for test
             print(card.cardProfile.organizations as Any)
         default:

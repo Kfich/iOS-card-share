@@ -13,7 +13,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Properties
     // ---------------------------------------
-    var currentUser = User()
+    var selectedUserCard = ContactCard()
     
     
     let reuseIdentifier = "cardViewCell"
@@ -63,9 +63,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Make sure not locked
+        // Make sure locked
         pullUpController.isLocked = true
-        
         
         // Set background image on collectionview
         let bgImage = UIImageView();
@@ -73,6 +72,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         bgImage.contentMode = .scaleToFill
         self.cardCollectionView.backgroundView = bgImage
         
+        
+        // Add observers for notifications 
+        addObservers()
         
     }
     
@@ -89,7 +91,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Selector for observer function
     func newCardAdded() {
+        
         print("New Card Added")
+        print("\(ContactManager.sharedManager.currentUserCards.count)")
+        // Refresh table data
+        cardCollectionView.reloadData()
     }
     
     
@@ -111,7 +117,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.cards.count
-        return currentUser.cards.count
+        return ContactManager.sharedManager.currentUserCards.count
     }
     
     // make a cell for each cell index path
@@ -120,16 +126,34 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
-        cell.backgroundColor = UIColor.clear
-        
-        // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        let card = currentUser.cards[indexPath.row]
-        
-        // Assign card values to the cell 
+        //cell.backgroundColor = UIColor.clear
         
         
+        /*if currentUserCards.count == 0{
+            let addNew = UIImage(named: "add-card")
+            
+        }*/
+        // Find current card index
+        let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
         
-        //configureViews(cell: cell)
+        
+        
+        // Populate text field data
+        cell.cardDisplayName.text = currentCard.cardHolderName
+        cell.cardTitle.text = currentCard.cardProfile.getTitle()
+        cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
+        cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"]
+        
+        // Populate image view
+        let imageData = currentCard.cardProfile.images[0]["image_data"]
+        cell.cardImage.image = UIImage(data: imageData as! Data)
+        
+        // Config social link buttons
+        // Do that here
+        
+        
+        // Configure the card view
+        configureViews(cell: cell)
         
         return cell
     }
@@ -140,7 +164,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
         
-        // Show Selected Card
+        // Set selected card object 
+        selectedUserCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+        
+        // Show Selected Card segue
         performSegue(withIdentifier: "showSelectedCard", sender: self)
     }
 
@@ -193,13 +220,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardWrapperView.layer.borderWidth = 1.5
         cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
         
-        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
-        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
-        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
-        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
-        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton1.image = UIImage(named: "social-blank")
+        cell.mediaButton2.image = UIImage(named: "social-blank")
+        cell.mediaButton3.image = UIImage(named: "social-blank")
+        cell.mediaButton4.image = UIImage(named: "social-blank")
+        cell.mediaButton5.image = UIImage(named: "social-blank")
+        cell.mediaButton6.image = UIImage(named: "social-blank")
+        cell.mediaButton7.image = UIImage(named: "social-blank")
         
         // Config tool bar
         /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
@@ -231,4 +258,28 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             return "Drag down or tap"
         }
     }
+    
+    
+    // MARK - Navigation 
+    
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // Find id 
+        if segue.identifier ==  "showSelectedCard"{
+            // Init destination VC
+            let destination = segue.destination as! CardSelectionViewController
+            // Set selected card
+            destination.selectedCard = selectedUserCard
+            print("Segue performed to show selected card")
+        }
+    }
+    
+    
 }
+
+
+
+
+
+

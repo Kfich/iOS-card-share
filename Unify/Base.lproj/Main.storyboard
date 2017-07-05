@@ -5592,7 +5592,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN8-aa-qpm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4154" y="2616"/>
+            <point key="canvasLocation" x="4224.8000000000002" y="2615.8920539730138"/>
         </scene>
         <!--Card Selection View Controller-->
         <scene sceneID="nqk-lr-CJE">
@@ -7349,7 +7349,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MgI-G0-99V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5106.3999999999996" y="3268.5157421289359"/>
+            <point key="canvasLocation" x="5105" y="3294"/>
         </scene>
         <!--Collection View Controller-->
         <scene sceneID="gZp-VV-fQI">
