@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             var onboardingVC: OnboardingViewController?
             
             
-            
+            // Configure view controller
             let firstPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen1"), buttonText: "Next") { () -> Void in
                 // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                 
@@ -42,60 +42,20 @@ class ViewController: UIViewController {
                 
             }
             
-           
-            
-            let secondPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen2"), buttonText: "Next") { () -> Void in
+           // Configure view controller
+            let secondPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen2"), buttonText: "") { () -> Void in
                 // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                 
-                onboardingVC?.moveNextPage()
+                // Perform segue async to avoid crashes
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "createProfileSegue", sender: self)
+                }
             }
             
-            let thirdPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen3"), buttonText: "Next") { () -> Void in
-                // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
-                
-                onboardingVC?.moveNextPage()
-            }
+            // Add Content controller to the main VC
+            onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "backgroundGradient"), contents: [firstPage, secondPage])
             
-            
-            let forthPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen4"), buttonText: "Get Started") { () -> Void in
-                // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
-                
-                
-                
-                onboardingVC?.dismiss(animated: true, completion: { () -> Void in
-                 
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
-                    }
-                    
-                })
-                
-               
-                
-               
-                
-                
-            }
-            
-            
-            firstPage.actionButton.backgroundColor =  UIColor(rgb: 0x29AAAA)
-            firstPage.actionButton.layer.cornerRadius = 8
-
-            secondPage.actionButton.backgroundColor =  UIColor(rgb: 0x29AAAA)
-            secondPage.actionButton.layer.cornerRadius = 8
-
-            
-            thirdPage.actionButton.backgroundColor =  UIColor(rgb: 0x29AAAA)
-            thirdPage.actionButton.layer.cornerRadius = 8
-
-            
-            forthPage.actionButton.backgroundColor =  UIColor(rgb: 0x29AAAA)
-            forthPage.actionButton.layer.cornerRadius = 8
-
-            
-            onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "backgroundGradient"), contents: [firstPage, secondPage, thirdPage, forthPage])
-            
-            
+            // Present the content controller
             self.present(onboardingVC!, animated: true, completion: nil)
             
         }
@@ -119,191 +79,6 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-    }
-    
-       
-    private func checkContactsAccess() {
-        switch CNContactStore.authorizationStatus(for: .contacts) {
-        // Update our UI if the user has granted access to their Contacts
-        case .authorized:
-            self.accessGrantedForContacts()
-            
-        // Prompt the user for access to Contacts if there is no definitive answer
-        case .notDetermined :
-            self.requestContactsAccess()
-            
-        // Display a message if the user has denied or restricted access to Contacts
-        case .denied,
-             .restricted:
-            let alert = UIAlertController(title: "Privacy Warning!",
-                                          message: "Permission was not granted for Contacts.",
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    
-    
-    
-    
-    private func requestContactsAccess() {
-        
-        store.requestAccess(for: .contacts) {granted, error in
-            if granted {
-                DispatchQueue.main.async {
-                    self.accessGrantedForContacts()
-                    return
-                }
-            }
-        }
-    }
-    
-    
-    
-    // This method is called when the user has granted access to their address book data.
-    private func accessGrantedForContacts() {
-        //Update UI for grated state.
-        //...
-        getContacts()
-    }
-    
-    
-    
-    
-    
-    func uploadContactRecords(contacts: [CNContact])
-    {
-        print(contacts)
-        
-        let json = [ "uid":"12345" , "contacts": contacts ] as [String : Any]
-        
-        let data = [AnyObject]()
-        
-     
-        
-        /*
-        for contact in contacts
-        {
-           
-            print("----------------------------")
-            
-            print(contact.givenName)
-            
-            data.append(givenName: givenName)
-            
-            for email in contact.emailAddresses
-            {
-                
-                
-                
-                print(email.label!)
-                print(email.value)
-                
-            }
-            
-            print("----------------------------")
-
-        }
-        */
-       
-        
-        /*
-        for contact in contacts as! [CNContact] {
-         
-        }
-        */
-        
-        
-        
-        /*
-        do {
-            
-        
-        let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) as! [String:Any]
-
-           print(jsonData)
-            
-        } catch let error as NSError {
-    
-            print(error)
-    
-        }
-    
-      
-        
-        
-        let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/importContactRecords")!
-        let session = URLSession.shared
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        
-        //let paramString = "fileUrl=\(fileUrl)&employeeId=hickmanTest&moveId=12345&notes=\(globalNotes!)&barcodeId=\(globalCode!)"
-        
-        //request.httpBody = contacts.data(using: String.Encoding.utf8)
-        
-        request.httpBody = jsonData
-
-        
-        let task = session.dataTask(with: request as URLRequest) {
-            (
-            data, response, error) in
-            
-            guard let data = data, let _:URLResponse = response, error == nil else {
-                print("error")
-                return
-            }
-            
-            let dataString =  String(data: data, encoding: String.Encoding.utf8)
-            print(dataString)
-            
-            
-           
-            
-            
-        }
-        
-        task.resume()
-        */
-    }
-    
-
-    
-    // Pull contacts and sync to server
-    
-    func retrieveContactsWithStore(store: CNContactStore) {
-        do {
-            let groups = try store.groups(matching: nil)
-            let predicate = CNContact.predicateForContactsInGroup(withIdentifier: groups[0].identifier)
-            //let predicate = CNContact.predicateForContactsMatchingName("John")
-            let keysToFetch = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactEmailAddressesKey] as [Any]
-            
-            let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
-            
-                self.uploadContactRecords(contacts: (contacts as AnyObject) as! [CNContact])
-            
-            
-        } catch {
-            print(error)
-        }
-    }
-    
-    
-    
-    func getContacts() {
-        let store = CNContactStore()
-        
-        if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
-            store.requestAccess(for: .contacts, completionHandler: { (authorized: Bool, error: NSError?) -> Void in
-                if authorized {
-                    self.retrieveContactsWithStore(store: store)
-                }
-            } as! (Bool, Error?) -> Void)
-        } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
-            self.retrieveContactsWithStore(store: store)
-        }
     }
     
     

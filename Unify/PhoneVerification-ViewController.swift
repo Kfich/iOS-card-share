@@ -13,6 +13,19 @@ import UIDropDown
 
 
 class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
+    
+    // Properties
+    // --------------------------------
+    
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
+    
+    // IBOutlets
+    // --------------------------------
 
     @IBOutlet weak var termsBox: UIView!
     
@@ -26,10 +39,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var modalFadeBox: UIView!
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
     
+    // Page Setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,30 +51,24 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         })
         
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)
-
-
+        // Set Input Delegate to self
         self.phoneNumberInput.delegate = self
+        
+        // Present keyboard on pageload
         phoneNumberInput.becomeFirstResponder()
         
+        // Add Action to textfield
         phoneNumberInput.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
         
-      
+        // Add Oberservers for keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
     }
     
     
-    
+    // Keyboard Delegate Methods
     func keyboardWillShow(notification: NSNotification) {
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
@@ -111,16 +116,31 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
-    func validate(value: String) -> Bool {
-        let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
-        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-        let result =  phoneTest.evaluate(with: value)
-        return result
+    // Add formatting action to textfield
+    func textFieldDidChange(_ textField: UITextField) {
+        
+        
+        if format(phoneNumber: textField.text! ) != nil
+        {
+            textField.text = format(phoneNumber: textField.text! )!
+        }
+        
     }
+    
+    
+    
+    // IBActions
+    // ----------------------------------------
+    
 
     @IBAction func sendConfirmationBtn_click(_ sender: Any) {
         
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
+        }
+        
+        
+        /*
         print(  validate(value: phoneNumberInput.text!) )
         
        if (phoneNumberInput.text!.isPhoneNumber == true)
@@ -143,14 +163,19 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         phoneNumberInput.layer.add(animation, forKey: "position")
         
         }
-        
+        */
     }
     
+    // Custom Methods
     
+    func validate(value: String) -> Bool {
+        let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+        let result =  phoneTest.evaluate(with: value)
+        return result
+    }
     
-    
-    func issuePinConfirmation()
-    {
+    func issuePinConfirmation(){
         
         let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/issuePin")!
         let session = URLSession.shared
@@ -186,10 +211,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         }
         
         task.resume()
-        
-        
-        
     }
+    
+    
     
     
     
@@ -203,17 +227,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         
             nextScene.uuid_token = sender as! String?
-    }
-    
-    
-    func textFieldDidChange(_ textField: UITextField) {
-        
-        
-        if format(phoneNumber: textField.text! ) != nil
-        {
-                textField.text = format(phoneNumber: textField.text! )!
-        }
-
     }
     
 }

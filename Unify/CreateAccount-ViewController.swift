@@ -20,8 +20,15 @@ class CreateAccountViewController: UIViewController {
     // -----------------------------------------------
     
     var store: CNContactStore!
-    
     var hasProfilePic = false
+    lazy var photo = MBPhotoPicker()
+    
+    // User object to assign form fields
+    var newUser = User()
+
+    
+    // IBOutlets
+    // -----------------------------------------------
     
     @IBOutlet weak var firstName: UITextField!
     
@@ -35,15 +42,34 @@ class CreateAccountViewController: UIViewController {
     
     @IBOutlet weak var profileImageContainerView: UIImageView!
     
-    lazy var photo = MBPhotoPicker()
-
-    // IBOutlets
+    
+    
+    // View Prep
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // error here
+        firstName.becomeFirstResponder()
+        
+        // Config Photo Picker
+        configurePhotoPicker()
+        
+        
+        // Notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
+        
+    }
+    
+    
+    
+    // IBActions
     // -----------------------------------------------
     
     
     @IBAction func AddProfilePicture_click(_ sender: Any) {
-        
-        
         
         photo.onPhoto = { (image: UIImage?) -> Void in
             print("Selected image")
@@ -74,9 +100,24 @@ class CreateAccountViewController: UIViewController {
     
     @IBAction func createAccountBtn_click(_ sender: Any) {
         
+        
+        newUser.firstName = firstName.text!
+        newUser.lastName = lastName.text!
+        newUser.emails.append(["profile_email": "\(String(describing: email.text))"])
+        newUser.profileImage = profileImageContainerView.image!
+        
+        //newUser.phoneNumbers.append(["profile_phone" : \String(describing: phone)])
+        
+        // Perfom segue
+        performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
+        
+        
+        /*
+        
         self.createAccountBtn.isEnabled = false
         
 
+        
         
         print("Processing Profile...", self.hasProfilePic)
         
@@ -161,68 +202,12 @@ class CreateAccountViewController: UIViewController {
             print(task)
            
         }
-
+        */
     }
     
     // Status bar
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
-    
-    
-    // View Prep
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        //Initial setup
-        photo.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
-        photo.alertTitle = "Select Profile Image"
-        photo.alertMessage = ""
-        photo.resizeImage = CGSize(width: 250, height: 250)
-        photo.allowDestructive = false
-        photo.allowEditing = false
-        photo.cameraDevice = .front
-        photo.cameraFlashMode = .auto
-        
-        
-        photo.alertTitle = "Select Profile Image"
-        photo.alertMessage = ""
-        photo.resizeImage = CGSize(width: 250, height: 250)
-        photo.allowDestructive = false
-        photo.allowEditing = false
-        photo.cameraDevice = .front
-        
-        photo.actionTitleLibrary = "Photo Library"
-        photo.actionTitleLastPhoto = "Last Photo"
-        photo.actionTitleTakePhoto = "Take Photo"
-        
-        photo.actionTitleOther = "Import From..."
-        
-        // error here 
-        firstName.becomeFirstResponder()
-        
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)
-        
-        
-        
-        print("Global UUID")
-        print(global_uuid)
-        
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-        
-        
     }
 
     
@@ -258,8 +243,18 @@ class CreateAccountViewController: UIViewController {
     // Custom Methods
     // ----------------------------------------
     
-    func processProfile(fileUrl: String)
-    {
+    func processProfile(fileUrl: String){
+        
+        // 1. Validate the textbox values
+        
+        // 2. Show loading indicator
+        
+        // 3. Upload to /user/create
+        
+        // 4. if success, perform the segue
+        
+        
+        /*
         global_givenName = "\(firstName.text!) \(lastName.text!)"
         global_email = email.text!
         
@@ -292,18 +287,21 @@ class CreateAccountViewController: UIViewController {
                 
                 // If check passes, show home tab bar
                 
+                /*
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
                 TabBarViewController
-                self.view.window?.rootViewController = homeViewController
+                self.view.window?.rootViewController = homeViewController*/
+                
+                
+                
+                
             }
             
         }
         
         task.resume()
-        
-        
-        
+        */
     }
     
     
@@ -337,10 +335,45 @@ class CreateAccountViewController: UIViewController {
         return body
     }
     
+    // Photo Picker Config
     
+    func configurePhotoPicker(){
+        
+        //Initial setup
+        photo.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
+        photo.alertTitle = "Select Profile Image"
+        photo.alertMessage = ""
+        photo.resizeImage = CGSize(width: 150, height: 150)
+        photo.allowDestructive = false
+        photo.allowEditing = false
+        photo.cameraDevice = .front
+        photo.cameraFlashMode = .auto
+        
+        photo.alertTitle = "Select Profile Image"
+        photo.alertMessage = ""
+        photo.resizeImage = CGSize(width: 150, height: 150)
+        photo.allowDestructive = false
+        photo.allowEditing = false
+        photo.cameraDevice = .front
+        
+        photo.actionTitleLibrary = "Photo Library"
+        photo.actionTitleLastPhoto = "Last Photo"
+        photo.actionTitleTakePhoto = "Take Photo"
+        
+        photo.actionTitleOther = "Import From..."
+        
+    }
     
     func generateBoundaryString() -> String {
         return "Boundary-\(NSUUID().uuidString)"
+    }
+    
+    // Navigation 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "phoneVerificationSegue" {
+            
+            
+        }
     }
     
 

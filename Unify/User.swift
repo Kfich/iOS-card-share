@@ -21,6 +21,12 @@ public class User{
     var emails = [[String : String]]()
     var phoneNumbers = [[String : String]]()
     
+    // Main profile image
+    
+    // **************************** Add these to inits ****************************
+    var profileImage : UIImage = UIImage()
+    var profileImageData : Data = Data()
+    
     // Cards suite
     var cards = [ContactCard]()
     

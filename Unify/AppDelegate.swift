@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Managing stored user sessions
-        
+        /*
         let storedUUID = UserDefaults.standard.string(forKey: "uuid")
         
         if ((storedUUID) != nil)
@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TabBarViewController
             window!.rootViewController = homeViewController
         }
-        
+        */
  
       
         
