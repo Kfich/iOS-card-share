@@ -10,8 +10,8 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 
 // Users
 - (NSURLSessionDataTask*)createUserCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
-- (NSURLSessionDataTask*)getUserCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock;
-- (NSURLSessionDataTask*)updateUserCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)getUserCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)updateUserCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
 // Cards
 - (NSURLSessionDataTask*)createCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;

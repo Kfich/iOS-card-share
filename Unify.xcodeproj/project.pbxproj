@@ -54,6 +54,7 @@
 		FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE451F0D667B006A997D /* PMAlertAction.swift */; };
 		FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE461F0D667B006A997D /* PMAlertController.swift */; };
 		FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB24EE471F0D667B006A997D /* PMAlertController.xib */; };
+		FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE4D1F0EB721006A997D /* UDWrapper.swift */; };
 		FB3738191EDDBA730074200F /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738181EDDBA730074200F /* ContactManager.swift */; };
 		FB37381B1EDDBB660074200F /* ContactProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */; };
 		FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3738261EDDCE970074200F /* TPKeyboardAvoidingScrollView.m */; };
@@ -190,6 +191,7 @@
 		FB24EE451F0D667B006A997D /* PMAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMAlertAction.swift; sourceTree = "<group>"; };
 		FB24EE461F0D667B006A997D /* PMAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMAlertController.swift; sourceTree = "<group>"; };
 		FB24EE471F0D667B006A997D /* PMAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMAlertController.xib; sourceTree = "<group>"; };
+		FB24EE4D1F0EB721006A997D /* UDWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDWrapper.swift; sourceTree = "<group>"; };
 		FB3738181EDDBA730074200F /* ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
 		FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactProfileViewController.swift; sourceTree = "<group>"; };
 		FB3738251EDDCE970074200F /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
@@ -512,6 +514,7 @@
 		FBF8712E1EE71B0E00243CE2 /* Class_Files */ = {
 			isa = PBXGroup;
 			children = (
+				FB24EE4D1F0EB721006A997D /* UDWrapper.swift */,
 				FBF8712C1EE71B0800243CE2 /* User.swift */,
 				FBF8712F1EE71B3D00243CE2 /* Transaction.swift */,
 				FBF871311EE71F0100243CE2 /* ContactCard.swift */,
@@ -733,6 +736,7 @@
 				1CB31C931E93C04D00A0C4A5 /* HomeCardTableCell.swift in Sources */,
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
 				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
+				FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */,
 				FB37382D1EDDD59D0074200F /* BusinessCardView.swift in Sources */,
 				1CB31C971E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift in Sources */,
 				FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */,

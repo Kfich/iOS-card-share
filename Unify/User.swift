@@ -18,8 +18,8 @@ public class User{
     var firstName : String = ""
     var lastName : String = ""
     var fullName : String = ""
-    var emails : [[String : String]]?
-    var phoneNumbers : [[String : String]]?
+    var emails = [[String : String]]()
+    var phoneNumbers = [[String : String]]()
     
     // Cards suite
     var cards = [ContactCard]()
@@ -38,11 +38,11 @@ public class User{
     
     init(snapshot: NSDictionary) {
         
-        userId = snapshot["uuid"] as! String
+        userId = snapshot.object(forKey: "unify_uuid") as? String ?? ""
         firstName = snapshot["first_name"] as? String ?? ""
         lastName = snapshot["last_name"] as? String ?? ""
-        emails = snapshot["emails"] as? [[String : String]]
-        phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]]
+        emails = snapshot["emails"] as? [[String : String]] ?? [["":""]]
+        phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
         scope = snapshot["scope"] as? String ?? ""
         
         
@@ -60,10 +60,10 @@ public class User{
         return [
             "first_name": firstName,
             "last_name": lastName,
-            "email": emails ?? [["" : ""]],
+            "email": emails,
             "uuid": userId,
-            "mobile_numbers" : phoneNumbers ?? [["number" : ""]],
-            "email" : emails ?? [["email":""]],
+            "mobile_numbers" : phoneNumbers,
+            "email" : emails,
             "scope" : scope
             
         ]
@@ -102,7 +102,7 @@ public class User{
     
     // Emails
     func getEmailRecords()->[[String : String]]{
-        return emails!
+        return emails
     }
     
     func setEmailRecords(emailRecords : [[String : String]]){
@@ -111,7 +111,7 @@ public class User{
     
     // Phone Numbers
     func getPhoneRecords()->[[String : String]]{
-        return phoneNumbers!
+        return phoneNumbers
     }
     
     func setPhoneRecords(phoneRecords : [[String : String]]){
@@ -126,9 +126,9 @@ public class User{
         print("UserId :" + userId)
         print("Name :" + fullName)
         print("Email :" )
-        print(emails ?? [["email" : ""]])
+        print(emails)
         print("Mobile Number : ")
-        print(phoneNumbers ?? ["number" : ""])
+        print(phoneNumbers)
         
         
     }

@@ -49,9 +49,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         self.view.backgroundColor = UIColor(patternImage: image)
 
-        
-        
-      
 
         self.phoneNumberInput.delegate = self
         phoneNumberInput.becomeFirstResponder()
@@ -147,10 +144,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         }
         
-        
-       
-        
-        
     }
     
     
@@ -210,12 +203,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         
             nextScene.uuid_token = sender as! String?
-        
-        
-        
     }
-
-    
     
     
     func textFieldDidChange(_ textField: UITextField) {
@@ -228,9 +216,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
     }
     
-    
-   
-
 }
 
 

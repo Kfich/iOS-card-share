@@ -18,6 +18,7 @@ import PulsingHalo
 import SwiftAddressBook
 import SwiftyJSON
 import Alamofire
+import AFNetworking
 
 
 class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocationManagerDelegate {
@@ -98,7 +99,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     @IBAction func addCard(_ sender: Any) {
         
         // Test user 
-        testUser()
+        // testUser()
         
         // Show add card vc
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -117,14 +118,21 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         currentUser.lastName = "Fich"
         currentUser.userId = "54321"
         currentUser.fullName = currentUser.getName()
-        currentUser.emails?.append(["email": "kfich7@aol.com"])
-        currentUser.emails?.append(["email": "kfich7@gmail.com"])
-        currentUser.phoneNumbers?.append(["phone": "1234567890"])
-        currentUser.phoneNumbers?.append(["phone": "0987654321"])
-        currentUser.phoneNumbers?.append(["phone": "6463597308"])
+        currentUser.emails.append(["email": "kfich7@aol.com"])
+        currentUser.emails.append(["email": "kfich7@gmail.com"])
+        currentUser.phoneNumbers.append(["phone": "1234567890"])
+        currentUser.phoneNumbers.append(["phone": "0987654321"])
+        currentUser.phoneNumbers.append(["phone": "6463597308"])
         currentUser.scope = "user"
         
-        let parameters = currentUser.toAnyObject()
+        
+        
+        let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
+        print("\n\n")
+        print(parameters)
+        
+        
+        //let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
         
         
         // Print to test
@@ -136,16 +144,23 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         print("\nUser As Dictionary")
         print(currentUser.toAnyObject())
         
+        //genericPostCall(parameters as NSDictionary)
+        
+        test(json: ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"])
         
         // Send current user to DB
         
-        /*
-        Connection(configuration: nil).createUserCall(parameters as! [AnyHashable : Any], completionBlock: { response, error in
+        
+        /*Connection(configuration: nil).getUserCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
                 print("\n\nConnection - Create User Response: \(response)\n\n")
                 
                 // Here you set the id for the user and resubmit the object
+                
+                //let user = User(snapshot: response as! NSDictionary)
+                //user.printUser()
+                
                 
                 
             } else {
@@ -153,10 +168,90 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(error)\n\n")
             }
-        })
-        */
-        
+        })*/
     }
+    
+    func test(json: [String : Any]) {
+        // prepare json data
+        //let json: [String: Any] = ["data": ["title": "ABC", "dict": ["1":"First", "2":"Second"]]]
+        
+        
+        //let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        
+        // create post request
+        do {
+            
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            print("\n\n\nJSON DATA")
+            print(jsonData)
+            
+            // create post request
+            let url = NSURL(string: "https://project-unify-node-server.herokuapp.com/user/get")!
+            let request = NSMutableURLRequest(url: url as URL)
+            request.httpMethod = "POST"
+            
+            // insert json data to the request
+            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            
+            print("\n\n\n HTTP BODY \(String(describing: request.httpBody))\n\n")
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+                if error != nil{
+                    print("Error -> \(String(describing: error))")
+                    return
+                }
+                
+                do {
+                    let result = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:AnyObject]
+                    
+                    print("Result -> \(String(describing: result))")
+                    
+                    
+                    
+                    
+                    //let user = User(snapshot: result! as NSDictionary)
+                    //user.printUser()
+                    
+                } catch {
+                    print("Error -> \(error)")
+                }
+            }
+            
+            task.resume()
+            
+        } catch {
+            print(error)
+        }
+
+    }
+    
+    
+    func genericPostCall(_ params : NSDictionary){
+        
+        let urlString = "https://project-unify-node-server.herokuapp.com/user/create"
+        
+        
+        //let dictionary = ["token": deviceToken, "user_id": userId, "message": "Your appointment has been dispatched. \n Status: Processing"]
+        
+        let manager = AFHTTPSessionManager()
+        manager.requestSerializer = AFJSONRequestSerializer()
+        manager.responseSerializer = AFHTTPResponseSerializer()
+        manager.post(urlString, parameters: params, success:
+            {
+                requestOperation, response in
+                
+                let result = NSString(data: (response as! NSData) as Data, encoding: String.Encoding.utf8.rawValue)!
+                
+                print(result)
+        },
+                     failure:
+            {
+                requestOperation, error in
+                print(error)
+        })
+    }
+    
     
     // Testing --------------------------------
     

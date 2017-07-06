@@ -38,11 +38,11 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kCreateUser];
 }
 
-- (NSURLSessionDataTask*)updateUserCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
+- (NSURLSessionDataTask*)updateUserCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUserUpdate];
 }
 
-- (NSURLSessionDataTask*)getUserCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
+- (NSURLSessionDataTask*)getUserCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetUser];
 }
 
