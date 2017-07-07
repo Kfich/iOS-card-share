@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource {
+class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
     
     // Properties
     // --------------------------------------------
@@ -56,22 +57,116 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     }
     
     @IBAction func smsSelected(_ sender: AnyObject) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)
+        
+        let composeVC = MFMessageComposeViewController()
+        
+        if(MFMessageComposeViewController .canSendText()){
+            
+            composeVC.messageComposeDelegate = self
+            
+            // 6468251231
+            
+            // Configure the fields of the interface.
+            composeVC.recipients = ["6463597308"]
+            composeVC.body = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: selectedCard.cardHolderName))\n\(String(describing: selectedCard.cardProfile.emails[0]["email"]))\n\(String(describing: selectedCard.cardProfile.title)))"
+            
+            // Present the view controller modally.
+            self.present(composeVC, animated: true, completion: nil)
+            
+        }
         
     }
     
     @IBAction func emailSelected(_ sender: AnyObject) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)
+        // Create instance of controller
+        let mailComposeViewController = configuredMailComposeViewController()
+        
+        // Check if deviceCanSendMail
+        if MFMailComposeViewController.canSendMail() {
+            
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
         
     }
     @IBAction func callSelected(_ sender: AnyObject) {
         
         // configure call
+        
     }
+    
+    @IBAction func sendTextBtn_click(_ sender: Any) {
+        
+        /*
+         let composeVC = MFMessageComposeViewController()
+         if(MFMessageComposeViewController .canSendText())
+         {
+         
+         composeVC.messageComposeDelegate = self
+         
+         // Configure the fields of the interface.
+         composeVC.recipients = ["6468251231"]
+         composeVC.body = "Follow up from Unify!"
+         
+         // Present the view controller modally.
+         self.present(composeVC, animated: true, completion: nil)
+         
+         }
+         */
+    }
+    
+    @IBAction func sendEmailBtn_click(_ sender: Any) {
+        
+        /*
+         let mailClass:AnyClass?=NSClassFromString("MFMailComposeViewController")
+         if(mailClass != nil)
+         {
+         if((mailClass?.canSendMail()) != nil)
+         {
+         displayComposerSheet()
+         }
+         else
+         {
+         launchMailAppOnDevice()
+         }
+         }
+         else
+         {
+         launchMailAppOnDevice()
+         }
+         
+         */
+    }
+
+    
+    // Email Composer Delegate Methods
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        
+        // Create Instance of controller
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        // Create Message
+        mailComposerVC.setToRecipients(["kfich7@gmail.com"])
+        mailComposerVC.setSubject("Greetings - Let's Connect")
+        mailComposerVC.setMessageBody("Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: selectedCard.cardHolderName))\n\(String(describing: selectedCard.cardProfile.emails[0]["email"]))\n\(String(describing: selectedCard.cardProfile.title)))", isHTML: false)
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    
     
     
     
@@ -159,6 +254,15 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         return cell
     }
+    
+    // Message Composer Delegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        // Make checks here for
+        controller.dismiss(animated: true) { 
+            print("Message composer dismissed")
+        }
+    }
 
     
     
@@ -174,7 +278,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Populate label fields
         nameLabel.text = selectedCard.cardHolderName
         phoneLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"]
-        emailLabel.text = selectedCard.cardProfile.emails[0]["phone"]
+        emailLabel.text = selectedCard.cardProfile.emails[0]["email"]
         titleLabel.text = selectedCard.cardProfile.title
         
         // Here, parse data to populate tableview
@@ -210,9 +314,17 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // ** Email and call inverted
         smsButton.image = UIImage(named: "btn-chat-blue")
         callButton.image = UIImage(named: "btn-message-blue")
-        emailButton.image = UIImage(named: "btn-call-blue")
+        
+        // Hide call button
+        emailButton.image = UIImage(named: "")
+        emailButton.isEnabled = false
+        outreachCallButton.isEnabled = false
+        outreachCallButton.title = ""
+        
     }
 
+    
+    
     
     
     /*

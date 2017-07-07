@@ -17,8 +17,10 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     // Properties
     // --------------------------------
     
+    var currentUser = User()
     
     
+    // Bar Styling
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -45,11 +47,14 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Test to see if passed
+        print("PHONE verification USER")
+        currentUser.printUser()
+        
         
         UIView.animate(withDuration: 1.5, animations: {
             self.modalFadeBox.alpha = 0.7
         })
-        
         
         // Set Input Delegate to self
         self.phoneNumberInput.delegate = self
@@ -75,7 +80,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             if view.frame.origin.y == 0{
                 let height = keyboardSize.height
                 
-                print("\n\n", self.sendConfirmationBtn.frame.origin.y)
+                //print("\n\n", self.sendConfirmationBtn.frame.origin.y)
 
                 
                 self.sendConfirmationBtn.frame.origin.y = self.view.frame.height - self.sendConfirmationBtn.frame.height - height
@@ -87,9 +92,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
              
                 self.UsePhoneTxtBox.frame.origin.y =  self.phoneVerBox.frame.origin.y - 40
                 
-                print("\n\n", self.sendConfirmationBtn.frame.origin.y)
-                print(self.termsBox.frame.origin.y )
-                print(self.phoneVerBox.frame.origin.y)
+                //print("\n\n", self.sendConfirmationBtn.frame.origin.y)
+                //print(self.termsBox.frame.origin.y )
+                //print(self.phoneVerBox.frame.origin.y)
                 
 
                 
@@ -135,10 +140,13 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func sendConfirmationBtn_click(_ sender: Any) {
         
+        // Assign phone number to currentUser Object
+        currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
+        
+        
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
         }
-        
         
         /*
         print(  validate(value: phoneNumberInput.text!) )
@@ -224,9 +232,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         print(sender)
         
         let nextScene =  segue.destination as! PhoneVerificationPinViewController
-        
-        
-            nextScene.uuid_token = sender as! String?
+        nextScene.currentUser = self.currentUser
+        // Test the object has proper values
+        currentUser.printUser()
     }
     
 }

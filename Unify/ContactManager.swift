@@ -178,8 +178,6 @@ class ContactManager{
  
     }
     
-    
-    
     // Pull contacts and sync to server
     
     func retrieveContactsWithStore(store: CNContactStore) {

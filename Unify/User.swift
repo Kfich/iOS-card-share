@@ -74,6 +74,24 @@ public class User{
             
         ]
     }
+    
+    // Generate random string for transaction id
+    func randomString(length: Int) -> String {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        
+        return randomString
+    }
+    
 
     // Scope
     func getScope()->String{
@@ -111,8 +129,8 @@ public class User{
         return emails
     }
     
-    func setEmailRecords(emailRecords : [[String : String]]){
-        emails = emailRecords
+    func setEmailRecords(emailRecords : [String : String]){
+        emails.append(emailRecords)
     }
     
     // Phone Numbers
@@ -120,8 +138,8 @@ public class User{
         return phoneNumbers
     }
     
-    func setPhoneRecords(phoneRecords : [[String : String]]){
-        phoneNumbers = phoneRecords
+    func setPhoneRecords(phoneRecords : [String : String]){
+        phoneNumbers.append(phoneRecords)
     }
     // Testing
     

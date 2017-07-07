@@ -7,13 +7,15 @@
 //
 
 import UIKit
+import MessageUI
 
 
-class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, ISHPullUpStateDelegate, UICollectionViewDelegate, UICollectionViewDataSource{
+class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, ISHPullUpStateDelegate, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate{
     
     // Properties
     // ---------------------------------------
     var selectedUserCard = ContactCard()
+    var selectedCardIndex = 0
     
     
     let reuseIdentifier = "cardViewCell"
@@ -28,6 +30,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     @IBOutlet var cardCollectionView: UICollectionView!
     
+    @IBOutlet var pageControl: UIPageControl!
     
     @IBOutlet var topView: UIView!
     
@@ -72,9 +75,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         bgImage.contentMode = .scaleToFill
         self.cardCollectionView.backgroundView = bgImage
         
+        // Add card to whatever the count is 
+        //ContactManager.sharedManager.currentUserCards.append(ContactCard())
         
         // Add observers for notifications 
         addObservers()
+        
+        // Configure page control dots
         
     }
     
@@ -87,6 +94,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.newCardAdded), name: NSNotification.Name(rawValue: "CardCreated"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.addNewCard), name: NSNotification.Name(rawValue: "CreateCardSelected"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.showEmailCard(_:)), name: NSNotification.Name(rawValue: "EmailCardFromRadar"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.showSMSCard(_:)), name: NSNotification.Name(rawValue: "SMSCardFromRadar"), object: nil)
     }
     
     // Selector for observer function
@@ -94,8 +107,25 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         print("New Card Added")
         print("\(ContactManager.sharedManager.currentUserCards.count)")
+        
+        // Set background image on collectionview
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        self.cardCollectionView.backgroundView = bgImage
+        
         // Refresh table data
         cardCollectionView.reloadData()
+    }
+    
+    // Func to present addCardVC
+    func addNewCard() {
+        
+        // Show add new card vc
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
+        self.present(controller, animated: true, completion: nil)
+        
     }
     
     
@@ -117,11 +147,20 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.cards.count
-        return ContactManager.sharedManager.currentUserCards.count
+        if ContactManager.sharedManager.currentUserCards.count > 0{
+            return ContactManager.sharedManager.currentUserCards.count
+        }else{
+            emptyMessage(collectionView: cardCollectionView)
+            return 0
+        }
     }
     
     // make a cell for each cell index path
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        // Set Page Control 
+        self.pageControl.currentPage = indexPath.row
+        
         
         // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
@@ -129,46 +168,116 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         //cell.backgroundColor = UIColor.clear
         
         
-        /*if currentUserCards.count == 0{
-            let addNew = UIImage(named: "add-card")
+        if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
             
-        }*/
-        // Find current card index
-        let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            // Add card to whatever the count is
+            ContactManager.sharedManager.currentUserCards.append(ContactCard())
+            
+            collectionView.cellForItem(at: indexPath)?.backgroundView = createAddNewCell()
+            
+            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
+            containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+            
+            // Create section header buttons
+            let imageName = "add-card"
+            let image = UIImage(named: imageName)
+            let imageView = UIImageView(image: image!)
+            imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
+            
+            // Add subviews
+            containerView.addSubview(imageView)
+            
+            return cell
+        }else{
+            
+            // Find current card index
+            let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            
+            // Populate text field data
+            
+            if currentCard.cardHolderName != nil {
+                cell.cardDisplayName.text = currentCard.cardHolderName
+            }
+            if currentCard.cardProfile.title != nil {
+                cell.cardTitle.text = currentCard.cardProfile.getTitle()
+            }
+            if currentCard.cardProfile.emails[0]["email"] != nil {
+                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
+            }
+            if currentCard.cardProfile.phoneNumbers[0]["phone"] != nil {
+                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
+            }
+            if let imageData = currentCard.cardProfile.images[0]["image_data"] {
+                // Populate image view
+                cell.cardImage.image = UIImage(data: imageData as! Data)
+            }
+            if currentCard.cardName != nil{
+                cell.cardName.text = currentCard.cardName
+            }
+            
+            
+            // Config social link buttons
+            // Do that here
+            
+            
+            // Configure the card view
+            configureViews(cell: cell)
+            
+            return cell
+            
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
+        self.pageControl.currentPage = indexPath.row
         
+        if ContactManager.sharedManager.currentUserCards.count == 0{
+            
+            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
+            containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+            
+            // Create section header buttons
+            let imageName = "add-card"
+            let image = UIImage(named: imageName)
+            let imageView = UIImageView(image: image!)
+            imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
+            
+            // Add subviews
+            containerView.addSubview(imageView)
+            
+            cell.addSubview(containerView)
+        }
         
-        // Populate text field data
-        cell.cardDisplayName.text = currentCard.cardHolderName
-        cell.cardTitle.text = currentCard.cardProfile.getTitle()
-        cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
-        cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"]
-        
-        // Populate image view
-        let imageData = currentCard.cardProfile.images[0]["image_data"]
-        cell.cardImage.image = UIImage(data: imageData as! Data)
-        
-        // Config social link buttons
-        // Do that here
-        
-        
-        // Configure the card view
-        configureViews(cell: cell)
-        
-        return cell
     }
     
     // MARK: - UICollectionViewDelegate protocol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
-        print("You selected cell #\(indexPath.item)!")
         
-        // Set selected card object 
-        selectedUserCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
         
-        // Show Selected Card segue
-        performSegue(withIdentifier: "showSelectedCard", sender: self)
+        
+        if ContactManager.sharedManager.currentUserCards.count == 0{
+            
+            // Show add new card
+            
+            // Show add card vc
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
+            self.present(controller, animated: true, completion: nil)
+            
+        }else{
+            
+            print("You selected cell #\(indexPath.item)!")
+            
+            // Set selected card object
+            selectedUserCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            
+            // Show Selected Card segue
+            performSegue(withIdentifier: "showSelectedCard", sender: self)
+        }
+        
     }
 
     
@@ -184,12 +293,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // we "calculate" the cached value here
         // and perform the snapping in ..targetHeightForBottomViewController..
         //halfWayPoint = totalHeight / 2.0
-        return 225
+        return 260
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, minimumHeightForBottomViewController bottomVC: UIViewController) -> CGFloat {
          /*topView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height;*/
-        return 225
+        return 260
         
     }
     
@@ -211,6 +320,64 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Custom Methods
     
+    func createAddNewCell() -> UIView{
+        
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cardCollectionView.frame.width + 5, height: cardCollectionView.frame.height + 5))
+        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        //containerView.layer.borderColor = UIColor.clear as? CGColor
+        
+        // Create section header buttons
+        let imageName = "add-card"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        imageView.frame = CGRect(x: 0, y: 0, width: cardCollectionView.frame.width, height: cardCollectionView.frame.height)
+        
+        // Add gesture action
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(RadarPullUpCardViewController.addNewCard))
+        
+        // 2. add the gesture recognizer to a view
+        containerView.addGestureRecognizer(tapGesture)
+        
+        
+        // Add subviews
+        containerView.addSubview(imageView)
+
+        return containerView
+    }
+    
+    
+    
+    // Handle empty collection view 
+    func emptyMessage(collectionView:UICollectionView) {
+        
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width + 5, height: collectionView.frame.height + 5))
+        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
+        // Create section header buttons
+        let imageName = "add-card"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        imageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
+        
+        // Add gesture action
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(RadarPullUpCardViewController.addNewCard))
+        
+        // 2. add the gesture recognizer to a view
+        containerView.addGestureRecognizer(tapGesture)
+        
+        
+        // Add subviews
+        containerView.addSubview(imageView)
+        collectionView.backgroundView = containerView
+        
+        
+        //collectionView.backgroundView = messageLabel;
+    }
+
+    
+    
     func configureViews(cell: CardCollectionViewCell){
         // Add radius config & border color
         
@@ -219,6 +386,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardWrapperView.clipsToBounds = true
         cell.cardWrapperView.layer.borderWidth = 1.5
         cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        
+        // Round edges at top of card cells
+        cell.cardHeaderView.layer.cornerRadius = 8.0
+        cell.cardHeaderView.clipsToBounds = true
+        cell.cardHeaderView.layer.borderWidth = 1.5
+        cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
+        
         
         cell.mediaButton1.image = UIImage(named: "social-blank")
         cell.mediaButton2.image = UIImage(named: "social-blank")
@@ -266,6 +440,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // Find id 
+        
         if segue.identifier ==  "showSelectedCard"{
             // Init destination VC
             let destination = segue.destination as! CardSelectionViewController
@@ -275,10 +450,149 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
     }
     
+    // Message Composer Delegate
+    
+    func showEmailCard(_ sender: Any) {
+        
+        print("EMAIL CARD SELECTED")
+        
+        // Send post notif
+        // Create instance of controller
+        let mailComposeViewController = configuredMailComposeViewController()
+        
+        // Check if deviceCanSendMail
+        if MFMailComposeViewController.canSendMail() {
+            
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+        
+    }
+    
+    func showSMSCard(_ sender: Any) {
+        // Set Selected Card
+        
+        //selectedCardIndex = cardCollectionView.inde
+        
+        selectedUserCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
+        
+        print("SMS CARD SELECTED")
+        // Send post notif
+        
+        let composeVC = MFMessageComposeViewController()
+        if(MFMessageComposeViewController .canSendText()){
+            
+            composeVC.messageComposeDelegate = self
+            
+            // 6468251231
+            
+            // Configure the fields of the interface.
+            composeVC.recipients = ["6463597308"]
+            
+            
+            selectedUserCard.printCard()
+            
+            composeVC.body = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: self.selectedUserCard.cardHolderName))\n\(String(describing: self.selectedUserCard.cardProfile.emails[0]["email"]))\n\(String(describing: self.selectedUserCard.cardProfile.title)))"
+            
+            // Present the view controller modally.
+            self.present(composeVC, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
+    
+    // Email Composer Delegate Methods
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        
+        // Set Selected Card
+        selectedUserCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
+        
+        // Create Instance of controller
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        // Create Message
+        mailComposerVC.setToRecipients(["kfich7@gmail.com"])
+        mailComposerVC.setSubject("Greetings - Let's Connect")
+        
+        selectedUserCard.printCard()
+        
+        
+        /*mailComposerVC.setMessageBody("Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: ContactManager.sharedManager.selectedCard.cardHolderName))\n\(String(describing: ContactManager.sharedManager.selectedCard.cardProfile.emails[0]["email"]))\n\(String(describing: ContactManager.sharedManager.selectedCard.cardProfile.title)))", isHTML: false)*/
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    // Message Composer Delegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        // Make checks here for
+        controller.dismiss(animated: true) {
+            print("Message composer dismissed")
+        }
+    }
+    
     
 }
 
+/*
+class CollectionViewHelper {
+    
+    class func EmptyMessage(collectionView:UICollectionView) {
+        
+        /*let messageLabel = UILabel(frame: CGRect(0,0, collectionView.frame.width, collectionView.frame.height))
+        messageLabel.text = message
+        messageLabel.textColor = UIColor.black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
+        messageLabel.sizeToFit()*/
+        
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width + 5, height: collectionView.frame.height + 5))
+        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
+        // Create section header buttons
+        let imageName = "add-card"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        imageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
+        
+        // Add gesture action 
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CollectionViewHelper.postNotification))
+        
+        // 2. add the gesture recognizer to a view
+        containerView.addGestureRecognizer(tapGesture)
+        
+        
+        // Add subviews
+        containerView.addSubview(imageView)
+        collectionView.backgroundView = containerView
 
+        
+        //collectionView.backgroundView = messageLabel;
+    }
+    
+    @objc func postNotification() {
+        // Notify the VC that card selection selected
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CreateCardSelected"), object: self)
+    }
+    
+}
+*/
 
 
 

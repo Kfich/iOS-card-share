@@ -102,6 +102,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     // IBActions
     // --------------------------------------------
     
+    
+    @IBAction func cancelCardCreation(_ sender: Any) {
+        // Drop modal view
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     // Adding prof pic
     
     @IBAction func selectProfileImage(_ sender: Any) {

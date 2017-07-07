@@ -42,6 +42,7 @@ class CreateAccountViewController: UIViewController {
     
     @IBOutlet weak var profileImageContainerView: UIImageView!
     
+    @IBOutlet var cardWrapperView: UIView!
     
     
     // View Prep
@@ -49,11 +50,17 @@ class CreateAccountViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set button on top of keyboard
+        self.email.inputAccessoryView = createAccountBtn
+        
         // error here
         firstName.becomeFirstResponder()
         
         // Config Photo Picker
         configurePhotoPicker()
+        
+        // Configure views 
+        configureViews()
         
         
         // Notifications
@@ -101,16 +108,56 @@ class CreateAccountViewController: UIViewController {
     @IBAction func createAccountBtn_click(_ sender: Any) {
         
         
-        newUser.firstName = firstName.text!
-        newUser.lastName = lastName.text!
-        newUser.emails.append(["profile_email": "\(String(describing: email.text))"])
-        newUser.profileImage = profileImageContainerView.image!
+        print(firstName.text!)
+        print(lastName.text!)
         
+        newUser.emails.append(["profile_email": email.text!])
+        newUser.profileImage = profileImageContainerView.image!
+        newUser.setName(first: firstName.text!, last: lastName.text!)
+        newUser.fullName = newUser.getName()
+        
+        // Assign a temp uuid
+        newUser.userId = newUser.randomString(length: 15)
+        
+        // Print to test
+        newUser.printUser()
+        
+        
+        
+        performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
+        
+        //let parameters = ["data": newUser.toAnyObject()]
+        
+        
+        
+        // Create User Objects
+        /*Connection(configuration: nil).createUserCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Create User Response: \(response)\n\n")
+                
+                // Here you set the id for the user and resubmit the object
+                
+                let dictionary : Dictionary = response as! [String : Any]
+                self.newUser.userId = dictionary["uuid"] as! String
+                
+                self.newUser.printUser()
+                
+                
+                //performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
+
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - Create User Error: \(error)\n\n")
+            }
+        
+        })*/
         //newUser.phoneNumbers.append(["profile_phone" : \String(describing: phone)])
         
         // Perfom segue
-        performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
-        
         
         /*
         
@@ -219,10 +266,10 @@ class CreateAccountViewController: UIViewController {
             if view.frame.origin.y == 0{
                 let height = keyboardSize.height
                 
-                print("\n\n", self.createAccountBtn.frame.origin.y)
-                print(height)
+                //print("\n\n", self.createAccountBtn.frame.origin.y)
+                //print(height)
                 
-                self.createAccountBtn.frame.origin.y = self.view.frame.height - self.createAccountBtn.frame.height - height
+               // self.createAccountBtn.frame.origin.y = self.view.frame.height - self.createAccountBtn.frame.height - height
             }
             
         }
@@ -233,7 +280,7 @@ class CreateAccountViewController: UIViewController {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y != 0 {
                 let height = keyboardSize.height
-                self.createAccountBtn.frame.origin.y = self.view.frame.height - self.createAccountBtn.frame.height - height
+                //self.createAccountBtn.frame.origin.y = self.view.frame.height - self.createAccountBtn.frame.height - height
             }
             
         }
@@ -242,6 +289,18 @@ class CreateAccountViewController: UIViewController {
     
     // Custom Methods
     // ----------------------------------------
+    
+    func configureViews() {
+        
+        // Configure cards
+        self.cardWrapperView.layer.cornerRadius = 12.0
+        self.cardWrapperView.clipsToBounds = true
+        self.cardWrapperView.layer.borderWidth = 2.0
+        self.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+
+    }
+    
+    
     
     func processProfile(fileUrl: String){
         
@@ -343,7 +402,7 @@ class CreateAccountViewController: UIViewController {
         photo.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
         photo.alertTitle = "Select Profile Image"
         photo.alertMessage = ""
-        photo.resizeImage = CGSize(width: 150, height: 150)
+        photo.resizeImage = CGSize(width: profileImageContainerView.frame.width, height: profileImageContainerView.frame.height)
         photo.allowDestructive = false
         photo.allowEditing = false
         photo.cameraDevice = .front
@@ -351,7 +410,7 @@ class CreateAccountViewController: UIViewController {
         
         photo.alertTitle = "Select Profile Image"
         photo.alertMessage = ""
-        photo.resizeImage = CGSize(width: 150, height: 150)
+        photo.resizeImage = CGSize(width: profileImageContainerView.frame.width, height: profileImageContainerView.frame.height)
         photo.allowDestructive = false
         photo.allowEditing = false
         photo.cameraDevice = .front
@@ -372,7 +431,10 @@ class CreateAccountViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "phoneVerificationSegue" {
             
-            
+            let next = segue.destination as! PhoneVerificationViewController
+            // Pass user obj
+            next.currentUser = self.newUser
+            print("Segue Performed for phone verif")
         }
     }
     

@@ -43,13 +43,16 @@ class ViewController: UIViewController {
             }
             
            // Configure view controller
-            let secondPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen2"), buttonText: "") { () -> Void in
+            let secondPage = OnboardingContentViewController(title: "", body: "", image: UIImage(named: "onboard_screen2"), buttonText: "Get Started") { () -> Void in
                 // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                 
-                // Perform segue async to avoid crashes
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "createProfileSegue", sender: self)
-                }
+                // ************ Set up a postnotification to the VC to dismiss onboardingVC ******************
+                // Then perform segue to the create profile
+                
+                
+                
+                //onboardingVC?.performSegue(withIdentifier: "createProfileSegue", sender: self)
+                
             }
             
             // Add Content controller to the main VC
@@ -59,20 +62,11 @@ class ViewController: UIViewController {
             self.present(onboardingVC!, animated: true, completion: nil)
             
         }
-
-      
-        
     }
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        
         //let nextScene =  segue.destination as! PhoneVerificationViewController
-        
-        
-        
-       
         
     }
     

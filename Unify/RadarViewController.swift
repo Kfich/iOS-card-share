@@ -81,6 +81,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Setup views 
         configureViews()
         
+        // See if current user pass
+        ContactManager.sharedManager.currentUser.printUser()
         
         
     }
@@ -1042,7 +1044,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func configureViews(){
         // Add radius config & border color
-        smsButton.layer.cornerRadius = 27.0
+       /* smsButton.layer.cornerRadius = 27.0
         smsButton.clipsToBounds = true
         smsButton.layer.borderWidth = 1.0
         smsButton.layer.borderColor = UIColor.lightGray.cgColor
@@ -1051,7 +1053,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         emailButton.layer.cornerRadius = 27.0
         emailButton.clipsToBounds = true
         emailButton.layer.borderWidth = 1.0
-        emailButton.layer.borderColor = UIColor.lightGray.cgColor
+        emailButton.layer.borderColor = UIColor.lightGray.cgColor*/
     }
 
     

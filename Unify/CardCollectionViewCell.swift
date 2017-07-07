@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-
-class CardCollectionViewCell: UICollectionViewCell {
+class CardCollectionViewCell: UICollectionViewCell{
     
     // Properties
     // ----------------------------------
@@ -52,18 +52,26 @@ class CardCollectionViewCell: UICollectionViewCell {
     @IBOutlet var mediaButton6: UIBarButtonItem!
     @IBOutlet var mediaButton7: UIBarButtonItem!
     
+    // View that holds card name and send buttons 
+    @IBOutlet var cardHeaderView: UIView!
+    
     
     
     // Init 
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        
     }
     
     
+    @IBAction func showEmailCard(_ sender: Any) {
+       // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "EmailCardFromRadar"), object: self)
+    }
     
-    
-    
+    @IBAction func showSMSCard(_ sender: Any) {
+        // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SMSCardFromRadar"), object: self)
+    }
+
 }
