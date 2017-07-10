@@ -69,6 +69,51 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Make sure locked
         pullUpController.isLocked = true
         
+        
+        // Find cards from UserDefaults
+        
+        /*if let data = UserDefaults.standard.object(forKey: "contact_cards") as? NSData {
+            
+            
+            let cards = NSKeyedUnarchiver.unarchiveObject(with: data as Data) as! [ContactCard]
+            
+            ContactManager.sharedManager.currentUserCards = cards
+            for card in ContactManager.sharedManager.currentUserCards{
+                card.printCard()
+            }
+            cardCollectionView.reloadData()
+            print("User has cards")
+            print(cards)
+        }else{
+            print("User has no cards")
+        }*/
+        
+        
+        if let cards = UDWrapper.getArray("contact_cards"){
+            // Assign array to contact manager object
+
+            ContactManager.sharedManager.currentUserCardsDictionaryArray = cards as! [[NSDictionary]]
+            // Reload table data
+            for card in ContactManager.sharedManager.currentUserCardsDictionaryArray {
+                let contactCard = ContactCard(snapshot: card[0])
+                //let profile = CardProfile(snapshot: card[0]["card_profile"])
+                
+                //print(profile)
+                print("PROFILE PRINTING")
+                ContactManager.sharedManager.currentUserCards.append(contactCard)
+                contactCard.printCard()
+            }
+            
+            cardCollectionView.reloadData()
+            
+            // 
+            print("User has cards!")
+            
+        }else{
+            print("User has no cards")
+        }
+        
+        
         // Set background image on collectionview
         let bgImage = UIImageView();
         bgImage.image = UIImage(named: "backgroundGradient");
@@ -147,6 +192,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // MARK: - UICollectionViewDataSource protocol
     
+    //
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.cards.count
         if ContactManager.sharedManager.currentUserCards.count > 0{
@@ -203,14 +251,15 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             if currentCard.cardProfile.title != nil {
                 cell.cardTitle.text = currentCard.cardProfile.getTitle()
             }
-            if currentCard.cardProfile.emails[0]["email"] != nil {
+            if currentCard.cardProfile.emails.count > 0 {
                 cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
             }
-            if currentCard.cardProfile.phoneNumbers[0]["phone"] != nil {
-                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
+            if currentCard.cardProfile.phoneNumbers.count > 0 {
+                cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"]
             }
-            if let imageData = currentCard.cardProfile.images[0]["image_data"] {
+            if currentCard.cardProfile.images.count > 0 {
                 // Populate image view
+                let imageData = currentCard.cardProfile.images[0]["image_data"]
                 cell.cardImage.image = UIImage(data: imageData as! Data)
             }
             if currentCard.cardName != nil{
@@ -252,6 +301,41 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
         
     }
+    // center content 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        //Where elements_count is the count of all your items in that
+        //Collection view...
+        let cellCount = CGFloat(ContactManager.sharedManager.currentUserCards.count)
+        
+        //If the cell count is zero, there is no point in calculating anything.
+        if cellCount > 0 {
+            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+            let cellWidth = flowLayout.itemSize.width + flowLayout.minimumInteritemSpacing
+            
+            //20.00 was just extra spacing I wanted to add to my cell.
+            let totalCellWidth = cellWidth*cellCount + 20.00 * (cellCount-1)
+            let contentWidth = cardCollectionView.frame.size.width - collectionView.contentInset.left - cardCollectionView.contentInset.right
+            
+            if (totalCellWidth < contentWidth) {
+                //If the number of cells that exists take up less room than the
+                //collection view width... then there is an actual point to centering them.
+                
+                //Calculate the right amount of padding to center the cells.
+                let padding = (contentWidth - totalCellWidth) / 2.0
+                return UIEdgeInsetsMake(0, padding, 0, padding)
+            } else {
+                //Pretty much if the number of cells that exist take up
+                //more room than the actual collectionView width, there is no
+                // point in trying to center them. So we leave the default behavior.
+                return UIEdgeInsetsMake(0, 40, 0, 40)
+            }
+        }
+        
+        return UIEdgeInsets.zero
+    }
+    
+    
     
     // MARK: - UICollectionViewDelegate protocol
     
@@ -488,14 +572,34 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             composeVC.messageComposeDelegate = self
             
             // 6468251231
-            
             // Configure the fields of the interface.
             composeVC.recipients = ["6463597308"]
+            
+            // Check for nil vals
+            
+            var name = ""
+            var phone = ""
+            var email = ""
+            var title = ""
+            
+            // Populate label fields
+            if selectedUserCard.cardHolderName != "" || selectedUserCard.cardHolderName != nil{
+                name = selectedUserCard.cardHolderName!
+            }
+            if selectedUserCard.cardProfile.phoneNumbers.count > 0{
+                phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]!
+            }
+            if selectedUserCard.cardProfile.emails.count > 0{
+                email = selectedUserCard.cardProfile.emails[0]["email"]!
+            }
+            if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
+                title = self.selectedUserCard.cardProfile.title!
+            }
             
             
             selectedUserCard.printCard()
             
-            composeVC.body = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: self.selectedUserCard.cardHolderName))\n\(String(describing: self.selectedUserCard.cardProfile.emails[0]["email"]))\n\(String(describing: self.selectedUserCard.cardProfile.title)))"
+            composeVC.body = "Hi, I'd like to connect with you. Here's my information \n\n\(name)\n\(title)\n\(email)\n\(title)"
             
             // Present the view controller modally.
             self.present(composeVC, animated: true, completion: nil)
@@ -516,14 +620,32 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
         
+        // Check for nil vals
+        
+        var name = ""
+        var phone = ""
+        var email = ""
+        var title = ""
+        
+        // Populate label fields
+        if selectedUserCard.cardHolderName != "" || selectedUserCard.cardHolderName != nil{
+            name = selectedUserCard.cardHolderName!
+        }
+        if selectedUserCard.cardProfile.phoneNumbers.count > 0{
+            phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]!
+        }
+        if selectedUserCard.cardProfile.emails.count > 0{
+            email = selectedUserCard.cardProfile.emails[0]["email"]!
+        }
+        if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
+            title = self.selectedUserCard.cardProfile.title!
+        }
+        
+        
         // Create Message
         mailComposerVC.setToRecipients(["kfich7@gmail.com"])
         mailComposerVC.setSubject("Greetings - Let's Connect")
-        
-        selectedUserCard.printCard()
-        
-        
-        /*mailComposerVC.setMessageBody("Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: ContactManager.sharedManager.selectedCard.cardHolderName))\n\(String(describing: ContactManager.sharedManager.selectedCard.cardProfile.emails[0]["email"]))\n\(String(describing: ContactManager.sharedManager.selectedCard.cardProfile.title)))", isHTML: false)*/
+        mailComposerVC.setMessageBody("Hi, I'd like to connect with you. Here's my information \n\n\(name)\n\(title)\n\(email)\n\(title)", isHTML: false)
         
         return mailComposerVC
     }

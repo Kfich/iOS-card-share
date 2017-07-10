@@ -10,23 +10,23 @@
 #import "OnboardingViewController.h"
 @import AVFoundation;
 
-static NSString * const kDefaultOnboardingFont = @"Helvetica-Light";
+static NSString * const kDefaultOnboardingFont = @"Avenir";
 
 #define DEFAULT_TEXT_COLOR [UIColor whiteColor];
 
-static CGFloat const kContentWidthMultiplier = 0.9;
+static CGFloat const kContentWidthMultiplier = 1.0;
 static CGFloat const kDefaultImageViewSize = 100;
-static CGFloat const kDefaultTopPadding = 60;
-static CGFloat const kDefaultUnderIconPadding = 30;
-static CGFloat const kDefaultUnderTitlePadding = 30;
-static CGFloat const kDefaultBottomPadding = 0;
-static CGFloat const kDefaultUnderPageControlPadding = 0;
-static CGFloat const kDefaultTitleFontSize = 38;
-static CGFloat const kDefaultBodyFontSize = 28;
-static CGFloat const kDefaultButtonFontSize = 24;
+static CGFloat const kDefaultTopPadding = 0;
+static CGFloat const kDefaultUnderIconPadding = 0;
+static CGFloat const kDefaultUnderTitlePadding = 0;
+static CGFloat const kDefaultBottomPadding = 50;
+static CGFloat const kDefaultUnderPageControlPadding = 25;
+static CGFloat const kDefaultTitleFontSize = 0;
+static CGFloat const kDefaultBodyFontSize = 0;
+static CGFloat const kDefaultButtonFontSize = 18;
 
-static CGFloat const kActionButtonHeight = 50;
-static CGFloat const kMainPageControlHeight = 35;
+static CGFloat const kActionButtonHeight = 20;
+static CGFloat const kMainPageControlHeight = 25;
 
 NSString * const kOnboardMainTextAccessibilityIdentifier = @"OnboardMainTextAccessibilityIdentifier";
 NSString * const kOnboardSubTextAccessibilityIdentifier = @"OnboardSubTextAccessibilityIdentifier";
@@ -95,8 +95,10 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
 
     // Icon image view
     self.iconImageView = [[UIImageView alloc] initWithImage:image];
-    self.iconWidth = image ? image.size.width : kDefaultImageViewSize;
-    self.iconHeight = image ? image.size.height : kDefaultImageViewSize;
+    
+    
+    self.iconWidth = image ? image.size.width : self.view.frame.size.width;
+    self.iconHeight = image ? image.size.height : self.view.frame.size.height;
 
     // Title label
     self.titleLabel = [UILabel new];
@@ -168,10 +170,27 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
 
         [self.view addSubview:self.moviePlayerController.view];
     }
+    
+    // Configure tap gesture
+    
+    //The setup code (in viewDidLoad in your view controller)
+    UITapGestureRecognizer *tripleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handleTap:)];
+    
+    // Set tap duration
+    tripleFingerTap.numberOfTapsRequired = 1;
+    
+    // Add gestures to the view
+    [self.view addGestureRecognizer:tripleFingerTap];
+    
+
+    
+    
 
     [self.view addSubview:self.iconImageView];
-    [self.view addSubview:self.titleLabel];
-    [self.view addSubview:self.bodyLabel];
+    //[self.view addSubview:self.titleLabel];
+    //[self.view addSubview:self.bodyLabel];
     [self.view addSubview:self.actionButton];
 }
 
@@ -286,6 +305,22 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
 
     self.actionButton.frame = CGRectMake((CGRectGetMaxX(self.view.frame) / 2) - (contentWidth / 2), CGRectGetMaxY(self.view.frame) - self.underPageControlPadding - kMainPageControlHeight - kActionButtonHeight - self.bottomPadding, contentWidth, kActionButtonHeight);
 }
+
+#pragma mark - Custom Methods
+
+//The event handling method
+- (void)handleTap:(UITapGestureRecognizer *)recognizer{
+    //CGPoint location = [recognizer locationInView:[recognizer.view superview]];
+    
+    //Do stuff here...
+    
+    NSLog(@"The tap is working!!");
+    
+    // Config notification so the presenting view can dismiss the onboard controller
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateProfileNotification" object:nil userInfo:nil];
+    
+}
+
 
 
 #pragma mark - Transition alpha

@@ -21,6 +21,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     // This contact card is really a transaction object
     var card = ContactCard()
+    
+    
     var currentUser = User()
     
     // Parsed profile arrays
@@ -93,21 +95,24 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     }
     
     @IBAction func smsSelected(_ sender: AnyObject) {
+        /*
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)*/
         
     }
     
     @IBAction func emailSelected(_ sender: AnyObject) {
+        /*
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)*/
         
     }
     @IBAction func callSelected(_ sender: AnyObject) {
         
         // configure call 
+        
     }
     
     
@@ -125,7 +130,52 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         // Set format style 
         formatter.style = .fullName
+
+        // Parse card for profile info 
         
+        /*
+        if card.cardProfile.bio != ""{
+            bios.append(card.cardProfile.bio!)
+        }
+        if card.cardProfile.workInfo != ""{
+            workInformation.append(card.cardProfile.bio!)
+        }
+        if card.cardProfile.phoneNumbers.count > 0{
+            for number in card.cardProfile.phoneNumbers{
+                phoneNumbers.append(number["phone"]!)
+            }
+        }
+        if card.cardProfile.emails.count > 0{
+            for email in card.cardProfile.phoneNumbers{
+                emails.append(email["email"]!)
+            }
+        }
+        if card.cardProfile.websites.count > 0{
+            for site in card.cardProfile.websites{
+                websites.append(site["website"]!)
+            }
+        }
+        if card.cardProfile.organizations.count > 0{
+            for org in card.cardProfile.organizations{
+                organizations.append(org["organization"]!)
+            }
+        }
+        if card.cardProfile.tags.count > 0{
+            for hashtag in card.cardProfile.tags{
+                tags.append(hashtag["tag"]!)
+            }
+        }
+        if card.cardProfile.notes.count > 0{
+            for note in card.cardProfile.notes{
+                notes.append(note["note"]!)
+            }
+        }
+        if card.cardProfile.socialLinks.count > 0{
+            for link in card.cardProfile.socialLinks{
+                notes.append(link["link"]!)
+            }
+        }
+        */
         
         
         // Config Views
@@ -152,6 +202,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         // Set color to nav bar
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
+        
+        
+        // reload table data
+        
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

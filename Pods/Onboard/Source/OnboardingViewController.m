@@ -11,12 +11,12 @@
 @import AVFoundation;
 @import Accelerate;
 
-static CGFloat const kPageControlHeight = 35;
+static CGFloat const kPageControlHeight = 25;
 static CGFloat const kSkipButtonWidth = 100;
 static CGFloat const kSkipButtonHeight = 44;
-static CGFloat const kBackgroundMaskAlpha = 0.6;
-static CGFloat const kDefaultBlurRadius = 20;
-static CGFloat const kDefaultSaturationDeltaFactor = 1.8;
+static CGFloat const kBackgroundMaskAlpha = 0;
+static CGFloat const kDefaultBlurRadius = 0;
+static CGFloat const kDefaultSaturationDeltaFactor = 0;
 
 static NSString * const kSkipButtonText = @"Skip";
 

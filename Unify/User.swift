@@ -24,7 +24,7 @@ public class User{
     // Main profile image
     
     // **************************** Add these to inits ****************************
-    var profileImage : UIImage = UIImage()
+    var profileImages = [[String : Any]]()
     var profileImageData : Data = Data()
     
     // Cards suite
@@ -48,12 +48,13 @@ public class User{
     
     init(snapshot: NSDictionary) {
         
-        userId = snapshot.object(forKey: "unify_uuid") as? String ?? ""
+        userId = snapshot.object(forKey: "uuid") as? String ?? ""
         firstName = snapshot["first_name"] as? String ?? ""
         lastName = snapshot["last_name"] as? String ?? ""
-        emails = snapshot["emails"] as? [[String : String]] ?? [["":""]]
+        emails = snapshot["email"] as? [[String : String]] ?? [["":""]]
         phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
         scope = snapshot["scope"] as? String ?? ""
+        profileImages = (snapshot["profile_image"] as? [[String : Any]])!
         
         
         // To get full username
@@ -74,7 +75,8 @@ public class User{
             "uuid": userId,
             "mobile_numbers" : phoneNumbers,
             "email" : emails,
-            "scope" : scope
+            "scope" : scope,
+            "profile_image": profileImages
             
         ]
     }
@@ -145,6 +147,17 @@ public class User{
     func setPhoneRecords(phoneRecords : [String : String]){
         phoneNumbers.append(phoneRecords)
     }
+    
+    // Images
+    func getImages()->[[String : Any]]{
+        return profileImages
+    }
+    
+    func setImages(imageRecords : [String : Any]){
+        profileImages.append(imageRecords)
+    }
+    
+    
     // Testing
     
     func printUser(){
@@ -157,6 +170,9 @@ public class User{
         print(emails)
         print("Mobile Number : ")
         print(phoneNumbers)
+        // Test image data
+        print("Image Data -->")
+        //print(profileImages)
         
         
     }

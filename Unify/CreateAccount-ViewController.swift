@@ -54,7 +54,7 @@ class CreateAccountViewController: UIViewController {
         self.email.inputAccessoryView = createAccountBtn
         
         // error here
-        firstName.becomeFirstResponder()
+        //firstName.becomeFirstResponder()
         
         // Config Photo Picker
         configurePhotoPicker()
@@ -81,13 +81,29 @@ class CreateAccountViewController: UIViewController {
         photo.onPhoto = { (image: UIImage?) -> Void in
             print("Selected image")
             
+            /*
             self.firstName.becomeFirstResponder()
             
             self.hasProfilePic = true
             
             
             self.profileImageContainerView.image = image
-            global_image = image
+            global_image = image*/
+            
+            print("Selected image")
+            
+            // Change button text
+            self.addProfilePictureBtn.titleLabel?.text = "Change"
+            
+            // Set image to view
+            self.profileImageContainerView.image = image
+            
+            // Previous location for image assignment to user object
+            
+            
+            
+            
+            
             //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
 
         }
@@ -110,11 +126,29 @@ class CreateAccountViewController: UIViewController {
         
         print(firstName.text!)
         print(lastName.text!)
-        
+        // Assign form values to user object
         newUser.emails.append(["profile_email": email.text!])
-        newUser.profileImage = profileImageContainerView.image!
         newUser.setName(first: firstName.text!, last: lastName.text!)
         newUser.fullName = newUser.getName()
+        
+        // Pull image data
+        
+        // Image data png
+        let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!)
+        print(imageData!)
+        
+        // Assign asset name and type
+        let fname = "asset.png"
+        let mimetype = "image/png"
+        
+        // Create image dictionary
+        let imageDict = ["image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
+        // Add image to user profile images
+        self.newUser.setImages(imageRecords: imageDict)
+        
+        // Test if image stored
+        print(self.newUser.profileImages)
         
         // Assign a temp uuid
         newUser.userId = newUser.randomString(length: 15)
@@ -122,12 +156,10 @@ class CreateAccountViewController: UIViewController {
         // Print to test
         newUser.printUser()
         
-        
-        
+        // Pass segue
         performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
         
         //let parameters = ["data": newUser.toAnyObject()]
-        
         
         
         // Create User Objects

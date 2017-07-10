@@ -18,6 +18,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     var card = ContactCard()
     var currentUser = User()
     
+    var selectedCells = [NSIndexPath]()
+    
     var bios = [String]()
     var workInformation = [String]()
     var organizations = [String]()
@@ -70,6 +72,18 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Set current user
+        currentUser = ContactManager.sharedManager.currentUser
+        
+        // If user has default image, set as container view
+        if currentUser.profileImages[0]["image_data"] != nil{
+            profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+        }
+        
+        // Set name as default value
+        if currentUser.fullName != ""{
+            nameLabel.text = currentUser.fullName
+        }
         
         // View config 
         configureViews()
@@ -82,14 +96,14 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Parse the users profile for info 
         
-        emails = ["kfich7@gmail.com", "kfich7@aol.com", "bazzucablaster@gmail.com" ]
+        emails = ["example@gmail.com", "test@aol.com", "sample@gmail.com" ]
         phoneNumbers = ["1234567890", "6463597308", "3036558888"]
         socialLinks = ["facebook-link", "snapchat-link", "insta-link"]
-        organizations = ["crane.ai", "Hedgeable Inc", "CleanSwipe LLC", "Boys and Girls Club"]
-        bios = ["Created a company for doing laundry on college campuses", "Full Stack Engineer at Crane.ai", "College athlete at the University of Miami"]
-        websites = ["cleanswipe.co", "crane.ai", "privii.me"]
+        organizations = ["crane.ai", "Example Inc", "Sample LLC", "Boys and Girls Club"]
+        bios = ["Created a company for doing blank for example usecase", "Full Stack Engineer at Crane.ai", "College Professor at the University of Application Building"]
+        websites = ["example.co", "sample.ai", "excuse.me"]
         titles = ["Entrepreneur", "Salesman", "Full Stack Engineer"]
-        workInformation = ["crane.ai", "Hedgeable Inc", "CleanSwipe LLC", "Boys and Girls Club"]
+        workInformation = ["Job 1", "Job 2", "Example Job", "Sample Job"]
         
         
     }
@@ -129,20 +143,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Test image data
             print(imageData!)*/
             
-            // Image data png
-            let imageData = UIImagePNGRepresentation(self.profileImageView.image!)
-            print(imageData!)
-            
-            // Assign asset name and type
-            let fname = "asset.png"
-            let mimetype = "image/png"
-            
-            // Create image dictionary
-            let imageDict = ["image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
-            
-            // Add image to contact card profile images
-            self.card.cardProfile.setImages(imageRecords: imageDict)
-            print(self.card.cardProfile.images)
+           // Previous place for image handling and assingment
             
             //global_image = image
             //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
@@ -182,13 +183,31 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     // Sending card to server
     @IBAction func doneCreatingCard(_ sender: Any) {
         
+        // Assign image for card 
+        // Image data png
+        let imageData = UIImagePNGRepresentation(self.profileImageView.image!)
+        print(imageData!)
+        
+        // Assign asset name and type
+        let fname = "asset.png"
+        let mimetype = "image/png"
+        
+        // Create image dictionary
+        let imageDict = ["image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
+        // Add image to contact card profile images
+        self.card.cardProfile.setImages(imageRecords: imageDict)
+        print(self.card.cardProfile.images)
+    
+        
+        
         
         // Print card to see if generated
         card.printCard()
         //card.cardProfile.printProfle()
         
         // Add card to manager object card suite
-        ContactManager.sharedManager.currentUserCards.append(card)
+        ContactManager.sharedManager.currentUserCards.insert(card, at: 0)
         print("\n\nUSER Cards\n\n\(ContactManager.sharedManager.currentUserCards)")
         print("\n\nUSER CARD COUNT\n\n\(ContactManager.sharedManager.currentUserCards.count)")
         
@@ -202,6 +221,19 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         let parameters = card.toAnyObject()
         print("\n\nTHE CARD TO ANY - PARAMS")
         print(parameters)*/
+        
+        // Store current user cards to local device 
+        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
+        //UDWrapper.setData("contact_cards", value: encodedData)
+        
+        
+        // Saving to local device
+        
+        for card in ContactManager.sharedManager.currentUserCards{
+            ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObject()], at: 0)
+        }
+        
+        UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
         
         // Save card to DB
         
@@ -217,8 +249,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 print(error)
                 // Show user popup of error message 
             }
-        }
-        */
+        }*/
+        
         
         // Post notification for radar view to refresh
         postNotification()
@@ -300,38 +332,41 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
         
+        // Set checkmark
+        cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
+
         
         switch indexPath.section {
         case 0:
-            cell.titleLabel.text = "Bio \(indexPath.row)"
+            //cell.titleLabel.text = "Bio \(indexPath.row)"
             cell.descriptionLabel.text = bios[indexPath.row]
             return cell
         case 1:
-            cell.titleLabel.text = "Work \(indexPath.row)"
+            //cell.titleLabel.text = "Work \(indexPath.row)"
             cell.descriptionLabel.text = workInformation[indexPath.row]
             return cell
         case 2:
-            cell.titleLabel.text = "Title \(indexPath.row)"
+            //cell.titleLabel.text = "Title \(indexPath.row)"
             cell.descriptionLabel.text = titles[indexPath.row]
             return cell
         case 3:
-            cell.titleLabel.text = "Email \(indexPath.row)"
+            //cell.titleLabel.text = "Email \(indexPath.row)"
             cell.descriptionLabel.text = emails[indexPath.row]
             return cell
         case 4:
-            cell.titleLabel.text = "Phone \(indexPath.row)"
+            //cell.titleLabel.text = "Phone \(indexPath.row)"
             cell.descriptionLabel.text = phoneNumbers[indexPath.row]
             return cell
         case 5:
-            cell.titleLabel.text = "Social Media Link \(indexPath.row)"
+            //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
             cell.descriptionLabel.text = socialLinks[indexPath.row]
             return cell
         case 6:
-            cell.titleLabel.text = "Website \(indexPath.row)"
+            //cell.titleLabel.text = "Website \(indexPath.row)"
             cell.descriptionLabel.text = websites[indexPath.row]
             return cell
         case 7:
-            cell.titleLabel.text = "Organization \(indexPath.row)"
+            //cell.titleLabel.text = "Organization \(indexPath.row)"
             cell.descriptionLabel.text = organizations[indexPath.row]
             return cell
         default:
@@ -347,10 +382,23 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Create Cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        _ = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
 
-        // Mark checkbox selected
-        cell.accessoryType = .checkmark
+        // Set Checkmark
+        let selectedCell = tableView.cellForRow(at: indexPath)
+        
+        selectedCells.append(indexPath as NSIndexPath)
+        
+        if selectedCell?.accessoryType == .checkmark {
+            
+            selectedCell?.accessoryType = .none
+            
+            selectedCells = selectedCells.filter {$0 as IndexPath != indexPath}
+            
+        } else {
+            
+            selectedCell?.accessoryType = .checkmark
+        }
 
         // Switch case to find right section
         switch indexPath.section {
@@ -398,6 +446,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         //Change the selected background view of the cell.
         cardOptionsTableView.deselectRow(at: indexPath, animated: true)
         
+        // reload data 
+        cardOptionsTableView.reloadData()
         
         // Print card to test
         //card.printCard()

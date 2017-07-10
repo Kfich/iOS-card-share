@@ -8,12 +8,29 @@
 
 import UIKit
 import Eureka
+import MBPhotoPicker
 
 class EditProfileViewController: UIViewController {
     
     // Properties
     // ----------------------------------
+    var currentUser = User()
     
+    var photo = MBPhotoPicker()
+    
+    var profileImage = UIImage()
+    
+    // Parsed profile arrays
+    var bios = [String]()
+    var workInformation = [String]()
+    var organizations = [String]()
+    var titles = [String]()
+    var phoneNumbers = [String]()
+    var emails = [String]()
+    var websites = [String]()
+    var socialLinks = [String]()
+    var notes = [String]()
+    var tags = [String]()
     
     // IBOutlets
     // ----------------------------------
@@ -34,7 +51,48 @@ class EditProfileViewController: UIViewController {
     // ----------------------------------
     @IBAction func selectProfilePicture(_ sender: AnyObject) {
         
-        // Add code to edit photo here
+       /* // Add code to edit photo here
+        photo.onPhoto = { (image: UIImage?) -> Void in
+            print("Selected image")
+            
+            /*
+             self.firstName.becomeFirstResponder()
+             
+             self.hasProfilePic = true
+             
+             
+             self.profileImageContainerView.image = image
+             global_image = image*/
+            
+            print("Selected image")
+            
+            // Change button text
+            //self.selectProfileImageButton.titleLabel?.text = "Change"
+            
+            // Set image to view
+            self.profileImageView.image = image
+            
+            // Previous location for image assignment to user object
+            
+            
+            
+            
+            
+            //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
+            
+        }
+        
+        photo.onCancel = {
+            print("Cancel Pressed")
+        }
+        photo.onError = { (error) -> Void in
+            print("Photo selection Error")
+            print("Error: \(error.rawValue)")
+        }
+        photo.present(self)
+        
+        */
+
     }
     
     @IBAction func doneButtonPressed(_ sender: AnyObject) {
@@ -57,6 +115,11 @@ class EditProfileViewController: UIViewController {
     // Page Setup
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Check for image, set to imageview
+        if currentUser.profileImages.count > 0{
+            profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+        }
         
         // Do any additional setup after loading the view.
         //firstNameTextField.inputAccessoryView = doneButton

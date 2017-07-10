@@ -8,7 +8,8 @@
 
 import Foundation
 
-public class ContactCard{
+public class ContactCard: NSObject, NSCoding{
+
     
     // Properties
     // ---------------------------------
@@ -18,7 +19,7 @@ public class ContactCard{
     var cardHolderName : String?
     var imageURL : Data?
     var image : UIImage?
-    var profileDictionary : [String : Any]?
+    var profileDictionary = NSDictionary()
     
     // Card Profile Object containing all associated info
     
@@ -27,12 +28,20 @@ public class ContactCard{
     
     // Init
     
-    init() {
+    override init() {
         cardId = "1234567890"
         cardHolderName = "Kevin Fich"
         cardName = "Card 1"
     
         
+    }
+    
+    init(card_id: String, holder_name: String, card_name: String, card_image: UIImage/*, card_profile: CardProfile*/) {
+        cardId = card_id
+        cardHolderName = holder_name
+        cardName = card_name
+        //image = card_image
+       // cardProfile = card_profile
     }
     
     
@@ -42,12 +51,49 @@ public class ContactCard{
         cardName = snapshot["card_name"] as? String
         cardHolderName = snapshot["card_holder_name"] as? String
         imageURL = snapshot["image_url"] as? Data
-        profileDictionary = snapshot["card_profile"] as? [String : Any]
+        profileDictionary = (snapshot["card_profile"] as? NSDictionary)!
+        // Create card profile
+        cardProfile = CardProfile(snapshot: profileDictionary)
         
         // Test if card populated
-        printCard()
+        //printCard()
     }
     
+    // MARK: NSCoding
+   
+    required convenience public init?(coder decoder: NSCoder) {
+        guard let cardId = decoder.decodeObject(forKey: "card_id") as? String,
+            let cardHolderName = decoder.decodeObject(forKey: "card_holder_name") as? String,
+            let cardName = decoder.decodeObject(forKey: "card_name") as? String,
+            let image = decoder.decodeObject(forKey: "card_image") as? UIImage
+            //let card_profile = decoder.decodeObject(forKey: "card_profile") as? CardProfile
+            else { return nil }
+        
+        self.init(
+            card_id: cardId,
+            holder_name: cardHolderName,
+            card_name: cardName,
+            card_image: image
+            /*, card_profile: card_profile*/)
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.cardId, forKey: "card_id")
+        aCoder.encode(self.cardName, forKey: "card_name")
+        aCoder.encode((self.cardHolderName), forKey: "card_holder_name")
+        aCoder.encode(self.image, forKey: "card_image")
+        ///aCoder.encode(self.cardProfile, forKey: "card_profile")
+
+    }
+    
+    /*func encodeWithCoder(coder: NSCoder) {
+        coder.encode(self.cardId, forKey: "card_id")
+        coder.encode(self.cardName, forKey: "card_name")
+        coder.encode((self.cardHolderName), forKey: "card_holder_name")
+        coder.encode(self.image, forKey: "card_image")
+        coder.encode(self.cardProfile, forKey: "card_profile")
+    }*/
+ 
     
     // Exporting the object
     
@@ -95,11 +141,11 @@ public class ContactCard{
     }
     
     // Profile
-    func getCardProfile()->[String : Any]{
-        return profileDictionary ?? [String : Any]()
+    func getCardProfile()->NSDictionary{
+        return profileDictionary 
     }
     
-    func setCardProfile(profileRecord : [String : String]){
+    func setCardProfile(profileRecord : NSDictionary){
         profileDictionary = profileRecord
     }
     

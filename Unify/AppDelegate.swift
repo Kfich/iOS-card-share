@@ -56,6 +56,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         URLCache.shared = urlCache
         
         
+        if let user = UDWrapper.getDictionary("user"){
+            // Assign current user to manager object
+            //
+            
+            print("USER DICTIONARY")
+            print(user)
+            
+            print("User has profile!")
+            ContactManager.sharedManager.currentUser = User(snapshot:user)
+            
+            print("CURRENT USER FROM APP DELEGATE")
+            ContactManager.sharedManager.currentUser.printUser()
+            
+            // Send to home screen 
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+            TabBarViewController
+            window!.rootViewController = homeViewController
+            
+        }else{
+            print("User has no profile")
+            
+        }
+
+        
+        
         // Managing stored user sessions
         /*
         let storedUUID = UserDefaults.standard.string(forKey: "uuid")

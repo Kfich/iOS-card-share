@@ -193,7 +193,7 @@ public class CardProfile{
         print(organizations as Any)
         
         print("Images : ")
-        print(images as Any)
+        //print(images as Any)
         
     }
     

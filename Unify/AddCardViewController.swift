@@ -25,6 +25,9 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var contactPageControl: UIPageControl!
 
+    @IBOutlet var editCardButton: UIButton!
+    @IBOutlet var doneButton: UIButton!
+    @IBOutlet var deleteCardButton: UIButton!
 
     // IBActions
     // ----------------------------------------
@@ -55,6 +58,13 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         // Set page control count 
         contactPageControl.numberOfPages = ContactManager.sharedManager.currentUserCards.count
             
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        // Hide buttons 
+        doneButton.isHidden = true
+        deleteCardButton.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -124,17 +134,18 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             if currentCard.cardProfile.title != nil {
                 cell.cardTitle.text = currentCard.cardProfile.getTitle()
             }
-            if currentCard.cardProfile.emails[0]["email"] != nil {
+            if currentCard.cardProfile.emails.count > 0 {
                 cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
             }
-            if currentCard.cardProfile.phoneNumbers[0]["phone"] != nil {
+            if currentCard.cardProfile.phoneNumbers.count > 0 {
                 cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
             }
-            if let imageData = currentCard.cardProfile.images[0]["image_data"] {
+            if currentCard.cardProfile.images.count > 0{
                 // Populate image view
+                let imageData = currentCard.cardProfile.images[0]["image_data"]
                 cell.cardImage.image = UIImage(data: imageData as! Data)
             }
-            if currentCard.cardName != nil{
+            if currentCard.cardName != ""{
                 cell.cardName.text = currentCard.cardName
             }
             
@@ -196,7 +207,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             selectedUserCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
             
             // Show Selected Card segue
-            performSegue(withIdentifier: "showSelectedCard", sender: self)
+            performSegue(withIdentifier: "CardSuiteSelection", sender: self)
         }
         
     }
@@ -290,6 +301,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     func configureViews(cell: CardCollectionViewCell){
         // Add radius config & border color
         
+        
         // Add radius config & border color
         cell.cardWrapperView.layer.cornerRadius = 12.0
         cell.cardWrapperView.clipsToBounds = true
@@ -326,6 +338,8 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         if segue.identifier == "CardSuiteSelection" {
             
             // Set desination and pass selected card object
+            let nextVC = segue.destination as! CardSelectionViewController
+            nextVC.selectedCard = self.selectedUserCard
             
         }
         

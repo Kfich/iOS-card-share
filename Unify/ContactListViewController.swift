@@ -162,7 +162,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(8, 3, 15, 15))
-        lbl.text = "G"
+        lbl.text = ""
         lbl.textAlignment = .left
         
         lbl.textColor = UIColor.white

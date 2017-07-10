@@ -37,6 +37,8 @@ class ContactManager{
     var selectedCard = ContactCard()
     var currentUserCards = [ContactCard]()
     
+    var currentUserCardsDictionaryArray = [[NSDictionary]]()
+    
     // Phone ContactList Sync
     var phoneContactList = [CNContact]()
     

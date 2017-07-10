@@ -79,7 +79,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view.
         
         // Create test user
-        currentUser.firstName = "Kevin"
+        /*currentUser.firstName = "Kevin"
         currentUser.lastName = "Fich"
         currentUser.userId = "54321"
         currentUser.fullName = currentUser.getName()
@@ -88,9 +88,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         currentUser.phoneNumbers.append(["phone": "1234567890"])
         currentUser.phoneNumbers.append(["phone": "0987654321"])
         currentUser.phoneNumbers.append(["phone": "6463597308"])
-        currentUser.profileImage = UIImage(named: "throwback")!
-        currentUser.scope = "user"
+        //currentUser.profileImage = UIImage(named: "throwback")!
+        currentUser.scope = "user"*/
 
+        // Assign current user from manager
+        currentUser = ContactManager.sharedManager.currentUser
         
         
         // View Config
@@ -289,17 +291,17 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         // Senders card
         
-        if currentUser.profileImage != UIImage() {
-            profileImageView.image = currentUser.profileImage
+        if currentUser.profileImages[0]["image_data"] != nil{
+            profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
         }
         if currentUser.fullName != ""{
             nameLabel.text = currentUser.fullName
         }
-        if currentUser.phoneNumbers.count > 0{
-            numberLabel.text = currentUser.phoneNumbers[0]["phone"]
+        if currentUser.phoneNumbers[0]["profile_phone"] != nil{
+            numberLabel.text = currentUser.phoneNumbers[0]["profile_phone"]
         }
-        if currentUser.emails.count > 0{
-            emailLabel.text = currentUser.emails[0]["email"]
+        if currentUser.emails[0]["profile_email"] != nil{
+            emailLabel.text = currentUser.emails[0]["profile_email"]
         }
         
         //titleLabel.text = "Founder & CEO, CleanSwipe"

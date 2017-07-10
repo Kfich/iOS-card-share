@@ -81,6 +81,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Setup views 
         configureViews()
         
+        
+        testUser()
+        
         // See if current user pass
         ContactManager.sharedManager.currentUser.printUser()
         
@@ -116,7 +119,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     func testUser(){
         // Test current user object
         
-        currentUser.firstName = "Kevin"
+        /*currentUser.firstName = "Kevin"
         currentUser.lastName = "Fich"
         currentUser.userId = "54321"
         currentUser.fullName = currentUser.getName()
@@ -147,13 +150,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         print(currentUser.toAnyObject())
         
         //genericPostCall(parameters as NSDictionary)
-        
-        test(json: ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"])
+        */
+        let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
         
         // Send current user to DB
         
         
-        /*Connection(configuration: nil).getUserCall(parameters, completionBlock: { response, error in
+        Connection(configuration: nil).getUserCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
                 print("\n\nConnection - Create User Response: \(response)\n\n")
@@ -170,7 +173,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(error)\n\n")
             }
-        })*/
+        })
     }
     
     func test(json: [String : Any]) {

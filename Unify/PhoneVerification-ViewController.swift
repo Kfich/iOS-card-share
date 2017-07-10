@@ -143,6 +143,10 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         // Assign phone number to currentUser Object
         currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
         
+        // Save user to device
+        
+        // Store to device
+        UDWrapper.setDictionary("user", value: currentUser.toAnyObject())
         
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
