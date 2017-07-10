@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
     
@@ -14,6 +15,39 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     // --------------------------------------------
     
     var active_card_unify_uuid: String?
+    
+    var selectedContact = CNContact()
+    let formatter = CNContactFormatter()
+    
+    // This contact card is really a transaction object
+    var card = ContactCard()
+    var currentUser = User()
+    
+    // Parsed profile arrays
+    var bios = [String]()
+    var workInformation = [String]()
+    var organizations = [String]()
+    var titles = [String]()
+    var phoneNumbers = [String]()
+    var emails = [String]()
+    var websites = [String]()
+    var socialLinks = [String]()
+    var notes = [String]()
+    var tags = [String]()
+    
+    // Bools to check if array contents empty
+    var biosPopulated = false
+    var workInformationPopulated = false
+    var organizationsPopulated = false
+    var titlesPopulated = false
+    var phoneNumbersPopulated = false
+    var emailsPopulated = false
+    var websitesPopulated = false
+    var socialLinksPopulated = false
+    var notesPopulated = false
+    var tagsPopulated = false
+    
+    
     
     // IBOutlets
     // --------------------------------------------
@@ -41,6 +75,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBOutlet var smsButton: UIBarButtonItem!
     @IBOutlet var emailButton: UIBarButtonItem!
     @IBOutlet var callButton: UIBarButtonItem!
+    
+    @IBOutlet var phoneImageView: UIImageView!
+    @IBOutlet var emailImageView: UIImageView!
+    
+    
     
     
     
@@ -80,6 +119,14 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         super.viewWillAppear(true)
  
         // Do any additional setup after loading the view.
+        // Test is segue passed properly
+        
+        print("Selected Contact -> \(selectedContact)")
+        
+        // Set format style 
+        formatter.style = .fullName
+        
+        
         
         // Config Views
         configureViews()
@@ -121,57 +168,184 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    
-    
-    //MARK: - UITableViewDataSource
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
         
-        /* if contactsHits.count == 0
-         {
-         return Int(view.bounds.height/SelectRecipientViewController.kRowHeight) + 1
-         
-         } else {
-         
-         return contactsHits.count
-         }*/
         
+        //if biosPopulated && titlesPopulated && workInformationPopulated && emailsPopulated && titlesPopulated && organizationsPopulated && websitesPopulated
+        
+        /*var count = 0
+        // Iterate through arrays and see if populated
+        switch count {
+        case 0:
+            
+            return bios.count
+        case 1:
+            return workInformation.count
+        case 2:
+            return titles.count
+        case 3:
+            return emails.count
+        case 4:
+            return phoneNumbers.count
+        case 5:
+            return socialLinks.count
+        case 6:
+            return websites.count
+        case 7:
+            return organizations.count
+        default:
+            return 0
+        }
+        */
         return 8
-        
     }
     
-
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return bios.count
+        case 1:
+            return workInformation.count
+        case 2:
+            return titles.count
+        case 3:
+            return emails.count
+        case 4:
+            return phoneNumbers.count
+        case 5:
+            return socialLinks.count
+        case 6:
+            return websites.count
+        case 7:
+            return organizations.count
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Bios"
+        case 1:
+            return "Work Information"
+        case 2:
+            return "Titles"
+        case 3:
+            return "Emails"
+        case 4:
+            return "Phone Numbers"
+        case 5:
+            return "Social Media Links"
+        case 6:
+            return "Websites"
+        case 7:
+            return "Organizations"
+        default:
+            return ""
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = UITableViewCell()
-        //var cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath)
         
-       
-        cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
         
-      
-        return cell
+        
+        switch indexPath.section {
+        case 0:
+            cell.titleLabel.text = "Bio \(indexPath.row)"
+            cell.descriptionLabel.text = bios[indexPath.row]
+            return cell
+        case 1:
+            cell.titleLabel.text = "Work \(indexPath.row)"
+            cell.descriptionLabel.text = workInformation[indexPath.row]
+            return cell
+        case 2:
+            cell.titleLabel.text = "Title \(indexPath.row)"
+            cell.descriptionLabel.text = titles[indexPath.row]
+            return cell
+        case 3:
+            cell.titleLabel.text = "Email \(indexPath.row)"
+            cell.descriptionLabel.text = emails[indexPath.row]
+            return cell
+        case 4:
+            cell.titleLabel.text = "Phone \(indexPath.row)"
+            cell.descriptionLabel.text = phoneNumbers[indexPath.row]
+            return cell
+        case 5:
+            cell.titleLabel.text = "Social Media Link \(indexPath.row)"
+            cell.descriptionLabel.text = socialLinks[indexPath.row]
+            return cell
+        case 6:
+            cell.titleLabel.text = "Website \(indexPath.row)"
+            cell.descriptionLabel.text = websites[indexPath.row]
+            return cell
+        case 7:
+            cell.titleLabel.text = "Organization \(indexPath.row)"
+            cell.descriptionLabel.text = organizations[indexPath.row]
+            return cell
+        default:
+            // Set
+            cell.titleLabel.text = "No Data"
+            return cell
+        }
+        
+        
+        
     }
-    
-    //MARK: - UITableViewDelegate
     
 
     
     // Custom Methods
     // -------------------------------------------
+    func checkForArrayLenth(array: Array<Any>) -> Bool {
+        var isEmpty = Bool()
+        if array.count != 0{
+            isEmpty = false
+            return isEmpty
+        }else{
+            isEmpty = true
+            return isEmpty
+        }
+    }
+    
     
     func populateCards(){
         
+        
+        nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
+        
+        if selectedContact.phoneNumbers.count > 0 {
+            phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
+        }else{
+            // Hide phone icon image 
+            phoneImageView.isHidden = true
+        }
+        if selectedContact.emailAddresses.count > 0 {
+            emailLabel.text = (selectedContact.emailAddresses[0].value as String)
+        }else{
+            // Hide email icon
+            emailImageView.isHidden = true
+        }
+        // Check if image data available
+        if selectedContact.imageDataAvailable {
+
+            print("Has IMAGE")
+            // Create image var
+            let image = UIImage(data: selectedContact.imageData!)
+            // Set image for contact
+            contactImageView.image = image
+        }else{
+            // Set to placeholder image
+            contactImageView.image = UIImage(named: "profile")
+        }
+
         // Senders card
-        contactImageView.image = UIImage(named: "throwback.png")
-        nameLabel.text = "Harold Fich"
-        phoneLabel.text = "1+ (123)-345-6789"
-        emailLabel.text = "Kev.fich12@gmail.com"
-        titleLabel.text = "Founder & CEO, CleanSwipe"
+        //contactImageView.image = UIImage(named: "throwback.png")
+        //nameLabel.text = "Harold Fich"
+        //phoneLabel.text = "1+ (123)-345-6789"
+        //emailLabel.text = "Kev.fich12@gmail.com"
+        //titleLabel.text = "Founder & CEO, CleanSwipe"
     }
     
     func configureViews(){

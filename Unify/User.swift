@@ -30,6 +30,10 @@ public class User{
     // Cards suite
     var cards = [ContactCard]()
     
+    // Card Profiles
+    var userProfile = CardProfile()
+    
+    
     // Init
     
     init() {}

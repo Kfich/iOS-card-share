@@ -38,20 +38,37 @@ class TabBarViewController: UITabBarController{
 
         
         // Set tab bar icon images
-        self.tabBar.items?[0].selectedImage = resizeImage(image: UIImage(named: "contactsicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
-        self.tabBar.items?[0].image = resizeImage(image: UIImage(named: "contactsicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
         
-        self.tabBar.items?[1].selectedImage = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
-        self.tabBar.items?[1].image = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
-        
-        self.tabBar.items?[2].selectedImage = resizeImage(image: UIImage(named: "radaricon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
-        self.tabBar.items?[2].image = resizeImage(image: UIImage(named: "radaricon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        //self.tabBar.items?[0].selectedImage = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        //self.tabBar.items?[0].image = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
 
-        self.tabBar.items?[3].selectedImage = resizeImage(image: UIImage(named: "usericon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
-        self.tabBar.items?[3].image = resizeImage(image: UIImage(named: "usericon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
         
-        self.tabBar.items?[4].selectedImage = resizeImage(image: UIImage(named: "notificationicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
-        self.tabBar.items?[4].image = resizeImage(image: UIImage(named: "notificationicon")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        self.tabBar.items?[0].selectedImage = UIImage(named: "contact-full")
+        self.tabBar.items?[0].image = UIImage(named: "contact")
+        
+        self.tabBar.items?[1].selectedImage = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.automatic)
+        self.tabBar.items?[1].image = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.automatic)
+        
+        self.tabBar.items?[2].selectedImage = resizeImage(image: UIImage(named: "icn-location")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        self.tabBar.items?[2].image = resizeImage(image: UIImage(named: "icn-location")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        
+        //self.tabBar.items?[2].selectedImage = UIImage(named: "icn-location")
+        //self.tabBar.items?[2].image = UIImage(named: "icn-location")
+        
+        self.tabBar.items?[3].selectedImage = UIImage(named: "profile-full")
+        self.tabBar.items?[3].image = UIImage(named: "profile")
+        
+        self.tabBar.items?[4].selectedImage = UIImage(named: "bell-full")
+        self.tabBar.items?[4].image = UIImage(named: "bell")
+        
+       /* self.tabBar.items?[2].selectedImage = resizeImage(image: UIImage(named: "icn-location")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        self.tabBar.items?[2].image = resizeImage(image: UIImage(named: "icn-location")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+
+        self.tabBar.items?[3].selectedImage = resizeImage(image: UIImage(named: "profile")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        self.tabBar.items?[3].image = resizeImage(image: UIImage(named: "profile")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        
+        self.tabBar.items?[4].selectedImage = resizeImage(image: UIImage(named: "bell")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
+        self.tabBar.items?[4].image = resizeImage(image: UIImage(named: "bell")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)*/
         
         
     }

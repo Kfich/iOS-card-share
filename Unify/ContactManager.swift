@@ -20,7 +20,9 @@ class ContactManager{
     static let sharedManager = ContactManager()
     
     // Contact store
-    var store: CNContactStore!
+    var store: CNContactStore = CNContactStore()
+    
+    
     var jsonData : Data = Data()
     
     // Nav management for notifications
@@ -34,6 +36,9 @@ class ContactManager{
     var currentUser = User()
     var selectedCard = ContactCard()
     var currentUserCards = [ContactCard]()
+    
+    // Phone ContactList Sync
+    var phoneContactList = [CNContact]()
     
     
     
@@ -54,7 +59,7 @@ class ContactManager{
     
     // Phone Contact Access and Sync
     
-    private func checkContactsAccess() {
+    func checkContactsAccess() {
         switch CNContactStore.authorizationStatus(for: .contacts) {
         // Update our UI if the user has granted access to their Contacts
         case .authorized:
@@ -79,7 +84,7 @@ class ContactManager{
     }
     
     
-    private func requestContactsAccess() {
+    func requestContactsAccess() {
         
         store.requestAccess(for: .contacts) {granted, error in
             if granted {
@@ -94,7 +99,7 @@ class ContactManager{
     
     
     // This method is called when the user has granted access to their address book data.
-    private func accessGrantedForContacts() {
+    func accessGrantedForContacts() {
         //Update UI for grated state.
         //...
         getContacts()
@@ -183,13 +188,16 @@ class ContactManager{
     func retrieveContactsWithStore(store: CNContactStore) {
         do {
             let groups = try store.groups(matching: nil)
-            let predicate = CNContact.predicateForContactsInGroup(withIdentifier: groups[0].identifier)
-            //let predicate = CNContact.predicateForContactsMatchingName("John")
+            //let predicate = CNContact.predicateForContactsInGroup(withIdentifier: groups[0].identifier)
+            let predicate = CNContact.predicateForContacts(matchingName: "John")
             let keysToFetch = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactEmailAddressesKey] as [Any]
             
             let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
             
-            self.uploadContactRecords(contacts: (contacts as AnyObject) as! [CNContact])
+            
+            print(contacts)
+            
+           // self.uploadContactRecords(contacts: (contacts as AnyObject) as! [CNContact])
             
             
         } catch {
@@ -198,22 +206,79 @@ class ContactManager{
     }
     
     
-    
     func getContacts() {
-        let store = CNContactStore()
+        let status = CNContactStore.authorizationStatus(for: .contacts)
+        if status == .denied || status == .restricted {
+            presentSettingsActionSheet()
+            return
+        }
         
-        if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
-            store.requestAccess(for: .contacts, completionHandler: { (authorized: Bool, error: NSError?) -> Void in
-                if authorized {
-                    self.retrieveContactsWithStore(store: store)
+        // open it
+        
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts) { granted, error in
+            guard granted else {
+                DispatchQueue.main.async {
+                    self.presentSettingsActionSheet()
                 }
-                } as! (Bool, Error?) -> Void)
-        } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
-            self.retrieveContactsWithStore(store: store)
+                return
+            }
+            
+            // get the contacts
+            
+            var contacts = [CNContact]()
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor])
+            do {
+                try store.enumerateContacts(with: request) { contact, stop in
+                    contacts.append(contact)
+                }
+            } catch {
+                print(error)
+            }
+            
+            // do something with the contacts array (e.g. print the names)
+            
+            let formatter = CNContactFormatter()
+            formatter.style = .fullName
+            for contact in contacts {
+                print(formatter.string(from: contact) ?? "No Name")
+                
+                if contact.phoneNumbers.count > 0 {
+                  print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
+                }
+                if contact.emailAddresses.count > 0 {
+                    print((contact.emailAddresses[0].value))
+                }
+                if contact.imageDataAvailable {
+                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
+                    print("Has IMAGE")
+                }
+                // Previous apprend area
+                 self.phoneContactList.append(contact)
+                
+               // print(self.phoneContactList.count)
+                //print(contact)
+            }
+            self.postContactListRefresh()
         }
     }
     
+    func presentSettingsActionSheet() {
+        let alert = UIAlertController(title: "Permission to Contacts", message: "This app needs access to contacts in order to ...", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Go to Settings", style: .default) { _ in
+            let url = URL(string: UIApplicationOpenSettingsURLString)!
+            UIApplication.shared.open(url)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        //present(alert, animated: true)
+    }
     
+    
+    // Notifications 
+    func postContactListRefresh() {
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactList"), object: self)
+    }
     
     
     

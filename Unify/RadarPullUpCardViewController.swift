@@ -82,6 +82,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         addObservers()
         
         // Configure page control dots
+        // Set page control count
+        pageControl.numberOfPages = ContactManager.sharedManager.currentUserCards.count
         
     }
     

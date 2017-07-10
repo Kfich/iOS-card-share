@@ -13,6 +13,33 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // Properties
     // ===================================
     
+    var currentUser = User()
+    
+    // Parsed profile arrays
+    var bios = [String]()
+    var workInformation = [String]()
+    var organizations = [String]()
+    var titles = [String]()
+    var phoneNumbers = [String]()
+    var emails = [String]()
+    var websites = [String]()
+    var socialLinks = [String]()
+    var notes = [String]()
+    var tags = [String]()
+    
+    // Bools to check if array contents empty
+    var biosPopulated = false
+    var workInformationPopulated = false
+    var organizationsPopulated = false
+    var titlesPopulated = false
+    var phoneNumbersPopulated = false
+    var emailsPopulated = false
+    var websitesPopulated = false
+    var socialLinksPopulated = false
+    var notesPopulated = false
+    var tagsPopulated = false
+
+    
     
     // IBOutlets
     // ===================================
@@ -50,6 +77,21 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        // Create test user
+        currentUser.firstName = "Kevin"
+        currentUser.lastName = "Fich"
+        currentUser.userId = "54321"
+        currentUser.fullName = currentUser.getName()
+        currentUser.emails.append(["email": "kfich7@aol.com"])
+        currentUser.emails.append(["email": "kfich7@gmail.com"])
+        currentUser.phoneNumbers.append(["phone": "1234567890"])
+        currentUser.phoneNumbers.append(["phone": "0987654321"])
+        currentUser.phoneNumbers.append(["phone": "6463597308"])
+        currentUser.profileImage = UIImage(named: "throwback")!
+        currentUser.scope = "user"
+
+        
         
         // View Config
         configureViews()
@@ -89,44 +131,131 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // --------------------------------------
     
     
+    
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    
-    
-    //MARK: - UITableViewDataSource
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
         
-        /* if contactsHits.count == 0
-         {
-         return Int(view.bounds.height/SelectRecipientViewController.kRowHeight) + 1
-         
-         } else {
-         
-         return contactsHits.count
-         }*/
         
+        //if biosPopulated && titlesPopulated && workInformationPopulated && emailsPopulated && titlesPopulated && organizationsPopulated && websitesPopulated
+        
+        /*var count = 0
+         // Iterate through arrays and see if populated
+         switch count {
+         case 0:
+         
+         return bios.count
+         case 1:
+         return workInformation.count
+         case 2:
+         return titles.count
+         case 3:
+         return emails.count
+         case 4:
+         return phoneNumbers.count
+         case 5:
+         return socialLinks.count
+         case 6:
+         return websites.count
+         case 7:
+         return organizations.count
+         default:
+         return 0
+         }
+         */
         return 8
-        
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return bios.count
+        case 1:
+            return workInformation.count
+        case 2:
+            return titles.count
+        case 3:
+            return emails.count
+        case 4:
+            return phoneNumbers.count
+        case 5:
+            return socialLinks.count
+        case 6:
+            return websites.count
+        case 7:
+            return organizations.count
+        default:
+            return 0
+        }
+    }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Bios"
+        case 1:
+            return "Work Information"
+        case 2:
+            return "Titles"
+        case 3:
+            return "Emails"
+        case 4:
+            return "Phone Numbers"
+        case 5:
+            return "Social Media Links"
+        case 6:
+            return "Websites"
+        case 7:
+            return "Organizations"
+        default:
+            return ""
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath)
         
-        return cell
-    }
-    
-    //MARK: - UITableViewDelegate
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        
+        
+        switch indexPath.section {
+        case 0:
+            cell.titleLabel.text = "Bio \(indexPath.row)"
+            cell.descriptionLabel.text = bios[indexPath.row]
+            return cell
+        case 1:
+            cell.titleLabel.text = "Work \(indexPath.row)"
+            cell.descriptionLabel.text = workInformation[indexPath.row]
+            return cell
+        case 2:
+            cell.titleLabel.text = "Title \(indexPath.row)"
+            cell.descriptionLabel.text = titles[indexPath.row]
+            return cell
+        case 3:
+            cell.titleLabel.text = "Email \(indexPath.row)"
+            cell.descriptionLabel.text = emails[indexPath.row]
+            return cell
+        case 4:
+            cell.titleLabel.text = "Phone \(indexPath.row)"
+            cell.descriptionLabel.text = phoneNumbers[indexPath.row]
+            return cell
+        case 5:
+            cell.titleLabel.text = "Social Media Link \(indexPath.row)"
+            cell.descriptionLabel.text = socialLinks[indexPath.row]
+            return cell
+        case 6:
+            cell.titleLabel.text = "Website \(indexPath.row)"
+            cell.descriptionLabel.text = websites[indexPath.row]
+            return cell
+        case 7:
+            cell.titleLabel.text = "Organization \(indexPath.row)"
+            cell.descriptionLabel.text = organizations[indexPath.row]
+            return cell
+        default:
+            // Set
+            cell.titleLabel.text = "No Data"
+            return cell
+        }
         
         
         
@@ -159,19 +288,29 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     func populateCards(){
         
         // Senders card
-        profileImageView.image = UIImage(named: "throwback.jpg")
-        nameLabel.text = "Harold Fich"
-        numberLabel.text = "1+ (123)-345-6789"
-        emailLabel.text = "Kev.fich12@gmail.com"
-        titleLabel.text = "Founder & CEO, CleanSwipe"
         
-        mediaButton1.image = UIImage(named: "icn-social-twitter.png")
-        mediaButton2.image = UIImage(named: "icn-social-facebook.png")
-        mediaButton3.image = UIImage(named: "icn-social-harvard.png")
-        mediaButton4.image = UIImage(named: "icn-social-instagram.png")
-        mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
-        mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        if currentUser.profileImage != UIImage() {
+            profileImageView.image = currentUser.profileImage
+        }
+        if currentUser.fullName != ""{
+            nameLabel.text = currentUser.fullName
+        }
+        if currentUser.phoneNumbers.count > 0{
+            numberLabel.text = currentUser.phoneNumbers[0]["phone"]
+        }
+        if currentUser.emails.count > 0{
+            emailLabel.text = currentUser.emails[0]["email"]
+        }
+        
+        //titleLabel.text = "Founder & CEO, CleanSwipe"
+        
+        mediaButton1.image = UIImage(named: "social-blank")
+        mediaButton2.image = UIImage(named: "social-blank")
+        mediaButton3.image = UIImage(named: "social-blank")
+        mediaButton4.image = UIImage(named: "social-blank")
+        mediaButton5.image = UIImage(named: "social-blank")
+        mediaButton6.image = UIImage(named: "social-blank")
+        mediaButton7.image = UIImage(named: "social-blank")
     }
     
     

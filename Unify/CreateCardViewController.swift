@@ -495,7 +495,12 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     // Notifications 
     
     func postNotification() {
+        
+        // Notification for radar screen
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CardCreated"), object: self)
+        
+        // Notification for Profile Card Suite
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AddNewCardFinished"), object: self)
     }
 
     

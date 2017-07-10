@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 class ContactListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating
 {
@@ -17,6 +18,14 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     var cellReuseIdentifier = "ContactListCell"
     var searchController = UISearchController()
     
+    var contactStore = CNContactStore()
+    
+    var contactList = [CNContact]()
+    let formatter = CNContactFormatter()
+
+    var selectedContact = CNContact()
+    
+    
     // IBOutlets
     // ---------------------------------
     @IBOutlet var contactListTableView: UITableView!
@@ -25,6 +34,15 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // Page Setup
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set Contact formatter style
+        formatter.style = .fullName
+        
+        // Parse for contacts in contact list
+        ContactManager.sharedManager.getContacts()
+        
+        // Observers for notifications 
+        addObservers()
 
         // Do any additional setup after loading the view.
         
@@ -49,6 +67,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Style search bar
         searchController.searchBar.barStyle = UIBarStyle.default
         searchController.searchBar.backgroundColor = UIColor.white
+        
+        
+        // Reload Data 
+        contactListTableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,7 +92,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         
-        return 25
+        return ContactManager.sharedManager.phoneContactList.count //contactList.count
     }
     
     // create a cell for each table view row
@@ -78,11 +100,22 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // create a new cell if needed or reuse an old one
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ContactListCell!
+        // Create var with current contact in array
+        let contact = ContactManager.sharedManager.phoneContactList[indexPath.row]
         
-        // set the text from the data model
-        cell?.contactNameLabel?.text = "Gareb Shamus"
-        // Set image for contact
-        cell?.contactImageView?.image = UIImage(named: "throwback.jpg")
+        // Set name formatted
+        cell?.contactNameLabel?.text = formatter.string(from: contact) ?? "No Name"
+        
+        
+        // If image data avilable, set image
+        if contact.imageDataAvailable {
+            print("Has IMAGE")
+            let image = UIImage(data: contact.imageData!)
+            // Set image for contact
+            cell?.contactImageView?.image = image
+        }else{
+            cell?.contactImageView.image = UIImage(named: "profile")
+        }
         
         // Add tap gesture to follow up button
         
@@ -92,7 +125,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        ContactManager.sharedManager.userArrivedFromContactList = true
+        
+        print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
+        // Assign selected contact
+        selectedContact = ContactManager.sharedManager.phoneContactList[indexPath.row]
+        // Pass in segue
+        self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
+        /*ContactManager.sharedManager.userArrivedFromContactList = true
         
         if ContactManager.sharedManager.userArrivedFromIntro{
             // Perform information transfer
@@ -109,7 +148,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
             ContactManager.sharedManager.userArrivedFromContactList = false
             
-        }
+        }*/
     }
     
      func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -138,21 +177,55 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V"]
+        return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"]
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "G"
     }
     
-    /*
+    
+    // Custom Methods
+    func addObservers() {
+        // Call to refresh table
+        NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTableData), name: NSNotification.Name(rawValue: "RefreshContactList"), object: nil)
+        
+    }
+
+    func refreshTableData() {
+        // 
+        DispatchQueue.main.async {
+            // Update UI
+            self.contactListTableView.reloadData()
+        }
+    }
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "showContactProfile"{
+            // Find destination
+            let destination = segue.destination as! ContactProfileViewController
+            // Assign selected contact object
+            destination.selectedContact = self.selectedContact
+            
+            // Test 
+            print("Contact Passed in Seggy")
+        }
+    
+    
     }
-    */
+    
 
+    
+    
+    
+    
+    
+    
 }
