@@ -445,7 +445,6 @@
 		FB3738231EDDBDFC0074200F /* Activity */ = {
 			isa = PBXGroup;
 			children = (
-				FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */,
 				1CB31C9E1E94092000A0C4A5 /* Activity-ViewController.swift */,
 				1C3104111E9536D100F4D70D /* SingleActivity-ViewController.swift */,
 				1C31040F1E94B7FC00F4D70D /* FollowUp-ViewController.swift */,
@@ -460,6 +459,7 @@
 				FB1A34121EE1BC88003B5A73 /* RadarContainerViewController.swift */,
 				FB1A34141EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift */,
 				FBE807451F04159700A05292 /* CardSelectionViewController.swift */,
+				FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */,
 			);
 			name = Radar;
 			sourceTree = "<group>";

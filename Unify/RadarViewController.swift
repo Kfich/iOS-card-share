@@ -28,8 +28,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     var currentUser = User()
     
-    var lat = ""
-    var long = ""
+    var didReceieveList = false
+    
+    var lat : Double = 0.0
+    var long : Double = 0.0
+    
+    var nearbyList = [String: Any]()
+    
     
     // Phone Contact Store
     var store: CNContactStore!
@@ -185,86 +190,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         })*/
     }
     
-    func test(json: [String : Any]) {
-        // prepare json data
-        //let json: [String: Any] = ["data": ["title": "ABC", "dict": ["1":"First", "2":"Second"]]]
-        
-        
-        //let jsonData = try? JSONSerialization.data(withJSONObject: json)
-        
-        // create post request
-        do {
-            
-            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-            print("\n\n\nJSON DATA")
-            print(jsonData)
-            
-            // create post request
-            let url = NSURL(string: "https://project-unify-node-server.herokuapp.com/user/get")!
-            let request = NSMutableURLRequest(url: url as URL)
-            request.httpMethod = "POST"
-            
-            // insert json data to the request
-            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-            request.httpBody = jsonData
-            
-            print("\n\n\n HTTP BODY \(String(describing: request.httpBody))\n\n")
-            
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
-                if error != nil{
-                    print("Error -> \(String(describing: error))")
-                    return
-                }
-                
-                do {
-                    let result = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:AnyObject]
-                    
-                    print("Result -> \(String(describing: result))")
-                    
-                    
-                    
-                    
-                    //let user = User(snapshot: result! as NSDictionary)
-                    //user.printUser()
-                    
-                } catch {
-                    print("Error -> \(error)")
-                }
-            }
-            
-            task.resume()
-            
-        } catch {
-            print(error)
-        }
-
-    }
-    
-    
-    func genericPostCall(_ params : NSDictionary){
-        
-        let urlString = "https://project-unify-node-server.herokuapp.com/user/create"
-        
-        
-        //let dictionary = ["token": deviceToken, "user_id": userId, "message": "Your appointment has been dispatched. \n Status: Processing"]
-        
-        let manager = AFHTTPSessionManager()
-        manager.requestSerializer = AFJSONRequestSerializer()
-        manager.responseSerializer = AFHTTPResponseSerializer()
-        manager.post(urlString, parameters: params, success:
-            {
-                requestOperation, response in
-                
-                let result = NSString(data: (response as! NSData) as Data, encoding: String.Encoding.utf8.rawValue)!
-                
-                print(result)
-        },
-                     failure:
-            {
-                requestOperation, error in
-                print(error)
-        })
-    }
     
     
     
@@ -411,10 +336,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     func plotPerson(distance: Int, direction: Int)
     {
         
-        //let image = UIImage(named: "")
-        //let imageView = UIImageView(image: image!)
+        let image = UIImage(named: "radar-avatar")
+        let imageView = UIImageView(image: image!)
         
-        let imageView = UIImageView()
+        //let imageView = UIImageView()
         
         imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 80, height: 80)
         
@@ -442,7 +367,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         
         // Adding image of contact to map screen
-        //self.homeView.addSubview(imageView)
+        self.pulseView.addSubview(imageView)
     }
     
     func centerMap(_ center:CLLocationCoordinate2D){
@@ -520,8 +445,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let message = "THIS IS THE CURRENT \(center.latitude) , \(center.longitude)"
         
         // Set lat and long 
-        self.lat = String(center.latitude)
-        self.long = String(center.longitude)
+        self.lat = center.latitude
+        self.long = center.longitude
         print(message)
         
         let parameters = ["uuid": currentUser.userId, "location": ["latitude": center.latitude, "longitude": center.longitude]] as [String : Any]
@@ -590,31 +515,53 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         {
             updateLocation_tick = 0
             
-            // Hit endpoint for updates on users nearby 
-            let parameters = ["uuid": currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
             
-            print(">>> SENT PARAMETERS >>>> \n\(parameters))") 
-            
-            // Create User Objects
-            Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
-                if error == nil {
-                    
-                    print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
-                    
-                    // Here you set the id for the user and resubmit the object
-                    // Perfom seggy to next vc
-                    
-                    //KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
-                    
-                    
-                } else {
-                    print(error)
-                    // Show user popup of error message
-                    print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
-                    //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
-                }
+            if didReceieveList == false {
+                // Set the value to true so the requests stop
+                self.didReceieveList = true
                 
-            })
+                
+            
+                // Hit endpoint for updates on users nearby
+                let parameters = ["uuid": currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
+                
+                print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+                
+                // Create User Objects
+                Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
+                    if error == nil {
+                        
+                        print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                        
+                        let dictionary : NSArray = response as! NSArray
+
+                        for item in dictionary {
+                            let user = User(snapshot: item as! NSDictionary)
+                            user.printUser()
+                            
+                            let distance = Int(random: -5..<5)
+                            let direction = Int(random: -5..<5)
+                            
+                            // plot person on map
+                            self.plotPerson(distance: distance, direction: direction)
+                        }
+                        
+                        
+                        // Here you set the id for the user and resubmit the object
+                        // Perfom seggy to next vc
+                        
+                        //KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                        
+                        
+                    } else {
+                        print(error)
+                        // Show user popup of error message
+                        print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+                        //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
+                    }
+                    
+                })
+            }
             
             
             print("Updating location")
