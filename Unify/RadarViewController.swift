@@ -28,6 +28,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     var currentUser = User()
     
+    var lat = ""
+    var long = ""
+    
     // Phone Contact Store
     var store: CNContactStore!
     // Location
@@ -42,6 +45,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
 
     // Status check
     var radarStatus: Bool = false
+    
+    var  counter = 0
     
     
     let keysToFetch = [
@@ -62,6 +67,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     @IBOutlet var radarImageView: UIButton!
     
     @IBOutlet var radarButton: UIButton!
+    
+    @IBOutlet var radarSwitch: UISwitch!
+    
     
     @IBOutlet var pulseView: UIView!
     
@@ -282,32 +290,33 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     @IBAction func radarButtonSelected(_ sender: AnyObject) {
         
         print("activate radar")
+        let halo2 = PulsingHaloLayer()
         
-        if radarStatus == true
-        {
-            radarStatus = false
-            pulseMe(status: "hide")
-            self.locationManager.stopUpdatingLocation()
+        if radarSwitch.isOn{
+            
+            radarStatus = true
+            pulseMe(status: "show")
+            
+            halo2.position = view.center
+            pulseView.layer.addSublayer(halo)
+            halo2.start()
+
+            halo2.isHidden = false
+            
+            self.locationManager.startUpdatingLocation()
             
             // Configure Label text and set image
             //self.radarOnLabel.isHidden = true
-            self.radarOffLabel.text = "radar off"
-            self.radarButton.setImage(UIImage(named:"radar_off.png"), for: UIControlState.normal)
-        
-            // End anime
-            stopPulseAnimation()
+            //  self.radarOffLabel.text = "radar off"
+            //self.radarButton.setImage(UIImage(named:"radar_off.png"), for: UIControlState.normal)
             
             
         } else {
             
-            radarStatus = true
-            pulseMe(status: "show")
-            self.locationManager.startUpdatingLocation()
-            
-            // Toggle labels and set image
-            //self.radarOnLabel.isHidden = false
-            self.radarOffLabel.text = "radar on"
-            self.radarButton.setImage(UIImage(named:"radar_on.png"), for: UIControlState.normal)
+            radarStatus = false
+            //pulseMe(status: "hide")
+            halo.isHidden = true
+            self.locationManager.stopUpdatingLocation()
 
         }
         
@@ -322,6 +331,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
         }
     }
+    
+    
+    
     
     
     // Pull up Delegate Protocols
@@ -341,26 +353,29 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // -------------------------------------------
     
     func stopPulseAnimation() {
-        halo.removeAllAnimations()
-        halo.shouldResume = false
+        //halo.removeAllAnimations()
+        //halo.shouldResume = false
         
     }
     
     func pulseMe(status: String?){
         
         // Set coordinates for the pulse view
-        halo.position.y = pulseView.frame.height / 2
+        halo.position.y = pulseView.frame.height / 2.5
         halo.position.x = pulseView.frame.width / 2
         halo.haloLayerNumber = 3;
         
         // Set radius
-        halo.radius = 250;
+        halo.radius = 100;
         
         halo.backgroundColor = UIColor.white.cgColor
         
         
         pulseView.layer.addSublayer(halo)
         halo.start()
+        
+        print("HALO COORDS")
+        print("x --> \(halo.position.x)   y --> \(halo.position.y)")
         
         
         plotPerson(distance: 5, direction: -4)
@@ -384,9 +399,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
          pulseView.count = 6
          pulseView.lineWidth = 3.0
          
-         
-         pulseView.startAnimation()
-         */
+ 
+         pulseView.startAnimation()*/
+ 
         
     }
     
@@ -493,7 +508,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         //Update UI for grated state.
         //...
         print("access granted, getting contacts... ")
-        getContacts()
+        //getContacts()
     }
     
     
@@ -502,19 +517,57 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // -----------------------------------------------------------
     
     func saveCurrentLocation(_ center:CLLocationCoordinate2D){
-        let message = "\(center.latitude) , \(center.longitude)"
+        let message = "THIS IS THE CURRENT \(center.latitude) , \(center.longitude)"
+        
+        // Set lat and long 
+        self.lat = String(center.latitude)
+        self.long = String(center.longitude)
         print(message)
         
+        let parameters = ["uuid": currentUser.userId, "location": ["latitude": center.latitude, "longitude": center.longitude]] as [String : Any]
+        
+        /*
+        
+        // Create User Objects
+        Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                
+                // Here you set the id for the user and resubmit the object
+                // Perfom seggy to next vc
+                
+                //KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                
+                DispatchQueue.main.async {
+                    // Update UI
+                    self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
+                }
+                
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+                //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
+            }
+            
+        })*/
+        
+        
         let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
+        
         
         
         // Geocode Location
         let geocoder = CLGeocoder()
         
-        let paramString = "latitude=\(center.latitude)&longitude=\(center.longitude)&uuid=\(global_uuid!)"
+       /* let paramString = "latitude=\(center.latitude)&longitude=\(center.longitude)&uuid=\(global_uuid!)"*/
         
         
-        self.updateLocation(param: paramString)
+        // Upload location to sever
+        self.updateLocation()
         
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             // Process Response
@@ -529,44 +582,42 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     
-    func updateLocation(param: String){
+    func updateLocation(){
         updateLocation_tick = updateLocation_tick + 1
+        print(updateLocation_tick)
         
-        if updateLocation_tick > 5
+        if updateLocation_tick >= 5
         {
             updateLocation_tick = 0
             
+            // Hit endpoint for updates on users nearby 
+            let parameters = ["uuid": currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
             
-            let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/geoservice")!
-            let session = URLSession.shared
+            print(">>> SENT PARAMETERS >>>> \n\(parameters))") 
             
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-            
-            let paramString = param
-            
-            request.httpBody = paramString.data(using: String.Encoding.utf8)
-            
-            let task = session.dataTask(with: request as URLRequest) {
-                (
-                data, response, error) in
-                
-                guard let data = data, let _:URLResponse = response, error == nil else {
-                    print("error")
-                    return
+            // Create User Objects
+            Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
+                if error == nil {
+                    
+                    print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                    
+                    // Here you set the id for the user and resubmit the object
+                    // Perfom seggy to next vc
+                    
+                    //KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                    
+                    
+                } else {
+                    print(error)
+                    // Show user popup of error message
+                    print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+                    //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
                 }
                 
-                let dataString =  String(data: data, encoding: String.Encoding.utf8)
-                print(dataString)
-                
-                
-            }
-            
-            task.resume()
+            })
             
             
-            
+            print("Updating location")
         }
     }
     
@@ -779,12 +830,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             if (person.hasImageData() == true){
                                 
-                                self.uploadUserThumb(image: person.image!, recordId: person.recordID)
+                                //self.uploadUserThumb(image: person.image!, recordId: person.recordID)
                                 
-                                personJsonRecord["profilePicture_local"].stringValue = "\(global_uuid!)-\(person.recordID).jpg"
+                               // personJsonRecord["profilePicture_local"].stringValue = "\(global_uuid!)-\(person.recordID).jpg"
                                 
                                 //let imageData: NSData = UIImageJPEGRepresentation(person.image!, 0.4)! as NSData
                                 //personJsonRecord["imageData"].stringValue =  imageData.base64EncodedString()
+                                
                                 
                                 
                             }

@@ -258,10 +258,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 cell.cardTitle.text = currentCard.cardProfile.getTitle()
             }
             if currentCard.cardProfile.emails.count > 0 {
-                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
+                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"] as! String
             }
             if currentCard.cardProfile.phoneNumbers.count > 0 {
-                cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"]
+                cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"] as! String
             }
             if currentCard.cardProfile.images.count > 0 {
                 // Populate image view
@@ -593,10 +593,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 name = selectedUserCard.cardHolderName!
             }
             if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-                phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]!
+                phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! as! String
             }
             if selectedUserCard.cardProfile.emails.count > 0{
-                email = selectedUserCard.cardProfile.emails[0]["email"]!
+                email = selectedUserCard.cardProfile.emails[0]["email"]! as! String
             }
             if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
                 title = self.selectedUserCard.cardProfile.title!
@@ -638,10 +638,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             name = selectedUserCard.cardHolderName!
         }
         if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-            phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]!
+            phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! as! String
         }
         if selectedUserCard.cardProfile.emails.count > 0{
-            email = selectedUserCard.cardProfile.emails[0]["email"]!
+            email = selectedUserCard.cardProfile.emails[0]["email"] as! String
         }
         if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
             title = self.selectedUserCard.cardProfile.title!

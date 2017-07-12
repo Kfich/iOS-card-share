@@ -94,6 +94,14 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kVerifyPin];
 }
 
+// Geo
+- (NSURLSessionDataTask*)startRadarCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kStartRadar];
+}
+- (NSURLSessionDataTask*)endRadarCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kEndRadar];
+}
+
 
 
 #pragma mark - Response Handling

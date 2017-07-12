@@ -33,15 +33,25 @@ class EditProfileContainerViewController: FormViewController {
     // IBOutlets
     // ----------------------------------
     
-    
-
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        // Really, we parse the card and profile infos to extract the list
+        // Fill profile with example info
+        currentUser = ContactManager.sharedManager.currentUser
+        
+        /*
+        emails = ["example@gmail.com", "test@aol.com", "sample@gmail.com" ]
+        phoneNumbers = ["1234567890", "6463597308", "3036558888"]
+        socialLinks = ["facebook-link", "snapchat-link", "insta-link"]
+        organizations = ["crane.ai", "Example Inc", "Sample LLC", "Boys and Girls Club"]
+        bios = ["Created a company for doing blank for example usecase", "Full Stack Engineer at Crane.ai", "College Professor at the University of Application Building"]
+        websites = ["example.co", "sample.ai", "excuse.me"]
+        titles = ["Entrepreneur", "Salesman", "Full Stack Engineer"]
+        workInformation = ["Job 1", "Job 2", "Example Job", "Sample Job"]*/
+        
         
         // Assign profile image val
-        
-        
         
         // Parse card for profile info
         
@@ -49,15 +59,23 @@ class EditProfileContainerViewController: FormViewController {
          if currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
             for bio in currentUser.userProfile.bios{
-                bios.append(bio["bio"]!)
+                bios.append(bio["bio"] as! String)
             }
          }
         // Parse work info
          if currentUser.userProfile.workInformationList.count > 0{
             for info in currentUser.userProfile.workInformationList{
-                workInformation.append(info["info"]!)
+                workInformation.append(info["work"]!)
             }
          }
+        // Parse work info
+        if currentUser.userProfile.titles.count > 0{
+            for info in currentUser.userProfile.titles{
+                titles.append((info["title"])!)
+            }
+        }
+        
+        // Parse phone numbers
          if currentUser.userProfile.phoneNumbers.count > 0{
             for number in currentUser.userProfile.phoneNumbers{
                 phoneNumbers.append(number["phone"]!)
@@ -65,7 +83,7 @@ class EditProfileContainerViewController: FormViewController {
          }
         // Parse emails
          if currentUser.userProfile.emails.count > 0{
-            for email in currentUser.userProfile.phoneNumbers{
+            for email in currentUser.userProfile.emails{
                 emails.append(email["email"]!)
             }
          }
@@ -100,25 +118,12 @@ class EditProfileContainerViewController: FormViewController {
             }
          }
         
-
-        
-        // Really, we parse the card and profile infos to extract the list
-        // Fill profile with example info
-       
-        /*emails = ["example@gmail.com", "test@aol.com", "sample@gmail.com" ]
-        phoneNumbers = ["1234567890", "6463597308", "3036558888"]
-        socialLinks = ["facebook-link", "snapchat-link", "insta-link"]
-        organizations = ["crane.ai", "Example Inc", "Sample LLC", "Boys and Girls Club"]
-        bios = ["Created a company for doing blank for example usecase", "Full Stack Engineer at Crane.ai", "College Professor at the University of Application Building"]
-        websites = ["example.co", "sample.ai", "excuse.me"]
-        titles = ["Entrepreneur", "Salesman", "Full Stack Engineer"]
-        workInformation = ["Job 1", "Job 2", "Example Job", "Sample Job"]*/
-        
         
         
         title = "Multivalued Examples"
         form +++
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "Bio Information", footer: "") {
+                                    $0.tag = "Bio Section"
                                     $0.addButtonProvider = { section in
                                         return ButtonRow(){
                                             $0.title = "Add Bio Info"
@@ -127,7 +132,6 @@ class EditProfileContainerViewController: FormViewController {
                                                 cell.textLabel?.textAlignment = .left
                                         }
                                     }
-                
                                     $0.multivaluedRowToInsertAt = { index in
                                         return NameRow("bioRow_\(index)") {
                                             $0.placeholder = "Bio"
@@ -138,14 +142,15 @@ class EditProfileContainerViewController: FormViewController {
                                     }
                     
                                     // Iterate through array and set val
-                                    /*
+                
                                     for val in bios{
-                                        $0 <<< NameRow("bio_\(count+=1)") {
-                                         $0.placeholder = "Bio"
+                                        print(val)
+                                        $0 <<< NameRow() {
+                                        $0.placeholder = "Bio"
                                         $0.value = val
-                                        //$0.tag = "Add Bio"
+                                        //$0.tag = "b_row\(IndexPath())"
                                          }
-                                    }*/
+                                    }
                 
                     
                                     
@@ -155,6 +160,7 @@ class EditProfileContainerViewController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Titles",
                                footer: "") {
+                                $0.tag = "Title Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Title"
@@ -170,18 +176,19 @@ class EditProfileContainerViewController: FormViewController {
                                     }
                                 }
                                 // Iterate through array and set val
-                                /*for val in titles{
-                                $0 <<< NameRow("title_\(count+1)") {
+                                for val in titles{
+                                $0 <<< NameRow() {
                                     $0.placeholder = "Title"
                                     $0.value = val
                                 }
-                                }*/
+                                }
             }
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Phone Numbers",
                                footer: "") {
+                                $0.tag = "Phone Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Phone Numbers"
@@ -197,13 +204,13 @@ class EditProfileContainerViewController: FormViewController {
                                     }
                                 }
                                 // Iterate through array and set val
-                                /*for val in phoneNumbers{
+                                for val in phoneNumbers{
                                     $0 <<< NameRow() {
                                      $0.placeholder = "Number"
                                         $0.value = val
                                         //$0.tag = "Phone Numbers"
                                      }
-                                }*/
+                                }
                                 
             }
             +++
@@ -211,6 +218,7 @@ class EditProfileContainerViewController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Email Addresses",
                                footer: "") {
+                                $0.tag = "Email Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Email"
@@ -227,13 +235,13 @@ class EditProfileContainerViewController: FormViewController {
                                 }
                                 
                                 // Iterate through array and set val
-                               /* for val in emails{
+                                for val in emails{
                                     $0 <<< NameRow() {
                                     $0.placeholder = "Address"
                                     //$0.tag = "Add Emails"
                                     $0.value = val
                                   }
-                                }*/
+                                }
             }
             
             +++
@@ -241,6 +249,7 @@ class EditProfileContainerViewController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Work Info",
                                footer: "") {
+                                $0.tag = "Work Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Work Info"
@@ -256,19 +265,20 @@ class EditProfileContainerViewController: FormViewController {
                                     }
                                 }
                                 // Iterate through array and set val
-                                /*for val in workInformation{
+                                for val in workInformation{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Work info"
                                         $0.value = val
                                         //$0.tag = "Add Work Info"
                                     }
-                                }*/
+                                }
         }
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Websites",
                                footer: "") {
+                                $0.tag = "Website Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Websites"
@@ -285,13 +295,13 @@ class EditProfileContainerViewController: FormViewController {
                                 }
                                 // Iterate through array and set val
 
-                               /* for val in websites{
+                                for val in websites{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Site"
                                         $0.value = val
                                         //$0.tag = "Add Websites"
                                 }
-                            }*/
+                            }
                 }
         
             +++
@@ -299,6 +309,7 @@ class EditProfileContainerViewController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Social Media Links",
                                footer: "") {
+                                $0.tag = "Media Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Media Info"
@@ -315,19 +326,20 @@ class EditProfileContainerViewController: FormViewController {
                                 }
                                 
                                 // Iterate through array and set val
-                               /* for val in socialLinks{
+                                for val in socialLinks{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Link"
                                         $0.value = val
                                         //$0.tag = "Add Media Info"
                                    }
-                                }*/
+                                }
         }
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Organizations",
                                footer: "") {
+                                $0.tag = "Organization Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Organizations"
@@ -344,14 +356,14 @@ class EditProfileContainerViewController: FormViewController {
                                 }
                                 
                                 // Iterate through array and set val
-                               /* for val in organizations{
+                                for val in organizations{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Name"
                                         $0.value = val
                                         //$0.tag = "Add Organizations"
                                         
                                 }
-                            }*/
+                            }
                 
         }
         
@@ -363,34 +375,99 @@ class EditProfileContainerViewController: FormViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
-        let values = form.values()
+        // Assign all the items in each list to the contact profile on manager
+        // Parse table section vals
+        
+        // Bios Section
+        let bioValues = form.sectionBy(tag: "Bio Section")
         
         
-        //let vals = form.values()
-        
-        
-        
-        print(values)
-        
-        //print("The Form Values ")
-        print(values)
-        // Assign all the items in each list to the contact profile on manager 
-        /*
-        for bio in bios {
-            print("Bio --> \(bio)")
+        for val in bioValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))" 
+            // Append to user profile
+            if str != "nil" {
+                currentUser.userProfile.setBioRecords(emailRecords: ["bio": str as! String])
+            }
         }
-        for work in workInformation {
-            print("Work --> \(work)")
+        
+        // Titles Section
+        let titleValues = form.sectionBy(tag: "Title Section")
+        for val in titleValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))" as String
+            if str != "nil" {
+                currentUser.userProfile.titles.append(["title" : str])
+            }
         }
-        for org in organizations {
-            print("Orgs --> \(bio)")
+        
+        // Phone Number section
+        let phoneValues = form.sectionBy(tag: "Phone Section")
+        for val in phoneValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))"
+            if str != "nil" {
+                currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
+            }
         }
-        for bio in bios {
-            print("Bio --> \(bio)")
+        
+        // Email Section
+        let emailValues = form.sectionBy(tag: "Email Section")
+        for val in emailValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))"
+            if str != "nil" {
+                currentUser.userProfile.emails.append(["email" : str])
+            }
         }
-        for bio in bios {
-            print("Bio --> \(bio)")
-        }*/
+        
+        // Work Info Section
+        let workValues = form.sectionBy(tag: "Work Section")
+        for val in workValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))"
+            if str != "nil" {
+                currentUser.userProfile.workInformationList.append(["work" :str])
+            }
+        }
+        
+        // Website Section
+        let websiteValues = form.sectionBy(tag: "Website Section")
+        for val in websiteValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))"
+            if str != "nil" {
+                currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
+            }
+        }
+        
+        // Social Media Section
+        let mediaValues = form.sectionBy(tag: "Media Section")
+        for val in mediaValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))"
+            if str != "nil" {
+                currentUser.userProfile.setSocialLinks(socialRecords: ["link": str])
+            }
+        }
+        
+        // Organization section
+        let organizationValues = form.sectionBy(tag: "Organization Section")
+        for val in organizationValues! {
+            print(val.baseValue ?? "")
+            let str = "\(String(describing: val.baseValue))"
+            if str != "nil" {
+                currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
+            }
+        }
+        
+        // Set current user to contact manager
+        
+        
+        
+        ContactManager.sharedManager.currentUser = self.currentUser
+        // Test to print profile
+        ContactManager.sharedManager.currentUser.userProfile.printProfle()
         
     }
     

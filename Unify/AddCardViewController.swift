@@ -135,10 +135,10 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
                 cell.cardTitle.text = currentCard.cardProfile.getTitle()
             }
             if currentCard.cardProfile.emails.count > 0 {
-                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
+                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"] as! String
             }
             if currentCard.cardProfile.phoneNumbers.count > 0 {
-                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]
+                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"] as! String
             }
             if currentCard.cardProfile.images.count > 0{
                 // Populate image view

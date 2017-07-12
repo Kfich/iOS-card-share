@@ -34,5 +34,11 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 - (NSURLSessionDataTask*)verifyPinCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
 
+// Geo
+- (NSURLSessionDataTask*)startRadarCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)endRadarCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+
+
+
 
 @end

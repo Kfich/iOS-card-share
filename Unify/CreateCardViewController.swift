@@ -68,10 +68,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet var addImageButton: UIButton!
     @IBOutlet var addCardNameButton: UIButton!
 
-    // Page Setup
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
         // Set current user
         currentUser = ContactManager.sharedManager.currentUser
         
@@ -85,7 +84,65 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             nameLabel.text = currentUser.fullName
         }
         
-        // View config 
+        // Parse card for profile info
+        
+        // Parse bio info
+        if currentUser.userProfile.bios.count > 0{
+            // Iterate throught array and append available content
+            for bio in currentUser.userProfile.bios{
+                bios.append(bio["bio"]!)
+            }
+        }
+        // Parse work info
+        if currentUser.userProfile.workInformationList.count > 0{
+            for info in currentUser.userProfile.workInformationList{
+                workInformation.append(info["work"]!)
+            }
+        }
+        if currentUser.userProfile.phoneNumbers.count > 0{
+            for number in currentUser.userProfile.phoneNumbers{
+                phoneNumbers.append(number["phone"]!)
+            }
+        }
+        // Parse emails
+        if currentUser.userProfile.emails.count > 0{
+            for email in currentUser.userProfile.emails{
+                emails.append(email["email"]!)
+            }
+        }
+        // Parse websites
+        if currentUser.userProfile.websites.count > 0{
+            for site in currentUser.userProfile.websites{
+                websites.append(site["website"]!)
+            }
+        }
+        // Parse organizations
+        if currentUser.userProfile.organizations.count > 0{
+            for org in currentUser.userProfile.organizations{
+                organizations.append(org["organization"]!)
+            }
+        }
+        // Parse Tags
+        if currentUser.userProfile.tags.count > 0{
+            for hashtag in currentUser.userProfile.tags{
+                tags.append(hashtag["tag"]!)
+            }
+        }
+        // Parse notes
+        if currentUser.userProfile.notes.count > 0{
+            for note in currentUser.userProfile.notes{
+                notes.append(note["note"]!)
+            }
+        }
+        // Parse socials links
+        if currentUser.userProfile.socialLinks.count > 0{
+            for link in currentUser.userProfile.socialLinks{
+                notes.append(link["link"]!)
+            }
+        }
+
+        
+        // View config
         configureViews()
         
         // Photo picker config 
@@ -94,10 +151,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Do any additional setup after loading the view.
         
         
-        
-        
         // Parse the users profile for info 
-        
+        /*
         emails = ["example@gmail.com", "test@aol.com", "sample@gmail.com" ]
         phoneNumbers = ["1234567890", "6463597308", "3036558888"]
         socialLinks = ["facebook-link", "snapchat-link", "insta-link"]
@@ -106,7 +161,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         websites = ["example.co", "sample.ai", "excuse.me"]
         titles = ["Entrepreneur", "Salesman", "Full Stack Engineer"]
         workInformation = ["Job 1", "Job 2", "Example Job", "Sample Job"]
-        
+        */
         
     }
 

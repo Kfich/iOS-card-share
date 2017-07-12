@@ -19,19 +19,17 @@
 #define kCreateTransaction    kServerURL(kAppwsServerURL, @"transactions/create")
 #define kGetTransaction       kServerURL(kAppwsServerURL, @"transactions/get")
 #define kUpdateTransaction    kServerURL(kAppwsServerURL, @"transactions/update")
-
-// Add
 #define kApproveTransaction   kServerURL(kAppwsServerURL, @"transactions/approve")
 #define kRejectTransaction    kServerURL(kAppwsServerURL, @"transactions/reject")
 
 // Auth
 #define kLogoutUser           kServerURL(kAppwsServerURL, @"auth/logout")
 #define kRefreshUserToken     kServerURL(kAppwsServerURL, @"auth/refreshToken")
-
-// Add
 #define kIssuePin             kServerURL(kAppwsServerURL, @"auth/issuePin")
 #define kVerifyPin            kServerURL(kAppwsServerURL, @"auth/verifyPin")
 
-
+// Geo
+#define kStartRadar           kServerURL(kAppwsServerURL, @"startRadar")
+#define kEndRadar             kServerURL(kAppwsServerURL, @"endRadar")
 
 #endif

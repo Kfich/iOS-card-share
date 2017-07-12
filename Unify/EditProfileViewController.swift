@@ -116,6 +116,9 @@ class EditProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Assign current user
+        currentUser = ContactManager.sharedManager.currentUser
+        
         // Check for image, set to imageview
         if currentUser.profileImages.count > 0{
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)

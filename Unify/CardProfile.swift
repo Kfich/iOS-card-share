@@ -138,6 +138,33 @@ public class CardProfile{
     func getWorkInfo()->String{
         return workInfo ?? ""
     }
+   
+    // Bios array
+    func getBioRecords()->[[String : String]]{
+        return bios
+    }
+    
+    func setBioRecords(emailRecords : [String : String]){
+        bios.append(emailRecords)
+    }
+
+    // Titles array
+    func getTitleRecords()->[[String : String]]{
+        return titles
+    }
+    
+    func setTitleRecords(emailRecords : [String : String]){
+        titles.append(emailRecords)
+    }
+    
+    // Bios array
+    func getWorkRecords()->[[String : String]]{
+        return workInformationList
+    }
+    
+    func setWorkRecords(emailRecords : [String : String]){
+        workInformationList.append(emailRecords)
+    }
     
     // Emails
     func getEmailRecords()->[[String : String]]{
@@ -188,7 +215,6 @@ public class CardProfile{
     func getWebsites()->[[String : String]]{
         return websites
     }
-    
     func setWebsites(websiteRecords : [String : String]){
         websites.append(websiteRecords)
     }
