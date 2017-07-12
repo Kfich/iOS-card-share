@@ -21,6 +21,9 @@ public class ContactCard: NSObject, NSCoding{
     var image : UIImage?
     var profileDictionary = NSDictionary()
     
+    // Set UserID to card
+    var ownerId = ""
+    
     // Card Profile Object containing all associated info
     
     var cardProfile : CardProfile = CardProfile()
@@ -29,9 +32,9 @@ public class ContactCard: NSObject, NSCoding{
     // Init
     
     override init() {
-        cardId = "1234567890"
-        cardHolderName = "Kevin Fich"
-        cardName = "Card 1"
+        cardId = ""
+        cardHolderName = ""
+        cardName = ""
     
         
     }
@@ -48,12 +51,27 @@ public class ContactCard: NSObject, NSCoding{
     // Init from server 
     init(snapshot: NSDictionary) {
         cardId = snapshot["uuid"] as? String
+        cardId = snapshot["ownerId"] as? String
         cardName = snapshot["card_name"] as? String
         cardHolderName = snapshot["card_holder_name"] as? String
         imageURL = snapshot["image_url"] as? Data
         profileDictionary = (snapshot["card_profile"] as? NSDictionary)!
         // Create card profile
         cardProfile = CardProfile(snapshot: profileDictionary)
+        
+        // Test if card populated
+        //printCard()
+    }
+    
+    init(withSnapshotFromDefaults: NSDictionary) {
+        cardId = withSnapshotFromDefaults["uuid"] as? String
+        cardId = withSnapshotFromDefaults["ownerId"] as? String
+        cardName = withSnapshotFromDefaults["card_name"] as? String
+        cardHolderName = withSnapshotFromDefaults["card_holder_name"] as? String
+        imageURL = withSnapshotFromDefaults["image_url"] as? Data
+        profileDictionary = (withSnapshotFromDefaults["card_profile"] as? NSDictionary)!
+        // Create card profile
+        cardProfile = CardProfile(fromDefaultsWithDictionary: profileDictionary)
         
         // Test if card populated
         //printCard()
@@ -86,15 +104,6 @@ public class ContactCard: NSObject, NSCoding{
 
     }
     
-    /*func encodeWithCoder(coder: NSCoder) {
-        coder.encode(self.cardId, forKey: "card_id")
-        coder.encode(self.cardName, forKey: "card_name")
-        coder.encode((self.cardHolderName), forKey: "card_holder_name")
-        coder.encode(self.image, forKey: "card_image")
-        coder.encode(self.cardProfile, forKey: "card_profile")
-    }*/
- 
-    
     // Exporting the object
     
     func toAnyObject() -> NSDictionary {
@@ -103,8 +112,20 @@ public class ContactCard: NSObject, NSCoding{
             "card_name": cardName ?? "",
             "card_holder_name": cardHolderName ?? "",
             "image_url" : imageURL ?? Data(),
+            "ownerId" : ownerId,
             "card_profile" : cardProfile.toAnyObject()
             
+        ]
+    }
+    
+    func toAnyObjectWithImage() -> NSDictionary {
+        return [
+            "uuid": cardId ?? "",
+            "card_name": cardName ?? "",
+            "card_holder_name": cardHolderName ?? "",
+            "image_url" : imageURL ?? Data(),
+            "ownerId" : ownerId,
+            "card_profile" : cardProfile.toAnyObjectWithImage()
         ]
     }
     
@@ -179,9 +200,12 @@ public class ContactCard: NSObject, NSCoding{
         print("\n")
         
         
-        print("CardId :" + cardId!)
-        print("Card Name :" + cardName!)
-        print("CardHolder Name :" + cardHolderName!)
+        print("CardId :")
+        print(cardId ?? "")
+        print("Card Name :")
+        print(cardName ?? "")
+        print("CardHolder Name :")
+        print(cardHolderName ?? "")
         print("")
         print("Card Profile :")
         

@@ -26,6 +26,7 @@ public class User{
     // **************************** Add these to inits ****************************
     var profileImages = [[String : Any]]()
     var profileImageData : Data = Data()
+    var profileImageId = String()
     
     // Cards suite
     var cards = [ContactCard]()
@@ -54,8 +55,9 @@ public class User{
         emails = snapshot["email"] as? [[String : String]] ?? [["":""]]
         phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
         scope = snapshot["scope"] as? String ?? ""
-        profileImages = (snapshot["profile_image"] as? [[String : Any]])!
+        //profileImages = (snapshot["profile_image"] as? [[String : Any]])!
         
+        profileImageId = snapshot["profile_image_id"] as? String ?? ""
         
         // To get full username
         fullName = getName()
@@ -63,11 +65,43 @@ public class User{
         printUser()
     }
     
+    init(withDefaultsSnapshot: NSDictionary) {
+        
+        userId = withDefaultsSnapshot.object(forKey: "uuid") as? String ?? ""
+        firstName = withDefaultsSnapshot["first_name"] as? String ?? ""
+        lastName = withDefaultsSnapshot["last_name"] as? String ?? ""
+        emails = withDefaultsSnapshot["email"] as? [[String : String]] ?? [["":""]]
+        phoneNumbers = withDefaultsSnapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        scope = withDefaultsSnapshot["scope"] as? String ?? ""
+        profileImages = (withDefaultsSnapshot["profile_image"] as? [[String : Any]])!
+        
+        //profileImageId = withDefaultsSnapshot["profile_image_id"] as? String ?? ""
+        
+        // To get full username
+        fullName = getName()
+        // Testing to see if populated
+        printUser()
+    }
     
     // Custom Methods
     // ---------------------------------
     
     func toAnyObject() -> NSDictionary {
+        return [
+            "first_name": firstName,
+            "last_name": lastName,
+            "email": emails,
+            "uuid": userId,
+            "mobile_numbers" : phoneNumbers,
+            "email" : emails,
+            "scope" : scope,
+            "profile_image_id": profileImageId
+            
+        ]
+    }
+    
+    
+    func toAnyObjectWithImage() -> NSDictionary {
         return [
             "first_name": firstName,
             "last_name": lastName,
@@ -165,7 +199,7 @@ public class User{
         print("Scope :" + scope)
         print("\n")
         print("UserId :" + userId)
-        print("Name :" + fullName)
+        print("Name :" + getName())
         print("Email :" )
         print(emails)
         print("Mobile Number : ")

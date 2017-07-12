@@ -69,11 +69,15 @@
 - (NSURLSessionDataTask*)getTransactionsCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetTransaction];
 }
-
 - (NSURLSessionDataTask*)updateTransactionCall:(NSDictionary*)parameters transactionID:(NSString*)transactionID completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUpdateTransaction];
 }
-
+- (NSURLSessionDataTask*)approveTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kApproveTransaction];
+}
+- (NSURLSessionDataTask*)rejectTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kRejectTransaction];
+}
 
 // Auth
 - (NSURLSessionDataTask*)logoutCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
@@ -82,6 +86,12 @@
 
 - (NSURLSessionDataTask*)refreshTokenCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kRefreshUserToken];
+}
+- (NSURLSessionDataTask*)issuePinCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kIssuePin];
+}
+- (NSURLSessionDataTask*)verifyPinCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kVerifyPin];
 }
 
 

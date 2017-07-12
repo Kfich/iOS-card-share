@@ -95,7 +95,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             ContactManager.sharedManager.currentUserCardsDictionaryArray = cards as! [[NSDictionary]]
             // Reload table data
             for card in ContactManager.sharedManager.currentUserCardsDictionaryArray {
-                let contactCard = ContactCard(snapshot: card[0])
+                let contactCard = ContactCard(withSnapshotFromDefaults: card[0])
                 //let profile = CardProfile(snapshot: card[0]["card_profile"])
                 
                 //print(profile)
@@ -151,6 +151,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Selector for observer function
     func newCardAdded() {
+        
+        DispatchQueue.main.async {
+            // Update UI
+            KVNProgress.showSuccess(withStatus: "Card Created Successfully!")
+        }
+        
         
         print("New Card Added")
         print("\(ContactManager.sharedManager.currentUserCards.count)")

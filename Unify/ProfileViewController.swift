@@ -290,8 +290,10 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     func populateCards(){
         
         // Senders card
+        // Assign current user from manager
+        currentUser = ContactManager.sharedManager.currentUser
         
-        if currentUser.profileImages[0]["image_data"] != nil{
+        if currentUser.profileImages.count > 0 {
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
         }
         if currentUser.fullName != ""{

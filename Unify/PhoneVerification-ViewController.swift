@@ -145,12 +145,47 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         // Save user to device
         
-        // Store to device
-        UDWrapper.setDictionary("user", value: currentUser.toAnyObject())
         
-        DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
-        }
+        // Create user dictionary to store to DB
+        let parameters = ["data": currentUser.toAnyObject()]
+        
+        KVNProgress.show(withStatus: "Sending Confirmation Code...")
+        
+        // Create User Objects
+        Connection(configuration: nil).issuePinCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Create User Response: \(response)\n\n")
+                
+                // Here you set the id for the user and resubmit the object
+                
+                let dictionary : Dictionary = response as! [String : Any]
+                self.currentUser.userId = dictionary["uuid"] as! String
+                self.currentUser.printUser()
+                // Perfom seggy to next vc
+                
+                // Store to device
+                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                
+                KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                
+                DispatchQueue.main.async {
+                    // Update UI
+                    self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
+                }
+                
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - Create User Error: \(error)\n\n")
+                KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
+            }
+            
+        })
+        
+    
         
         /*
         print(  validate(value: phoneNumberInput.text!) )
@@ -228,17 +263,21 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     
     
-    
+    // Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        
-        print(">Passed Token")
-        print(sender)
-        
-        let nextScene =  segue.destination as! PhoneVerificationPinViewController
-        nextScene.currentUser = self.currentUser
-        // Test the object has proper values
-        currentUser.printUser()
+        if segue.identifier == "sendConfirmationSegue" {
+            
+            print(">Passed Token")
+            print(sender)
+            
+            let nextScene =  segue.destination as! PhoneVerificationPinViewController
+            nextScene.currentUser = self.currentUser
+            // Test the object has proper values
+            currentUser.printUser()
+            
+            
+        }
     }
     
 }

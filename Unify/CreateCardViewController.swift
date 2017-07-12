@@ -76,7 +76,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         currentUser = ContactManager.sharedManager.currentUser
         
         // If user has default image, set as container view
-        if currentUser.profileImages[0]["image_data"] != nil{
+        if currentUser.profileImages.count > 0{
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
         }
         
@@ -92,6 +92,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         configurePhotoPicker()
         
         // Do any additional setup after loading the view.
+        
+        
         
         
         // Parse the users profile for info 
@@ -192,15 +194,20 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         let fname = "asset.png"
         let mimetype = "image/png"
         
+        let idString = currentUser.randomString(length: 20)
+        
         // Create image dictionary
-        let imageDict = ["image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
         
         // Add image to contact card profile images
         self.card.cardProfile.setImages(imageRecords: imageDict)
-        print(self.card.cardProfile.images)
+        print(imageDict)
     
-        
-        
+        // Set user name to card
+        card.cardHolderName = currentUser.fullName
+        // Assign card image id
+        card.cardProfile.imageIds.append(["card_image_id": idString])
         
         // Print card to see if generated
         card.printCard()
@@ -226,37 +233,49 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
         //UDWrapper.setData("contact_cards", value: encodedData)
         
+        // Set ownerid on card 
+        card.ownerId = currentUser.userId
         
-        // Saving to local device
-        
-        for card in ContactManager.sharedManager.currentUserCards{
-            ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObject()], at: 0)
-        }
-        
-        UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+        // Show progress hud 
+        KVNProgress.show(withStatus: "Saving your new card...")
         
         // Save card to DB
+        let parameters = ["data": card.toAnyObject()]
         
-        /*
         Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
             if error == nil {
-                print(response)
+                print("Card Created Response ---> \(response)")
                 
-                // Here you set the id for the card and resubmit the object
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.card.cardId = dictionary["uuid"] as? String
                 
+                // Insert to manager card array
+                ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([self.card.toAnyObjectWithImage()], at: 0)
                 
+                // Set array to defualts
+                UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+            
+                // Post notification for radar view to refresh
+                self.postNotification()
+                // Dismiss VC
+                self.dismiss(animated: true, completion: { 
+                    // Send to database to update card with the new uuid
+                    print("Send to db")
+                })
+            
             } else {
-                print(error)
+                print("Card Created Error Response ---> \(error)")
                 // Show user popup of error message 
+                KVNProgress.show(withStatus: "There was an error creating your card. Please try again.")
             }
-        }*/
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
         
-        
-        // Post notification for radar view to refresh
-        postNotification()
-        
-        // Dismiss VC
-        dismiss(animated: true, completion: nil)
     }
     
     // Photo Picker Delegate Methods

@@ -22,10 +22,16 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 - (NSURLSessionDataTask*)createTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)getTransactionsCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)updateTransactionCall:(NSDictionary*)parameters transactionID:(NSString*)transactionID completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)approveTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)rejectTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+
 
 // Auth
 - (NSURLSessionDataTask*)logoutCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)refreshTokenCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock;
+
+- (NSURLSessionDataTask*)issuePinCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)verifyPinCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
 
 

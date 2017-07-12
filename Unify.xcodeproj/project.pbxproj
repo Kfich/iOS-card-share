@@ -55,6 +55,13 @@
 		FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE461F0D667B006A997D /* PMAlertController.swift */; };
 		FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB24EE471F0D667B006A997D /* PMAlertController.xib */; };
 		FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE4D1F0EB721006A997D /* UDWrapper.swift */; };
+		FB2F42841F1526CB00E3D6B5 /* KVNProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F42781F1526CB00E3D6B5 /* KVNProgress.m */; };
+		FB2F42851F1526CB00E3D6B5 /* KVNProgressConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F427A1F1526CB00E3D6B5 /* KVNProgressConfiguration.m */; };
+		FB2F42861F1526CB00E3D6B5 /* KVNProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB2F427B1F1526CB00E3D6B5 /* KVNProgressView.xib */; };
+		FB2F42871F1526CB00E3D6B5 /* KVNRotationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F427D1F1526CB00E3D6B5 /* KVNRotationViewController.m */; };
+		FB2F42881F1526CB00E3D6B5 /* UIColor+KVNContrast.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F427F1F1526CB00E3D6B5 /* UIColor+KVNContrast.m */; };
+		FB2F42891F1526CB00E3D6B5 /* UIImage+KVNEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F42811F1526CB00E3D6B5 /* UIImage+KVNEmpty.m */; };
+		FB2F428A1F1526CB00E3D6B5 /* UIImage+KVNImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F42831F1526CB00E3D6B5 /* UIImage+KVNImageEffects.m */; };
 		FB3738191EDDBA730074200F /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738181EDDBA730074200F /* ContactManager.swift */; };
 		FB37381B1EDDBB660074200F /* ContactProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */; };
 		FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3738261EDDCE970074200F /* TPKeyboardAvoidingScrollView.m */; };
@@ -192,6 +199,19 @@
 		FB24EE461F0D667B006A997D /* PMAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMAlertController.swift; sourceTree = "<group>"; };
 		FB24EE471F0D667B006A997D /* PMAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMAlertController.xib; sourceTree = "<group>"; };
 		FB24EE4D1F0EB721006A997D /* UDWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDWrapper.swift; sourceTree = "<group>"; };
+		FB2F42771F1526CB00E3D6B5 /* KVNProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVNProgress.h; sourceTree = "<group>"; };
+		FB2F42781F1526CB00E3D6B5 /* KVNProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVNProgress.m; sourceTree = "<group>"; };
+		FB2F42791F1526CB00E3D6B5 /* KVNProgressConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVNProgressConfiguration.h; sourceTree = "<group>"; };
+		FB2F427A1F1526CB00E3D6B5 /* KVNProgressConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVNProgressConfiguration.m; sourceTree = "<group>"; };
+		FB2F427B1F1526CB00E3D6B5 /* KVNProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KVNProgressView.xib; sourceTree = "<group>"; };
+		FB2F427C1F1526CB00E3D6B5 /* KVNRotationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVNRotationViewController.h; sourceTree = "<group>"; };
+		FB2F427D1F1526CB00E3D6B5 /* KVNRotationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVNRotationViewController.m; sourceTree = "<group>"; };
+		FB2F427E1F1526CB00E3D6B5 /* UIColor+KVNContrast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+KVNContrast.h"; sourceTree = "<group>"; };
+		FB2F427F1F1526CB00E3D6B5 /* UIColor+KVNContrast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+KVNContrast.m"; sourceTree = "<group>"; };
+		FB2F42801F1526CB00E3D6B5 /* UIImage+KVNEmpty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+KVNEmpty.h"; sourceTree = "<group>"; };
+		FB2F42811F1526CB00E3D6B5 /* UIImage+KVNEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+KVNEmpty.m"; sourceTree = "<group>"; };
+		FB2F42821F1526CB00E3D6B5 /* UIImage+KVNImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+KVNImageEffects.h"; sourceTree = "<group>"; };
+		FB2F42831F1526CB00E3D6B5 /* UIImage+KVNImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+KVNImageEffects.m"; sourceTree = "<group>"; };
 		FB3738181EDDBA730074200F /* ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
 		FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactProfileViewController.swift; sourceTree = "<group>"; };
 		FB3738251EDDCE970074200F /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
@@ -425,6 +445,7 @@
 		FB3738231EDDBDFC0074200F /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */,
 				1CB31C9E1E94092000A0C4A5 /* Activity-ViewController.swift */,
 				1C3104111E9536D100F4D70D /* SingleActivity-ViewController.swift */,
 				1C31040F1E94B7FC00F4D70D /* FollowUp-ViewController.swift */,
@@ -436,7 +457,6 @@
 			isa = PBXGroup;
 			children = (
 				1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */,
-				FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */,
 				FB1A34121EE1BC88003B5A73 /* RadarContainerViewController.swift */,
 				FB1A34141EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift */,
 				FBE807451F04159700A05292 /* CardSelectionViewController.swift */,
@@ -447,6 +467,19 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FB2F42771F1526CB00E3D6B5 /* KVNProgress.h */,
+				FB2F42781F1526CB00E3D6B5 /* KVNProgress.m */,
+				FB2F42791F1526CB00E3D6B5 /* KVNProgressConfiguration.h */,
+				FB2F427A1F1526CB00E3D6B5 /* KVNProgressConfiguration.m */,
+				FB2F427B1F1526CB00E3D6B5 /* KVNProgressView.xib */,
+				FB2F427C1F1526CB00E3D6B5 /* KVNRotationViewController.h */,
+				FB2F427D1F1526CB00E3D6B5 /* KVNRotationViewController.m */,
+				FB2F427E1F1526CB00E3D6B5 /* UIColor+KVNContrast.h */,
+				FB2F427F1F1526CB00E3D6B5 /* UIColor+KVNContrast.m */,
+				FB2F42801F1526CB00E3D6B5 /* UIImage+KVNEmpty.h */,
+				FB2F42811F1526CB00E3D6B5 /* UIImage+KVNEmpty.m */,
+				FB2F42821F1526CB00E3D6B5 /* UIImage+KVNImageEffects.h */,
+				FB2F42831F1526CB00E3D6B5 /* UIImage+KVNImageEffects.m */,
 				FB24EE451F0D667B006A997D /* PMAlertAction.swift */,
 				FB24EE461F0D667B006A997D /* PMAlertController.swift */,
 				FB24EE471F0D667B006A997D /* PMAlertController.xib */,
@@ -561,7 +594,7 @@
 				TargetAttributes = {
 					1CAE5B7F1E913A06006EFF40 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L8E3N3XE58;
+						DevelopmentTeam = WLFGCQXG8T;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -629,6 +662,7 @@
 				1CB31CA91E942BC500A0C4A5 /* SkeletonCell.xib in Resources */,
 				1CAE5B891E913A06006EFF40 /* Main.storyboard in Resources */,
 				FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */,
+				FB2F42861F1526CB00E3D6B5 /* KVNProgressView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,6 +766,7 @@
 				1CB31C911E9399D400A0C4A5 /* CreateAccount-ViewController.swift in Sources */,
 				1CB31C9F1E94092000A0C4A5 /* Activity-ViewController.swift in Sources */,
 				FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */,
+				FB2F42871F1526CB00E3D6B5 /* KVNRotationViewController.m in Sources */,
 				1CB31C8D1E93539A00A0C4A5 /* PhoneVerificationPin-ViewController.swift in Sources */,
 				1CB31C931E93C04D00A0C4A5 /* HomeCardTableCell.swift in Sources */,
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
@@ -743,10 +778,14 @@
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,
 				FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
+				FB2F428A1F1526CB00E3D6B5 /* UIImage+KVNImageEffects.m in Sources */,
+				FB2F42851F1526CB00E3D6B5 /* KVNProgressConfiguration.m in Sources */,
 				1CB31CB11E94358200A0C4A5 /* ContactRecord.swift in Sources */,
 				FBE807491F0566F300A05292 /* CardProfile.swift in Sources */,
 				FB1A34131EE1BC88003B5A73 /* RadarContainerViewController.swift in Sources */,
+				FB2F42891F1526CB00E3D6B5 /* UIImage+KVNEmpty.m in Sources */,
 				1CB31C951E93C6A700A0C4A5 /* CardCollectionViewCell.swift in Sources */,
+				FB2F42841F1526CB00E3D6B5 /* KVNProgress.m in Sources */,
 				FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */,
 				1CAE5B841E913A06006EFF40 /* AppDelegate.swift in Sources */,
 				1C31040C1E94A1F700F4D70D /* EditProfile-TableViewController.swift in Sources */,
@@ -758,6 +797,7 @@
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */,
+				FB2F42881F1526CB00E3D6B5 /* UIColor+KVNContrast.m in Sources */,
 				1CB31CA31E940B4200A0C4A5 /* TabBar-ViewController.swift in Sources */,
 				FB37381B1EDDBB660074200F /* ContactProfileViewController.swift in Sources */,
 				FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */,
@@ -898,7 +938,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
-				DEVELOPMENT_TEAM = L8E3N3XE58;
+				DEVELOPMENT_TEAM = WLFGCQXG8T;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -906,7 +946,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -923,7 +963,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
-				DEVELOPMENT_TEAM = L8E3N3XE58;
+				DEVELOPMENT_TEAM = WLFGCQXG8T;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -931,7 +971,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

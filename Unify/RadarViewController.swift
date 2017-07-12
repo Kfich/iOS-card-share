@@ -151,7 +151,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         //genericPostCall(parameters as NSDictionary)
         */
-        let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
+        
+        /*let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
         
         // Send current user to DB
         
@@ -173,7 +174,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(error)\n\n")
             }
-        })
+        })*/
     }
     
     func test(json: [String : Any]) {

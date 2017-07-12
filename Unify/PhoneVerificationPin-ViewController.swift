@@ -58,11 +58,11 @@ class PhoneVerificationPinViewController: UIViewController {
         
         DispatchQueue.main.async {
            
-            self.indicator.stopAnimating()
+            //self.indicator.stopAnimating()
             
             //print("Passed Token... \(self.uuid_token)")
 
-            global_uuid = self.uuid_token
+            //global_uuid = self.uuid_token
             
             
             //self.pinCodeArea.becomeFirstResponder()
@@ -87,14 +87,8 @@ class PhoneVerificationPinViewController: UIViewController {
         UIView.animate(withDuration: 0.25, animations: {
             self.modalFadeBox.alpha = 0.8
         })
-        
-        if indicator.isAnimating {
-            indicator.stopAnimating()
-        } else {
-            indicator.startAnimating()
-        }
-        
-        
+
+        // Send pin to endpoint for match
         processPin()
         
 
@@ -152,89 +146,47 @@ class PhoneVerificationPinViewController: UIViewController {
         
         userPin = pinCodeArea.text!
         
+        let parameters = ["pin": userPin, "token": currentUser.userId]
         
-        if userPin == pin {
-            // Set CurrentUser to ContactManager
-            ContactManager.sharedManager.currentUser = currentUser
-            
-            
-            // Show Home Tab
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-            TabBarViewController
-            self.view.window?.rootViewController = homeViewController
-            
-        }
+        Connection(configuration: nil).verifyPinCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Create User Response: \(response)\n\n")
+                
+                // If here, that means we matched
         
-        /*
-         let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/verifiyPin")!
-         let session = URLSession.shared
-         
-         var request = URLRequest(url: url)
-         request.httpMethod = "POST"
-         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-         
-         let paramString = "pin=1234&token="+self.uuid_token!
-         
-         request.httpBody = paramString.data(using: String.Encoding.utf8)
-         
-         let task = session.dataTask(with: request as URLRequest) {
-         (
-         data, response, error) in
-         
-         guard let data = data, let _:URLResponse = response, error == nil else {
-         print("error")
-         return
-         }
-         
-         let dataString =  String(data: data, encoding: String.Encoding.utf8)
-         print(dataString)
-         
-         let preferences = UserDefaults.standard
-         preferences.set(self.uuid_token, forKey: "uuid")
-         preferences.set(true, forKey: "isUserLoggedIn")
-         
-         
-         DispatchQueue.main.async {
-         self.indicator.startAnimating()
-         }
-         
-         let delayInSeconds = 4.0
-         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-         
-         self.indicator.stopAnimating()
-         
-         DispatchQueue.main.async {
-         self.performSegue(withIdentifier: "createProfileSegue", sender: nil)
-         }
-         }
-         }
-         task.resume()
-         */
+                // Show indicator
+                KVNProgress.showSuccess(withStatus: "Profile Creation Complete. Welcome to Unify.")
+                // Assign current user to manager object
+                ContactManager.sharedManager.currentUser = self.currentUser
+
+                // Store user to device 
+                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                
+                // Show homepage
+                DispatchQueue.main.async {
+                    // Update UI
+                    // Show Home Tab
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                    TabBarViewController
+                    self.view.window?.rootViewController = homeViewController
+                }
+                
+                
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - Create User Error: \(error)\n\n")
+                KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
+            }
+            
+        })
+        
+        
     }
-    
-    
     
 }
 
-
-/*
-extension PhoneVerificationPinViewController: PinCodeTextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: PinCodeTextField) -> Bool {
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: PinCodeTextField) {
-        
-    }
-    
-    func textFieldShouldEndEditing(_ textField: PinCodeTextField) -> Bool {
-        
-        return true
-    }
-    
-    func textFieldShouldReturn(_ textField: PinCodeTextField) -> Bool {
-        return true
-    }
-}
-*/

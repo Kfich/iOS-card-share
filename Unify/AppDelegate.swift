@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(user)
             
             print("User has profile!")
-            ContactManager.sharedManager.currentUser = User(snapshot:user)
+            ContactManager.sharedManager.currentUser = User(withDefaultsSnapshot:user)
             
             print("CURRENT USER FROM APP DELEGATE")
             ContactManager.sharedManager.currentUser.printUser()

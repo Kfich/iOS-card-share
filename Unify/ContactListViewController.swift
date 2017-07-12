@@ -9,6 +9,8 @@
 import UIKit
 import Contacts
 
+
+
 class ContactListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating
 {
     
@@ -25,6 +27,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
 
     var selectedContact = CNContact()
     
+    // Progress hud
+    var progressHUD = KVNProgress()
+    
     
     // IBOutlets
     // ---------------------------------
@@ -37,6 +42,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Set Contact formatter style
         formatter.style = .fullName
+        
+        // Add loading indicator
+    
+        KVNProgress.show(withStatus: "Syncing Contacts...")
         
         // Parse for contacts in contact list
         ContactManager.sharedManager.getContacts()
@@ -193,7 +202,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func refreshTableData() {
-        // 
+        // Hide HUD
+        KVNProgress.showSuccess()
+        
+        // Reload contact list
         DispatchQueue.main.async {
             // Update UI
             self.contactListTableView.reloadData()

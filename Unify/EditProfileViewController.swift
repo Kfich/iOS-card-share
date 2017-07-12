@@ -51,7 +51,7 @@ class EditProfileViewController: UIViewController {
     // ----------------------------------
     @IBAction func selectProfilePicture(_ sender: AnyObject) {
         
-       /* // Add code to edit photo here
+        // Add code to edit photo here
         photo.onPhoto = { (image: UIImage?) -> Void in
             print("Selected image")
             
@@ -90,8 +90,6 @@ class EditProfileViewController: UIViewController {
             print("Error: \(error.rawValue)")
         }
         photo.present(self)
-        
-        */
 
     }
     
@@ -99,9 +97,11 @@ class EditProfileViewController: UIViewController {
         // Drop the keyboard
         self.view.endEditing(true)
         
+        // Gather all the arrays and add to the manager
+        
         
         // Nav out the view
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {

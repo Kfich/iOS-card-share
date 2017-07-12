@@ -128,6 +128,8 @@ class CreateAccountViewController: UIViewController {
         print(lastName.text!)
         // Assign form values to user object
         newUser.emails.append(["profile_email": email.text!])
+        newUser.firstName = firstName.text!
+        newUser.lastName = lastName.text!
         newUser.setName(first: firstName.text!, last: lastName.text!)
         newUser.fullName = newUser.getName()
         
@@ -140,9 +142,15 @@ class CreateAccountViewController: UIViewController {
         // Assign asset name and type
         let fname = "asset.png"
         let mimetype = "image/png"
+        // Generate id string for image
+        let idString = newUser.randomString(length: 20)
+        // Store this image locally
+        
+        // Set id string to user object for image
+        newUser.profileImageId = idString
         
         // Create image dictionary
-        let imageDict = ["image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
         
         // Add image to user profile images
         self.newUser.setImages(imageRecords: imageDict)
@@ -159,34 +167,6 @@ class CreateAccountViewController: UIViewController {
         // Pass segue
         performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
         
-        //let parameters = ["data": newUser.toAnyObject()]
-        
-        
-        // Create User Objects
-        /*Connection(configuration: nil).createUserCall(parameters, completionBlock: { response, error in
-            if error == nil {
-                
-                print("\n\nConnection - Create User Response: \(response)\n\n")
-                
-                // Here you set the id for the user and resubmit the object
-                
-                let dictionary : Dictionary = response as! [String : Any]
-                self.newUser.userId = dictionary["uuid"] as! String
-                
-                self.newUser.printUser()
-                
-                
-                //performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
-
-                
-                
-            } else {
-                print(error)
-                // Show user popup of error message
-                print("\n\nConnection - Create User Error: \(error)\n\n")
-            }
-        
-        })*/
         //newUser.phoneNumbers.append(["profile_phone" : \String(describing: phone)])
         
         // Perfom segue
