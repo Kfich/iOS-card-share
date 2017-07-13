@@ -100,6 +100,7 @@ class EditProfileViewController: UIViewController {
         // Gather all the arrays and add to the manager
         
         
+        
         // Nav out the view
         navigationController?.popViewController(animated: true)
     }

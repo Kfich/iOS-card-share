@@ -380,14 +380,13 @@ class EditProfileContainerViewController: FormViewController {
         
         // Bios Section
         let bioValues = form.sectionBy(tag: "Bio Section")
-        
-        
         for val in bioValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))" 
-            // Append to user profile
-            if str != "nil" {
-                currentUser.userProfile.setBioRecords(emailRecords: ["bio": str as! String])
+            if let str = "\(val.baseValue ?? "")" as? String {
+                // Append to user profile
+                if str != "nil" {
+                    currentUser.userProfile.setBioRecords(emailRecords: ["bio": str])
+                }
             }
         }
         
@@ -395,9 +394,10 @@ class EditProfileContainerViewController: FormViewController {
         let titleValues = form.sectionBy(tag: "Title Section")
         for val in titleValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))" as String
-            if str != "nil" {
-                currentUser.userProfile.titles.append(["title" : str])
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" {
+                    currentUser.userProfile.titles.append(["title" : str])
+                }
             }
         }
         
@@ -405,9 +405,10 @@ class EditProfileContainerViewController: FormViewController {
         let phoneValues = form.sectionBy(tag: "Phone Section")
         for val in phoneValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))"
-            if str != "nil" {
-                currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" {
+                    currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
+                }
             }
         }
         
@@ -415,9 +416,10 @@ class EditProfileContainerViewController: FormViewController {
         let emailValues = form.sectionBy(tag: "Email Section")
         for val in emailValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))"
-            if str != "nil" {
-                currentUser.userProfile.emails.append(["email" : str])
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" {
+                    currentUser.userProfile.emails.append(["email" : str])
+                }
             }
         }
         
@@ -425,9 +427,10 @@ class EditProfileContainerViewController: FormViewController {
         let workValues = form.sectionBy(tag: "Work Section")
         for val in workValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))"
-            if str != "nil" {
-                currentUser.userProfile.workInformationList.append(["work" :str])
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" {
+                    currentUser.userProfile.workInformationList.append(["work" :str])
+                }
             }
         }
         
@@ -435,9 +438,10 @@ class EditProfileContainerViewController: FormViewController {
         let websiteValues = form.sectionBy(tag: "Website Section")
         for val in websiteValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))"
-            if str != "nil" {
-                currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" {
+                    currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
+                }
             }
         }
         
@@ -445,9 +449,10 @@ class EditProfileContainerViewController: FormViewController {
         let mediaValues = form.sectionBy(tag: "Media Section")
         for val in mediaValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))"
-            if str != "nil" {
-                currentUser.userProfile.setSocialLinks(socialRecords: ["link": str])
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" {
+                    currentUser.userProfile.setSocialLinks(socialRecords: ["link": str])
+                }
             }
         }
         
@@ -455,9 +460,10 @@ class EditProfileContainerViewController: FormViewController {
         let organizationValues = form.sectionBy(tag: "Organization Section")
         for val in organizationValues! {
             print(val.baseValue ?? "")
-            let str = "\(String(describing: val.baseValue))"
-            if str != "nil" {
-                currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" {
+                    currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
+                }
             }
         }
         

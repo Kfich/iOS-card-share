@@ -32,10 +32,15 @@ class ContactManager{
     var userArrivedFromRecipients = false
     var userDidCreateCard = false
     
+    
     // Card and User Objects
     var currentUser = User()
     var selectedCard = ContactCard()
     var currentUserCards = [ContactCard]()
+    
+    // Contacts for into activity
+    var contactToIntro = CNContact()
+    var recipientToIntro = CNContact()
     
     var currentUserCardsDictionaryArray = [[NSDictionary]]()
     

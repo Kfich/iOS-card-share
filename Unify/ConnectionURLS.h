@@ -32,4 +32,9 @@
 #define kStartRadar           kServerURL(kAppwsServerURL, @"startRadar")
 #define kEndRadar             kServerURL(kAppwsServerURL, @"endRadar")
 
+
+// Images
+#define kUploadImages         kServerURL(kAppwsServerURL, @"images/upload")
+#define kGetUserImages        kServerURL(kAppwsServerURL, @"images/getUserImages")
+
 #endif

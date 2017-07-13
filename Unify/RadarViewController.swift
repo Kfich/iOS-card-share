@@ -27,31 +27,29 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // -------------------------------------------
     
     var currentUser = User()
+    var selectedUser = User()
     
     var didReceieveList = false
-    
     var lat : Double = 0.0
     var long : Double = 0.0
     
     var nearbyList = [String: Any]()
-    
-    
     // Phone Contact Store
     var store: CNContactStore!
     // Location
     var updateLocation_tick = 5
     var myLocation:CLLocationCoordinate2D?
     let locationManager = CLLocationManager()
-    
+    // Pulse halo
     let halo = PulsingHaloLayer()
-    
     // Anime
     var parallaxEffect: RKParallaxEffect!
-
     // Status check
     var radarStatus: Bool = false
-    
+    // For tagging contacts from radar
     var  counter = 0
+    // Holds contacts returned from server when radar starts
+    var radarContacts = [User]()
     
     
     let keysToFetch = [
@@ -92,7 +90,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         
         // Setup views 
-        configureViews()
+        //configureViews()
         
         
         testUser()
@@ -302,30 +300,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         print("HALO COORDS")
         print("x --> \(halo.position.x)   y --> \(halo.position.y)")
         
-        
-        plotPerson(distance: 5, direction: -4)
-        
-        //plotPerson(distance: 7, direction: 10)
-        
-        /*
-         pulseView.frame = CGRect.init(x: 0, y: 0, width: 100, height: 200)
-         
-         self.homeView.addSubview(pulseView)
-         
-         
-         pulseView.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-         pulseView.colors = [(UIColor.white.cgColor as? Any), (UIColor.black.cgColor as? Any), (UIColor.white.cgColor as? Any)]
-         pulseView.locations = [(0.3), (0.5), (0.7)]
-         pulseView.startPoint = CGPoint(x: CGFloat(0), y: CGFloat(0.5))
-         pulseView.endPoint = CGPoint(x: CGFloat(1), y: CGFloat(0.5))
-         pulseView.minRadius = 0
-         pulseView.maxRadius = 100
-         pulseView.duration = 3
-         pulseView.count = 6
-         pulseView.lineWidth = 3.0
-         
- 
-         pulseView.startAnimation()*/
  
         
     }
@@ -333,7 +307,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // Radar
     // -------------------------------------------------------------------
     
-    func plotPerson(distance: Int, direction: Int)
+    func plotPerson(distance: Int, direction: Int, tag: Int)
     {
         
         let image = UIImage(named: "radar-avatar")
@@ -343,7 +317,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 80, height: 80)
         
-        imageView.backgroundColor = .black
+        //imageView.backgroundColor = .black
         
         imageView.layer.cornerRadius = imageView.frame.size.width/2
         imageView.clipsToBounds = true
@@ -368,7 +342,28 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Adding image of contact to map screen
         self.pulseView.addSubview(imageView)
+        
+        // Add action tap gesture to objects
+        let imageAction = UITapGestureRecognizer(target: self, action: #selector(radarContactSelected(sender:)))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(imageAction)
+        
+        // Assign tag to image to identify what index in the array user lies 
+        imageView.tag = tag
+        
     }
+    
+    func radarContactSelected(sender:UITapGestureRecognizer) {
+        
+        // Set Selected index
+        self.selectedUser = radarContacts[(sender.view?.tag)!]
+        
+        // Perfom segue and pass object 
+        performSegue(withIdentifier: "showRadarContactProfile", sender: self)
+    
+    }
+    
+    
     
     func centerMap(_ center:CLLocationCoordinate2D){
         self.saveCurrentLocation(center)
@@ -449,36 +444,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.long = center.longitude
         print(message)
         
-        let parameters = ["uuid": currentUser.userId, "location": ["latitude": center.latitude, "longitude": center.longitude]] as [String : Any]
-        
-        /*
-        
-        // Create User Objects
-        Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
-            if error == nil {
-                
-                print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
-                
-                // Here you set the id for the user and resubmit the object
-                // Perfom seggy to next vc
-                
-                //KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
-                
-                DispatchQueue.main.async {
-                    // Update UI
-                    self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
-                }
-                
-                
-                
-            } else {
-                print(error)
-                // Show user popup of error message
-                print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
-                //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
-            }
-            
-        })*/
+        //let parameters = ["uuid": currentUser.userId, "location": ["latitude": center.latitude, "longitude": center.longitude]] as [String : Any]
         
         
         let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
@@ -536,14 +502,24 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         let dictionary : NSArray = response as! NSArray
 
                         for item in dictionary {
+                            // Update counter
+                            self.counter = self.counter + 1
+                            
+                            // Init user objects from array
                             let user = User(snapshot: item as! NSDictionary)
                             user.printUser()
                             
-                            let distance = Int(random: -5..<5)
-                            let direction = Int(random: -5..<5)
+                            // Append users to radarContacts array 
+                            
+                            self.radarContacts.append(user)
+                            print("Radar List Count >>>> \(self.radarContacts.count)")
+                            // Set random coordinates for plotting images on radar
+                            let distance = Int(random: -10..<10)
+                            let direction = Int(random: 0..<10)
                             
                             // plot person on map
-                            self.plotPerson(distance: distance, direction: direction)
+                            // The tag is used to tag images to identify their index in the array
+                            self.plotPerson(distance: distance, direction: direction, tag: self.counter)
                         }
                         
                         
@@ -593,6 +569,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     
+    // Also use for storing images
     func createRequestBodyWith(parameters:[String:NSObject], filePathKey:String, boundary:String) -> NSData{
         
         let body = NSMutableData()
@@ -630,6 +607,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     
+    // Use for storing images
     func uploadUserThumb(image: UIImage, recordId: Int){
         
         
@@ -732,6 +710,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     
     // Function called to retrieve contacts and sort to find user
+    
+    // Deprecate this method once conatcts settled in
     
     func retrieveContactsWithStore(store: CNContactStore) {
         do {
@@ -928,60 +908,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             })
             
             
-            /*
-             let contactStore = CNContactStore()
-             var contacts = [CNContact]()
-             var vcardFromContacts = NSData()
-             
-             let fetchRequest = CNContactFetchRequest(keysToFetch:[CNContactVCardSerialization.descriptorForRequiredKeys()])
-             
-             do{
-             try contactStore.enumerateContacts(with: fetchRequest, usingBlock: {
-             contact, cursor in
-             
-             //CNContactVCardSerialization
-             
-             contacts.append(contact)
-             
-             })
-             } catch {
-             print("Get contacts \(error)")
-             }
-             */
-            
-            
-            //self.uploadContactRecords(contacts:    contacts    )
-            
-            
-            /*
-             let contactStore = CNContactStore()
-             
-             
-             // Get all the containers
-             var allContainers: [CNContainer] = []
-             do {
-             allContainers = try contactStore.containers(matching: nil)
-             } catch {
-             print("Error fetching containers")
-             }
-             
-             var results: [CNContact] = []
-             
-             // Iterate all containers and append their contacts to our results array
-             for container in allContainers {
-             let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
-             
-             do {
-             let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: [CNContactVCardSerialization.descriptorForRequiredKeys()])
-             results.append(contentsOf: containerResults)
-             } catch {
-             print("Error fetching results for container")
-             }
-             }
-             
-             self.uploadContactRecords(contacts:    results    )
-             
-             */
             
             
         } catch {
@@ -1045,35 +971,27 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
     }
     
-    // View Configuration
-    
-    func configureViews(){
-        // Add radius config & border color
-       /* smsButton.layer.cornerRadius = 27.0
-        smsButton.clipsToBounds = true
-        smsButton.layer.borderWidth = 1.0
-        smsButton.layer.borderColor = UIColor.lightGray.cgColor
-        
-        // Add radius config & border color
-        emailButton.layer.cornerRadius = 27.0
-        emailButton.clipsToBounds = true
-        emailButton.layer.borderWidth = 1.0
-        emailButton.layer.borderColor = UIColor.lightGray.cgColor*/
-    }
-
     
     // Navigation
     // ------------------------------------------------------------
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "showRadarContactProfile" {
+            
+            // Set destination 
+            let contactVC = segue.destination as! RadarContactSelectionViewController
+            // Pass currentUser object
+            contactVC.selectedUser = self.selectedUser
+        }
     }
-    */
+ 
 
 }
 
