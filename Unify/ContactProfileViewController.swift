@@ -81,7 +81,16 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBOutlet var phoneImageView: UIImageView!
     @IBOutlet var emailImageView: UIImageView!
     
+    // Buttons
     
+    @IBOutlet var mediaButton1: UIBarButtonItem!
+    @IBOutlet var mediaButton2: UIBarButtonItem!
+    @IBOutlet var mediaButton3: UIBarButtonItem!
+    
+    @IBOutlet var mediaButton4: UIBarButtonItem!
+    @IBOutlet var mediaButton5: UIBarButtonItem!
+    @IBOutlet var mediaButton6: UIBarButtonItem!
+    @IBOutlet var mediaButton7: UIBarButtonItem!
     
     
     
@@ -419,6 +428,15 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         // Set shadow on the container view
         
         addDropShadow()
+        
+        // Assign media buttons
+        mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        mediaButton7.image = UIImage(named: "icn-social-facebook.png")
         
         
         // Toolbar button config

@@ -315,7 +315,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         //let imageView = UIImageView()
         
-        imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 80, height: 80)
+        imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 30, height: 30)
         
         //imageView.backgroundColor = .black
         
@@ -359,7 +359,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.selectedUser = radarContacts[(sender.view?.tag)!]
         
         // Perfom segue and pass object 
-        performSegue(withIdentifier: "showRadarContactProfile", sender: self)
+        
+        /*performSegue(withIdentifier: "showRadarContactProfile", sender: self)*/
     
     }
     

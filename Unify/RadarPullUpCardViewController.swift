@@ -308,6 +308,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
     }
     // center content 
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         //Where elements_count is the count of all your items in that
@@ -321,7 +322,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             //20.00 was just extra spacing I wanted to add to my cell.
             let totalCellWidth = cellWidth*cellCount + 20.00 * (cellCount-1)
-            let contentWidth = cardCollectionView.frame.size.width - collectionView.contentInset.left - cardCollectionView.contentInset.right
+            let contentWidth = collectionView.frame.size.width - collectionView.contentInset.left - collectionView.contentInset.right
             
             if (totalCellWidth < contentWidth) {
                 //If the number of cells that exists take up less room than the
@@ -371,6 +372,21 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
         
     }
+    
+    /*
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
+        
+        
+        let totalCellWidth = CellWidth * CellCount
+        let totalSpacingWidth = CellSpacing * (CellCount - 1)
+        
+        let leftInset = (collectionViewWidth - CGFloat(totalCellWidth + totalSpacingWidth)) / 2
+        let rightInset = leftInset
+        
+        return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
+    }*/
 
     
     
@@ -475,9 +491,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Add radius config & border color
         cell.cardWrapperView.layer.cornerRadius = 12.0
-        cell.cardWrapperView.clipsToBounds = true
+        //cell.cardWrapperView.clipsToBounds = true
         cell.cardWrapperView.layer.borderWidth = 1.5
-        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        cell.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
+        // Make card wrapper full cell size
+        //cell.backgroundColor = UIColor.white
         
         // Round edges at top of card cells
         cell.cardHeaderView.layer.cornerRadius = 8.0
@@ -486,13 +504,14 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
         
-        cell.mediaButton1.image = UIImage(named: "social-blank")
-        cell.mediaButton2.image = UIImage(named: "social-blank")
-        cell.mediaButton3.image = UIImage(named: "social-blank")
-        cell.mediaButton4.image = UIImage(named: "social-blank")
-        cell.mediaButton5.image = UIImage(named: "social-blank")
-        cell.mediaButton6.image = UIImage(named: "social-blank")
-        cell.mediaButton7.image = UIImage(named: "social-blank")
+        // Assign media buttons
+        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
         
         // Config tool bar
         /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
@@ -593,13 +612,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 name = selectedUserCard.cardHolderName!
             }
             if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-                phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! as! String
+                phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! 
             }
             if selectedUserCard.cardProfile.emails.count > 0{
-                email = selectedUserCard.cardProfile.emails[0]["email"]! as! String
+                email = selectedUserCard.cardProfile.emails[0]["email"]! 
             }
             if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
-                title = self.selectedUserCard.cardProfile.title!
+                title = self.selectedUserCard.cardProfile.title ?? ""
             }
             
             
@@ -638,13 +657,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             name = selectedUserCard.cardHolderName!
         }
         if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-            phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! as! String
+            phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! 
         }
         if selectedUserCard.cardProfile.emails.count > 0{
-            email = selectedUserCard.cardProfile.emails[0]["email"] as! String
+            email = selectedUserCard.cardProfile.emails[0]["email"]!
         }
         if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
-            title = self.selectedUserCard.cardProfile.title!
+            title = self.selectedUserCard.cardProfile.title ?? ""
         }
         
         

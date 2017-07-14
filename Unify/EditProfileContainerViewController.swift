@@ -53,10 +53,94 @@ class EditProfileContainerViewController: FormViewController {
         
         // Assign profile image val
         
+        if let biosArray = UDWrapper.getArray("bios"){
+            
+            // Reload table data
+            for value in biosArray {
+                self.bios.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        
+        if let titlesArray = UDWrapper.getArray("titles"){
+            
+            // Reload table data
+            for value in titlesArray {
+                self.titles.append(value as! String)
+            }
+        }else{
+            print("User has no titles")
+        }
+        if let workArray = UDWrapper.getArray("workInfo"){
+            
+            // Reload table data
+            for value in workArray {
+                self.workInformation.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let phonesArray = UDWrapper.getArray("phoneNumbers"){
+            
+            // Reload table data
+            for value in phonesArray {
+                self.phoneNumbers.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let emailsArray = UDWrapper.getArray("emails"){
+            
+            // Reload table data
+            for value in emailsArray {
+                self.emails.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let socialArray = UDWrapper.getArray("socialLinks"){
+            
+            // Reload table data
+            for value in socialArray {
+                self.socialLinks.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let orgsArray = UDWrapper.getArray("organizations"){
+            
+            // Reload table data
+            for value in orgsArray {
+                self.organizations.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let webArray = UDWrapper.getArray("websites"){
+            
+            // Reload table data
+            for value in webArray {
+                self.websites.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        
+        
         // Parse card for profile info
         
+        
         // Parse bio info
-         if currentUser.userProfile.bios.count > 0{
+        
+        /*if currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
             for bio in currentUser.userProfile.bios{
                 bios.append(bio["bio"] as! String)
@@ -116,7 +200,7 @@ class EditProfileContainerViewController: FormViewController {
             for link in currentUser.userProfile.socialLinks{
                 notes.append(link["link"]!)
             }
-         }
+         }*/
         
         
         
@@ -372,8 +456,8 @@ class EditProfileContainerViewController: FormViewController {
     }
     
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
         
         // Assign all the items in each list to the contact profile on manager
         // Parse table section vals
@@ -384,8 +468,9 @@ class EditProfileContainerViewController: FormViewController {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String {
                 // Append to user profile
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.setBioRecords(emailRecords: ["bio": str])
+                    bios.append(str)
                 }
             }
         }
@@ -395,8 +480,9 @@ class EditProfileContainerViewController: FormViewController {
         for val in titleValues! {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.titles.append(["title" : str])
+                    titles.append(str)
                 }
             }
         }
@@ -406,8 +492,9 @@ class EditProfileContainerViewController: FormViewController {
         for val in phoneValues! {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
+                    phoneNumbers.append(str)
                 }
             }
         }
@@ -417,8 +504,9 @@ class EditProfileContainerViewController: FormViewController {
         for val in emailValues! {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.emails.append(["email" : str])
+                    emails.append(str)
                 }
             }
         }
@@ -428,8 +516,9 @@ class EditProfileContainerViewController: FormViewController {
         for val in workValues! {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.workInformationList.append(["work" :str])
+                    workInformation.append(str)
                 }
             }
         }
@@ -439,7 +528,7 @@ class EditProfileContainerViewController: FormViewController {
         for val in websiteValues! {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
                 }
             }
@@ -450,8 +539,9 @@ class EditProfileContainerViewController: FormViewController {
         for val in mediaValues! {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.setSocialLinks(socialRecords: ["link": str])
+                    socialLinks.append(str)
                 }
             }
         }
@@ -461,14 +551,23 @@ class EditProfileContainerViewController: FormViewController {
         for val in organizationValues! {
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" {
+                if str != "nil" && str != "" {
                     currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
+                    organizations.append(str)
                 }
             }
         }
         
-        // Set current user to contact manager
+        // Set the array values as the profile
         
+        UDWrapper.setArray("bios", value: bios as NSArray)
+        UDWrapper.setArray("titles", value: titles as NSArray)
+        UDWrapper.setArray("workInfo", value: workInformation as NSArray)
+        UDWrapper.setArray("phoneNumbers", value: phoneNumbers as NSArray)
+        UDWrapper.setArray("emails", value: emails as NSArray)
+        UDWrapper.setArray("websites", value: websites as NSArray)
+        UDWrapper.setArray("socialLinks", value: socialLinks as NSArray)
+        UDWrapper.setArray("organizations", value: organizations as NSArray)
         
         
         ContactManager.sharedManager.currentUser = self.currentUser

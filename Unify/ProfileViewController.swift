@@ -119,6 +119,92 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Set color
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
+        
+        // Assign profile image val
+        
+        if let biosArray = UDWrapper.getArray("bios"){
+            
+            // Reload table data
+            for value in biosArray {
+                self.bios.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        
+        if let titlesArray = UDWrapper.getArray("titles"){
+            
+            // Reload table data
+            for value in titlesArray {
+                self.titles.append(value as! String)
+            }
+        }else{
+            print("User has no titles")
+        }
+        if let workArray = UDWrapper.getArray("workInfo"){
+            
+            // Reload table data
+            for value in workArray {
+                self.workInformation.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let phonesArray = UDWrapper.getArray("phoneNumbers"){
+            
+            // Reload table data
+            for value in phonesArray {
+                self.phoneNumbers.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let emailsArray = UDWrapper.getArray("emails"){
+            
+            // Reload table data
+            for value in emailsArray {
+                self.emails.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let socialArray = UDWrapper.getArray("socialLinks"){
+            
+            // Reload table data
+            for value in socialArray {
+                self.socialLinks.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let orgsArray = UDWrapper.getArray("organizations"){
+            
+            // Reload table data
+            for value in orgsArray {
+                self.organizations.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let webArray = UDWrapper.getArray("websites"){
+            
+            // Reload table data
+            for value in webArray {
+                self.websites.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        
+        
+        profileInfoTableView.reloadData()
 
     }
 
@@ -133,7 +219,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         currentUser = ContactManager.sharedManager.currentUser
         
         // Parse bio info
-        if currentUser.userProfile.bios.count > 0{
+       /* if currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
             for bio in currentUser.userProfile.bios{
                 bios.append((bio["bio"])!)
@@ -192,9 +278,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             for link in currentUser.userProfile.socialLinks{
                 notes.append(link["link"]!)
             }
-        }
-
-        profileInfoTableView.reloadData()
+        }*/
+        
     }
     
     
@@ -378,13 +463,14 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         //titleLabel.text = "Founder & CEO, CleanSwipe"
         
-        mediaButton1.image = UIImage(named: "social-blank")
-        mediaButton2.image = UIImage(named: "social-blank")
-        mediaButton3.image = UIImage(named: "social-blank")
-        mediaButton4.image = UIImage(named: "social-blank")
-        mediaButton5.image = UIImage(named: "social-blank")
-        mediaButton6.image = UIImage(named: "social-blank")
-        mediaButton7.image = UIImage(named: "social-blank")
+        // Assign media buttons
+        mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        mediaButton7.image = UIImage(named: "icn-social-facebook.png")
     }
     
     

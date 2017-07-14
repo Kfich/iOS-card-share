@@ -57,12 +57,14 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Tableview config 
         // Index tracking strip 
-        contactListTableView.sectionIndexBackgroundColor = UIColor.clear
+        contactListTableView.sectionIndexBackgroundColor = UIColor.white
         contactListTableView.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
 
         
         // Search controller
         searchController = UISearchController(searchResultsController: nil)
+        searchController.view.backgroundColor = UIColor.white
+        searchController.searchBar.backgroundColor = UIColor.white
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -74,8 +76,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         searchController.searchBar.sizeToFit()
         
         // Style search bar
-        searchController.searchBar.barStyle = UIBarStyle.default
+        //searchController.searchBar.barStyle = UIBarStyle.
+        searchController.searchBar.changeSearchBarColor(color: UIColor.white)
         searchController.searchBar.backgroundColor = UIColor.white
+        
         
         
         // Reload Data 
@@ -233,11 +237,18 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     }
     
+    
+}
 
-    
-    
-    
-    
-    
-    
+
+extension UISearchBar {
+    func changeSearchBarColor(color: UIColor) {
+        UIGraphicsBeginImageContext(self.frame.size)
+        color.setFill()
+        UIBezierPath(rect: self.frame).fill()
+        let bgImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        self.setSearchFieldBackgroundImage(bgImage, for: .normal)
+    }
 }

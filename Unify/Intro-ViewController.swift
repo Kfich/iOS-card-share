@@ -45,6 +45,8 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     @IBOutlet var addContactLabel: UILabel!
     @IBOutlet var addRecipientLabel: UILabel!
     
+    @IBOutlet var cancelIntroButton: UIButton!
+    
     
     // Page Config
     
@@ -70,6 +72,9 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showContactList))
         
         self.view.addGestureRecognizer(tapGestureRecognizer)
+        
+        // Hide cancel button
+        cancelIntroButton.isHidden = true
         
         /*self.contactImageView.isUserInteractionEnabled = true
         self.contactImageView.addGestureRecognizer(tapGestureRecognizer)
@@ -305,6 +310,10 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     
     func configureViewForContact(){
         
+        // Show cancel button 
+        cancelIntroButton.isHidden = false
+        
+        // Set selected contact
         let selected = ContactManager.sharedManager.contactToIntro
         // Check if image data available
         

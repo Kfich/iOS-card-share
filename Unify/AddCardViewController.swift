@@ -135,10 +135,10 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
                 cell.cardTitle.text = currentCard.cardProfile.getTitle()
             }
             if currentCard.cardProfile.emails.count > 0 {
-                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"] as! String
+                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]!
             }
             if currentCard.cardProfile.phoneNumbers.count > 0 {
-                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"] as! String
+                cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"] as! String
             }
             if currentCard.cardProfile.images.count > 0{
                 // Populate image view
@@ -304,17 +304,24 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // Add radius config & border color
         cell.cardWrapperView.layer.cornerRadius = 12.0
-        cell.cardWrapperView.clipsToBounds = true
+        //cell.cardWrapperView.clipsToBounds = true
         cell.cardWrapperView.layer.borderWidth = 1.5
-        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        cell.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
-        cell.mediaButton1.image = UIImage(named: "social-blank")
-        cell.mediaButton2.image = UIImage(named: "social-blank")
-        cell.mediaButton3.image = UIImage(named: "social-blank")
-        cell.mediaButton4.image = UIImage(named: "social-blank")
-        cell.mediaButton5.image = UIImage(named: "social-blank")
-        cell.mediaButton6.image = UIImage(named: "social-blank")
-        cell.mediaButton7.image = UIImage(named: "social-blank")
+        // Round edges at top of card cells
+        cell.cardHeaderView.layer.cornerRadius = 8.0
+        cell.cardHeaderView.clipsToBounds = true
+        cell.cardHeaderView.layer.borderWidth = 1.5
+        cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
+        
+        // Assign media buttons
+        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
+        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
+        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
+        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
 
         // Config tool bar
         /*cell.mediaButtonToolBar.backgroundColor = UIColor.white

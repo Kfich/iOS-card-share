@@ -146,7 +146,11 @@ class PhoneVerificationPinViewController: UIViewController {
         
         userPin = pinCodeArea.text!
         
+        // Set Params
         let parameters = ["pin": userPin, "token": currentUser.userId]
+        
+        // Show Progress HUD
+        KVNProgress.show(withStatus: "Creating your account...")
         
         Connection(configuration: nil).verifyPinCall(parameters, completionBlock: { response, error in
             if error == nil {
