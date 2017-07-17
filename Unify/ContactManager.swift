@@ -31,6 +31,7 @@ class ContactManager{
     var userArrivedFromIntro = false
     var userArrivedFromRecipients = false
     var userDidCreateCard = false
+    var userSelectedEditCard = false
     
     
     // Card and User Objects

@@ -122,6 +122,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // See if current user pass
         ContactManager.sharedManager.currentUser.printUser()
         
+        // Test 
+        testImage()
+        
         
     }
 
@@ -149,7 +152,74 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
     }
     
-    
+    func testImage() {
+        // Pull image data
+        // Image data png
+        //let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!, 0.5)
+        let imageData = UIImageJPEGRepresentation(UIImage(named: "contact")!, 0.5)
+        print(imageData!)
+        
+        // Create user for string gen 
+        let newUser = User()
+        // Generate id string for image
+        let idString = newUser.randomString(length: 20)
+        
+        // Set id string to user object for image
+        newUser.profileImageId = idString
+        
+        // Assign asset name and type
+        let fname = idString
+        let mimetype = "image/png"
+        
+        // Create image dictionary
+        let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
+        // Add image to user profile images
+        //newUser.setImages(imageRecords: imageDict)
+        
+        
+        // Upload to Server
+        // Save card to DB
+        let parameters = imageDict
+        print(parameters)
+        
+        // Show progress HUD
+        KVNProgress.show(withStatus: "Generating profile..")
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+             }*/
+        }, to:"https://project-unify-node-server.herokuapp.com/image/uploadcdn")
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n success...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                    // Dismiss hud
+                    KVNProgress.dismiss()
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
+        
+    }
     
     func testUser(){
         // Test current user object
@@ -341,7 +411,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     func pulseMe(status: String?){
         
         // Set coordinates for the pulse view
-        halo.position.y = pulseView.frame.height / 2.5
+        halo.position.y = pulseView.frame.height / 2
         halo.position.x = pulseView.frame.width / 2
         halo.haloLayerNumber = 3;
         

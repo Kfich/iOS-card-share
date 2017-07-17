@@ -74,6 +74,16 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set current user
         currentUser = ContactManager.sharedManager.currentUser
         
+        // Check where user arrived from 
+        if ContactManager.sharedManager.userSelectedEditCard{
+            // Set card to selected card
+            self.card = ContactManager.sharedManager.selectedCard
+            
+            // Populate card and tableviews with card profile info
+            
+        }
+        
+        
         // If user has default image, set as container view
         if currentUser.profileImages.count > 0{
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
@@ -233,8 +243,6 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             print("User has no cards")
         }
 
-
-        
         // View config
         configureViews()
         
@@ -265,7 +273,6 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // IBActions
     // --------------------------------------------
-    
     
     @IBAction func cancelCardCreation(_ sender: Any) {
         // Drop modal view
@@ -621,6 +628,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     // Custom Methods
+    func populateViewsForEdit() {
+        
+        // Set card vals to table
+        
+    }
     
     
     // Configuration

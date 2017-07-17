@@ -120,92 +120,12 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
         
-        // Assign profile image val
+        // Assign profile values
+        self.parseData()
         
-        if let biosArray = UDWrapper.getArray("bios"){
-            
-            // Reload table data
-            for value in biosArray {
-                self.bios.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
+        // For notifications
+        addObservers()
         
-        if let titlesArray = UDWrapper.getArray("titles"){
-            
-            // Reload table data
-            for value in titlesArray {
-                self.titles.append(value as! String)
-            }
-        }else{
-            print("User has no titles")
-        }
-        if let workArray = UDWrapper.getArray("workInfo"){
-            
-            // Reload table data
-            for value in workArray {
-                self.workInformation.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let phonesArray = UDWrapper.getArray("phoneNumbers"){
-            
-            // Reload table data
-            for value in phonesArray {
-                self.phoneNumbers.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let emailsArray = UDWrapper.getArray("emails"){
-            
-            // Reload table data
-            for value in emailsArray {
-                self.emails.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let socialArray = UDWrapper.getArray("socialLinks"){
-            
-            // Reload table data
-            for value in socialArray {
-                self.socialLinks.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let orgsArray = UDWrapper.getArray("organizations"){
-            
-            // Reload table data
-            for value in orgsArray {
-                self.organizations.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let webArray = UDWrapper.getArray("websites"){
-            
-            // Reload table data
-            for value in webArray {
-                self.websites.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        
-        
-        profileInfoTableView.reloadData()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -378,7 +298,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         switch indexPath.section {
         case 0:
             cell.titleLabel.text = "Bio \(indexPath.row)"
-            cell.descriptionLabel.text = bios[indexPath.row] as! String
+            cell.descriptionLabel.text = bios[indexPath.row] 
             return cell
         case 1:
             cell.titleLabel.text = "Work \(indexPath.row)"
@@ -390,7 +310,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             return cell
         case 3:
             cell.titleLabel.text = "Email \(indexPath.row)"
-            cell.descriptionLabel.text = emails[indexPath.row] as! String
+            cell.descriptionLabel.text = emails[indexPath.row] 
             return cell
         case 4:
             cell.titleLabel.text = "Phone \(indexPath.row)"
@@ -422,6 +342,106 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     // Custom Methods
     // -----------------------------------
+    
+    // Custom Methods
+    func addObservers() {
+        // Call to refresh table
+        NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.parseData), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
+        
+    }
+    
+    func parseData() {
+        // Re parse for values 
+        
+        // Reload data values
+        // Assign profile image val
+        
+        if let biosArray = UDWrapper.getArray("bios"){
+            
+            // Reload table data
+            for value in biosArray {
+                self.bios.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        
+        if let titlesArray = UDWrapper.getArray("titles"){
+            
+            // Reload table data
+            for value in titlesArray {
+                self.titles.append(value as! String)
+            }
+        }else{
+            print("User has no titles")
+        }
+        if let workArray = UDWrapper.getArray("workInfo"){
+            
+            // Reload table data
+            for value in workArray {
+                self.workInformation.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let phonesArray = UDWrapper.getArray("phoneNumbers"){
+            
+            // Reload table data
+            for value in phonesArray {
+                self.phoneNumbers.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let emailsArray = UDWrapper.getArray("emails"){
+            
+            // Reload table data
+            for value in emailsArray {
+                self.emails.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let socialArray = UDWrapper.getArray("socialLinks"){
+            
+            // Reload table data
+            for value in socialArray {
+                self.socialLinks.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let orgsArray = UDWrapper.getArray("organizations"){
+            
+            // Reload table data
+            for value in orgsArray {
+                self.organizations.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        if let webArray = UDWrapper.getArray("websites"){
+            
+            // Reload table data
+            for value in webArray {
+                self.websites.append(value as! String)
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+        
+        
+        profileInfoTableView.reloadData()
+        
+    }
+
     
     func configureViews(){
         

@@ -60,6 +60,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     
     
+    
     // IBActions / Buttons Pressed
     // --------------------------------------------
     
@@ -106,6 +107,21 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     @IBAction func callSelected(_ sender: AnyObject) {
         
         // configure call
+        
+    }
+    
+    @IBAction func editCardSelected(_ sender: Any) {
+        
+        // Show add card vc
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
+        self.present(controller, animated: true, completion: nil)
+        
+        // Pass selected card to view
+        ContactManager.sharedManager.selectedCard = selectedCard
+        
+        // Set switch to true
+        ContactManager.sharedManager.userSelectedEditCard = true
         
     }
     

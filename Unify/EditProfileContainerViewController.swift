@@ -574,9 +574,20 @@ class EditProfileContainerViewController: FormViewController {
         // Test to print profile
         ContactManager.sharedManager.currentUser.userProfile.printProfle()
         
+        self.postNotification()
+        
     }
     
+    // Custom methods
     
+    // Notifications
+    
+    func postNotification() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshProfile"), object: self)
+        
+    }
     
     
     

@@ -88,6 +88,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             print("User has no cards")
         }*/
         
+        // Clear Cards array 
+        ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
         
         if let cards = UDWrapper.getArray("contact_cards"){
             // Assign array to contact manager object
@@ -107,7 +109,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Reload tableview data
             cardCollectionView.reloadData()
             // Set Selected card
-            ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
+            /*if ContactManager.sharedManager.currentUserCards.count > 0 {
+              ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
+            }*/
             
             print("User has cards!")
             
@@ -549,7 +553,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
         cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
         cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        cell.mediaButton7.image = UIImage(named: "socail-blank")
         
         // Config tool bar
         /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
