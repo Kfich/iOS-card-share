@@ -19,6 +19,7 @@ import SwiftAddressBook
 import SwiftyJSON
 import Alamofire
 
+
 import AFNetworking
 
 
@@ -123,7 +124,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         ContactManager.sharedManager.currentUser.printUser()
         
         // Test 
-        testImage()
+        //testImage()
         
         
     }
@@ -132,6 +133,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        
+        // End radar
+        self.endRadar()
+        pulseMe(status: "hide")
+    }
+    
     
     // IBActions / Buttons Pressed
     // -------------------------------------------
@@ -185,6 +195,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Show progress HUD
         KVNProgress.show(withStatus: "Generating profile..")
+        
+        //Alamofire.down
         
         // Upload image with Alamo
         Alamofire.upload(multipartFormData: { multipartFormData in
@@ -324,6 +336,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             //pulseMe(status: "hide")
             halo.isHidden = true
             self.locationManager.stopUpdatingLocation()
+            
+            // Stop animations and remove from view
+            self.stopPulseAnimation()
+            
+            // End radar
+            self.endRadar()
 
         }
         
@@ -403,15 +421,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // -------------------------------------------
     
     func stopPulseAnimation() {
-        //halo.removeAllAnimations()
-        //halo.shouldResume = false
+        halo.removeAllAnimations()
+        halo.shouldResume = false
         
     }
     
     func pulseMe(status: String?){
         
         // Set coordinates for the pulse view
-        halo.position.y = pulseView.frame.height / 2
+        halo.position.y = pulseView.frame.height / 2.75
         halo.position.x = pulseView.frame.width / 2
         halo.haloLayerNumber = 3;
         
@@ -434,16 +452,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // Radar
     // -------------------------------------------------------------------
     
-    func plotPerson(distance: Int, direction: Int, tag: Int)
-    {
+    func plotPerson(distance: Int, direction: Int, tag: Int){
         
-    
         // Init temp user
-        //let user = radarUsers[tag]
+        let user = radarUsers[tag]
         
         // Reverted code
-        let image = UIImage(named: "radar-avatar")
-        let imageView = UIImageView(image: image!)
+        var image = UIImage(named: "radar-avatar")
+        var imageView = UIImageView(image: image!)
         
         //let imageView = UIImageView()
         
@@ -458,23 +474,23 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let imageView = UIImageView()
 
         image = UIImage(named: "radar-avatar")!*/
-        /*
+        
         // Fetch user image reference
         if user.profileImageId != ""{
             // Grab image ref using alamo
             
-            let url = URL(string: "https://project-unify-node-server.herokuapp.com/getUserImages")!
+            let url = URL(string: "https://project-unify-node-server.herokuapp.com/image/\(user.profileImageId).jpg")!
             let placeholderImage = UIImage(named: "radar-avatar")!
-            
+            // Set image
+            imageView.setImageWith(url, placeholderImage: placeholderImage)
+
             // For now
-            image = UIImage(named: "radar-avatar")!
-            // Import library to resolve issue
-            //imageView.af_setImage(withURL: url, placeholderImage: placeholderImage)
+            //image = UIImage(named: "radar-avatar")!
             
         }else{
             // Set image to default image
             image = UIImage(named: "radar-avatar")!
-        }*/
+        }
         
         
         //let imageView = UIImageView()
@@ -524,6 +540,35 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         lbl.text = "Yo \(tag)"
         self.container.addSubview(lbl)*/
         
+    }
+    
+    func endRadar() {
+        // Stop radar pulsing 
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        
+        // Create User Objects
+        Connection(configuration: nil).endRadarCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                KVNProgress.showSuccess()
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+                //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
+            }
+            
+        })
+        
+        // Stop animations and remove from view
+        self.stopPulseAnimation()
+
     }
     
     func createTransaction(type: String, uuid: String) {
@@ -732,7 +777,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
             
                 // Hit endpoint for updates on users nearby
-                let parameters = ["uuid": currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
+                let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
                 
                 print(">>> SENT PARAMETERS >>>> \n\(parameters))")
                 
@@ -744,13 +789,19 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         
                         let dictionary : NSArray = response as! NSArray
 
+                        print(dictionary)
+                        
                         // Set counter to 0
                         self.counter = 0
                         
                         for item in dictionary {
                             
+                            print(item)
+                            
+                            let userDict = item as? NSDictionary
+                            
                             // Init user objects from array
-                            let user = User(snapshot: item as! NSDictionary)
+                            let user = User(snapshot: userDict!)
                             //user.printUser()
                             // Add to list of users on radar
                             self.radarUsers.append(user)
