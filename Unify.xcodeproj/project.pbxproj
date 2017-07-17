@@ -41,6 +41,7 @@
 		1CB31CB21E94358200A0C4A5 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31CAE1E94358200A0C4A5 /* Helpers.swift */; };
 		1CB31CB31E94358200A0C4A5 /* AlgoliaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31CAF1E94358200A0C4A5 /* AlgoliaManager.swift */; };
 		1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB31CB01E94358200A0C4A5 /* ContactCell.swift */; };
+		1CBB1D691F1C6C55009698D9 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBB1D661F1C6C43009698D9 /* Eureka.framework */; };
 		1CDD50A51E914CF40073B893 /* Home-TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */; };
 		741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */; };
 		FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */; };
@@ -72,8 +73,6 @@
 		FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738371EDDDE240074200F /* ContactCardView.xib */; };
 		FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */; };
 		FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */; };
-		FBDD579F1EF05B44000C4C03 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBDD579C1EF05B32000C4C03 /* Eureka.framework */; };
-		FBDD57A11EF05C9C000C4C03 /* Eureka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FBDD579C1EF05B32000C4C03 /* Eureka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
 		FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C801EDF395000E37E0C /* ProfileViewController.swift */; };
 		FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */; };
@@ -95,26 +94,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FBDD579B1EF05B32000C4C03 /* PBXContainerItemProxy */ = {
+		1CBB1D651F1C6C43009698D9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FBDD57961EF05B32000C4C03 /* Eureka.xcodeproj */;
+			containerPortal = 1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 51729DEB1B9A4F5E004A00EB;
 			remoteInfo = Eureka;
 		};
-		FBDD579D1EF05B32000C4C03 /* PBXContainerItemProxy */ = {
+		1CBB1D671F1C6C43009698D9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FBDD57961EF05B32000C4C03 /* Eureka.xcodeproj */;
+			containerPortal = 1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 51729DF51B9A4F5E004A00EB;
 			remoteInfo = EurekaTests;
-		};
-		FBDD57A21EF05C9C000C4C03 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FBDD57961EF05B32000C4C03 /* Eureka.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 51729DEA1B9A4F5E004A00EB;
-			remoteInfo = Eureka;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -125,7 +117,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FBDD57A11EF05C9C000C4C03 /* Eureka.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,6 +161,7 @@
 		1CB31CAE1E94358200A0C4A5 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		1CB31CAF1E94358200A0C4A5 /* AlgoliaManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgoliaManager.swift; sourceTree = "<group>"; };
 		1CB31CB01E94358200A0C4A5 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Eureka.xcodeproj; path = Eureka/Eureka.xcodeproj; sourceTree = "<group>"; };
 		1CBB3B7D1EA8E803003DE715 /* Unify.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Unify.entitlements; sourceTree = "<group>"; };
 		1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home-TableViewController.swift"; sourceTree = "<group>"; };
 		C72C6F2CF4B43BDC0BCB93EC /* Pods-Unify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unify.release.xcconfig"; path = "Pods/Target Support Files/Pods-Unify/Pods-Unify.release.xcconfig"; sourceTree = "<group>"; };
@@ -225,7 +217,6 @@
 		FB3738371EDDDE240074200F /* ContactCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCardView.xib; sourceTree = "<group>"; };
 		FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		FBDD57961EF05B32000C4C03 /* Eureka.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Eureka.xcodeproj; path = "../../../Downloads/Eureka-master/Eureka.xcodeproj"; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
 		FBE76C801EDF395000E37E0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCardViewController.swift; sourceTree = "<group>"; };
@@ -257,7 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBDD579F1EF05B44000C4C03 /* Eureka.framework in Frameworks */,
+				1CBB1D691F1C6C55009698D9 /* Eureka.framework in Frameworks */,
 				FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */,
 				741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */,
 				FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */,
@@ -278,7 +269,7 @@
 		1CAE5B771E913A06006EFF40 = {
 			isa = PBXGroup;
 			children = (
-				FBDD57961EF05B32000C4C03 /* Eureka.xcodeproj */,
+				1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */,
 				FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */,
 				FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */,
 				1CAE5B821E913A06006EFF40 /* Unify */,
@@ -335,6 +326,15 @@
 				1CB31CAF1E94358200A0C4A5 /* AlgoliaManager.swift */,
 			);
 			name = Algolia;
+			sourceTree = "<group>";
+		};
+		1CBB1D611F1C6C43009698D9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1CBB1D661F1C6C43009698D9 /* Eureka.framework */,
+				1CBB1D681F1C6C43009698D9 /* EurekaTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		E2413DAB352DCCE5D39D2704 /* Pods */ = {
@@ -516,15 +516,6 @@
 			name = CustomViews;
 			sourceTree = "<group>";
 		};
-		FBDD57971EF05B32000C4C03 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FBDD579C1EF05B32000C4C03 /* Eureka.framework */,
-				FBDD579E1EF05B32000C4C03 /* EurekaTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FBE8074B1F06C06C00A05292 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,7 +569,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FBDD57A31EF05C9C000C4C03 /* PBXTargetDependency */,
 			);
 			name = Unify;
 			productName = Unify;
@@ -624,8 +614,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FBDD57971EF05B32000C4C03 /* Products */;
-					ProjectRef = FBDD57961EF05B32000C4C03 /* Eureka.xcodeproj */;
+					ProductGroup = 1CBB1D611F1C6C43009698D9 /* Products */;
+					ProjectRef = 1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -636,18 +626,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FBDD579C1EF05B32000C4C03 /* Eureka.framework */ = {
+		1CBB1D661F1C6C43009698D9 /* Eureka.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Eureka.framework;
-			remoteRef = FBDD579B1EF05B32000C4C03 /* PBXContainerItemProxy */;
+			remoteRef = 1CBB1D651F1C6C43009698D9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FBDD579E1EF05B32000C4C03 /* EurekaTests.xctest */ = {
+		1CBB1D681F1C6C43009698D9 /* EurekaTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = EurekaTests.xctest;
-			remoteRef = FBDD579D1EF05B32000C4C03 /* PBXContainerItemProxy */;
+			remoteRef = 1CBB1D671F1C6C43009698D9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -812,14 +802,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		FBDD57A31EF05C9C000C4C03 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Eureka;
-			targetProxy = FBDD57A21EF05C9C000C4C03 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1CAE5B871E913A06006EFF40 /* Main.storyboard */ = {
