@@ -358,12 +358,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     func createTransaction(type: String) {
-        // Add Recipients from list 
-        
-        
-        
+        // Set type
+        transaction.type = type
         // Show progress hud
-        KVNProgress.show(withStatus: "Making the introduction...")
+        KVNProgress.show(withStatus: "Sending your card...")
         
         // Save card to DB
         let parameters = ["data": self.transaction.toAnyObject()]
@@ -371,7 +369,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Send to server
         
-        Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
             if error == nil {
                 print("Card Created Response ---> \(response)")
                 
@@ -388,7 +386,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             } else {
                 print("Card Created Error Response ---> \(error)")
                 // Show user popup of error message
-                KVNProgress.show(withStatus: "There was an error with your introduction. Please try again.")
+                KVNProgress.show(withStatus: "There was an error with your follow up. Please try again.")
                 
             }
             // Hide indicator
