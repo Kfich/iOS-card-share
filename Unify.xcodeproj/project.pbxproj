@@ -91,6 +91,8 @@
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
 		FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE041F17FC0200AF3A08 /* RadarContactSelectionViewController.swift */; };
+		FBFDFE091F1D04D800AF3A08 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBB1D661F1C6C43009698D9 /* Eureka.framework */; };
+		FBFDFE0A1F1D04D800AF3A08 /* Eureka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBB1D661F1C6C43009698D9 /* Eureka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +110,13 @@
 			remoteGlobalIDString = 51729DF51B9A4F5E004A00EB;
 			remoteInfo = EurekaTests;
 		};
+		FBFDFE0B1F1D04D800AF3A08 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 51729DEA1B9A4F5E004A00EB;
+			remoteInfo = Eureka;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -117,6 +126,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FBFDFE0A1F1D04D800AF3A08 /* Eureka.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +262,7 @@
 				FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */,
 				741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */,
 				FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */,
+				FBFDFE091F1D04D800AF3A08 /* Eureka.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +580,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FBFDFE0C1F1D04D800AF3A08 /* PBXTargetDependency */,
 			);
 			name = Unify;
 			productName = Unify;
@@ -803,6 +815,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		FBFDFE0C1F1D04D800AF3A08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Eureka;
+			targetProxy = FBFDFE0B1F1D04D800AF3A08 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		1CAE5B871E913A06006EFF40 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -924,6 +944,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = L8E3N3XE58;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -934,6 +955,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -949,6 +971,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = L8E3N3XE58;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -959,6 +982,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

@@ -112,7 +112,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(30, 9, 100, 15))
-        lbl.text = "3 hours"
+        lbl.text = "Recents"
         lbl.textAlignment = .left
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
@@ -151,13 +151,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if trans.type == "connection" {
             // Configure Cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
-            configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+            cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+            configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
         }else if trans.type == "intro"{
             
             // Configure Cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
-            configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+            cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+            configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
         }
  
         // config cell
@@ -173,9 +173,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // 
         // Hit endpoint for updates on users nearby
-        let parameters = ["data" : ["uuid": currentUser.userId]]
+        let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
         
         print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        // Show progress 
+        KVNProgress.show(withStatus: "Fetching your activity feed...")
         
         // Create User Objects
         Connection(configuration: nil).getTransactionsCall(parameters, completionBlock: { response, error in
@@ -183,17 +185,25 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                 
-                let dictionary : NSArray = response as! NSArray
+                // Init dictionary to capture response
+                let dictionary = response as! [String : Any]
                 
-                for item in dictionary {
+                // Parse dictionary for array of trans
+                let dictionaryArray = dictionary["transactions"] as! NSArray
+                
+                // Iterate over array, append trans to list
+                for item in dictionaryArray {
                     // Update counter
                     // Init user objects from array
                     let trans = Transaction(snapshot: item as! NSDictionary)
                     trans.printTransaction()
-                    
+   
                     // Append users to radarContacts array
                     self.transactions.append(trans)
                 }
+                
+                // Update the table values
+                self.tableView.reloadData()
                 
                 // Show sucess
                 KVNProgress.showSuccess()
@@ -203,7 +213,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 print(error)
                 // Show user popup of error message
                 print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
-                KVNProgress.show(withStatus: "There was an issue getting activities. Please try again.")
+                KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
             }
             
         })
@@ -218,14 +228,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let trans = transactions[index]
         
         // Assign user objects
-        let user1 = selectedUsers[0]
-        let user2 = selectedUsers[1]
+        
+        //let user1 = selectedUsers[0]
+        //let user2 = selectedUsers[1]
+        
+        let name1 = "Frank Smith"
+        let name2 = "Fred Jackson"
         
         // See if image ref available
         let image = UIImage(named: "contact")
         cell.profileImage.image = image
         // Set description text
-        cell.descriptionLabel.text = "You introduced \(user1.fullName) to \(user2.fullName)"
+        cell.descriptionLabel.text = "You introduced \(trans.recipientList[0]) to \(trans.recipientList[1])"
         
         // Set location
         cell.locationLabel.text = trans.location
@@ -237,13 +251,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let trans = transactions[index]
         
         // Assign user objects
-        let user1 = selectedUsers[0]
+        //let user1 = selectedUsers[0]
+        let name = "KFich"
         
         // See if image ref available
         let image = UIImage(named: "contact")
-        cell.profileImage.image = image
+        cell.connectionOwnerProfileImage.image = image
         // Set description text
-        cell.descriptionLabel.text = "You connected with \(user1.fullName)"
+        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientList)"
         
         // Set location 
         cell.connectionLocationLabel.text = trans.location

@@ -63,7 +63,7 @@
 
 // Transactions
 - (NSURLSessionDataTask*)createTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
-    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kCreateCard];
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kCreateTransaction];
 }
 
 - (NSURLSessionDataTask*)getTransactionsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
@@ -101,6 +101,14 @@
 }
 - (NSURLSessionDataTask*)endRadarCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kEndRadar];
+}
+
+// Images
+- (NSURLSessionDataTask*)getImageCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetUserImage];
+}
+- (NSURLSessionDataTask*)uploadImageCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUploadImages];
 }
 
 

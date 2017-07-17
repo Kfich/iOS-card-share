@@ -16,11 +16,11 @@
 #define kUpdateCard           kServerURL(kAppwsServerURL, @"card/update/")
 
 // Transactions
-#define kCreateTransaction    kServerURL(kAppwsServerURL, @"transactions/create")
-#define kGetTransaction       kServerURL(kAppwsServerURL, @"transactions/get")
-#define kUpdateTransaction    kServerURL(kAppwsServerURL, @"transactions/update")
-#define kApproveTransaction   kServerURL(kAppwsServerURL, @"transactions/approve")
-#define kRejectTransaction    kServerURL(kAppwsServerURL, @"transactions/reject")
+#define kCreateTransaction    kServerURL(kAppwsServerURL, @"transaction/create")
+#define kGetTransaction       kServerURL(kAppwsServerURL, @"transaction/get")
+#define kUpdateTransaction    kServerURL(kAppwsServerURL, @"transaction/update")
+#define kApproveTransaction   kServerURL(kAppwsServerURL, @"transaction/approve")
+#define kRejectTransaction    kServerURL(kAppwsServerURL, @"transaction/reject")
 
 // Auth
 #define kLogoutUser           kServerURL(kAppwsServerURL, @"auth/logout")
@@ -34,7 +34,7 @@
 
 
 // Images
-#define kUploadImages         kServerURL(kAppwsServerURL, @"images/upload")
-#define kGetUserImages        kServerURL(kAppwsServerURL, @"images/getUserImages")
+#define kUploadImages         kServerURL(kAppwsServerURL, @"image/uploadcdn")
+#define kGetUserImage         kServerURL(kAppwsServerURL, @"image/%@")
 
 #endif

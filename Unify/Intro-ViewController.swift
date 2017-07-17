@@ -311,7 +311,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             } else {
                 print("Card Created Error Response ---> \(error)")
                 // Show user popup of error message
-                KVNProgress.show(withStatus: "There was an error with your introduction. Please try again.")
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
             }
             // Hide indicator

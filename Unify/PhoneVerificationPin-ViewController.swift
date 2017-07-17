@@ -176,7 +176,7 @@ class PhoneVerificationPinViewController: UIViewController {
                 print(error)
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(error)\n\n")
-                KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
+                KVNProgress.showError(withStatus: "There was an issue with your pin. Please try again.")
             }
             
         })
@@ -229,7 +229,7 @@ class PhoneVerificationPinViewController: UIViewController {
         } else {
             print("Card Created Error Response ---> \(error)")
             // Show user popup of error message
-            KVNProgress.show(withStatus: "There was an error creating your card. Please try again.")
+            KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
         
             }
          // Hide indicator

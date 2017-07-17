@@ -12,7 +12,7 @@ import UIKit
 import PopupDialog
 import Contacts
 import MBPhotoPicker
-
+import Alamofire
 
 class CreateAccountViewController: UIViewController {
     
@@ -26,6 +26,9 @@ class CreateAccountViewController: UIViewController {
     // User object to assign form fields
     var newUser = User()
     var card = ContactCard()
+    
+    // To track image ids
+    var idString = ""
 
     
     // IBOutlets
@@ -137,24 +140,92 @@ class CreateAccountViewController: UIViewController {
         // Pull image data
         
         // Image data png
-        let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!)
+        //let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!, 0.5)
+        let imageData = UIImageJPEGRepresentation(self.profileImageContainerView.image!, 0.5)
         print(imageData!)
         
-        // Assign asset name and type
-        let fname = "asset.png"
-        let mimetype = "image/png"
         // Generate id string for image
-        let idString = newUser.randomString(length: 20)
-        // Store this image locally
+        idString = newUser.randomString(length: 20)
         
         // Set id string to user object for image
         newUser.profileImageId = idString
+        
+        // Assign asset name and type
+        let fname = idString
+        let mimetype = "image/png"
         
         // Create image dictionary
         let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
         
         // Add image to user profile images
         self.newUser.setImages(imageRecords: imageDict)
+        
+        
+        // Upload to Server
+        // Save card to DB
+        let parameters = imageDict
+        print(parameters)
+        
+        // Show progress HUD
+        KVNProgress.show(withStatus: "Generating profile..")
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+                multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+            }*/
+        }, to:"https://project-unify-node-server.herokuapp.com/image/uploadcdn")
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n success...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                    // Dismiss hud
+                    KVNProgress.dismiss()
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
+        
+        
+        // Send to server
+        
+        /*Connection(configuration: nil).uploadImageCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Store profile image id after response from network
+                // Store image locally
+                UDWrapper.setString("profile_image_id", value: self.idString as NSString)
+                
+                // Hide HUD
+                KVNProgress.show(withStatus: "Profile generated")
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.show(withStatus: "There was an error with your follow up. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }*/
+
         
         // Test if image stored
         print(self.newUser.profileImages)
@@ -172,9 +243,6 @@ class CreateAccountViewController: UIViewController {
         // Pass segue
         performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
         
-        //newUser.phoneNumbers.append(["profile_phone" : \String(describing: phone)])
-        
-        // Perfom segue
         
     }
     
@@ -185,10 +253,12 @@ class CreateAccountViewController: UIViewController {
         print(imageData!)
         
         // Assign asset name and type
-        let fname = "asset.png"
-        let mimetype = "image/png"
+        //idString = newUser.randomString(length: 20)
         
-        let idString = newUser.randomString(length: 20)
+        
+        // Name image with id string
+        let fname = self.idString
+        let mimetype = "image/png"
         
         // Create image dictionary
         let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]

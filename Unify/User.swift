@@ -206,7 +206,7 @@ public class User{
         print(phoneNumbers)
         // Test image data
         print("Image Data -->")
-        //print(profileImages)
+        print(profileImages)
         
         
     }

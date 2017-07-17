@@ -103,6 +103,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     @IBOutlet var emailButton: UIButton!
     
+    @IBOutlet var container: UIView!
+    
+    
     
     // View Setup
 
@@ -270,6 +273,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     @IBAction func sendCardSelected(_ sender: Any) {
         
+        // Test uuid 
+        print("\n\nCurrent User ID >>> \(currentUser.userId)")
+        
+        // Dyamically set selected card here
+        
+        
         // Iterate through selected card list
         for contact in selectedUserList {
             // Check if isSelected
@@ -282,17 +291,25 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         }
         
         // Set selected ids to trans and values
+        // Set temp id for transaction
+        transaction.transactionId = transaction.randomString(length: 15)
         transaction.recipientList = selectedUserIds
         transaction.setTransactionDate()
-        transaction.senderId = currentUser.userId
+        transaction.senderId = ContactManager.sharedManager.currentUser.userId
         transaction.type = "connection"
         transaction.scope = "transaction"
         transaction.latitude = self.lat
         transaction.longitude = self.long
         transaction.location = self.address
+        // Attach card id
+        transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+        
+        
+        // Print tranny 
+        transaction.printTransaction()
         
         // Call create transaction function
-        createTransaction(type: "connection")
+        createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
         
     }
     
@@ -352,12 +369,26 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
     
         // Init temp user
-        let user = radarUsers[tag]
-        // Create image
+        //let user = radarUsers[tag]
+        
+        // Reverted code
+        let image = UIImage(named: "radar-avatar")
+        let imageView = UIImageView(image: image!)
+        
+        //let imageView = UIImageView()
+        
+        //imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 30, height: 30)
+        
+        //imageView.backgroundColor = .black
+        
+        
+        /*// Create image
         var image = UIImage()
         // Create imageView and set image
         let imageView = UIImageView()
 
+        image = UIImage(named: "radar-avatar")!*/
+        /*
         // Fetch user image reference
         if user.profileImageId != ""{
             // Grab image ref using alamo
@@ -365,19 +396,22 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             let url = URL(string: "https://project-unify-node-server.herokuapp.com/getUserImages")!
             let placeholderImage = UIImage(named: "radar-avatar")!
             
+            // For now
+            image = UIImage(named: "radar-avatar")!
             // Import library to resolve issue
             //imageView.af_setImage(withURL: url, placeholderImage: placeholderImage)
             
         }else{
             // Set image to default image
             image = UIImage(named: "radar-avatar")!
-        }
+        }*/
         
         
         //let imageView = UIImageView()
         
         // Changed the image rendering size
-        imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 60, height: 60)
+        imageView.frame = CGRect(x: 100 + (10 * direction), y: 80 - (10 * distance), width: 60, height: 60)
+        //imageView.frame = CGRect(x: 50, y: 80, width: 60, height: 60)
         
         //imageView.backgroundColor = .black
         
@@ -401,22 +435,28 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         imageView.layer.add(hover, forKey: "myHoverAnimation")
         
-        
-        // Adding image of contact to map screen
-        self.pulseView.addSubview(imageView)
-        
         // Add action tap gesture to objects
         // Add
         let imageAction = UITapGestureRecognizer(target: self, action: #selector(radarContactSelected(sender:)))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(imageAction)
         
-        // Assign tag to image to identify what index in the array user lies 
+        // Assign tag to image to identify what index in the array user lies
         imageView.tag = tag
+        
+        // Adding image of contact to map screen
+        self.pulseView.addSubview(imageView)
+        
+        // test on main view 
+        /*let lbl = UILabel()
+        lbl.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
+        lbl.backgroundColor = UIColor.blue
+        lbl.text = "Yo \(tag)"
+        self.container.addSubview(lbl)*/
         
     }
     
-    func createTransaction(type: String) {
+    func createTransaction(type: String, uuid: String) {
         // Set type
         transaction.type = type
         // Show progress hud
@@ -428,9 +468,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Send to server
         
-        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+        Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(response)")
+                print("Card Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
@@ -443,9 +483,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 KVNProgress.dismiss()
                 
             } else {
-                print("Card Created Error Response ---> \(error)")
+                print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
-                KVNProgress.show(withStatus: "There was an error with your follow up. Please try again.")
+                KVNProgress.showError(withStatus: "There was an error sending your card. Please try again.")
                 
             }
             // Hide indicator
@@ -454,8 +494,39 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     func radarContactSelected(sender:UITapGestureRecognizer) {
+        
+        print("Radar User Index Counter >>> \((sender.view?.tag)!)")
+        
+        if selectedUserList[(sender.view?.tag)!].isSelected != true {
+            // Set to true
+            selectedUserList[(sender.view?.tag)!].isSelected = true
+            // Toggle the image
+            let image = UIImage(named: "contact")
+            let imageView = UIImageView(image: image!)
+            
+            // Add new image to sender
+            sender.view?.addSubview(imageView)
+            
+            // Add to selected user list
+            selectedUsers.append(radarUsers[(sender.view?.tag)!])
+            // Test count
+            print("Selected User List Count --> \(selectedUsers.count)")
+            
+        }else{
+            // Set to false
+            selectedUserList[(sender.view?.tag)!].isSelected = false
+            // Toggle the image
+            let image = UIImage(named: "radar-avatar")
+            let imageView = UIImageView(image: image!)
+            
+            // Add new image to sender
+            sender.view?.addSubview(imageView)
+            
+        }
+        
         // Toggle send button if list empty
-        if selectedUserIds.count > 0 {
+        
+        if selectedUsers.count > 0 {
             // Show button for send
             sendCardButton.isHidden = false
         }else{
@@ -463,20 +534,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             sendCardButton.isHidden = true
         }
         
-        if selectedUserList[(sender.view?.tag)!].isSelected != true {
-            // Set to true
-            selectedUserList[(sender.view?.tag)!].isSelected = true
-            // Toggle the image
-            
-            // Add to selected user list
-            selectedUsers.append(radarUsers[(sender.view?.tag)!])
-            
-        }else{
-            // Set to false
-            selectedUserList[(sender.view?.tag)!].isSelected = false
-            // Toggle the image
-            
-        }
         
     }
     
@@ -624,7 +681,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             // Init user objects from array
                             let user = User(snapshot: item as! NSDictionary)
-                            user.printUser()
+                            //user.printUser()
                             // Add to list of users on radar
                             self.radarUsers.append(user)
                             
@@ -638,11 +695,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             print("Radar List Count >>>> \(self.radarContacts.count)")
                             // Set random coordinates for plotting images on radar
                             let distance = Int(random: -5..<10)
-                            let direction = Int(random: 0..<10)
+                            let direction = Int(random: -5..<10)
                             
                             // plot person on map
                             // The tag is used to tag images to identify their index in the array
                             self.plotPerson(distance: distance, direction: direction, tag: self.counter)
+                            print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
                             
                             // Update counter
                             self.counter = self.counter + 1

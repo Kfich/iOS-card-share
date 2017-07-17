@@ -418,7 +418,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             } else {
                 print("Card Created Error Response ---> \(error)")
                 // Show user popup of error message 
-                KVNProgress.show(withStatus: "There was an error creating your card. Please try again.")
+                KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
             }
             // Hide indicator
             KVNProgress.dismiss()

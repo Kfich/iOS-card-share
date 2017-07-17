@@ -61,13 +61,13 @@ public class Transaction{
         date = snapshot["date"] as! String
         location = snapshot["location"] as! String
         //notes = snapshot["notes"] as! String
-        recipientId = snapshot["recipient_id"] as! String
         senderId = snapshot["sender_id"] as! String
-        recipientCardId = snapshot["recipient_card_id"] as! String
         senderCardId = snapshot["sender_card_id"] as! String
         type = snapshot["type"] as! String
         // Set recipient list
         recipientList = snapshot["recipient_list"] as! [String]
+        //latitude = snapshot["latitude"] as! String
+        //longitude = snapshot["latitude"] as! String
         
         
         // Testing to see if populated
@@ -80,13 +80,13 @@ public class Transaction{
     func toAnyObject() -> NSDictionary {
         return [
             "uuid": transactionId,
-            "date": setTransactionDate(),
+            "date": date,
             "location": location,
             "sender_id": senderId,
             "sender_card_id": senderCardId,
-            "recipient_id": recipientId,
-            "recipient_card_id": recipientCardId,
             "type": type,
+            "latitude" : latitude,
+            "longitude" : longitude,
             "notes": notes ?? ["notes" : ""],
             "recipient_list": recipientList
             
@@ -236,22 +236,21 @@ public class Transaction{
     func printTransaction(){
         print("\n")
         print("TransId :" + transactionId)
+        print("Type : " + type)
         print("Date :" + date)
         print("Location :" + location)
-        print("SenderID :" + transactionId)
-        print("RecipientID :" + transactionId)
+        print("SenderID :" + senderId)
         print("SenderCardId : " + senderCardId)
-        print("RecipientCardId : " + recipientCardId)
+        print("Lat :  \(latitude)")
+        print("Long :  + \(longitude)")
+        print("\nRecipient List :")
+        print(recipientList)
         
         // Testing
         print("\n======================================\n\n")
-        print("Sender Card :")
-        print(senderCard)
-        print("\nRecipient Card :")
-        print(recipientCard)
-        
-        print("\nRecipient List :")
-        print(recipientList)
+        //print("Sender Card :")
+        //print(senderCard)
+
 
     }
     

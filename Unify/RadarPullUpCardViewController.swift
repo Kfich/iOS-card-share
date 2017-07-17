@@ -104,9 +104,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 contactCard.printCard()
             }
             
+            // Reload tableview data
             cardCollectionView.reloadData()
+            // Set Selected card
+            ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
             
-            // 
             print("User has cards!")
             
         }else{
@@ -210,7 +212,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             } else {
                 print("Card Created Error Response ---> \(error)")
                 // Show user popup of error message
-                KVNProgress.show(withStatus: "There was an error with your follow up. Please try again.")
+                KVNProgress.showError(withStatus: "There was an error with your follow up. Please try again.")
                 
             }
             // Hide indicator

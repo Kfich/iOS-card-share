@@ -38,6 +38,10 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 - (NSURLSessionDataTask*)startRadarCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)endRadarCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
+// Images
+- (NSURLSessionDataTask*)uploadImageCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)getImageCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+
 
 
 
