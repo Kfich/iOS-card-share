@@ -282,7 +282,9 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     // Custom Methods
     
     func createTransaction(type: String) {
-        // 
+        // Set Type
+        self.transaction.type = type
+        
         // Show progress hud
         KVNProgress.show(withStatus: "Making the introduction...")
         
@@ -292,7 +294,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Send to server
         
-        Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
             if error == nil {
                 print("Card Created Response ---> \(response)")
                 

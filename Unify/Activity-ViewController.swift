@@ -17,6 +17,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // ----------------------------------------
     var currentUser = User()
     var transactions = [Transaction]()
+    var selectedTransaction = Transaction()
     var segmentedControl = UISegmentedControl()
     
     @IBOutlet var navigationBar: UINavigationItem!
@@ -86,6 +87,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        // Set selected transaction
+        self.selectedTransaction = self.transactions[indexPath.row]
+        
+        // Pass in segue
         self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
         
         
@@ -283,7 +288,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         {
             
             let nextScene =  segue.destination as! FollowUpViewController
-            
+            // Pass the transaction object to nextVC
+            nextScene.transaction = self.selectedTransaction
             nextScene.active_card_unify_uuid = "\(sender!)" as String?
             
             

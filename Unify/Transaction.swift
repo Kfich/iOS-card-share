@@ -16,6 +16,7 @@ public class Transaction{
     var scope : String = "transaction"
     var transactionId : String = ""
     var date : String = ""
+    var type : String = ""
 
 
     var location : String = ""
@@ -61,6 +62,7 @@ public class Transaction{
         senderId = snapshot["sender_id"] as! String
         recipientCardId = snapshot["recipient_card_id"] as! String
         senderCardId = snapshot["sender_card_id"] as! String
+        type = snapshot["type"] as! String
         
         
         // Testing to see if populated
@@ -79,6 +81,7 @@ public class Transaction{
             "sender_card_id": senderCardId,
             "recipient_id": recipientId,
             "recipient_card_id": recipientCardId,
+            "type": type,
             "notes": notes ?? ["notes" : ""]
         ]
     }

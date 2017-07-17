@@ -16,7 +16,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     // ---------------------------------------
     var selectedUserCard = ContactCard()
     var selectedCardIndex = 0
-    
+    var transaction = Transaction()
     
     let reuseIdentifier = "cardViewCell"
     private var firstAppearanceCompleted = false
@@ -181,6 +181,42 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
     }
     
+    func createTransaction(type: String) {
+        // Set type
+        transaction.type = type
+        // Show progress hud
+        KVNProgress.show(withStatus: "Saving your follow up...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(response)")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                
+                // Insert to manager card array
+                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Created Error Response ---> \(error)")
+                // Show user popup of error message
+                KVNProgress.show(withStatus: "There was an error with your follow up. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
     
     
     // Tap Gesture Handler
@@ -258,10 +294,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 cell.cardTitle.text = currentCard.cardProfile.getTitle()
             }
             if currentCard.cardProfile.emails.count > 0 {
-                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"] as! String
+                cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]!
             }
             if currentCard.cardProfile.phoneNumbers.count > 0 {
-                cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"] as! String
+                cell.cardPhone.text = currentCard.cardProfile.phoneNumbers[0]["phone"]!
             }
             if currentCard.cardProfile.images.count > 0 {
                 // Populate image view
@@ -697,51 +733,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
 }
 
-/*
-class CollectionViewHelper {
-    
-    class func EmptyMessage(collectionView:UICollectionView) {
-        
-        /*let messageLabel = UILabel(frame: CGRect(0,0, collectionView.frame.width, collectionView.frame.height))
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.black
-        messageLabel.numberOfLines = 0;
-        messageLabel.textAlignment = .center;
-        messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
-        messageLabel.sizeToFit()*/
-        
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width + 5, height: collectionView.frame.height + 5))
-        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-        
-        // Create section header buttons
-        let imageName = "add-card"
-        let image = UIImage(named: imageName)
-        let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
-        
-        // Add gesture action 
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CollectionViewHelper.postNotification))
-        
-        // 2. add the gesture recognizer to a view
-        containerView.addGestureRecognizer(tapGesture)
-        
-        
-        // Add subviews
-        containerView.addSubview(imageView)
-        collectionView.backgroundView = containerView
-
-        
-        //collectionView.backgroundView = messageLabel;
-    }
-    
-    @objc func postNotification() {
-        // Notify the VC that card selection selected
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CreateCardSelected"), object: self)
-    }
-    
-}
-*/
 
 
 
