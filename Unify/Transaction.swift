@@ -17,7 +17,10 @@ public class Transaction{
     var transactionId : String = ""
     var date : String = ""
     var type : String = ""
-
+    
+    // Lat and Long for location
+    var latitude = Double()
+    var longitude = Double()
 
     var location : String = ""
     //var sender : User = User()
@@ -25,7 +28,7 @@ public class Transaction{
     var senderCard : ContactCard = ContactCard()
     var recipientCard : ContactCard = ContactCard()
     
-    var recipientList = [[String : String]]()
+    var recipientList = [String]()
     
     // Make a dict [string:any] due to timestamps
     var notes : [String : String]?
@@ -63,6 +66,8 @@ public class Transaction{
         recipientCardId = snapshot["recipient_card_id"] as! String
         senderCardId = snapshot["sender_card_id"] as! String
         type = snapshot["type"] as! String
+        // Set recipient list
+        recipientList = snapshot["recipient_list"] as! [String]
         
         
         // Testing to see if populated
@@ -82,7 +87,9 @@ public class Transaction{
             "recipient_id": recipientId,
             "recipient_card_id": recipientCardId,
             "type": type,
-            "notes": notes ?? ["notes" : ""]
+            "notes": notes ?? ["notes" : ""],
+            "recipient_list": recipientList
+            
         ]
     }
     
@@ -192,11 +199,11 @@ public class Transaction{
     }
     
     // Phone Numbers
-    func getRecipients()->[[String : String]]{
+    func getRecipients()->[String]{
         return recipientList
     }
     
-    func setRecipients(contactRecords : [String : String]){
+    func setRecipients(contactRecords : String){
         recipientList.append(contactRecords)
     }
 

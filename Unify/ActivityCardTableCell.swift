@@ -15,6 +15,7 @@ class ActivityCardTableCell: UITableViewCell {
     // activity card
     @IBOutlet var cardWrapperView: UIView!
     @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var recipientProfileImage: UIImageView!
     @IBOutlet var followupViewContainer: UIView!
     
@@ -29,8 +30,8 @@ class ActivityCardTableCell: UITableViewCell {
     // activity card
     
     @IBOutlet var connectionCardWrapperView: UIView!
-    
     @IBOutlet var connectionOwnerProfileImage: UIImageView!
+    @IBOutlet var connectionDescriptionLabel: UILabel!
     
     @IBOutlet var connectionRecipientImageView: UIImageView!
     

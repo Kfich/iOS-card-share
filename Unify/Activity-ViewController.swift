@@ -17,6 +17,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // ----------------------------------------
     var currentUser = User()
     var transactions = [Transaction]()
+    var selectedUsers = [User]()
     var selectedTransaction = Transaction()
     var segmentedControl = UISegmentedControl()
     
@@ -137,7 +138,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return self.transactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -145,14 +146,20 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Check what cell is needed
         var cell = UITableViewCell()
         
-        if indexPath.row % 2 == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
-            configureViewsForIntro(cell: cell as! ActivityCardTableCell)
-        }else{
-            cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
-            configureViewsForConnection(cell: cell as! ActivityCardTableCell)
-        }
+        // Init transaction 
+        let trans = transactions[indexPath.row]
         
+        if trans.type == "connection" {
+            // Configure Cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+            configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+        }else if trans.type == "intro"{
+            
+            // Configure Cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+            configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+        }
+ 
         // config cell
         
 
@@ -206,73 +213,41 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // View Configuration
 
 
-    func configureViewsForIntro(cell: ActivityCardTableCell){
-        // Add radius config & border color
-        // Add radius config & border color
-        /*
-        cell.profileImage.layer.cornerRadius = 35.0
-        cell.profileImage.clipsToBounds = true
-        cell.profileImage.layer.borderWidth = 1.5
-        cell.profileImage.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
-
+    func configureViewsForIntro(cell: ActivityCardTableCell, index: Int){
+        // Set transaction values for cell
+        let trans = transactions[index]
         
-        // Add radius config & border color
-        cell.recipientProfileImage.layer.cornerRadius = 35.0
-        cell.recipientProfileImage.clipsToBounds = true
-        cell.recipientProfileImage.layer.borderWidth = 1.5
-        cell.recipientProfileImage.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
-        // Add radius config & border color
-        cell.cardWrapperView.layer.cornerRadius = 12.0
-        cell.cardWrapperView.clipsToBounds = true
-        cell.cardWrapperView.layer.borderWidth = 1.5
-        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        // Assign user objects
+        let user1 = selectedUsers[0]
+        let user2 = selectedUsers[1]
         
-        // Set shadow on the container view
-        cell.followupViewContainer.layer.shadowColor = UIColor.black.cgColor
-        cell.followupViewContainer.layer.shadowOpacity = 1
-        cell.followupViewContainer.layer.shadowOffset = CGSize.zero
-        cell.followupViewContainer.layer.shadowRadius = 10
+        // See if image ref available
+        let image = UIImage(named: "contact")
+        cell.profileImage.image = image
+        // Set description text
+        cell.descriptionLabel.text = "You introduced \(user1.fullName) to \(user2.fullName)"
         
-        
-        /*cell.followupViewContainer.layer.shadowPath = UIBezierPath(rect: cell.followupViewContainer.bounds).cgPath*/
-        */
-        
-
-        
+        // Set location
+        cell.locationLabel.text = trans.location
     }
 
-    func configureViewsForConnection(cell: ActivityCardTableCell){
-        // Add radius config & border color
-        // Add radius config & border color
+    func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
+        // Set transaction values for cell 
+        // Set transaction values for cell
+        let trans = transactions[index]
         
-        /*cell.connectionOwnerProfileImage.layer.cornerRadius = 35.0
-        cell.connectionOwnerProfileImage.clipsToBounds = true
-        cell.connectionOwnerProfileImage.layer.borderWidth = 1.5
-        cell.connectionOwnerProfileImage.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
+        // Assign user objects
+        let user1 = selectedUsers[0]
         
+        // See if image ref available
+        let image = UIImage(named: "contact")
+        cell.profileImage.image = image
+        // Set description text
+        cell.descriptionLabel.text = "You connected with \(user1.fullName)"
         
-        // Add radius config & border color
-        cell.connectionRecipientImageView.layer.cornerRadius = 35.0 
-        cell.connectionRecipientImageView.clipsToBounds = true
-        cell.connectionRecipientImageView.layer.borderWidth = 1.5
-        cell.connectionRecipientImageView.layer.borderColor = UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0).cgColor
-        // Add radius config & border color
-        cell.connectionCardWrapperView.layer.cornerRadius = 12.0
-        cell.connectionCardWrapperView.clipsToBounds = true
-        cell.connectionCardWrapperView.layer.borderWidth = 1.5
-        cell.connectionCardWrapperView.layer.borderColor = UIColor.white.cgColor
+        // Set location 
+        cell.connectionLocationLabel.text = trans.location
         
-        // Set shadow on the container view
-        cell.connectionFollowupViewContainer.layer.shadowColor = UIColor.black.cgColor
-        cell.connectionFollowupViewContainer.layer.shadowOpacity = 1
-        cell.connectionFollowupViewContainer.layer.shadowOffset = CGSize.zero
-        cell.connectionFollowupViewContainer.layer.shadowRadius = 10
-        
-        
-        /*cell.followupViewContainer.layer.shadowPath = UIBezierPath(rect: cell.followupViewContainer.bounds).cgPath*/
-        
-        
-        */
         
     }
 

@@ -79,29 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("User has no profile")
             
         }
-
-        
-        
-        // Managing stored user sessions
-        /*
-        let storedUUID = UserDefaults.standard.string(forKey: "uuid")
-        
-        if ((storedUUID) != nil)
-        {
-            global_uuid = storedUUID
-        }
- 
-        // Check if user logged in, if not kick back to home vc
-        
-        let userLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
-        
-        if (userLoggedIn && (storedUUID != nil)){
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-            TabBarViewController
-            window!.rootViewController = homeViewController
-        }
-        */
  
       
         

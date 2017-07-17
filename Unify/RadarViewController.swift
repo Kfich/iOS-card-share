@@ -18,6 +18,7 @@ import PulsingHalo
 import SwiftAddressBook
 import SwiftyJSON
 import Alamofire
+
 import AFNetworking
 
 
@@ -30,11 +31,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     var selectedUser = User()
     var transaction = Transaction()
     
+    
     var selectedUsers = [User]()
+    var radarUsers = [User]()
     
     var didReceieveList = false
     var lat : Double = 0.0
     var long : Double = 0.0
+    var address = String()
     
     var nearbyList = [String: Any]()
     // Phone Contact Store
@@ -63,6 +67,21 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         CNContactThumbnailImageDataKey] as [Any]
     
     
+    // Struct to check if user selected for radar
+    struct Check {
+        var index: Int
+        var isSelected: Bool // selection state
+        
+        init(arrayIndex: Int, selected: Bool) {
+            index = arrayIndex
+            isSelected = selected
+        }
+    }
+    
+    // List of checks to mark selected index
+    var selectedUserList = [Check]()
+    var selectedUserIds = [String]()
+    
     // IBOutlet
     // -------------------------------------------
     
@@ -76,6 +95,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     @IBOutlet var radarSwitch: UISwitch!
     
+    @IBOutlet var sendCardButton: UIButton!
     
     @IBOutlet var pulseView: UIView!
     
@@ -91,12 +111,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
 
         // Do any additional setup after loading the view.
         
-        
         // Setup views 
-        //configureViews()
         
-        
-        testUser()
+        // Hide button
+        sendCardButton.isHidden = true
         
         // See if current user pass
         ContactManager.sharedManager.currentUser.printUser()
@@ -195,22 +213,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     
     
-    // Testing --------------------------------
+    // IBActions --------------------------------
     
     
-    @IBAction func showEmailRecipient(_ sender: AnyObject) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)
-    }
     
-    @IBAction func showSMSRecipient(_ sender: AnyObject) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)
-    }
+    
+    
     
     
     @IBAction func radarButtonSelected(_ sender: AnyObject) {
@@ -258,6 +266,35 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         }
     }
     
+    // Sending cards
+    
+    @IBAction func sendCardSelected(_ sender: Any) {
+        
+        // Iterate through selected card list
+        for contact in selectedUserList {
+            // Check if isSelected
+            if contact.isSelected{
+                // Init user from list
+                let user = radarUsers[contact.index]
+                // Set id to recipient list
+                selectedUserIds.append(user.userId)
+            }
+        }
+        
+        // Set selected ids to trans and values
+        transaction.recipientList = selectedUserIds
+        transaction.setTransactionDate()
+        transaction.senderId = currentUser.userId
+        transaction.type = "connection"
+        transaction.scope = "transaction"
+        transaction.latitude = self.lat
+        transaction.longitude = self.long
+        transaction.location = self.address
+        
+        // Call create transaction function
+        createTransaction(type: "connection")
+        
+    }
     
     
     
@@ -313,12 +350,34 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     func plotPerson(distance: Int, direction: Int, tag: Int)
     {
         
-        let image = UIImage(named: "radar-avatar")
-        let imageView = UIImageView(image: image!)
+    
+        // Init temp user
+        let user = radarUsers[tag]
+        // Create image
+        var image = UIImage()
+        // Create imageView and set image
+        let imageView = UIImageView()
+
+        // Fetch user image reference
+        if user.profileImageId != ""{
+            // Grab image ref using alamo
+            
+            let url = URL(string: "https://project-unify-node-server.herokuapp.com/getUserImages")!
+            let placeholderImage = UIImage(named: "radar-avatar")!
+            
+            // Import library to resolve issue
+            //imageView.af_setImage(withURL: url, placeholderImage: placeholderImage)
+            
+        }else{
+            // Set image to default image
+            image = UIImage(named: "radar-avatar")!
+        }
+        
         
         //let imageView = UIImageView()
         
-        imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 30, height: 30)
+        // Changed the image rendering size
+        imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 60, height: 60)
         
         //imageView.backgroundColor = .black
         
@@ -395,16 +454,31 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     func radarContactSelected(sender:UITapGestureRecognizer) {
+        // Toggle send button if list empty
+        if selectedUserIds.count > 0 {
+            // Show button for send
+            sendCardButton.isHidden = false
+        }else{
+            // Hide button
+            sendCardButton.isHidden = true
+        }
         
-        // Set Selected index
-        self.selectedUser = radarContacts[(sender.view?.tag)!]
+        if selectedUserList[(sender.view?.tag)!].isSelected != true {
+            // Set to true
+            selectedUserList[(sender.view?.tag)!].isSelected = true
+            // Toggle the image
+            
+            // Add to selected user list
+            selectedUsers.append(radarUsers[(sender.view?.tag)!])
+            
+        }else{
+            // Set to false
+            selectedUserList[(sender.view?.tag)!].isSelected = false
+            // Toggle the image
+            
+        }
         
-        // Perfom segue and pass object 
-        
-        /*performSegue(withIdentifier: "showRadarContactProfile", sender: self)*/
-    
     }
-    
     
     
     func centerMap(_ center:CLLocationCoordinate2D){
@@ -485,12 +559,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.lat = center.latitude
         self.long = center.longitude
         print(message)
+    
         
-        //let parameters = ["uuid": currentUser.userId, "location": ["latitude": center.latitude, "longitude": center.longitude]] as [String : Any]
-        
-        
+        // Get Location
         let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
-        
         
         
         // Geocode Location
@@ -506,6 +578,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Process Response
             if let placemarks = placemarks, let placemark = placemarks.first {
                 print( placemark.compactAddress)
+                // Set placemark address 
+                self.address = placemark.compactAddress!
             }
         }
         
@@ -543,25 +617,35 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         
                         let dictionary : NSArray = response as! NSArray
 
+                        // Set counter to 0
+                        self.counter = 0
+                        
                         for item in dictionary {
-                            // Update counter
-                            self.counter = self.counter + 1
                             
                             // Init user objects from array
                             let user = User(snapshot: item as! NSDictionary)
                             user.printUser()
+                            // Add to list of users on radar
+                            self.radarUsers.append(user)
                             
-                            // Append users to radarContacts array 
+                            // Create selected index
+                            let selectedIndex = Check(arrayIndex: self.counter, selected: false)
+                            // Set Selected index
+                            self.selectedUserList.append(selectedIndex)
                             
+                            // Append users to radarContacts array
                             self.radarContacts.append(user)
                             print("Radar List Count >>>> \(self.radarContacts.count)")
                             // Set random coordinates for plotting images on radar
-                            let distance = Int(random: -10..<10)
+                            let distance = Int(random: -5..<10)
                             let direction = Int(random: 0..<10)
                             
                             // plot person on map
                             // The tag is used to tag images to identify their index in the array
                             self.plotPerson(distance: distance, direction: direction, tag: self.counter)
+                            
+                            // Update counter
+                            self.counter = self.counter + 1
                         }
                         
                         
