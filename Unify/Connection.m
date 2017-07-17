@@ -66,9 +66,10 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kCreateCard];
 }
 
-- (NSURLSessionDataTask*)getTransactionsCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
+- (NSURLSessionDataTask*)getTransactionsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetTransaction];
 }
+
 - (NSURLSessionDataTask*)updateTransactionCall:(NSDictionary*)parameters transactionID:(NSString*)transactionID completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUpdateTransaction];
 }

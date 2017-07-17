@@ -167,16 +167,8 @@ class PhoneVerificationPinViewController: UIViewController {
                 // Store user to device 
                 UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
                 
-                // Show homepage
-                DispatchQueue.main.async {
-                    // Update UI
-                    // Show Home Tab
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-                    TabBarViewController
-                    self.view.window?.rootViewController = homeViewController
-                }
-                
+                // Create first card then hit segue
+                self.createFirstCard()
                 
                 
                 
@@ -190,6 +182,59 @@ class PhoneVerificationPinViewController: UIViewController {
         })
         
         
+    }
+    
+    
+    func createFirstCard() {
+        // Create the card 
+        let card = ContactManager.sharedManager.selectedCard
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Creating your first card...")
+        
+        // Save card to DB
+        let parameters = ["data": card.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+         Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+         if error == nil {
+            print("Card Created Response ---> \(response)")
+         
+            // Set card uuid with response from network
+            let dictionary : Dictionary = response as! [String : Any]
+            card.cardId = dictionary["uuid"] as? String
+         
+            // Insert to manager card array
+            //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+         
+            // Set array to defualts
+            UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+         
+         // Hide HUD
+            KVNProgress.dismiss()
+         
+            // Show homepage
+            DispatchQueue.main.async {
+                // Update UI
+                // Show Home Tab
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                TabBarViewController
+                self.view.window?.rootViewController = homeViewController
+            }
+         
+         
+        } else {
+            print("Card Created Error Response ---> \(error)")
+            // Show user popup of error message
+            KVNProgress.show(withStatus: "There was an error creating your card. Please try again.")
+        
+            }
+         // Hide indicator
+            KVNProgress.dismiss()
+         }
     }
     
 }

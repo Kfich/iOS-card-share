@@ -16,11 +16,15 @@ public class Transaction{
     var scope : String = "transaction"
     var transactionId : String = ""
     var date : String = ""
+
+
     var location : String = ""
     //var sender : User = User()
     //var recipient : User = User()
     var senderCard : ContactCard = ContactCard()
     var recipientCard : ContactCard = ContactCard()
+    
+    var recipientList = [[String : String]]()
     
     // Make a dict [string:any] due to timestamps
     var notes : [String : String]?
@@ -39,7 +43,12 @@ public class Transaction{
     
     // Init
     
-    init() {}
+    init() {
+    
+        // Set date
+        setTransactionDate()
+    
+    }
     
     
     init(snapshot: NSDictionary) {
@@ -179,6 +188,16 @@ public class Transaction{
         recipientCard = cardObject
     }
     
+    // Phone Numbers
+    func getRecipients()->[[String : String]]{
+        return recipientList
+    }
+    
+    func setRecipients(contactRecords : [String : String]){
+        recipientList.append(contactRecords)
+    }
+
+    
     
     
     // Custom Methods
@@ -220,6 +239,9 @@ public class Transaction{
         print(senderCard)
         print("\nRecipient Card :")
         print(recipientCard)
+        
+        print("\nRecipient List :")
+        print(recipientList)
 
     }
     

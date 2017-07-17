@@ -18,6 +18,8 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     
     // Properties 
     // ---------------------------------------
+    var currentUser = User()
+    var transaction = Transaction()
 
     var active_card_unify_uuid: String?
     

@@ -77,6 +77,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBOutlet var smsButton: UIBarButtonItem!
     @IBOutlet var emailButton: UIBarButtonItem!
     @IBOutlet var callButton: UIBarButtonItem!
+    @IBOutlet var calendarButton: UIBarButtonItem!
+    
     
     @IBOutlet var phoneImageView: UIImageView!
     @IBOutlet var emailImageView: UIImageView!
@@ -122,6 +124,12 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         // configure call 
         
+    }
+    
+    
+    @IBAction func calendarSelected(_ sender: Any) {
+        
+        // Configure calendar
     }
     
     
@@ -454,6 +462,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         smsButton.image = UIImage(named: "btn-chat-blue")
         callButton.image = UIImage(named: "btn-message-blue")
         emailButton.image = UIImage(named: "btn-call-blue")
+        calendarButton.image = UIImage(named: "btn-calendar-blue")
     }
     
     func addDropShadow(scale: Bool = true) {

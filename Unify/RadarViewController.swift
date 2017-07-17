@@ -28,6 +28,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     var currentUser = User()
     var selectedUser = User()
+    var transaction = Transaction()
+    
+    var selectedUsers = [User]()
     
     var didReceieveList = false
     var lat : Double = 0.0
@@ -344,6 +347,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.pulseView.addSubview(imageView)
         
         // Add action tap gesture to objects
+        // Add
         let imageAction = UITapGestureRecognizer(target: self, action: #selector(radarContactSelected(sender:)))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(imageAction)
@@ -351,6 +355,45 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Assign tag to image to identify what index in the array user lies 
         imageView.tag = tag
         
+    }
+    
+    func createTransaction(type: String) {
+        // Add Recipients from list 
+        
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Making the introduction...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(response)")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                
+                // Insert to manager card array
+                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Created Error Response ---> \(error)")
+                // Show user popup of error message
+                KVNProgress.show(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
     }
     
     func radarContactSelected(sender:UITapGestureRecognizer) {

@@ -15,7 +15,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Properties
     // ----------------------------------------
-    
+    var currentUser = User()
+    var transactions = [Transaction]()
     var segmentedControl = UISegmentedControl()
     
     @IBOutlet var navigationBar: UINavigationItem!
@@ -31,6 +32,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // Fetch the users transactions 
+        getTranstactions()
+        
         // Configure tableview
         tableView.dataSource = self
         tableView.delegate = self
@@ -40,6 +45,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
        // let header = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
        // header.backgroundColor = .red
         //tableView.tableHeaderView = header
+        
         
         // Init and configure segment controller
         segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: tableView.frame.width - 20, height: 30))
@@ -122,11 +128,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     //MARK: UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -149,8 +155,52 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
-    // View Configuration
+    // Custom Methods
     
+    func getTranstactions() {
+        
+        // 
+        // Hit endpoint for updates on users nearby
+        let parameters = ["data" : ["uuid": currentUser.userId]]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        
+        // Create User Objects
+        Connection(configuration: nil).getTransactionsCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                
+                let dictionary : NSArray = response as! NSArray
+                
+                for item in dictionary {
+                    // Update counter
+                    // Init user objects from array
+                    let trans = Transaction(snapshot: item as! NSDictionary)
+                    trans.printTransaction()
+                    
+                    // Append users to radarContacts array
+                    self.transactions.append(trans)
+                }
+                
+                // Show sucess
+                KVNProgress.showSuccess()
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+                KVNProgress.show(withStatus: "There was an issue getting activities. Please try again.")
+            }
+            
+        })
+    
+    }
+
+    // View Configuration
+
+
     func configureViewsForIntro(cell: ActivityCardTableCell){
         // Add radius config & border color
         // Add radius config & border color
@@ -235,6 +285,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             let nextScene =  segue.destination as! FollowUpViewController
             
             nextScene.active_card_unify_uuid = "\(sender!)" as String?
+            
             
         }
         

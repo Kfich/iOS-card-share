@@ -18,6 +18,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     // --------------------------------
     
     var currentUser = User()
+    var firstCard = ContactCard()
     
     
     // Bar Styling
@@ -143,8 +144,11 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         // Assign phone number to currentUser Object
         currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
         
-        // Save user to device
+        // Assign phone to card 
+        ContactManager.sharedManager.selectedCard.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumberInput.text!])
         
+        
+        // Save user to device if callback successful
         
         // Create user dictionary to store to DB
         let parameters = ["data": currentUser.toAnyObject()]
@@ -168,6 +172,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
                 
                 KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                
                 
                 DispatchQueue.main.async {
                     // Update UI
@@ -214,6 +219,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     }
     
     // Custom Methods
+    
+    
+    
     
     func validate(value: String) -> Bool {
         let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"

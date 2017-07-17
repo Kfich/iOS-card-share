@@ -26,6 +26,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     let formatter = CNContactFormatter()
 
     var selectedContact = CNContact()
+    var currentUserContact = CNContact()
     
     // Progress hud
     var progressHUD = KVNProgress()

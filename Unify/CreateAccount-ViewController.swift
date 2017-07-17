@@ -25,6 +25,7 @@ class CreateAccountViewController: UIViewController {
     
     // User object to assign form fields
     var newUser = User()
+    var card = ContactCard()
 
     
     // IBOutlets
@@ -164,6 +165,10 @@ class CreateAccountViewController: UIViewController {
         // Print to test
         newUser.printUser()
         
+        // Create first card here
+        createFirstCard()
+    
+        
         // Pass segue
         performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
         
@@ -171,97 +176,58 @@ class CreateAccountViewController: UIViewController {
         
         // Perfom segue
         
-        /*
+    }
+    
+    func createFirstCard() {
+        // Assign image for card
+        // Image data png
+        let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!)
+        print(imageData!)
         
-        self.createAccountBtn.isEnabled = false
+        // Assign asset name and type
+        let fname = "asset.png"
+        let mimetype = "image/png"
         
-
+        let idString = newUser.randomString(length: 20)
+        
+        // Create image dictionary
+        let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
+        // ***** Send image to server ****
         
         
-        print("Processing Profile...", self.hasProfilePic)
+        // Assign name, cardname, email and phone values to card
+        card.cardName = "Default"
+        card.cardProfile.setEmailRecords(emailRecords: ["email" : email.text!])
+        card.cardHolderName = newUser.fullName
+        // Assign card image id
+        card.cardProfile.imageIds.append(["card_image_id": idString])
         
-        if (self.hasProfilePic == false)
-        {
-            //call function to submit record
-            
-            processProfile(fileUrl: "")
-            
-        } else {
-            
-            //call function to add profile image
-            
-            let url = NSURL(string: "http://unifyalphaapi.herokuapp.com/storeImages")
-            
-            var request = URLRequest(url: url! as URL)
-            
-            request.httpMethod = "POST"
-            
-            let boundary = self.generateBoundaryString()
-            
-            request.setValue("multipart/form-data; boundary=\(boundary)",
-                forHTTPHeaderField: "Content-Type")
-            
-            
-            
-            //if (self.profileImageContainerView.image == nil)
-            //{ return }
-            
-            let image_data = UIImagePNGRepresentation(self.profileImageContainerView.image!)
-            
-            print(image_data)
-            
-            
-            let body = NSMutableData()
-            let fname = "asset.png"
-            let mimetype = "image/png"
-            
-            body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-            body.append("Content-Disposition:form-data; name=\"photo\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-            body.append("Incoming\r\n".data(using: String.Encoding.utf8)!)
-            body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-            body.append("Content-Disposition:form-data; name=\"files\"; filename=\"\(fname)\"\r\n".data(using: String.Encoding.utf8)!)
-            body.append("Content-Type: \(mimetype)\r\n\r\n".data(using:
-                String.Encoding.utf8)!)
-            body.append(image_data!)
-            body.append("\r\n".data(using: String.Encoding.utf8)!)
-            body.append("--\(boundary)--\r\n".data(using:
-                String.Encoding.utf8)!)
-            
-            request.httpBody = body as Data
-            
-            let session = URLSession.shared
-            
-            print("making URL session to connect to services")
-            
-            let task = session.dataTask(with: request as URLRequest) {
-                (
-                data, response, error) in
-                
-                print(response)
-                print(error)
-                
-                guard let _:Data = data, let _:URLResponse = response , error
-                    == nil else {
-                        print("error")
-                        return
-                }
-                
-                let dataString = String(data: data!, encoding:
-                    String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-                print(dataString)
-                
-                self.processProfile(fileUrl: dataString!)
-                
-            }
-            
-            print(task)
-            
-            task.resume()
-            
-            print(task)
-           
-        }
-        */
+        // Add card to current user object card suite
+        newUser.cards.append(card)
+        
+        // Set ownerid on card
+        card.ownerId = newUser.userId
+        
+        // Add image to contact card profile images
+        self.card.cardProfile.setImages(imageRecords: imageDict)
+        print(imageDict)
+        
+        // Set user name to card
+        
+        // Print card to see if generated
+        card.printCard()
+        //card.cardProfile.printProfle()
+        
+        // Add card to manager object card suite
+        ContactManager.sharedManager.currentUserCards.insert(card, at: 0)
+        print("\n\nUSER Cards\n\n\(ContactManager.sharedManager.currentUserCards)")
+        print("\n\nUSER CARD COUNT\n\n\(ContactManager.sharedManager.currentUserCards.count)")
+        
+        
+        //Set the selected card on manager
+        ContactManager.sharedManager.selectedCard = card
+        //
     }
     
     // Status bar
@@ -325,54 +291,6 @@ class CreateAccountViewController: UIViewController {
         // 4. if success, perform the segue
         
         
-        /*
-        global_givenName = "\(firstName.text!) \(lastName.text!)"
-        global_email = email.text!
-        
-        
-        let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/onboardProfile")!
-        let session = URLSession.shared
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-        
-        let paramString = "profileImage=\(fileUrl)&firstName=\(self.firstName.text!)&lastName=\(self.lastName.text!)&givenName=\(self.firstName.text!) \(self.lastName.text!)&email=\(self.email.text!)&token="+global_uuid!
-        
-        
-        request.httpBody = paramString.data(using: String.Encoding.utf8)
-        
-        let task = session.dataTask(with: request as URLRequest) {
-            (
-            data, response, error) in
-            
-            guard let data = data, let _:URLResponse = response, error == nil else {
-                print("error")
-                return
-            }
-            
-            let dataString =  String(data: data, encoding: String.Encoding.utf8)
-            print(dataString)
-            
-            DispatchQueue.main.async {
-                
-                // If check passes, show home tab bar
-                
-                /*
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-                TabBarViewController
-                self.view.window?.rootViewController = homeViewController*/
-                
-                
-                
-                
-            }
-            
-        }
-        
-        task.resume()
-        */
     }
     
     
@@ -446,6 +364,7 @@ class CreateAccountViewController: UIViewController {
             let next = segue.destination as! PhoneVerificationViewController
             // Pass user obj
             next.currentUser = self.newUser
+            next.firstCard = self.card
             print("Segue Performed for phone verif")
         }
     }

@@ -20,6 +20,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     // ----------------------------------------
 
     var currentUser = User()
+    var transaction = Transaction()
     var active_card_unify_uuid: String?
     
     // Bool checks to config share intraction 
@@ -134,6 +135,8 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         // Else check if they both have phones
         
         // If no match, chose a defualt method and send
+        
+        // Create Transaction and send 
     }
     
     
@@ -277,6 +280,43 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     
     
     // Custom Methods
+    
+    func createTransaction(type: String) {
+        // 
+        // Show progress hud
+        KVNProgress.show(withStatus: "Making the introduction...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(response)")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                
+                // Insert to manager card array
+                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Created Error Response ---> \(error)")
+                // Show user popup of error message
+                KVNProgress.show(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+
     
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
