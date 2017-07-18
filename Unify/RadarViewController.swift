@@ -19,9 +19,7 @@ import SwiftAddressBook
 import SwiftyJSON
 import Alamofire
 
-
 import AFNetworking
-
 
 class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocationManagerDelegate {
     
@@ -725,7 +723,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 DispatchQueue.main.async {
                     self.accessGrantedForContacts()
                     Countly.sharedInstance().recordEvent("granted contacts access")
-                    
                     //self.getContacts()
                     return
                 }
@@ -1396,16 +1393,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         if segue.identifier == "showRadarContactProfile" {
             
-            // Set destination
+            // Set destination 
             let contactVC = segue.destination as! RadarContactSelectionViewController
             // Pass currentUser object
             contactVC.selectedUser = self.selectedUser
         }
     }
     
-    
 }
-
 
 // Extensions
 // ------------------------------------------------------------
@@ -1453,9 +1448,6 @@ extension CLPlacemark {
     
 }
 
-
-
-
 extension NSMutableData {
     
     func appendString(string: String) {
@@ -1464,7 +1456,6 @@ extension NSMutableData {
     }
     
 }
-
 
 extension Int {
     init(random range: Range<Int>) {
