@@ -533,7 +533,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Add radius config & border color
         cell.cardWrapperView.layer.cornerRadius = 12.0
-        //cell.cardWrapperView.clipsToBounds = true
+        cell.cardWrapperView.clipsToBounds = true
         cell.cardWrapperView.layer.borderWidth = 1.5
         cell.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
         // Make card wrapper full cell size
@@ -552,8 +552,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
         cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
         cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
-        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton7.image = UIImage(named: "socail-blank")
+        cell.mediaButton6.image = UIImage(named: "social-blank")
+        cell.mediaButton7.image = UIImage(named: "social-blank")
+        
         
         // Config tool bar
         /*cell.mediaButtonToolBar.backgroundColor = UIColor.white

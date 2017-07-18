@@ -31,9 +31,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Page Config
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         // Fetch the users transactions 
         getTranstactions()
@@ -171,6 +170,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func getTranstactions() {
         
+        // Clear array list for fresh start 
+        self.transactions.removeAll()
+        self.transactions = [Transaction]()
+        
         // 
         // Hit endpoint for updates on users nearby
         let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
@@ -268,9 +271,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientCard.cardHolderName!)"
         
         print("recipientCard", trans.recipientCard )
+<<<<<<< HEAD
         
         print("name", trans.recipientCard.cardHolderName)
         
+=======
+        
+        print("name", trans.recipientCard.cardHolderName)
+        
+>>>>>>> a716c8c603622fe54c2c1a9ee436bdafeb5a327b
         print("img", trans.recipientCard.imageURL)
         
         

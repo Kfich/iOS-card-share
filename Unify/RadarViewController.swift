@@ -137,8 +137,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.sendCardButton.tag = 5102
         
         //add halo to pulseview as sublayer only once when view loads to prevent dups
+<<<<<<< HEAD
+        halo.position.y = pulseView.frame.height / 2.85
+        halo.position.x = pulseView.frame.width / 1.8
+=======
         halo.position.y = pulseView.frame.height / 2.75
         halo.position.x = pulseView.frame.width / 2
+>>>>>>> a716c8c603622fe54c2c1a9ee436bdafeb5a327b
         halo.haloLayerNumber = 3;
         
         // Set radius
@@ -147,6 +152,23 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         halo.backgroundColor = UIColor.white.cgColor
         
         pulseView.layer.addSublayer(halo)
+<<<<<<< HEAD
+        
+        
+        // Configure background image graphics
+        
+       /* UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
+        UIGraphicsEndImageContext()
+        
+        self.view.backgroundColor = UIColor(patternImage: image)*/
+        
+        
+=======
+>>>>>>> a716c8c603622fe54c2c1a9ee436bdafeb5a327b
         
     }
     
@@ -658,11 +680,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Set to true
             selectedUserList[(sender.view?.tag)!].isSelected = true
             // Toggle the image
-            let image = UIImage(named: "contact")
+            let image = UIImage(named: "green")
             let imageView = UIImageView(image: image!)
-            
             // Add new image to sender
             sender.view?.addSubview(imageView)
+            
+            // Set tint to show selected
+            //sender.view?.tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
             
             // Add to selected user list
             selectedUsers.append(radarUsers[(sender.view?.tag)!])
@@ -673,11 +697,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Set to false
             selectedUserList[(sender.view?.tag)!].isSelected = false
             // Toggle the image
-            let image = UIImage(named: "radar-avatar")
+            /*let image = UIImage(named: "radar-avatar")
             let imageView = UIImageView(image: image!)
-            
             // Add new image to sender
-            sender.view?.addSubview(imageView)
+            //sender.view?.addSubview(imageView)*/
+            
+            // Set tint to show deselection
+            sender.view?.tintColor = UIColor.clear
+            
             
         }
         

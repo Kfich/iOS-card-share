@@ -531,8 +531,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         mediaButton3.image = UIImage(named: "icn-social-harvard.png")
         mediaButton4.image = UIImage(named: "icn-social-instagram.png")
         mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
-        mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        mediaButton6.image = UIImage(named: "social-blank")
+        mediaButton7.image = UIImage(named: "social-blank")
     }
     
     
