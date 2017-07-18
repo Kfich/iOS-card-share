@@ -229,7 +229,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mcN-Wo-fGu">
-                                                        <rect key="frame" x="6" y="110" width="363" height="165"/>
+                                                        <rect key="frame" x="10" y="110" width="355" height="165"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="kB5-He-q13">
                                                                 <rect key="frame" x="0.0" y="0.0" width="137" height="165"/>
@@ -245,7 +245,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vd8-rS-CV4" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
-                                                                <rect key="frame" x="169" y="96" width="188" height="35"/>
+                                                                <rect key="frame" x="169" y="96" width="180" height="35"/>
                                                                 <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="20"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardType="emailAddress"/>
@@ -266,7 +266,7 @@
                                                                 </userDefinedRuntimeAttributes>
                                                             </textField>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zlx-fG-ZZk" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
-                                                                <rect key="frame" x="169" y="58" width="188" height="36"/>
+                                                                <rect key="frame" x="169" y="58" width="180" height="36"/>
                                                                 <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="20"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
@@ -287,7 +287,7 @@
                                                                 </userDefinedRuntimeAttributes>
                                                             </textField>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fma-aE-RY2" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
-                                                                <rect key="frame" x="169" y="20" width="188" height="36"/>
+                                                                <rect key="frame" x="169" y="20" width="180" height="36"/>
                                                                 <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="20"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
@@ -309,9 +309,9 @@
                                                             </textField>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGn-R9-Day">
                                                                 <rect key="frame" x="0.0" y="0.0" width="137" height="165"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                <state key="normal" title="Add Photo">
-                                                                    <color key="titleColor" red="0.0" green="0.3803921569" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Display" pointSize="17"/>
+                                                                <state key="normal" title="add picture">
+                                                                    <color key="titleColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 </state>
                                                                 <connections>
                                                                     <action selector="AddProfilePicture_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="s6W-R6-4N0"/>
@@ -347,7 +347,7 @@
                                                             <constraint firstItem="FGn-R9-Day" firstAttribute="trailing" secondItem="kB5-He-q13" secondAttribute="trailing" id="gVH-Vm-jsm"/>
                                                             <constraint firstItem="dEI-Xu-5GA" firstAttribute="leading" secondItem="kc0-C8-tVt" secondAttribute="leading" id="iuD-HF-eFw"/>
                                                             <constraint firstAttribute="bottom" secondItem="FGn-R9-Day" secondAttribute="bottom" id="jZH-uN-4Pn"/>
-                                                            <constraint firstItem="FGn-R9-Day" firstAttribute="top" secondItem="mcN-Wo-fGu" secondAttribute="top" id="ljz-87-VYK"/>
+                                                            <constraint firstItem="FGn-R9-Day" firstAttribute="top" secondItem="mcN-Wo-fGu" secondAttribute="top" constant="-10" id="ljz-87-VYK"/>
                                                             <constraint firstItem="zlx-fG-ZZk" firstAttribute="trailing" secondItem="vd8-rS-CV4" secondAttribute="trailing" id="n1o-CA-BNv"/>
                                                             <constraint firstItem="FGn-R9-Day" firstAttribute="leading" secondItem="mcN-Wo-fGu" secondAttribute="leading" id="tIJ-tl-MKa"/>
                                                             <constraint firstItem="zlx-fG-ZZk" firstAttribute="leading" secondItem="vd8-rS-CV4" secondAttribute="leading" id="uGf-uf-1mq"/>
@@ -364,7 +364,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shadow" translatesAutoresizingMaskIntoConstraints="NO" id="1KC-hW-Mtz">
-                                                        <rect key="frame" x="6" y="274" width="363" height="39"/>
+                                                        <rect key="frame" x="10" y="274" width="355" height="39"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="gCr-Hw-jCD"/>
                                                         </constraints>
@@ -374,11 +374,12 @@
                                                     <constraint firstItem="1KC-hW-Mtz" firstAttribute="leading" secondItem="FGn-R9-Day" secondAttribute="leading" id="2hH-PU-WuC"/>
                                                     <constraint firstItem="1KC-hW-Mtz" firstAttribute="top" secondItem="mcN-Wo-fGu" secondAttribute="bottom" constant="-1" id="C1N-ZG-9JK"/>
                                                     <constraint firstAttribute="height" constant="304" id="MH3-BA-s9e"/>
+                                                    <constraint firstItem="mcN-Wo-fGu" firstAttribute="width" secondItem="D3X-FP-o7d" secondAttribute="width" constant="-20" id="NDq-bY-r9n"/>
                                                     <constraint firstItem="WpY-ws-9EB" firstAttribute="centerX" secondItem="D3X-FP-o7d" secondAttribute="centerX" id="SZD-SV-Yfh"/>
                                                     <constraint firstItem="mcN-Wo-fGu" firstAttribute="top" secondItem="D3X-FP-o7d" secondAttribute="top" constant="110" id="Wmw-NM-nlY"/>
                                                     <constraint firstItem="WpY-ws-9EB" firstAttribute="top" secondItem="D3X-FP-o7d" secondAttribute="topMargin" id="oCu-He-CKv"/>
                                                     <constraint firstItem="1KC-hW-Mtz" firstAttribute="trailing" secondItem="mcN-Wo-fGu" secondAttribute="trailing" id="rO7-a5-cSE"/>
-                                                    <constraint firstItem="mcN-Wo-fGu" firstAttribute="leading" secondItem="D3X-FP-o7d" secondAttribute="leading" constant="6" id="udy-l1-pWu"/>
+                                                    <constraint firstItem="mcN-Wo-fGu" firstAttribute="leading" secondItem="D3X-FP-o7d" secondAttribute="leading" constant="10" id="udy-l1-pWu"/>
                                                     <constraint firstItem="WpY-ws-9EB" firstAttribute="centerX" secondItem="mcN-Wo-fGu" secondAttribute="centerX" id="zgL-rn-6xm"/>
                                                 </constraints>
                                             </view>
