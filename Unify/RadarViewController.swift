@@ -882,7 +882,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
                     if error == nil {
                         
-                        print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                        //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                         
                         let dictionary : NSArray = response as! NSArray
 
