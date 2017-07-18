@@ -253,7 +253,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
-        // Set transaction values for cell 
         // Set transaction values for cell
         let trans = transactions[index]
         
@@ -272,6 +271,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         print("name", trans.recipientCard.cardHolderName)
         
         print("img", trans.recipientCard.imageURL)
+        
         
         // Set location
         cell.connectionLocationLabel.text = trans.location
