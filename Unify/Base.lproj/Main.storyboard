@@ -6004,13 +6004,13 @@
                                                                         <action selector="showSMSRecipient:" destination="ToP-Xd-t3l" eventType="touchUpInside" id="EJK-VN-SM8"/>
                                                                     </connections>
                                                                 </button>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Qf-Ei-zmJ">
-                                                                    <rect key="frame" x="8" y="4" width="77" height="26"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Card Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Qf-Ei-zmJ">
+                                                                    <rect key="frame" x="8" y="4" width="111" height="26"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="26" id="Bsh-jA-vdI"/>
                                                                         <constraint firstAttribute="width" constant="77" id="MZu-Ku-xZA"/>
                                                                     </constraints>
-                                                                    <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Display" pointSize="14"/>
+                                                                    <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Display" pointSize="15"/>
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -6252,7 +6252,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN8-aa-qpm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4329" y="2664"/>
+            <point key="canvasLocation" x="4328.8000000000002" y="2663.568215892054"/>
         </scene>
         <!--Card Selection View Controller-->
         <scene sceneID="nqk-lr-CJE">
