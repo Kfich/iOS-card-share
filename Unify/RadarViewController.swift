@@ -327,6 +327,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             self.locationManager.startUpdatingLocation()
             
+             Countly.sharedInstance().recordEvent("turned radar on")
             // Configure Label text and set image
             //self.radarOnLabel.isHidden = true
             //  self.radarOffLabel.text = "radar off"
@@ -346,6 +347,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // End radar
             self.endRadar()
 
+             Countly.sharedInstance().recordEvent("turned radar off")
+            
         }
         
         
@@ -400,6 +403,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Call create transaction function
         createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
+     
+        Countly.sharedInstance().recordEvent("shared contacts from radar")
         
     }
     
