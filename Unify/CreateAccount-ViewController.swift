@@ -289,10 +289,6 @@ class CreateAccountViewController: UIViewController {
         card.printCard()
         //card.cardProfile.printProfle()
         
-        // Add card to manager object card suite
-        ContactManager.sharedManager.currentUserCards.insert(card, at: 0)
-        print("\n\nUSER Cards\n\n\(ContactManager.sharedManager.currentUserCards)")
-        print("\n\nUSER CARD COUNT\n\n\(ContactManager.sharedManager.currentUserCards.count)")
         
         
         //Set the selected card on manager
