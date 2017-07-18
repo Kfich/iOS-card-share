@@ -197,6 +197,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                         let trans = Transaction(snapshot: item as! NSDictionary)
                         trans.printTransaction()
                         
+                        
                         // Append users to radarContacts array
                         self.transactions.append(trans)
                     }
@@ -266,7 +267,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set description text
         cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientList)"
         
-        // Set location 
+        print("recipientCard", trans.recipientCard )
+        
+        print("name", trans.recipientCard.cardHolderName)
+        
+        print("img", trans.recipientCard.imageURL)
+        
+        // Set location
         cell.connectionLocationLabel.text = trans.location
         
         
