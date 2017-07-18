@@ -1552,7 +1552,7 @@
                                                         <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="0kr-uN-ZUS">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="0kr-uN-ZUS">
                                                         <rect key="frame" x="150" y="72" width="20" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="Yp9-kQ-sqQ"/>
@@ -1568,7 +1568,7 @@
                                                         <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ANs-nD-l1V">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ANs-nD-l1V">
                                                         <rect key="frame" x="150" y="100" width="20" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="LTl-cr-1ai"/>
@@ -6042,7 +6042,7 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YRo-Nn-t0e">
                                                             <rect key="frame" x="0.0" y="48" width="365" height="184"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h4Z-9X-AgJ">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h4Z-9X-AgJ">
                                                                     <rect key="frame" x="0.0" y="2" width="137" height="137"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="137" id="Gws-pD-Okb"/>
@@ -8327,6 +8327,6 @@
         <image name="usericon" width="95" height="95"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yAj-N5-fTc"/>
+        <segue reference="DUc-wk-wjY"/>
     </inferredMetricsTieBreakers>
 </document>
