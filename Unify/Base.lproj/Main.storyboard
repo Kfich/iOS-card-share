@@ -5991,8 +5991,8 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNw-ru-rvq">
                                                             <rect key="frame" x="0.0" y="17" width="365" height="48"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fv1-sg-LfM">
-                                                                    <rect key="frame" x="271" y="0.0" width="43" height="31"/>
+                                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fv1-sg-LfM">
+                                                                    <rect key="frame" x="271" y="0.0" width="40" height="40"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="43" id="jhN-4a-Kdf"/>
@@ -6004,8 +6004,8 @@
                                                                         <action selector="showSMSRecipient:" destination="ToP-Xd-t3l" eventType="touchUpInside" id="EJK-VN-SM8"/>
                                                                     </connections>
                                                                 </button>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Qf-Ei-zmJ">
-                                                                    <rect key="frame" x="8" y="2" width="77" height="26"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Qf-Ei-zmJ">
+                                                                    <rect key="frame" x="8" y="4" width="77" height="26"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="26" id="Bsh-jA-vdI"/>
                                                                         <constraint firstAttribute="width" constant="77" id="MZu-Ku-xZA"/>
@@ -6014,8 +6014,8 @@
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gKe-C5-Zp3">
-                                                                    <rect key="frame" x="314" y="0.0" width="43" height="31"/>
+                                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gKe-C5-Zp3">
+                                                                    <rect key="frame" x="314" y="-0.5" width="30" height="30"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="31" id="ICh-Ay-nCX"/>
@@ -6036,7 +6036,7 @@
                                                                 <constraint firstItem="gKe-C5-Zp3" firstAttribute="trailing" secondItem="rNw-ru-rvq" secondAttribute="trailingMargin" id="SwW-kK-6f3"/>
                                                                 <constraint firstItem="fv1-sg-LfM" firstAttribute="baseline" secondItem="gKe-C5-Zp3" secondAttribute="baseline" id="h7x-6E-Cc1"/>
                                                                 <constraint firstItem="6Qf-Ei-zmJ" firstAttribute="leading" secondItem="rNw-ru-rvq" secondAttribute="leadingMargin" id="nIr-bW-6lS"/>
-                                                                <constraint firstItem="6Qf-Ei-zmJ" firstAttribute="top" secondItem="rNw-ru-rvq" secondAttribute="top" constant="2" id="zQY-Vk-UOf"/>
+                                                                <constraint firstItem="6Qf-Ei-zmJ" firstAttribute="top" secondItem="rNw-ru-rvq" secondAttribute="top" constant="4" id="zQY-Vk-UOf"/>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YRo-Nn-t0e">
@@ -8298,9 +8298,9 @@
         <image name="ic_star_big_stroke" width="24" height="24"/>
         <image name="ic_star_small_filled" width="16" height="16"/>
         <image name="ic_star_small_grey" width="16" height="16"/>
-        <image name="icn-chat-blue" width="33" height="34"/>
+        <image name="icn-chat-blue" width="40" height="40"/>
         <image name="icn-location" width="7" height="10"/>
-        <image name="icn-mail-blue" width="33" height="33"/>
+        <image name="icn-mail-blue" width="40" height="40"/>
         <image name="icn-mail-grey" width="15" height="11"/>
         <image name="icn-phone-grey" width="14" height="14"/>
         <image name="icn-plus" width="17" height="17"/>
