@@ -259,13 +259,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Assign user objects
         //let user1 = selectedUsers[0]
-        let name = "KFich"
+        let name = trans.recipientCard.cardHolderName
         
         // See if image ref available
         let image = UIImage(named: "contact")
         cell.connectionOwnerProfileImage.image = image
         // Set description text
-        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientList)"
+        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientCard.cardHolderName!)"
         
         print("recipientCard", trans.recipientCard )
         
