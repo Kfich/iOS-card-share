@@ -136,6 +136,17 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.addNewCardButton.tag = 5101
         self.sendCardButton.tag = 5102
         
+        //add halo to pulseview as sublayer only once when view loads to prevent dups
+        halo.position.y = pulseView.frame.height / 2.75
+        halo.position.x = pulseView.frame.width / 2
+        halo.haloLayerNumber = 3;
+        
+        // Set radius
+        halo.radius = 100;
+        
+        halo.backgroundColor = UIColor.white.cgColor
+        
+        pulseView.layer.addSublayer(halo)
         
     }
     
@@ -323,15 +334,19 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         if radarSwitch.isOn{
             
+            print("turn radar on")
+            
             radarStatus = true
             pulseMe(status: "show")
             
+            /*
             halo2.position = view.center
             pulseView.layer.addSublayer(halo)
             halo2.start()
             
-            halo2.isHidden = false
             
+            halo2.isHidden = false
+            */
             self.locationManager.startUpdatingLocation()
             
             Countly.sharedInstance().recordEvent("turned radar on")
@@ -344,15 +359,20 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         } else {
             
             radarStatus = false
-            //pulseMe(status: "hide")
-            halo.isHidden = true
+            pulseMe(status: "hide")
+            //halo.isHidden = true
             self.locationManager.stopUpdatingLocation()
+            self.locationManager.stopMonitoringSignificantLocationChanges()
             
             // Stop animations and remove from view
-            self.stopPulseAnimation()
+            //self.stopPulseAnimation()
             
             // End radar
             self.endRadar()
+            
+            //remove people from radar
+            self.removePlottedPeople(self.pulseView)
+            self.radarUsers.removeAll()
             
             Countly.sharedInstance().recordEvent("turned radar off")
             
@@ -442,23 +462,25 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func pulseMe(status: String?){
         
-        // Set coordinates for the pulse view
-        halo.position.y = pulseView.frame.height / 2.75
-        halo.position.x = pulseView.frame.width / 2
-        halo.haloLayerNumber = 3;
-        
-        // Set radius
-        halo.radius = 100;
-        
-        halo.backgroundColor = UIColor.white.cgColor
+        print("status", status)
         
         
-        pulseView.layer.addSublayer(halo)
+        if status == "show"
+        {
+        
+          
         halo.start()
         
         //print("HALO COORDS")
         //print("x --> \(halo.position.x)   y --> \(halo.position.y)")
         
+        } else {
+            
+            //PulsingHaloLayer.removeFromSuperlayer(self.pulseView.layer)
+            
+             //self.removeHalo(self.pulseView)
+            
+        }
         
         
     }
@@ -807,6 +829,20 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     
+    func removeHalo(_ containerView: UIView) {
+       
+        for layer in containerView.layer.sublayers! {
+            
+            print(layer)
+            print("------")
+        
+            
+            
+        }
+        
+    }
+    
+    
     
     
     func updateLocation(){
@@ -814,30 +850,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Update location tick
         updateLocation_tick = updateLocation_tick + 1
         
+        /*
         // Flip switch if count == 4
-        if updateLocation_tick == 4 {
+        if updateLocation_tick == 4 && radarStatus == true {
             
             // Set receieved to false
             self.didReceieveList = false
             
-            
-            
-            
-            /*
-             for view in self.pulseView.subviews{
-             // Remove every view
-             if view.tag > 5000 {
-             // This is the pulseView
-             print("This an essential view ")
-             }else{
-             // Remove every other view
-             self.pulseView.willRemoveSubview(view)
-             }
-             
-             }
-             */
-            
-            // Check if radar button on the remount halo w/ animation
+                      // Check if radar button on the remount halo w/ animation
             if self.radarSwitch.isOn {
                 
                 // Flip all radar actions back to true
@@ -850,13 +870,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 print("The radar is off so its cool")
             }
         }
+        */
         
         print(updateLocation_tick)
         
         // Check is list should be refreshed
         
         
-        if updateLocation_tick >= 5
+        if updateLocation_tick >= 5  && radarStatus == true
         {
             updateLocation_tick = 0
             
@@ -864,11 +885,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.endRadar()
             
             
-            if didReceieveList == false {
-                // Set the value to true so the requests stop
-                self.didReceieveList = true
-                
-                
+            
                 
                 // Hit endpoint for updates on users nearby
                 let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
@@ -895,7 +912,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             self.radarUsers.removeAll()
                         }
                         
-                        
+                       
+
                         for item in dictionary {
                             
                             //print(item)
@@ -949,7 +967,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             print("Updating location")
             
-        }
+        
     }
     
     
