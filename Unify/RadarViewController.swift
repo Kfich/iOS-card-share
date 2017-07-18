@@ -476,6 +476,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         } else {
             
+        
+            
             //PulsingHaloLayer.removeFromSuperlayer(self.pulseView.layer)
             
              //self.removeHalo(self.pulseView)
