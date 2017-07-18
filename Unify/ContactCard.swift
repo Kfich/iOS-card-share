@@ -63,6 +63,16 @@ public class ContactCard: NSObject, NSCoding{
         //printCard()
     }
     
+    init(withSnapshotLite: NSDictionary)
+    {
+        cardId = withSnapshotLite["uuid"] as? String
+        cardId = withSnapshotLite["ownerId"] as? String
+        cardName = withSnapshotLite["card_name"] as? String
+        cardHolderName = withSnapshotLite["card_holder_name"] as? String
+        imageURL = withSnapshotLite["image_url"] as? Data
+
+    }
+    
     init(withSnapshotFromDefaults: NSDictionary) {
         cardId = withSnapshotFromDefaults["uuid"] as? String
         cardId = withSnapshotFromDefaults["ownerId"] as? String

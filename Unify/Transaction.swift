@@ -72,7 +72,7 @@ public class Transaction{
         
         contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
         
-        recipientCard = ContactCard.init(withSnapshotFromDefaults: contactDictionary)
+        recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
         
         
         // Testing to see if populated
