@@ -150,8 +150,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         super.viewDidDisappear(true)
         
         // End radar
-        self.endRadar()
-        pulseMe(status: "hide")
+        //self.endRadar()
+        //pulseMe(status: "hide")
     }
     
     
@@ -827,6 +827,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         {
             updateLocation_tick = 0
             
+            // End radar first to clear instances of yourself
+            self.endRadar()
+            
             
             if didReceieveList == false {
                 // Set the value to true so the requests stop
@@ -851,6 +854,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         
                         // Set counter to 0
                         self.counter = 0
+                        
+                        // Clear radar list
+                        self.radarUsers.removeAll()
                         
                         for item in dictionary {
                             
