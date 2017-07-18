@@ -8,6 +8,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -222,7 +223,7 @@
                                                 <rect key="frame" x="0.0" y="83" width="375" height="304"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WpY-ws-9EB">
-                                                        <rect key="frame" x="146.5" y="23" width="83.5" height="20"/>
+                                                        <rect key="frame" x="146" y="23" width="83.5" height="20"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Bold" family="San Francisco Display" pointSize="17"/>
                                                         <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -5309,13 +5310,13 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YMQ-1g-d3t">
                                         <rect key="frame" x="0.0" y="45" width="375" height="70"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Radar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ffz-J4-2ff">
-                                                <rect key="frame" x="153" y="0.0" width="68" height="28"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Radar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ffz-J4-2ff">
+                                                <rect key="frame" x="143" y="0.0" width="78" height="28"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="68" id="HZg-RC-UJj"/>
                                                     <constraint firstAttribute="height" constant="28" id="cWo-z9-Jdv"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Text" pointSize="23"/>
+                                                <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Bold" family="San Francisco Text" pointSize="23"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -6106,43 +6107,45 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hld-9u-yme">
-                                                                    <rect key="frame" x="160" y="7" width="205" height="24"/>
+                                                                    <rect key="frame" x="160" y="7" width="205" height="25"/>
                                                                     <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="20"/>
                                                                     <color key="textColor" red="0.015686274509803921" green="0.29019607843137252" blue="0.51764705882352935" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="usericon" translatesAutoresizingMaskIntoConstraints="NO" id="6cJ-Jw-UYI">
-                                                                    <rect key="frame" x="136" y="39" width="20" height="20"/>
+                                                                    <rect key="frame" x="138" y="40" width="18" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="cxG-Zb-mhX"/>
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g72-fe-Y3A">
-                                                                    <rect key="frame" x="160" y="67" width="205" height="20"/>
+                                                                    <rect key="frame" x="160" y="68" width="205" height="19.5"/>
                                                                     <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Thin" family="San Francisco Text" pointSize="15"/>
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-nB-kEB">
-                                                                    <rect key="frame" x="136" y="67" width="20" height="20"/>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-nB-kEB">
+                                                                    <rect key="frame" x="138" y="67" width="20" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="YSp-lE-3UV"/>
+                                                                        <constraint firstAttribute="width" secondItem="x2p-nB-kEB" secondAttribute="height" multiplier="1:1" id="rQz-Tn-OEe"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aBe-W3-w34">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.65000000000000002" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aBe-W3-w34">
                                                                     <rect key="frame" x="169" y="99" width="196" height="20"/>
                                                                     <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Thin" family="San Francisco Text" pointSize="15"/>
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ZG9-QO-3N1">
-                                                                    <rect key="frame" x="145" y="99" width="20" height="20"/>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ZG9-QO-3N1">
+                                                                    <rect key="frame" x="145" y="99" width="22.5" height="16.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="0Bl-x8-4Ee"/>
+                                                                        <constraint firstAttribute="width" secondItem="ZG9-QO-3N1" secondAttribute="height" multiplier="15:11" id="n1p-qf-9WU"/>
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QHt-lc-qPv">
-                                                                    <rect key="frame" x="160" y="39" width="205" height="20"/>
+                                                                    <rect key="frame" x="160" y="40" width="205" height="20"/>
                                                                     <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Thin" family="San Francisco Text" pointSize="15"/>
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
@@ -6166,18 +6169,17 @@
                                                                 <constraint firstItem="x2p-nB-kEB" firstAttribute="top" secondItem="g72-fe-Y3A" secondAttribute="top" id="ZLc-4I-InG"/>
                                                                 <constraint firstItem="ZG9-QO-3N1" firstAttribute="bottom" secondItem="aBe-W3-w34" secondAttribute="bottom" id="aO9-ve-3Sm"/>
                                                                 <constraint firstItem="Hld-9u-yme" firstAttribute="leading" secondItem="h4Z-9X-AgJ" secondAttribute="trailing" constant="32" id="clP-P3-Bvz"/>
-                                                                <constraint firstItem="6cJ-Jw-UYI" firstAttribute="trailing" secondItem="x2p-nB-kEB" secondAttribute="trailing" id="eXO-3C-PfB"/>
                                                                 <constraint firstItem="x2p-nB-kEB" firstAttribute="leading" secondItem="ZG9-QO-3N1" secondAttribute="leading" id="edX-Rg-c23"/>
                                                                 <constraint firstItem="aBe-W3-w34" firstAttribute="top" secondItem="g72-fe-Y3A" secondAttribute="bottom" constant="8" symbolic="YES" id="faf-6W-HvW"/>
                                                                 <constraint firstItem="Hld-9u-yme" firstAttribute="leading" secondItem="QHt-lc-qPv" secondAttribute="leading" id="haw-6b-5DS"/>
                                                                 <constraint firstItem="QHt-lc-qPv" firstAttribute="leading" secondItem="6cJ-Jw-UYI" secondAttribute="trailing" constant="4" id="jb4-ZC-14H"/>
-                                                                <constraint firstItem="6cJ-Jw-UYI" firstAttribute="leading" secondItem="x2p-nB-kEB" secondAttribute="leading" id="jq5-8L-t1e"/>
+                                                                <constraint firstItem="6cJ-Jw-UYI" firstAttribute="leading" secondItem="x2p-nB-kEB" secondAttribute="leading" constant="-40" id="jq5-8L-t1e"/>
                                                                 <constraint firstItem="g72-fe-Y3A" firstAttribute="trailing" secondItem="aBe-W3-w34" secondAttribute="trailing" id="kEM-MX-1bN"/>
                                                                 <constraint firstItem="h4Z-9X-AgJ" firstAttribute="top" secondItem="Hld-9u-yme" secondAttribute="top" constant="-5" id="nZI-Tj-Srf"/>
                                                                 <constraint firstItem="aBe-W3-w34" firstAttribute="trailing" secondItem="iXf-cJ-Shc" secondAttribute="trailing" id="oEx-iD-3kL"/>
                                                                 <constraint firstItem="QHt-lc-qPv" firstAttribute="trailing" secondItem="g72-fe-Y3A" secondAttribute="trailing" id="pds-a8-gij"/>
                                                                 <constraint firstItem="Hld-9u-yme" firstAttribute="trailing" secondItem="QHt-lc-qPv" secondAttribute="trailing" id="pmm-0w-DM6"/>
-                                                                <constraint firstItem="6cJ-Jw-UYI" firstAttribute="leading" secondItem="h4Z-9X-AgJ" secondAttribute="trailing" constant="8" symbolic="YES" id="ubc-PZ-hio"/>
+                                                                <constraint firstItem="6cJ-Jw-UYI" firstAttribute="leading" secondItem="h4Z-9X-AgJ" secondAttribute="trailing" constant="10" id="ubc-PZ-hio"/>
                                                                 <constraint firstItem="ZG9-QO-3N1" firstAttribute="top" secondItem="aBe-W3-w34" secondAttribute="top" id="vkt-RU-NLs"/>
                                                                 <constraint firstItem="h4Z-9X-AgJ" firstAttribute="leading" secondItem="YRo-Nn-t0e" secondAttribute="leading" id="vqi-Cb-RMM"/>
                                                             </constraints>
@@ -8310,8 +8312,8 @@
         <image name="icn-chat-blue" width="40" height="40"/>
         <image name="icn-location" width="7" height="10"/>
         <image name="icn-mail-blue" width="40" height="40"/>
-        <image name="icn-mail-grey" width="15" height="11"/>
-        <image name="icn-phone-grey" width="14" height="14"/>
+        <image name="icn-mail-grey" width="22" height="16"/>
+        <image name="icn-phone-grey" width="21" height="21"/>
         <image name="icn-plus" width="17" height="17"/>
         <image name="icn-social-facebook" width="36" height="35"/>
         <image name="icn-social-harvard" width="38" height="38"/>
