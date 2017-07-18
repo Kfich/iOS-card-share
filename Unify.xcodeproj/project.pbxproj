@@ -66,6 +66,7 @@
 		741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */; };
 		FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */; };
 		FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */; };
+		FB0F48621F1E9A0200EF9871 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */; };
 		FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */; };
 		FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34081EE1B5F9003B5A73 /* ISHPullUpHandleView.m */; };
 		FB1A340D1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A340A1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m */; };
@@ -245,6 +246,7 @@
 		FB0813081F02B00800CF14BE /* SanFranciscoTextThin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoTextThin.ttf; sourceTree = "<group>"; };
 		FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListViewController.swift; sourceTree = "<group>"; };
 		FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListCell.swift; sourceTree = "<group>"; };
+		FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		FB1A34051EE1B5F9003B5A73 /* ISHPullUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpViewController.h; sourceTree = "<group>"; };
 		FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISHPullUpViewController.m; sourceTree = "<group>"; };
 		FB1A34071EE1B5F9003B5A73 /* ISHPullUpHandleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpHandleView.h; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 		1CAE5B771E913A06006EFF40 = {
 			isa = PBXGroup;
 			children = (
+				FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */,
 				1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */,
 				FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */,
 				FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */,
@@ -768,6 +771,7 @@
 				1C151D3B1F1DBE73004B23CE /* LICENSE in Resources */,
 				1C151D291F1DBE73004B23CE /* .gitattributes in Resources */,
 				1CB31CA91E942BC500A0C4A5 /* SkeletonCell.xib in Resources */,
+				FB0F48621F1E9A0200EF9871 /* Default-568h@2x.png in Resources */,
 				1CAE5B891E913A06006EFF40 /* Main.storyboard in Resources */,
 				FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */,
 				FB2F42861F1526CB00E3D6B5 /* KVNProgressView.xib in Resources */,
