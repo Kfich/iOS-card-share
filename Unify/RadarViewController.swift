@@ -60,6 +60,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     var radarContacts = [User]()
     
     
+    // Halo 
+    let halo2 = PulsingHaloLayer()
+    
     let keysToFetch = [
         CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
         CNContactEmailAddressesKey,
@@ -309,7 +312,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     @IBAction func radarButtonSelected(_ sender: AnyObject) {
         
         print("activate radar")
-        let halo2 = PulsingHaloLayer()
+        
         
         if radarSwitch.isOn{
             
@@ -365,7 +368,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         print("\n\nCurrent User ID >>> \(currentUser.userId)")
         
         // Dyamically set selected card here
-        
         
         // Iterate through selected card list
         for contact in selectedUserList {
@@ -597,6 +599,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Hide HUD
                 KVNProgress.dismiss()
                 
+                
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
@@ -605,6 +608,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             }
             // Hide indicator
             KVNProgress.dismiss()
+            
+             // Clear List of recipients
+            self.selectedUserIds.removeAll()
         }
     }
     
@@ -762,9 +768,55 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     
     func updateLocation(){
+        
+        // Update location tick
         updateLocation_tick = updateLocation_tick + 1
+        
+        // Flip switch if count == 4
+        if updateLocation_tick == 4 {
+            
+            // Set receieved to false
+            self.didReceieveList = false
+            
+            // Clear the user list here
+            self.radarUsers.removeAll()
+            
+            // Clear Views here by just emptying list
+            var viewCount = 0
+            for view in self.pulseView.subviews{
+                // Remove every view
+                if viewCount < 4 {
+                    // This is the pulseView
+                    print("This is the ")
+                }else{
+                    // Remove every other view
+                    self.pulseView.willRemoveSubview(view)
+                }
+                // Update viewCount
+                viewCount = viewCount + 1
+            }
+            // Reset viewCount
+            viewCount = 0
+            
+            // Check if radar button on the remount halo w/ animation 
+            if self.radarSwitch.isOn {
+                
+                // Flip all radar actions back to true
+                radarStatus = true
+                pulseMe(status: "show")
+                
+                // Start updating location
+                self.locationManager.startUpdatingLocation()
+            }else{
+                print("The radar is off so its cool")
+            }
+        }
+        
         print(updateLocation_tick)
         
+        // Check is list should be refreshed
+        
+
         if updateLocation_tick >= 5
         {
             updateLocation_tick = 0
@@ -846,6 +898,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             
             print("Updating location")
+            
         }
     }
     
