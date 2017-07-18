@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icn-phone-grey.png",
+      "filename" : "icn-phone-grey@3x-2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icn-phone-grey@2x.png",
+      "filename" : "icn-phone-grey@3x-1.png",
       "scale" : "2x"
     },
     {
