@@ -891,9 +891,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         // Set counter to 0
                         self.counter = 0
                         
-                        // Clear radar list
-                        self.removePlottedPeople(self.pulseView)
-                        self.radarUsers.removeAll()
+                        if  dictionary.count >= 0
+                        {
+                            // Clear radar list
+                            self.removePlottedPeople(self.pulseView)
+                            self.radarUsers.removeAll()
+                        }
+                       
                         
                         for item in dictionary {
                             
