@@ -92,8 +92,93 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
  
       
         
+        
+        // iOS 10 support
+        
+        if #available(iOS 10, *) {
+            
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+            
+            application.registerForRemoteNotifications()
+            
+        }
+            
+            // iOS 9 support
+            
+        else if #available(iOS 9, *) {
+            
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            
+            UIApplication.shared.registerForRemoteNotifications()
+            
+        }
+            
+            // iOS 8 support
+            
+        else if #available(iOS 8, *) {
+            
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            
+            UIApplication.shared.registerForRemoteNotifications()
+            
+        }
+            
+            // iOS 7 support
+            
+        else {
+            
+            application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
+            
+        }
+
+        
+        
         return true
     }
+    
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceTokendeviceToken: Data) {
+        
+        // Convert token to string
+        
+        let token = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        
+        
+        
+        // Print it to console
+        
+        print("APNs device token: \(token)")
+        
+        
+        
+        
+    }
+    
+    
+    // Called when APNs failed to register the device for push notifications
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        
+        // Print the error to console (you should alert the user that registration failed)
+        
+        print("APNs registration failed: \(error)")
+        
+    }
+    
+    
+    // Push notification received
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
+        
+        // Print notification payload data
+        
+        print("Push notification received: \(data)")
+        
+    }
+    
+
+    
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
