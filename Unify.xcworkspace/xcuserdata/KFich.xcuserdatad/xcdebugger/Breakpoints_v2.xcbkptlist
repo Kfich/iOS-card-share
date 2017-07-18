@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarViewController.swift"
-            timestampString = "522025342.225835"
+            timestampString = "522047221.583911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "427"
-            endingLineNumber = "427"
+            startingLineNumber = "438"
+            endingLineNumber = "438"
             landmarkName = "stopPulseAnimation()"
             landmarkType = "7">
          </BreakpointContent>
