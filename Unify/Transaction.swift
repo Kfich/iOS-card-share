@@ -44,6 +44,7 @@ public class Transaction{
     var senderCardId : String = ""
     var recipientCardId : String = ""
 
+    var contactDictionary = NSDictionary()
     
     // Init
     
@@ -69,6 +70,10 @@ public class Transaction{
         //latitude = snapshot["latitude"] as! String
         //longitude = snapshot["latitude"] as! String
         
+        contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
+        
+        recipientCard = ContactCard.init(withSnapshotFromDefaults: contactDictionary)
+        
         
         // Testing to see if populated
         printTransaction()
@@ -88,7 +93,7 @@ public class Transaction{
             "latitude" : latitude,
             "longitude" : longitude,
             "notes": notes ?? ["notes" : ""],
-            "recipient_list": recipientList
+            "recipient_list": recipientList,
             
         ]
     }
@@ -244,6 +249,7 @@ public class Transaction{
         print("Lat :  \(latitude)")
         print("Long :  + \(longitude)")
         print("\nRecipient List :")
+        print("\nRecipient Card :", recipientCard)
         print(recipientList)
         
         // Testing
