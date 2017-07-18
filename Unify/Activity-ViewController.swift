@@ -271,15 +271,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientCard.cardHolderName!)"
         
         print("recipientCard", trans.recipientCard )
-<<<<<<< HEAD
-        
-        print("name", trans.recipientCard.cardHolderName)
-        
-=======
-        
-        print("name", trans.recipientCard.cardHolderName)
-        
->>>>>>> a716c8c603622fe54c2c1a9ee436bdafeb5a327b
+
         print("img", trans.recipientCard.imageURL)
         
         
