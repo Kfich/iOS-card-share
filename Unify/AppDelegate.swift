@@ -140,17 +140,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceTokendeviceToken: Data) {
         
         // Convert token to string
-        
-        let token = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-        
-        
-        
-        // Print it to console
-        
-        print("APNs device token: \(token)")
-        
-        
-        
+        //Map to Coutly for ID 
+        Countly.sharedInstance().askForNotificationPermission()
         
     }
     
