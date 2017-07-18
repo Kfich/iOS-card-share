@@ -799,8 +799,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Set receieved to false
             self.didReceieveList = false
             
-            // Clear the user list here
-            self.radarUsers.removeAll()
             
             // Clear Views here by just emptying list
             
@@ -863,6 +861,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         
                         // Set counter to 0
                         self.counter = 0
+                        
+                        // Clear the user list here to prevent a race condition or failed network from removing data tied to tag ids
+                        self.radarUsers.removeAll()
+
                         
                         for item in dictionary {
                             
