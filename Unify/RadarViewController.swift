@@ -901,7 +901,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         
                         for item in dictionary {
                             
-                            print(item)
+                            //print(item)
                             
                             let userDict = item as? NSDictionary
                             
@@ -918,7 +918,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             // Append users to radarContacts array
                             self.radarContacts.append(user)
-                            print("Radar List Count >>>> \(self.radarContacts.count)")
+                            //print("Radar List Count >>>> \(self.radarContacts.count)")
                             // Set random coordinates for plotting images on radar
                             let distance = Int(random: -5..<10)
                             let direction = Int(random: -5..<10)
@@ -1257,7 +1257,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             // Output person object as string value
                             let strval = String(records)
-                            print(">>>", strval)
+                            //print(">>>", strval)
                             jsonRecordOutput[strval].object = personJsonRecord.object
                             records = records + 1
                             jsonRecord.append(personJsonRecord)
