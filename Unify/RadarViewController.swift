@@ -710,6 +710,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             if granted {
                 DispatchQueue.main.async {
                     self.accessGrantedForContacts()
+                    Countly.sharedInstance().recordEvent("enabled contacts")
+
                     //self.getContacts()
                     return
                 }
