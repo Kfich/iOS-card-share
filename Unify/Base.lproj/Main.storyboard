@@ -6114,7 +6114,7 @@
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-nB-kEB">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-nB-kEB">
                                                                     <rect key="frame" x="145" y="76" width="20" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="YSp-lE-3UV"/>
@@ -6126,7 +6126,7 @@
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ZG9-QO-3N1">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ZG9-QO-3N1">
                                                                     <rect key="frame" x="145" y="104" width="20" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="0Bl-x8-4Ee"/>
