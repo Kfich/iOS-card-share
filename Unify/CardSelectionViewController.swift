@@ -181,38 +181,38 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
             for number in selectedCard.cardProfile.phoneNumbers{
-                phoneNumbers.append(number["phone"]! as! String)
+                phoneNumbers.append(number["phone"]! )
             }
         }
         
         if selectedCard.cardProfile.emails.count > 0{
             for email in selectedCard.cardProfile.emails{
-                emails.append(email["email"]! as! String)
+                emails.append(email["email"]! )
             }
         }
         if selectedCard.cardProfile.websites.count > 0{
             for site in selectedCard.cardProfile.websites{
-                websites.append(site["website"]! as! String)
+                websites.append(site["website"]! )
             }
         }
         if selectedCard.cardProfile.organizations.count > 0{
             for org in selectedCard.cardProfile.organizations{
-                organizations.append(org["organization"]! as! String)
+                organizations.append(org["organization"]! )
             }
         }
         if selectedCard.cardProfile.tags.count > 0{
             for hashtag in selectedCard.cardProfile.tags{
-                tags.append(hashtag["tag"]! as! String)
+                tags.append(hashtag["tag"]! )
             }
         }
         if selectedCard.cardProfile.notes.count > 0{
             for note in selectedCard.cardProfile.notes{
-                notes.append(note["note"]! as! String)
+                notes.append(note["note"]! )
             }
         }
         if selectedCard.cardProfile.socialLinks.count > 0{
             for link in selectedCard.cardProfile.socialLinks{
-                notes.append(link["link"]! as! String)
+                notes.append(link["link"]! )
             }
         }
         
@@ -290,21 +290,58 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "Bios"
+            if bios.count != 0 {
+                return "Bios"
+            }else{
+                return ""
+            }
         case 1:
-            return "Work Information"
+            if workInformation.count != 0 {
+                return "Work Information"
+            }else{
+                return ""
+            }
         case 2:
-            return "Titles"
+            if titles.count != 0 {
+                return "Titles"
+            }else{
+                return ""
+            }
         case 3:
-            return "Emails"
+            if emails.count != 0 {
+                return "Emails"
+            }else{
+                return ""
+            }
+            
         case 4:
-            return "Phone Numbers"
+            if phoneNumbers.count != 0 {
+                return "Phone Numbers"
+            }else{
+                return ""
+            }
+            
         case 5:
-            return "Social Media Links"
+            if socialLinks.count != 0 {
+                return "Social Media"
+            }else{
+                return ""
+            }
+            
         case 6:
-            return "Websites"
+            if websites.count != 0 {
+                return "Websites"
+            }else{
+                return ""
+            }
+            
         case 7:
-            return "Organizations"
+            if organizations.count != 0 {
+                return "Organizations"
+            }else{
+                return ""
+            }
+            
         default:
             return ""
         }
@@ -436,10 +473,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             nameLabel.text = name
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
-            phoneLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"] as! String
+            phoneLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"]!
         }
         if selectedCard.cardProfile.emails.count > 0{
-            emailLabel.text = selectedCard.cardProfile.emails[0]["email"] as! String
+            emailLabel.text = selectedCard.cardProfile.emails[0]["email"] as? String
         }
         if let title = selectedCard.cardProfile.title{
             titleLabel.text = title

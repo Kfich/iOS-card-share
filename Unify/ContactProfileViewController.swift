@@ -297,24 +297,62 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "Bios"
+            if bios.count != 0 {
+                return "Bios"
+            }else{
+                return ""
+            }
         case 1:
-            return "Work Information"
+            if workInformation.count != 0 {
+                return "Work Information"
+            }else{
+                return ""
+            }
         case 2:
-            return "Titles"
+            if titles.count != 0 {
+                return "Titles"
+            }else{
+                return ""
+            }
         case 3:
-            return "Emails"
+            if emails.count != 0 {
+                return "Emails"
+            }else{
+                return ""
+            }
+            
         case 4:
-            return "Phone Numbers"
+            if phoneNumbers.count != 0 {
+                return "Phone Numbers"
+            }else{
+                return ""
+            }
+            
         case 5:
-            return "Social Media Links"
+            if socialLinks.count != 0 {
+                return "Social Media"
+            }else{
+                return ""
+            }
+            
         case 6:
-            return "Websites"
+            if websites.count != 0 {
+                return "Websites"
+            }else{
+                return ""
+            }
+            
         case 7:
-            return "Organizations"
+            if organizations.count != 0 {
+                return "Organizations"
+            }else{
+                return ""
+            }
+            
         default:
             return ""
         }
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
