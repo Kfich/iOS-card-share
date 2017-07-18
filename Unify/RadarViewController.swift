@@ -150,8 +150,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         super.viewDidDisappear(true)
         
         // End radar
-        self.endRadar()
-        pulseMe(status: "hide")
+        //self.endRadar()
+        //pulseMe(status: "hide")
     }
     
     
@@ -788,6 +788,30 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     
+    func removePlottedPeople(_ containerView: UIView) {
+        
+        for view in containerView.subviews {
+            
+            if view.tag < 5000
+            {
+                UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                    view.alpha = 0
+                }) { (Bool) -> Void in
+                    
+                view.removeFromSuperview()
+
+                }
+            }
+            
+            
+            
+        }
+        
+    }
+    
+    
+    
+    
     func updateLocation(){
         
         // Update location tick
@@ -800,8 +824,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.didReceieveList = false
             
             
-            // Clear Views here by just emptying list
+        
             
+            /*
             for view in self.pulseView.subviews{
                 // Remove every view
                 if view.tag > 5000 {
@@ -813,6 +838,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 }
             
             }
+             */
             
             // Check if radar button on the remount halo w/ animation 
             if self.radarSwitch.isOn {
@@ -836,6 +862,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if updateLocation_tick >= 5
         {
             updateLocation_tick = 0
+            
+            // End radar first to clear instances of yourself
+            self.endRadar()
             
             
             if didReceieveList == false {
@@ -862,9 +891,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         // Set counter to 0
                         self.counter = 0
                         
-                        // Clear the user list here to prevent a race condition or failed network from removing data tied to tag ids
+                        // Clear radar list
+                        self.removePlottedPeople(self.pulseView)
                         self.radarUsers.removeAll()
-
                         
                         for item in dictionary {
                             
