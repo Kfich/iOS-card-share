@@ -623,6 +623,26 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         }
     }
     
+    
+    func removePlottedPeople(_ containerView: UIView) {
+        
+        for view in containerView.subviews {
+            
+            if view.tag < 5000
+            {
+                UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                    view.alpha = 0
+                }) { (Bool) -> Void in
+                    
+                    view.removeFromSuperview()
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
     func radarContactSelected(sender:UITapGestureRecognizer) {
         
         print("Radar User Index Counter >>> \((sender.view?.tag)!)")
@@ -789,20 +809,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             // Clear the user list here
             self.radarUsers.removeAll()
-            
-            // Clear Views here by just emptying list
-            
-            for view in self.pulseView.subviews{
-                // Remove every view
-                if view.tag > 5000 {
-                    // This is the pulseView
-                    print("This an essential view ")
-                }else{
-                    // Remove every other view
-                    self.pulseView.willRemoveSubview(view)
-                }
-            
-            }
+            // Clear Views 
+            self.removePlottedPeople(self.pulseView)
             
             // Check if radar button on the remount halo w/ animation 
             if self.radarSwitch.isOn {
