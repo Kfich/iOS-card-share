@@ -107,7 +107,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     @IBOutlet var emailButton: UIButton!
     
-    @IBOutlet var container: UIView!
+    // Action buttons and logo
+    
+    @IBOutlet var addNewCardButton: UIButton!
+    
+    @IBOutlet var radarLogoImage: UIImageView!
     
     
     
@@ -128,6 +132,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Test 
         //testImage()
+        
+        // Set tags to views to avoid deletion
+        self.radarLogoImage.tag = 5100
+        self.addNewCardButton.tag = 5101
+        self.sendCardButton.tag = 5102
         
         
     }
@@ -782,21 +791,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.radarUsers.removeAll()
             
             // Clear Views here by just emptying list
-            var viewCount = 0
+            
             for view in self.pulseView.subviews{
                 // Remove every view
-                if viewCount < 4 {
+                if view.tag > 5000 {
                     // This is the pulseView
-                    print("This is the ")
+                    print("This an essential view ")
                 }else{
                     // Remove every other view
                     self.pulseView.willRemoveSubview(view)
                 }
-                // Update viewCount
-                viewCount = viewCount + 1
+            
             }
-            // Reset viewCount
-            viewCount = 0
             
             // Check if radar button on the remount halo w/ animation 
             if self.radarSwitch.isOn {

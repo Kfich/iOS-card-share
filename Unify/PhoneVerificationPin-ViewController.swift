@@ -206,8 +206,10 @@ class PhoneVerificationPinViewController: UIViewController {
             let dictionary : Dictionary = response as! [String : Any]
             card.cardId = dictionary["uuid"] as? String
          
+            // ** To handle the double card break **
+            
             // Insert to manager card array
-            ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+            //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
          
             // Set array to defualts
             UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
