@@ -33,6 +33,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        
+        let config: CountlyConfig = CountlyConfig()
+        config.appKey = "02e21c191641f26f18c393b4b1f5a210be5bda15"
+        config.host = "http://45.55.197.96/"
+        //You can specify optional features you want here
+        config.features = [CLYPushNotifications, CLYCrashReporting, CLYAutoViewTracking]
+        
+        Countly.sharedInstance().start(with: config)
+        
+        
         FIRApp.configure()
         
         // Crash reporting with fabric 
