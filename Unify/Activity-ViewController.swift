@@ -252,6 +252,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.locationLabel.text = trans.location
     }
 
+    
     func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
         // Set transaction values for cell
         let trans = transactions[index]
