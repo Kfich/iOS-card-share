@@ -67,7 +67,8 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Populate cards 
+        // Set current User object
+        currentUser = ContactManager.sharedManager.currentUser
         
         // Add Tap Gesture to imageviews
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showContactList))
@@ -186,6 +187,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             // Check for nil vals
             
             var name = ""
+            var recipientName = ""
             var phone = ""
             var email = ""
             //var title = ""
@@ -197,6 +199,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             
             // Check if they both have email
             name = formatter.string(from: contact) ?? "No Name"
+            recipientName = formatter.string(from: recipient) ?? ""
             
             if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
                 
@@ -214,7 +217,10 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 email = (contact.emailAddresses[0].value as String)
             }
             
-            composeVC.body = "Hi, I'd like to connect the two of you. Here's \(name)'s information \n\n\(name)\n\(phone)\n\(email)\n\n\n Link to download Unify!"
+            // Configure message
+            let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n"
+            
+            composeVC.body = str
             
             // Present the view controller modally.
             self.present(composeVC, animated: true, completion: nil)
@@ -235,6 +241,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         // Check for nil vals
         
         var name = ""
+        var recipientName = ""
         var phone = ""
         var emailContact = ""
         var emailRecipient = ""
@@ -247,6 +254,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Check if they both have email
         name = formatter.string(from: contact) ?? "No Name"
+        recipientName = formatter.string(from: recipient) ?? "No Name"
         
         if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
             
@@ -263,12 +271,14 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             phone = (contact.emailAddresses[0].value as String)
         }
 
+        // Create Message
         
+        let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.fullName) \n\n"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact, emailRecipient])
-        mailComposerVC.setSubject("Introduction - Let's Connect")
-        mailComposerVC.setMessageBody("Hi, I'd like to connect the two of you. Here's \(name)'s information \n\n\(name)\n\(phone)\n\(emailContact)\n\n\n Link to download Unify!", isHTML: false)
+        mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")
+        mailComposerVC.setMessageBody(str, isHTML: false)
         
         return mailComposerVC
     }

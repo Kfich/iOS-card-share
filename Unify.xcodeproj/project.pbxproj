@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C151D291F1DBE73004B23CE /* .gitattributes in Resources */ = {isa = PBXBuildFile; fileRef = 1C151D051F1DBE73004B23CE /* .gitattributes */; };
+		1C151D2A1F1DBE73004B23CE /* Countly.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D071F1DBE73004B23CE /* Countly.m */; };
+		1C151D2B1F1DBE73004B23CE /* Countly.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 1C151D081F1DBE73004B23CE /* Countly.podspec */; };
+		1C151D2C1F1DBE73004B23CE /* Countly_OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D0A1F1DBE73004B23CE /* Countly_OpenUDID.m */; };
+		1C151D2D1F1DBE73004B23CE /* CountlyAPM.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D0C1F1DBE73004B23CE /* CountlyAPM.m */; };
+		1C151D2E1F1DBE73004B23CE /* CountlyAPMNetworkLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D0E1F1DBE73004B23CE /* CountlyAPMNetworkLog.m */; };
+		1C151D2F1F1DBE73004B23CE /* CountlyCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D101F1DBE73004B23CE /* CountlyCommon.m */; };
+		1C151D301F1DBE73004B23CE /* CountlyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D121F1DBE73004B23CE /* CountlyConfig.m */; };
+		1C151D311F1DBE73004B23CE /* CountlyConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D141F1DBE73004B23CE /* CountlyConnectionManager.m */; };
+		1C151D321F1DBE73004B23CE /* CountlyCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D161F1DBE73004B23CE /* CountlyCrashReporter.m */; };
+		1C151D331F1DBE73004B23CE /* CountlyDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D181F1DBE73004B23CE /* CountlyDeviceInfo.m */; };
+		1C151D341F1DBE73004B23CE /* CountlyEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D1A1F1DBE73004B23CE /* CountlyEvent.m */; };
+		1C151D351F1DBE73004B23CE /* CountlyNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D1C1F1DBE73004B23CE /* CountlyNotificationService.m */; };
+		1C151D361F1DBE73004B23CE /* CountlyPersistency.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D1E1F1DBE73004B23CE /* CountlyPersistency.m */; };
+		1C151D371F1DBE73004B23CE /* CountlyPushNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D201F1DBE73004B23CE /* CountlyPushNotifications.m */; };
+		1C151D381F1DBE73004B23CE /* CountlyStarRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D221F1DBE73004B23CE /* CountlyStarRating.m */; };
+		1C151D391F1DBE73004B23CE /* CountlyUserDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D241F1DBE73004B23CE /* CountlyUserDetails.m */; };
+		1C151D3A1F1DBE73004B23CE /* CountlyViewTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D261F1DBE73004B23CE /* CountlyViewTracking.m */; };
+		1C151D3B1F1DBE73004B23CE /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 1C151D271F1DBE73004B23CE /* LICENSE */; };
+		1C151D3C1F1DBE73004B23CE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 1C151D281F1DBE73004B23CE /* README.md */; };
 		1C31040C1E94A1F700F4D70D /* EditProfile-TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C31040B1E94A1F700F4D70D /* EditProfile-TableViewController.swift */; };
 		1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C31040D1E94B54800F4D70D /* ActivityCardTableCell.swift */; };
 		1C3104101E94B7FC00F4D70D /* FollowUp-ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C31040F1E94B7FC00F4D70D /* FollowUp-ViewController.swift */; };
@@ -134,6 +154,42 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1C151D051F1DBE73004B23CE /* .gitattributes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitattributes; sourceTree = "<group>"; };
+		1C151D061F1DBE73004B23CE /* Countly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Countly.h; sourceTree = "<group>"; };
+		1C151D071F1DBE73004B23CE /* Countly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Countly.m; sourceTree = "<group>"; };
+		1C151D081F1DBE73004B23CE /* Countly.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Countly.podspec; sourceTree = "<group>"; };
+		1C151D091F1DBE73004B23CE /* Countly_OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Countly_OpenUDID.h; sourceTree = "<group>"; };
+		1C151D0A1F1DBE73004B23CE /* Countly_OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Countly_OpenUDID.m; sourceTree = "<group>"; };
+		1C151D0B1F1DBE73004B23CE /* CountlyAPM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyAPM.h; sourceTree = "<group>"; };
+		1C151D0C1F1DBE73004B23CE /* CountlyAPM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyAPM.m; sourceTree = "<group>"; };
+		1C151D0D1F1DBE73004B23CE /* CountlyAPMNetworkLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyAPMNetworkLog.h; sourceTree = "<group>"; };
+		1C151D0E1F1DBE73004B23CE /* CountlyAPMNetworkLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyAPMNetworkLog.m; sourceTree = "<group>"; };
+		1C151D0F1F1DBE73004B23CE /* CountlyCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyCommon.h; sourceTree = "<group>"; };
+		1C151D101F1DBE73004B23CE /* CountlyCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyCommon.m; sourceTree = "<group>"; };
+		1C151D111F1DBE73004B23CE /* CountlyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyConfig.h; sourceTree = "<group>"; };
+		1C151D121F1DBE73004B23CE /* CountlyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyConfig.m; sourceTree = "<group>"; };
+		1C151D131F1DBE73004B23CE /* CountlyConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyConnectionManager.h; sourceTree = "<group>"; };
+		1C151D141F1DBE73004B23CE /* CountlyConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyConnectionManager.m; sourceTree = "<group>"; };
+		1C151D151F1DBE73004B23CE /* CountlyCrashReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyCrashReporter.h; sourceTree = "<group>"; };
+		1C151D161F1DBE73004B23CE /* CountlyCrashReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyCrashReporter.m; sourceTree = "<group>"; };
+		1C151D171F1DBE73004B23CE /* CountlyDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyDeviceInfo.h; sourceTree = "<group>"; };
+		1C151D181F1DBE73004B23CE /* CountlyDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyDeviceInfo.m; sourceTree = "<group>"; };
+		1C151D191F1DBE73004B23CE /* CountlyEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyEvent.h; sourceTree = "<group>"; };
+		1C151D1A1F1DBE73004B23CE /* CountlyEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyEvent.m; sourceTree = "<group>"; };
+		1C151D1B1F1DBE73004B23CE /* CountlyNotificationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyNotificationService.h; sourceTree = "<group>"; };
+		1C151D1C1F1DBE73004B23CE /* CountlyNotificationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyNotificationService.m; sourceTree = "<group>"; };
+		1C151D1D1F1DBE73004B23CE /* CountlyPersistency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyPersistency.h; sourceTree = "<group>"; };
+		1C151D1E1F1DBE73004B23CE /* CountlyPersistency.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyPersistency.m; sourceTree = "<group>"; };
+		1C151D1F1F1DBE73004B23CE /* CountlyPushNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyPushNotifications.h; sourceTree = "<group>"; };
+		1C151D201F1DBE73004B23CE /* CountlyPushNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyPushNotifications.m; sourceTree = "<group>"; };
+		1C151D211F1DBE73004B23CE /* CountlyStarRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyStarRating.h; sourceTree = "<group>"; };
+		1C151D221F1DBE73004B23CE /* CountlyStarRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyStarRating.m; sourceTree = "<group>"; };
+		1C151D231F1DBE73004B23CE /* CountlyUserDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyUserDetails.h; sourceTree = "<group>"; };
+		1C151D241F1DBE73004B23CE /* CountlyUserDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyUserDetails.m; sourceTree = "<group>"; };
+		1C151D251F1DBE73004B23CE /* CountlyViewTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountlyViewTracking.h; sourceTree = "<group>"; };
+		1C151D261F1DBE73004B23CE /* CountlyViewTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountlyViewTracking.m; sourceTree = "<group>"; };
+		1C151D271F1DBE73004B23CE /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		1C151D281F1DBE73004B23CE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1C31040B1E94A1F700F4D70D /* EditProfile-TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EditProfile-TableViewController.swift"; sourceTree = "<group>"; };
 		1C31040D1E94B54800F4D70D /* ActivityCardTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCardTableCell.swift; sourceTree = "<group>"; };
 		1C31040F1E94B7FC00F4D70D /* FollowUp-ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FollowUp-ViewController.swift"; sourceTree = "<group>"; };
@@ -272,9 +328,53 @@
 		1BC8F22ADA6477CE34D3DAA3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1C151D041F1DBE73004B23CE /* countly-sdk-ios-master 2 */,
 				D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1C151D041F1DBE73004B23CE /* countly-sdk-ios-master 2 */ = {
+			isa = PBXGroup;
+			children = (
+				1C151D051F1DBE73004B23CE /* .gitattributes */,
+				1C151D061F1DBE73004B23CE /* Countly.h */,
+				1C151D071F1DBE73004B23CE /* Countly.m */,
+				1C151D081F1DBE73004B23CE /* Countly.podspec */,
+				1C151D091F1DBE73004B23CE /* Countly_OpenUDID.h */,
+				1C151D0A1F1DBE73004B23CE /* Countly_OpenUDID.m */,
+				1C151D0B1F1DBE73004B23CE /* CountlyAPM.h */,
+				1C151D0C1F1DBE73004B23CE /* CountlyAPM.m */,
+				1C151D0D1F1DBE73004B23CE /* CountlyAPMNetworkLog.h */,
+				1C151D0E1F1DBE73004B23CE /* CountlyAPMNetworkLog.m */,
+				1C151D0F1F1DBE73004B23CE /* CountlyCommon.h */,
+				1C151D101F1DBE73004B23CE /* CountlyCommon.m */,
+				1C151D111F1DBE73004B23CE /* CountlyConfig.h */,
+				1C151D121F1DBE73004B23CE /* CountlyConfig.m */,
+				1C151D131F1DBE73004B23CE /* CountlyConnectionManager.h */,
+				1C151D141F1DBE73004B23CE /* CountlyConnectionManager.m */,
+				1C151D151F1DBE73004B23CE /* CountlyCrashReporter.h */,
+				1C151D161F1DBE73004B23CE /* CountlyCrashReporter.m */,
+				1C151D171F1DBE73004B23CE /* CountlyDeviceInfo.h */,
+				1C151D181F1DBE73004B23CE /* CountlyDeviceInfo.m */,
+				1C151D191F1DBE73004B23CE /* CountlyEvent.h */,
+				1C151D1A1F1DBE73004B23CE /* CountlyEvent.m */,
+				1C151D1B1F1DBE73004B23CE /* CountlyNotificationService.h */,
+				1C151D1C1F1DBE73004B23CE /* CountlyNotificationService.m */,
+				1C151D1D1F1DBE73004B23CE /* CountlyPersistency.h */,
+				1C151D1E1F1DBE73004B23CE /* CountlyPersistency.m */,
+				1C151D1F1F1DBE73004B23CE /* CountlyPushNotifications.h */,
+				1C151D201F1DBE73004B23CE /* CountlyPushNotifications.m */,
+				1C151D211F1DBE73004B23CE /* CountlyStarRating.h */,
+				1C151D221F1DBE73004B23CE /* CountlyStarRating.m */,
+				1C151D231F1DBE73004B23CE /* CountlyUserDetails.h */,
+				1C151D241F1DBE73004B23CE /* CountlyUserDetails.m */,
+				1C151D251F1DBE73004B23CE /* CountlyViewTracking.h */,
+				1C151D261F1DBE73004B23CE /* CountlyViewTracking.m */,
+				1C151D271F1DBE73004B23CE /* LICENSE */,
+				1C151D281F1DBE73004B23CE /* README.md */,
+			);
+			path = "countly-sdk-ios-master 2";
 			sourceTree = "<group>";
 		};
 		1CAE5B771E913A06006EFF40 = {
@@ -664,6 +764,9 @@
 				1CAE5B8B1E913A06006EFF40 /* Assets.xcassets in Resources */,
 				FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */,
 				1C31041C1E95BA9200F4D70D /* GoogleService-Info.plist in Resources */,
+				1C151D2B1F1DBE73004B23CE /* Countly.podspec in Resources */,
+				1C151D3B1F1DBE73004B23CE /* LICENSE in Resources */,
+				1C151D291F1DBE73004B23CE /* .gitattributes in Resources */,
 				1CB31CA91E942BC500A0C4A5 /* SkeletonCell.xib in Resources */,
 				1CAE5B891E913A06006EFF40 /* Main.storyboard in Resources */,
 				FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */,
@@ -740,13 +843,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CB31C8F1E93946D00A0C4A5 /* InstagramActivityIndicator.swift in Sources */,
+				1C151D371F1DBE73004B23CE /* CountlyPushNotifications.m in Sources */,
 				1CDD50A51E914CF40073B893 /* Home-TableViewController.swift in Sources */,
 				FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */,
+				1C151D381F1DBE73004B23CE /* CountlyStarRating.m in Sources */,
 				1C31041A1E95B06600F4D70D /* EditProfileHeader.swift in Sources */,
 				FB37382A1EDDCE970074200F /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				1CAE5B861E913A06006EFF40 /* ViewController.swift in Sources */,
 				FBE8075A1F06D36200A05292 /* CreateCardViewController.swift in Sources */,
 				FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */,
+				1C151D331F1DBE73004B23CE /* CountlyDeviceInfo.m in Sources */,
 				1C3104141E959DB700F4D70D /* ProfileHeaderCell.swift in Sources */,
 				FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */,
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
@@ -757,12 +863,16 @@
 				FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */,
 				FB1A34151EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift in Sources */,
 				FBE807531F06C07C00A05292 /* Connection.m in Sources */,
+				1C151D311F1DBE73004B23CE /* CountlyConnectionManager.m in Sources */,
 				FBE8075D1F06DBBE00A05292 /* CardOptionsViewCell.swift in Sources */,
+				1C151D2D1F1DBE73004B23CE /* CountlyAPM.m in Sources */,
+				1C151D341F1DBE73004B23CE /* CountlyEvent.m in Sources */,
 				1CB31C991E9406EB00A0C4A5 /* Contacts-TableViewController.swift in Sources */,
 				FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */,
 				FBE807461F04159700A05292 /* CardSelectionViewController.swift in Sources */,
 				1CB31CB31E94358200A0C4A5 /* AlgoliaManager.swift in Sources */,
 				1C3104181E95AFEA00F4D70D /* EditableContactCell.swift in Sources */,
+				1C151D391F1DBE73004B23CE /* CountlyUserDetails.m in Sources */,
 				1C3104161E95A87900F4D70D /* ProfileContactCell.swift in Sources */,
 				1C3104121E9536D100F4D70D /* SingleActivity-ViewController.swift in Sources */,
 				FBF8712D1EE71B0800243CE2 /* User.swift in Sources */,
@@ -773,7 +883,9 @@
 				FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */,
 				FB2F42871F1526CB00E3D6B5 /* KVNRotationViewController.m in Sources */,
 				1CB31C8D1E93539A00A0C4A5 /* PhoneVerificationPin-ViewController.swift in Sources */,
+				1C151D2A1F1DBE73004B23CE /* Countly.m in Sources */,
 				1CB31C931E93C04D00A0C4A5 /* HomeCardTableCell.swift in Sources */,
+				1C151D301F1DBE73004B23CE /* CountlyConfig.m in Sources */,
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
 				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
 				FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */,
@@ -783,20 +895,26 @@
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,
 				FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
+				1C151D3A1F1DBE73004B23CE /* CountlyViewTracking.m in Sources */,
 				FB2F428A1F1526CB00E3D6B5 /* UIImage+KVNImageEffects.m in Sources */,
 				FB2F42851F1526CB00E3D6B5 /* KVNProgressConfiguration.m in Sources */,
 				1CB31CB11E94358200A0C4A5 /* ContactRecord.swift in Sources */,
 				FBE807491F0566F300A05292 /* CardProfile.swift in Sources */,
 				FB1A34131EE1BC88003B5A73 /* RadarContainerViewController.swift in Sources */,
+				1C151D351F1DBE73004B23CE /* CountlyNotificationService.m in Sources */,
+				1C151D361F1DBE73004B23CE /* CountlyPersistency.m in Sources */,
 				FB2F42891F1526CB00E3D6B5 /* UIImage+KVNEmpty.m in Sources */,
 				1CB31C951E93C6A700A0C4A5 /* CardCollectionViewCell.swift in Sources */,
 				FB2F42841F1526CB00E3D6B5 /* KVNProgress.m in Sources */,
+				1C151D2E1F1DBE73004B23CE /* CountlyAPMNetworkLog.m in Sources */,
 				FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */,
 				1CAE5B841E913A06006EFF40 /* AppDelegate.swift in Sources */,
 				1C31040C1E94A1F700F4D70D /* EditProfile-TableViewController.swift in Sources */,
 				1CB31CA71E94273E00A0C4A5 /* QuickShare-ViewController.swift in Sources */,
 				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
+				1C151D2F1F1DBE73004B23CE /* CountlyCommon.m in Sources */,
+				1C151D2C1F1DBE73004B23CE /* Countly_OpenUDID.m in Sources */,
 				FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */,
 				FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
@@ -806,9 +924,11 @@
 				FB2F42881F1526CB00E3D6B5 /* UIColor+KVNContrast.m in Sources */,
 				1CB31CA31E940B4200A0C4A5 /* TabBar-ViewController.swift in Sources */,
 				FB37381B1EDDBB660074200F /* ContactProfileViewController.swift in Sources */,
+				1C151D321F1DBE73004B23CE /* CountlyCrashReporter.m in Sources */,
 				FBE76C8A1EDF4A2900E37E0C /* AFBlurSegue.m in Sources */,
 				FB3738191EDDBA730074200F /* ContactManager.swift in Sources */,
 				FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */,
+				1C151D3C1F1DBE73004B23CE /* README.md in Sources */,
 				1CB31C9D1E94087100A0C4A5 /* SelectRecipient-ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

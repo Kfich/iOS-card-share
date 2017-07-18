@@ -164,6 +164,8 @@ class PhoneVerificationPinViewController: UIViewController {
                 
                 print("\n\nConnection - Create User Response: \(response)\n\n")
                 
+                Countly.sharedInstance().recordEvent("phone verification successful")
+
                 // If here, that means we matched
         
                 // Show indicator

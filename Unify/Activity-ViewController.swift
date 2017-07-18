@@ -31,9 +31,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Page Config
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         // Fetch the users transactions 
         getTranstactions()
@@ -171,6 +170,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func getTranstactions() {
         
+        // Clear array list for fresh start 
+        self.transactions.removeAll()
+        self.transactions = [Transaction]()
+        
         // 
         // Hit endpoint for updates on users nearby
         let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
@@ -196,6 +199,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                         // Init user objects from array
                         let trans = Transaction(snapshot: item as! NSDictionary)
                         trans.printTransaction()
+                        
                         
                         // Append users to radarContacts array
                         self.transactions.append(trans)
@@ -251,22 +255,29 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.locationLabel.text = trans.location
     }
 
+    
     func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
-        // Set transaction values for cell 
         // Set transaction values for cell
         let trans = transactions[index]
         
         // Assign user objects
         //let user1 = selectedUsers[0]
-        let name = "KFich"
+        let name = trans.recipientCard.cardHolderName
         
         // See if image ref available
         let image = UIImage(named: "contact")
         cell.connectionOwnerProfileImage.image = image
         // Set description text
-        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientList)"
+        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientCard.cardHolderName!)"
         
-        // Set location 
+        print("recipientCard", trans.recipientCard )
+        
+        print("name", trans.recipientCard.cardHolderName)
+        
+        print("img", trans.recipientCard.imageURL)
+        
+        
+        // Set location
         cell.connectionLocationLabel.text = trans.location
         
         

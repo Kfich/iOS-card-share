@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icn-chat-blue.png",
+      "filename" : "profile-action-chat@x1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icn-chat-blue@2x.png",
+      "filename" : "profile-action-chat@x2.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icn-chat-blue@3x.png",
+      "filename" : "profile-action-chat@x3.png",
       "scale" : "3x"
     }
   ],

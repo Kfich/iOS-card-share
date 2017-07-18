@@ -73,7 +73,7 @@ class ViewController: UIViewController {
             }
             
             // Add Content controller to the main VC
-            onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "onboard_bg"), contents: [firstPage, secondPage])
+            onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "backgroundGradient"), contents: [firstPage, secondPage])
             
             
             onboardingVC?.shouldMaskBackground = false

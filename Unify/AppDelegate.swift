@@ -33,6 +33,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        
+        let config: CountlyConfig = CountlyConfig()
+        config.appKey = "02e21c191641f26f18c393b4b1f5a210be5bda15"
+        config.host = "http://45.55.197.96/"
+        //You can specify optional features you want here
+        config.features = [CLYPushNotifications, CLYCrashReporting, CLYAutoViewTracking]
+        
+        Countly.sharedInstance().start(with: config)
+        
+        
         FIRApp.configure()
         
         // Crash reporting with fabric 
@@ -82,8 +92,84 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
  
       
         
+        
+        // iOS 10 support
+        
+        if #available(iOS 10, *) {
+            
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+            
+            application.registerForRemoteNotifications()
+            
+        }
+            
+            // iOS 9 support
+            
+        else if #available(iOS 9, *) {
+            
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            
+            UIApplication.shared.registerForRemoteNotifications()
+            
+        }
+            
+            // iOS 8 support
+            
+        else if #available(iOS 8, *) {
+            
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            
+            UIApplication.shared.registerForRemoteNotifications()
+            
+        }
+            
+            // iOS 7 support
+            
+        else {
+            
+            application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
+            
+        }
+
+        
+        
         return true
     }
+    
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceTokendeviceToken: Data) {
+        
+        // Convert token to string
+        //Map to Coutly for ID 
+        Countly.sharedInstance().askForNotificationPermission()
+        
+    }
+    
+    
+    // Called when APNs failed to register the device for push notifications
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        
+        // Print the error to console (you should alert the user that registration failed)
+        
+        print("APNs registration failed: \(error)")
+        
+    }
+    
+    
+    // Push notification received
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
+        
+        // Print notification payload data
+        
+        print("Push notification received: \(data)")
+        
+    }
+    
+
+    
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

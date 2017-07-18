@@ -19,9 +19,7 @@ import SwiftAddressBook
 import SwiftyJSON
 import Alamofire
 
-
 import AFNetworking
-
 
 class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocationManagerDelegate {
     
@@ -60,7 +58,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     var radarContacts = [User]()
     
     
-    // Halo 
+    // Halo
     let halo2 = PulsingHaloLayer()
     
     let keysToFetch = [
@@ -116,13 +114,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     
     // View Setup
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
-        // Setup views 
+        // Setup views
         
         // Hide button
         sendCardButton.isHidden = true
@@ -130,7 +128,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // See if current user pass
         ContactManager.sharedManager.currentUser.printUser()
         
-        // Test 
+        // Test
         //testImage()
         
         // Set tags to views to avoid deletion
@@ -138,9 +136,34 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.addNewCardButton.tag = 5101
         self.sendCardButton.tag = 5102
         
+        //add halo to pulseview as sublayer only once when view loads to prevent dups
+        halo.position.y = pulseView.frame.height / 2.85
+        halo.position.x = pulseView.frame.width / 1.8
+        halo.haloLayerNumber = 3;
+        
+        // Set radius
+        halo.radius = 100;
+        
+        halo.backgroundColor = UIColor.white.cgColor
+        
+        pulseView.layer.addSublayer(halo)
+        
+        
+        // Configure background image graphics
+        
+       /* UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
+        UIGraphicsEndImageContext()
+        
+        self.view.backgroundColor = UIColor(patternImage: image)*/
+        
+        
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -163,14 +186,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     @IBAction func addCard(_ sender: Any) {
         
-        // Test user 
+        // Test user
         // testUser()
         
         // Show add card vc
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
         self.present(controller, animated: true, completion: nil)
-
+        
         
     }
     
@@ -181,7 +204,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let imageData = UIImageJPEGRepresentation(UIImage(named: "contact")!, 0.5)
         print(imageData!)
         
-        // Create user for string gen 
+        // Create user for string gen
         let newUser = User()
         // Generate id string for image
         let idString = newUser.randomString(length: 20)
@@ -249,61 +272,61 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Test current user object
         
         /*currentUser.firstName = "Kevin"
-        currentUser.lastName = "Fich"
-        currentUser.userId = "54321"
-        currentUser.fullName = currentUser.getName()
-        currentUser.emails.append(["email": "kfich7@aol.com"])
-        currentUser.emails.append(["email": "kfich7@gmail.com"])
-        currentUser.phoneNumbers.append(["phone": "1234567890"])
-        currentUser.phoneNumbers.append(["phone": "0987654321"])
-        currentUser.phoneNumbers.append(["phone": "6463597308"])
-        currentUser.scope = "user"
-        
-        
-        
-        let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
-        print("\n\n")
-        print(parameters)
-        
-        
-        //let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
-        
-        
-        // Print to test
-        //print("Current User")
-        //currentUser.printUser()
-        
-        
-        // Print as dictionary
-        print("\nUser As Dictionary")
-        print(currentUser.toAnyObject())
-        
-        //genericPostCall(parameters as NSDictionary)
-        */
+         currentUser.lastName = "Fich"
+         currentUser.userId = "54321"
+         currentUser.fullName = currentUser.getName()
+         currentUser.emails.append(["email": "kfich7@aol.com"])
+         currentUser.emails.append(["email": "kfich7@gmail.com"])
+         currentUser.phoneNumbers.append(["phone": "1234567890"])
+         currentUser.phoneNumbers.append(["phone": "0987654321"])
+         currentUser.phoneNumbers.append(["phone": "6463597308"])
+         currentUser.scope = "user"
+         
+         
+         
+         let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
+         print("\n\n")
+         print(parameters)
+         
+         
+         //let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
+         
+         
+         // Print to test
+         //print("Current User")
+         //currentUser.printUser()
+         
+         
+         // Print as dictionary
+         print("\nUser As Dictionary")
+         print(currentUser.toAnyObject())
+         
+         //genericPostCall(parameters as NSDictionary)
+         */
         
         /*let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
-        
-        // Send current user to DB
-        
-        
-        Connection(configuration: nil).getUserCall(parameters, completionBlock: { response, error in
-            if error == nil {
-                
-                print("\n\nConnection - Create User Response: \(response)\n\n")
-                
-                // Here you set the id for the user and resubmit the object
-                
-                //let user = User(snapshot: response as! NSDictionary)
-                //user.printUser()
-                
-                
-                
-            } else {
-                print(error)
-                // Show user popup of error message
-                print("\n\nConnection - Create User Error: \(error)\n\n")
-            }
-        })*/
+         
+         // Send current user to DB
+         
+         
+         Connection(configuration: nil).getUserCall(parameters, completionBlock: { response, error in
+         if error == nil {
+         
+         print("\n\nConnection - Create User Response: \(response)\n\n")
+         
+         // Here you set the id for the user and resubmit the object
+         
+         //let user = User(snapshot: response as! NSDictionary)
+         //user.printUser()
+         
+         
+         
+         } else {
+         print(error)
+         // Show user popup of error message
+         print("\n\nConnection - Create User Error: \(error)\n\n")
+         }
+         })*/
     }
     
     
@@ -325,17 +348,22 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         if radarSwitch.isOn{
             
+            print("turn radar on")
+            
             radarStatus = true
             pulseMe(status: "show")
             
+            /*
             halo2.position = view.center
             pulseView.layer.addSublayer(halo)
             halo2.start()
-
-            halo2.isHidden = false
             
+            
+            halo2.isHidden = false
+            */
             self.locationManager.startUpdatingLocation()
             
+            Countly.sharedInstance().recordEvent("turned radar on")
             // Configure Label text and set image
             //self.radarOnLabel.isHidden = true
             //  self.radarOffLabel.text = "radar off"
@@ -345,16 +373,23 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         } else {
             
             radarStatus = false
-            //pulseMe(status: "hide")
-            halo.isHidden = true
+            pulseMe(status: "hide")
+            //halo.isHidden = true
             self.locationManager.stopUpdatingLocation()
+            self.locationManager.stopMonitoringSignificantLocationChanges()
             
             // Stop animations and remove from view
-            self.stopPulseAnimation()
+            //self.stopPulseAnimation()
             
             // End radar
             self.endRadar()
-
+            
+            //remove people from radar
+            self.removePlottedPeople(self.pulseView)
+            self.radarUsers.removeAll()
+            
+            Countly.sharedInstance().recordEvent("turned radar off")
+            
         }
         
         
@@ -373,7 +408,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     @IBAction func sendCardSelected(_ sender: Any) {
         
-        // Test uuid 
+        // Test uuid
         print("\n\nCurrent User ID >>> \(currentUser.userId)")
         
         // Dyamically set selected card here
@@ -404,11 +439,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
         
         
-        // Print tranny 
+        // Print tranny
         transaction.printTransaction()
         
         // Call create transaction function
         createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
+        
+        Countly.sharedInstance().recordEvent("shared contacts from radar")
         
     }
     
@@ -439,24 +476,28 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func pulseMe(status: String?){
         
-        // Set coordinates for the pulse view
-        halo.position.y = pulseView.frame.height / 2.75
-        halo.position.x = pulseView.frame.width / 2
-        halo.haloLayerNumber = 3;
-        
-        // Set radius
-        halo.radius = 100;
-        
-        halo.backgroundColor = UIColor.white.cgColor
+        print("status", status)
         
         
-        pulseView.layer.addSublayer(halo)
+        if status == "show"
+        {
+        
+          
         halo.start()
         
-        print("HALO COORDS")
-        print("x --> \(halo.position.x)   y --> \(halo.position.y)")
+        //print("HALO COORDS")
+        //print("x --> \(halo.position.x)   y --> \(halo.position.y)")
         
- 
+        } else {
+            
+        
+            
+            //PulsingHaloLayer.removeFromSuperlayer(self.pulseView.layer)
+            
+             //self.removeHalo(self.pulseView)
+            
+        }
+        
         
     }
     
@@ -480,11 +521,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         
         /*// Create image
-        var image = UIImage()
-        // Create imageView and set image
-        let imageView = UIImageView()
-
-        image = UIImage(named: "radar-avatar")!*/
+         var image = UIImage()
+         // Create imageView and set image
+         let imageView = UIImageView()
+         
+         image = UIImage(named: "radar-avatar")!*/
         
         // Fetch user image reference
         if user.profileImageId != ""{
@@ -494,7 +535,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             let placeholderImage = UIImage(named: "radar-avatar")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)
-
+            
             // For now
             //image = UIImage(named: "radar-avatar")!
             
@@ -544,17 +585,17 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Adding image of contact to map screen
         self.pulseView.addSubview(imageView)
         
-        // test on main view 
+        // test on main view
         /*let lbl = UILabel()
-        lbl.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
-        lbl.backgroundColor = UIColor.blue
-        lbl.text = "Yo \(tag)"
-        self.container.addSubview(lbl)*/
+         lbl.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
+         lbl.backgroundColor = UIColor.blue
+         lbl.text = "Yo \(tag)"
+         self.container.addSubview(lbl)*/
         
     }
     
     func endRadar() {
-        // Stop radar pulsing 
+        // Stop radar pulsing
         
         // Hit endpoint for updates on users nearby
         let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
@@ -565,13 +606,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         Connection(configuration: nil).endRadarCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                // print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                 
                 
             } else {
-                print(error)
+                print("End Radar Error", error)
                 // Show user popup of error message
-                print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+                // print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
                 //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
             }
             
@@ -579,7 +620,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Stop animations and remove from view
         self.stopPulseAnimation()
-
+        
     }
     
     func createTransaction(type: String, uuid: String) {
@@ -618,29 +659,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Hide indicator
             KVNProgress.dismiss()
             
-             // Clear List of recipients
+            // Clear List of recipients
             self.selectedUserIds.removeAll()
         }
-    }
-    
-    
-    func removePlottedPeople(_ containerView: UIView) {
-        
-        for view in containerView.subviews {
-            
-            if view.tag < 5000
-            {
-                UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                    view.alpha = 0
-                }) { (Bool) -> Void in
-                    
-                    view.removeFromSuperview()
-                    
-                }
-            }
-            
-        }
-        
     }
     
     func radarContactSelected(sender:UITapGestureRecognizer) {
@@ -651,11 +672,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Set to true
             selectedUserList[(sender.view?.tag)!].isSelected = true
             // Toggle the image
-            let image = UIImage(named: "contact")
+            let image = UIImage(named: "social-blank")
             let imageView = UIImageView(image: image!)
-            
             // Add new image to sender
             sender.view?.addSubview(imageView)
+            
+            // Set tint to show selected
+            //sender.view?.tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
             
             // Add to selected user list
             selectedUsers.append(radarUsers[(sender.view?.tag)!])
@@ -666,11 +689,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Set to false
             selectedUserList[(sender.view?.tag)!].isSelected = false
             // Toggle the image
-            let image = UIImage(named: "radar-avatar")
+            /*let image = UIImage(named: "radar-avatar")
             let imageView = UIImageView(image: image!)
-            
             // Add new image to sender
-            sender.view?.addSubview(imageView)
+            //sender.view?.addSubview(imageView)*/
+            
+            // Set tint to show deselection
+            sender.view?.tintColor = UIColor.clear
+            
             
         }
         
@@ -739,9 +765,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             if granted {
                 DispatchQueue.main.async {
                     self.accessGrantedForContacts()
+                    Countly.sharedInstance().recordEvent("granted contacts access")
                     //self.getContacts()
                     return
                 }
+            } else {
+                
+                Countly.sharedInstance().recordEvent("blocked contacts access")
+                
+                
             }
         }
     }
@@ -762,11 +794,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     func saveCurrentLocation(_ center:CLLocationCoordinate2D){
         let message = "THIS IS THE CURRENT \(center.latitude) , \(center.longitude)"
         
-        // Set lat and long 
+        // Set lat and long
         self.lat = center.latitude
         self.long = center.longitude
-        print(message)
-    
+        //print(message)
+        
         
         // Get Location
         let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
@@ -775,7 +807,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Geocode Location
         let geocoder = CLGeocoder()
         
-       /* let paramString = "latitude=\(center.latitude)&longitude=\(center.longitude)&uuid=\(global_uuid!)"*/
+        /* let paramString = "latitude=\(center.latitude)&longitude=\(center.longitude)&uuid=\(global_uuid!)"*/
         
         
         // Upload location to sever
@@ -784,8 +816,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             // Process Response
             if let placemarks = placemarks, let placemark = placemarks.first {
-                print( placemark.compactAddress)
-                // Set placemark address 
+                //print( placemark.compactAddress)
+                // Set placemark address
                 self.address = placemark.compactAddress!
             }
         }
@@ -796,23 +828,57 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     
+    func removePlottedPeople(_ containerView: UIView) {
+        
+        for view in containerView.subviews {
+            
+            if view.tag < 5000
+            {
+                UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                    view.alpha = 0
+                }) { (Bool) -> Void in
+                    
+                    view.removeFromSuperview()
+                    
+                }
+            }
+            
+            
+            
+        }
+        
+    }
+    
+    
+    func removeHalo(_ containerView: UIView) {
+       
+        for layer in containerView.layer.sublayers! {
+            
+            print(layer)
+            print("------")
+        
+            
+            
+        }
+        
+    }
+    
+    
+    
+    
     func updateLocation(){
         
         // Update location tick
         updateLocation_tick = updateLocation_tick + 1
         
+        /*
         // Flip switch if count == 4
-        if updateLocation_tick == 4 {
+        if updateLocation_tick == 4 && radarStatus == true {
             
             // Set receieved to false
             self.didReceieveList = false
             
-            // Clear the user list here
-            self.radarUsers.removeAll()
-            // Clear Views 
-            self.removePlottedPeople(self.pulseView)
-            
-            // Check if radar button on the remount halo w/ animation 
+                      // Check if radar button on the remount halo w/ animation
             if self.radarSwitch.isOn {
                 
                 // Flip all radar actions back to true
@@ -825,13 +891,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 print("The radar is off so its cool")
             }
         }
+        */
         
         print(updateLocation_tick)
         
         // Check is list should be refreshed
         
-
-        if updateLocation_tick >= 5
+        
+        if updateLocation_tick >= 5  && radarStatus == true
         {
             updateLocation_tick = 0
             
@@ -839,12 +906,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.endRadar()
             
             
-            if didReceieveList == false {
-                // Set the value to true so the requests stop
-                self.didReceieveList = true
-                
-                
             
+                
                 // Hit endpoint for updates on users nearby
                 let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
                 
@@ -854,21 +917,27 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
                     if error == nil {
                         
-                        print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                        //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                         
                         let dictionary : NSArray = response as! NSArray
-
-                        print(dictionary)
+                        
+                        print("data length", dictionary.count)
                         
                         // Set counter to 0
                         self.counter = 0
                         
-                        // Clear radar list
-                        self.radarUsers.removeAll()
+                        if  dictionary.count >= 0
+                        {
+                            // Clear radar list
+                            self.removePlottedPeople(self.pulseView)
+                            self.radarUsers.removeAll()
+                        }
                         
+                       
+
                         for item in dictionary {
                             
-                            print(item)
+                            //print(item)
                             
                             let userDict = item as? NSDictionary
                             
@@ -885,7 +954,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             // Append users to radarContacts array
                             self.radarContacts.append(user)
-                            print("Radar List Count >>>> \(self.radarContacts.count)")
+                            //print("Radar List Count >>>> \(self.radarContacts.count)")
                             // Set random coordinates for plotting images on radar
                             let distance = Int(random: -5..<10)
                             let direction = Int(random: -5..<10)
@@ -919,7 +988,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             print("Updating location")
             
-        }
+        
     }
     
     
@@ -930,7 +999,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.centerMap(locValue)
         
     }
-
+    
     
     
     
@@ -1137,7 +1206,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                                 
                                 //self.uploadUserThumb(image: person.image!, recordId: person.recordID)
                                 
-                               // personJsonRecord["profilePicture_local"].stringValue = "\(global_uuid!)-\(person.recordID).jpg"
+                                // personJsonRecord["profilePicture_local"].stringValue = "\(global_uuid!)-\(person.recordID).jpg"
                                 
                                 //let imageData: NSData = UIImageJPEGRepresentation(person.image!, 0.4)! as NSData
                                 //personJsonRecord["imageData"].stringValue =  imageData.base64EncodedString()
@@ -1224,7 +1293,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             // Output person object as string value
                             let strval = String(records)
-                            print(">>>", strval)
+                            //print(">>>", strval)
                             jsonRecordOutput[strval].object = personJsonRecord.object
                             records = records + 1
                             jsonRecord.append(personJsonRecord)
@@ -1352,10 +1421,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     // Navigation
     // ------------------------------------------------------------
-
+    
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
@@ -1369,10 +1438,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             contactVC.selectedUser = self.selectedUser
         }
     }
- 
-
+    
 }
-
 
 // Extensions
 // ------------------------------------------------------------
@@ -1420,9 +1487,6 @@ extension CLPlacemark {
     
 }
 
-
-
-
 extension NSMutableData {
     
     func appendString(string: String) {
@@ -1431,7 +1495,6 @@ extension NSMutableData {
     }
     
 }
-
 
 extension Int {
     init(random range: Range<Int>) {

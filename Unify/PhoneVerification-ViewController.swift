@@ -141,6 +141,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func sendConfirmationBtn_click(_ sender: Any) {
         
+         Countly.sharedInstance().recordEvent("send phone number for verification")
+        
         // Assign phone number to currentUser Object
         currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
         

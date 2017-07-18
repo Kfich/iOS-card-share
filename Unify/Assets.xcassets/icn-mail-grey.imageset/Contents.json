@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icn-mail-grey.png",
+      "filename" : "icn-mail-grey@3x-2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icn-mail-grey@2x.png",
+      "filename" : "icn-mail-grey@3x-1.png",
       "scale" : "2x"
     },
     {
