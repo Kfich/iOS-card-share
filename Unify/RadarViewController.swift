@@ -137,15 +137,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.sendCardButton.tag = 5102
         
         //add halo to pulseview as sublayer only once when view loads to prevent dups
-<<<<<<< HEAD
-        halo.position.y = pulseView.frame.height / 2.85
-        halo.position.x = pulseView.frame.width / 1.8
-=======
 
         halo.position.y = pulseView.frame.height / 2.85
         halo.position.x = pulseView.frame.width / 1.8
 
->>>>>>> b3b6df059b050c61b4beca1108420547e3691a0f
         halo.haloLayerNumber = 3;
         
         // Set radius
@@ -155,23 +150,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         pulseView.layer.addSublayer(halo)
 
-        
-<<<<<<< HEAD
-        
-        // Configure background image graphics
-        
-       /* UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)*/
-        
-        
-=======
->>>>>>> b3b6df059b050c61b4beca1108420547e3691a0f
+  
     }
     
     override func didReceiveMemoryWarning() {
