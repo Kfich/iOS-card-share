@@ -5361,14 +5361,6 @@
                                                     <action selector="sendCardSelected:" destination="ToP-Xd-t3l" eventType="touchUpInside" id="b63-sQ-GlZ"/>
                                                 </connections>
                                             </button>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YzR-rW-J1T">
-                                                <rect key="frame" x="225" y="44" width="150" height="150"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="150" id="a2r-ZB-VTZ"/>
-                                                    <constraint firstAttribute="width" constant="150" id="eQl-1t-vhW"/>
-                                                </constraints>
-                                            </view>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="radar_logo" translatesAutoresizingMaskIntoConstraints="NO" id="reK-k5-yI2">
                                                 <rect key="frame" x="0.0" y="14" width="375" height="219"/>
                                             </imageView>
@@ -5380,9 +5372,7 @@
                                             <constraint firstAttribute="trailing" secondItem="reK-k5-yI2" secondAttribute="trailing" id="dJi-Mv-3vn"/>
                                             <constraint firstItem="kXv-dk-MWY" firstAttribute="leading" secondItem="D7w-bm-eNA" secondAttribute="trailing" constant="65" id="lWV-zp-2L9"/>
                                             <constraint firstItem="D7w-bm-eNA" firstAttribute="bottom" secondItem="oqB-lr-BSg" secondAttribute="bottomMargin" constant="-20" id="nkn-w0-cZh"/>
-                                            <constraint firstItem="YzR-rW-J1T" firstAttribute="top" secondItem="oqB-lr-BSg" secondAttribute="top" constant="44" id="p4k-dm-FwW"/>
                                             <constraint firstItem="reK-k5-yI2" firstAttribute="leading" secondItem="oqB-lr-BSg" secondAttribute="leading" id="rsK-IY-SyO"/>
-                                            <constraint firstAttribute="trailing" secondItem="YzR-rW-J1T" secondAttribute="trailing" id="vEX-Wx-upE"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -5411,8 +5401,9 @@
                     <navigationItem key="navigationItem" id="h2C-52-h0w"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
-                        <outlet property="container" destination="YzR-rW-J1T" id="ikj-w5-Fkf"/>
+                        <outlet property="addNewCardButton" destination="D7w-bm-eNA" id="ea5-yI-AzE"/>
                         <outlet property="pulseView" destination="oqB-lr-BSg" id="Gfk-yL-RE6"/>
+                        <outlet property="radarLogoImage" destination="reK-k5-yI2" id="KUT-RK-oXG"/>
                         <outlet property="radarOffLabel" destination="Ffz-J4-2ff" id="11O-dh-xYT"/>
                         <outlet property="radarSwitch" destination="I9Z-ta-Ya7" id="gMf-7G-r3Q"/>
                         <outlet property="rootView" destination="8wk-G2-KQv" id="m20-5C-qbe"/>
