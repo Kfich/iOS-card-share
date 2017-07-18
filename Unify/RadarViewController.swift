@@ -458,8 +458,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         pulseView.layer.addSublayer(halo)
         halo.start()
         
-        print("HALO COORDS")
-        print("x --> \(halo.position.x)   y --> \(halo.position.y)")
+        //print("HALO COORDS")
+        //print("x --> \(halo.position.x)   y --> \(halo.position.y)")
         
  
         
@@ -570,13 +570,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         Connection(configuration: nil).endRadarCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+               // print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                 
                 
             } else {
-                print(error)
+                print("End Radar Error", error)
                 // Show user popup of error message
-                print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+               // print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
                 //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
             }
             
@@ -757,7 +757,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Set lat and long 
         self.lat = center.latitude
         self.long = center.longitude
-        print(message)
+        //print(message)
     
         
         // Get Location
@@ -776,7 +776,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             // Process Response
             if let placemarks = placemarks, let placemark = placemarks.first {
-                print( placemark.compactAddress)
+                //print( placemark.compactAddress)
                 // Set placemark address 
                 self.address = placemark.compactAddress!
             }
@@ -886,7 +886,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         
                         let dictionary : NSArray = response as! NSArray
 
-                        print(dictionary)
+                        print("data length", dictionary.count)
                         
                         // Set counter to 0
                         self.counter = 0
