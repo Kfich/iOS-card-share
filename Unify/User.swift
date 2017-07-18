@@ -81,6 +81,12 @@ public class User{
         fullName = getName()
         // Testing to see if populated
         printUser()
+        
+        if userId != "" {
+            Countly.sharedInstance().setNewDeviceID(userId, onServer:true)
+        }
+        
+        
     }
     
     // Custom Methods
