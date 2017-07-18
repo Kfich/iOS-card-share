@@ -555,7 +555,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             if error == nil {
                 
                 print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
-                KVNProgress.showSuccess()
+                
                 
             } else {
                 print(error)

@@ -186,27 +186,32 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                 
                 // Init dictionary to capture response
-                let dictionary = response as! [String : Any]
-                
-                // Parse dictionary for array of trans
-                let dictionaryArray = dictionary["transactions"] as! NSArray
-                
-                // Iterate over array, append trans to list
-                for item in dictionaryArray {
-                    // Update counter
-                    // Init user objects from array
-                    let trans = Transaction(snapshot: item as! NSDictionary)
-                    trans.printTransaction()
-   
-                    // Append users to radarContacts array
-                    self.transactions.append(trans)
+                if let dictionary = response as? [String : Any] {
+                    // // Parse dictionary for array of trans
+                    let dictionaryArray = dictionary["transactions"] as! NSArray
+                    
+                    // Iterate over array, append trans to list
+                    for item in dictionaryArray {
+                        // Update counter
+                        // Init user objects from array
+                        let trans = Transaction(snapshot: item as! NSDictionary)
+                        trans.printTransaction()
+                        
+                        // Append users to radarContacts array
+                        self.transactions.append(trans)
+                    }
+                    
+                    // Update the table values
+                    self.tableView.reloadData()
+                    
+                    // Show sucess
+                    KVNProgress.showSuccess()
+                }else{
+                    print("Array empty !!!!")
+                    // dismiss HUD
+                    KVNProgress.dismiss()
                 }
                 
-                // Update the table values
-                self.tableView.reloadData()
-                
-                // Show sucess
-                KVNProgress.showSuccess()
                 
                 
             } else {
@@ -215,7 +220,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
                 KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
             }
-            
+            // Regardless, hide hud 
+            KVNProgress.dismiss()
         })
     
     }

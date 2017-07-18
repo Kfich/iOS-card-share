@@ -451,7 +451,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.profileCardWrapperView.clipsToBounds = true
         self.profileCardWrapperView.layer.borderWidth = 2.0
         self.profileCardWrapperView.layer.borderColor = UIColor.white.cgColor
-               
+        
         self.profileInfoTableView.layer.cornerRadius = 12.0
         self.profileInfoTableView.clipsToBounds = true
         self.profileInfoTableView.layer.borderWidth = 0.5
