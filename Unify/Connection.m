@@ -46,6 +46,12 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetUser];
 }
 
+- (NSURLSessionDataTask*)getUserListCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetUserList];
+}
+
+
+
 
 // Cards
 - (NSURLSessionDataTask*)createCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {

@@ -54,7 +54,11 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         // Add loading indicator
         
-        KVNProgress.show(withStatus: "Syncing Contacts...")
+        if ContactManager.sharedManager.contactListHasAppeared == false {
+            // If list hasn't appreard, show status
+            KVNProgress.show(withStatus: "Syncing Contacts...")
+        }
+        
         
         // Parse for contacts in contact list
         ContactManager.sharedManager.getContacts()
@@ -94,6 +98,13 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        // Set appeared to true
+        ContactManager.sharedManager.contactListHasAppeared = true
     }
     
     // IBActions 
@@ -267,6 +278,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     }
     
 }
+
+
 
 
 

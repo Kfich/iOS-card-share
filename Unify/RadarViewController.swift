@@ -870,9 +870,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Update location tick
         updateLocation_tick = updateLocation_tick + 1
         
-        /*
+        
         // Flip switch if count == 4
-        if updateLocation_tick == 4 && radarStatus == true {
+        /*if updateLocation_tick == 4 && radarStatus == true {
             
             // Set receieved to false
             self.didReceieveList = false
@@ -889,8 +889,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             }else{
                 print("The radar is off so its cool")
             }
-        }
-        */
+        }*/
+ 
         
         print(updateLocation_tick)
         

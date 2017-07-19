@@ -15,6 +15,7 @@
 #define kCreateUser           kServerURL(kAppwsServerURL, @"user/create")
 #define kGetUser              kServerURL(kAppwsServerURL, @"user/get")
 #define kUserUpdate           kServerURL(kAppwsServerURL, @"user/update")
+#define kGetUserList          kServerURL(kAppwsServerURL, @"user/getList")
 
 // Cards
 #define kCreateCard           kServerURL(kAppwsServerURL, @"card/create")
