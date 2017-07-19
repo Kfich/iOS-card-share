@@ -516,11 +516,21 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
          
          image = UIImage(named: "radar-avatar")!*/
         
+        // Create URL For Prod
+        let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
+        
+        // Create URL For Test
+        //let testURL = "https://project-unify-node-server.herokuapp.com/image/"
+        
+        
+        
         // Fetch user image reference
         if user.profileImageId != ""{
             // Grab image ref using alamo
             
-            let url = URL(string: "https://project-unify-node-server.herokuapp.com/image/\(user.profileImageId).jpg")!
+            // ** Currently Set to Prod URL
+            
+            let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
             let placeholderImage = UIImage(named: "radar-avatar")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)
@@ -892,7 +902,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             updateLocation_tick = 0
             
             // End radar first to clear instances of yourself
-            self.endRadar()
+            //self.endRadar()
             
             
             

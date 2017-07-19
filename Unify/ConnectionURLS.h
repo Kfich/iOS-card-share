@@ -1,12 +1,18 @@
 #ifndef hole19_ConnectionURLS_h
 #define hole19_ConnectionURLS_h
 
+
 #define kServerURL(server, action) [NSString stringWithFormat: server, action]
 
-#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
+
+// Test Server
+//#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
+
+// Production Server
+#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
 
 // User
-#define kCreateUser               kServerURL(kAppwsServerURL, @"user/create")
+#define kCreateUser           kServerURL(kAppwsServerURL, @"user/create")
 #define kGetUser              kServerURL(kAppwsServerURL, @"user/get")
 #define kUserUpdate           kServerURL(kAppwsServerURL, @"user/update")
 
