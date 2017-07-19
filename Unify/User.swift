@@ -21,6 +21,10 @@ public class User{
     var emails = [[String : String]]()
     var phoneNumbers = [[String : String]]()
     
+    // For radar 
+    var distance = Double()
+    var direction = Double()
+    
     // Main profile image
     
     // **************************** Add these to inits ****************************
@@ -64,6 +68,29 @@ public class User{
         // Testing to see if populated
         printUser()
     }
+    
+    init(withRadarSnapshot: NSDictionary) {
+        
+        userId = withRadarSnapshot.object(forKey: "uuid") as? String ?? ""
+        firstName = withRadarSnapshot["first_name"] as? String ?? ""
+        lastName = withRadarSnapshot["last_name"] as? String ?? ""
+        emails = withRadarSnapshot["email"] as? [[String : String]] ?? [["":""]]
+        phoneNumbers = withRadarSnapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        scope = withRadarSnapshot["scope"] as? String ?? ""
+        //profileImages = (snapshot["profile_image"] as? [[String : Any]])!
+        
+        profileImageId = withRadarSnapshot["profile_image_id"] as? String ?? ""
+        
+        // Keys for distance plotting 
+        distance = withRadarSnapshot["distance"] as? Double ?? 0.0
+        direction = withRadarSnapshot["direction"] as? Double ?? 0.0
+        
+        // To get full username
+        fullName = getName()
+        // Testing to see if populated
+        printUser()
+    }
+    
     
     init(withDefaultsSnapshot: NSDictionary) {
         

@@ -167,10 +167,10 @@ class CreateAccountViewController: UIViewController {
         print(parameters)
         
         // Create URL For Prod
-        let prodURL = "https://project-unify-node-server-stag.herokuapp.com/uploadcdn"
+        //let prodURL = "https://project-unify-node-server-stag.herokuapp.com/uploadcdn"
         
         // Create URL For Test
-        //let testURL = "https://project-unify-node-server.herokuapp.com/image/uploadcdn"
+        let testURL = "https://project-unify-node-server.herokuapp.com/image/uploadcdn"
         
         
         // Show progress HUD
@@ -186,7 +186,7 @@ class CreateAccountViewController: UIViewController {
             }*/
             
             // Currently Set to point to Prod Server
-        }, to:prodURL)
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):
