@@ -128,14 +128,53 @@ class CreateAccountViewController: UIViewController {
     @IBAction func createAccountBtn_click(_ sender: Any) {
         
         
-        print(firstName.text!)
-        print(lastName.text!)
+        
+        var isValid = false
+        
+        
+        if firstName.text! == ""
+        {
+            self.alertMessageOk(title: "Error", message: "Please add a first name")
+            return
+        }
+        
+        if lastName.text! == ""
+        {
+            self.alertMessageOk(title: "Error", message: "Please add a last name")
+            return
+        }
+        
+        if email.text! == ""
+        {
+            self.alertMessageOk(title: "Error", message: "Please add an email address")
+            return
+        } else {
+            
+            //since we have email let's validate it and throw error alert up if its bad
+             let isEmailAddressValid = isValidEmailAddress(emailAddressString: email.text!)
+            
+            if !isEmailAddressValid
+            {
+                self.alertMessageOk(title: "Error", message: "Please add a valid email address")
+                return
+            }
+            
+        }
+      
+        
+        //passed all tests setting to true to submit for profile creation
+        isValid = true
+        
+        if isValid {
         // Assign form values to user object
         newUser.emails.append(["profile_email": email.text!])
         newUser.firstName = firstName.text!
         newUser.lastName = lastName.text!
         newUser.setName(first: firstName.text!, last: lastName.text!)
         newUser.fullName = newUser.getName()
+        
+        
+        
         
         // Pull image data
         
@@ -251,7 +290,7 @@ class CreateAccountViewController: UIViewController {
         
         // Pass segue
         performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
-        
+        }
         
     }
     
@@ -354,6 +393,29 @@ class CreateAccountViewController: UIViewController {
     }
     
     
+    func isValidEmailAddress(emailAddressString: String) -> Bool {
+        
+        var returnValue = true
+        let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
+        
+        do {
+            let regex = try NSRegularExpression(pattern: emailRegEx)
+            let nsString = emailAddressString as NSString
+            let results = regex.matches(in: emailAddressString, range: NSRange(location: 0, length: nsString.length))
+            
+            if results.count == 0
+            {
+                returnValue = false
+            }
+            
+        } catch let error as NSError {
+            print("invalid regex: \(error.localizedDescription)")
+            returnValue = false
+        }
+        
+        return  returnValue
+    }
+
     
     func processProfile(fileUrl: String){
         
@@ -448,4 +510,13 @@ class CreateAccountViewController: UIViewController {
 }
 
 
+
+extension UIViewController {
+    func alertMessageOk(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+}
 
