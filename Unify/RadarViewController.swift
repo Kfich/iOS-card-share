@@ -529,7 +529,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         //let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
         
         // Create URL For Test
-        let testURL = "https://project-unify-node-server-stag.herokuapp.com/image/" //"https://project-unify-node-server.herokuapp.com/image/"
+        let testURL = "https://project-unify-node-server.herokuapp.com/image/"
         
         
         
