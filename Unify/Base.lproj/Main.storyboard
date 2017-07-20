@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -25,8 +25,11 @@
         <array key="SanFranciscoDisplayBold.ttf">
             <string>.HelveticaNeueDeskInterface-Bold</string>
         </array>
-        <array key="SanFranciscoDisplayRegular.ttf">
-            <string>.HelveticaNeueDeskInterface-Regular</string>
+        <array key="SanFranciscoDisplayMedium.ttf">
+            <string>.HelveticaNeueDeskInterface-MediumP4</string>
+        </array>
+        <array key="SanFranciscoDisplayThin.ttf">
+            <string>.HelveticaNeueDeskInterface-Thin</string>
         </array>
         <array key="SanFranciscoDisplayUltralight.ttf">
             <string>.HelveticaNeueDeskInterface-UltraLightP2</string>
@@ -34,11 +37,8 @@
         <array key="SanFranciscoTextHeavy.ttf">
             <string>.HelveticaNeueDeskInterface-Heavy</string>
         </array>
-        <array key="SanFranciscoTextMedium.ttf">
-            <string>.HelveticaNeueDeskInterface-MediumP4</string>
-        </array>
-        <array key="SanFranciscoTextThin.ttf">
-            <string>.HelveticaNeueDeskInterface-Thin</string>
+        <array key="SanFranciscoTextRegular.ttf">
+            <string>.HelveticaNeueDeskInterface-Regular</string>
         </array>
     </customFonts>
     <scenes>
@@ -512,7 +512,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Introduction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwu-HV-9u8">
-                                        <rect key="frame" x="130" y="40.5" width="115" height="24"/>
+                                        <rect key="frame" x="126" y="40.5" width="123.5" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -712,7 +712,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3A-rR-eek">
-                                                <rect key="frame" x="145.5" y="34" width="83.5" height="24"/>
+                                                <rect key="frame" x="142.5" y="34" width="89.5" height="24"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -2536,7 +2536,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="52Y-lo-Mgg">
-                                        <rect key="frame" x="153" y="34" width="70" height="24"/>
+                                        <rect key="frame" x="150" y="34" width="76.5" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
@@ -2896,7 +2896,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follow Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUv-sN-bN5">
-                                        <rect key="frame" x="143.5" y="37" width="89.5" height="24"/>
+                                        <rect key="frame" x="141" y="37" width="95" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -3400,7 +3400,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bio" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ck-YU-Afr">
-                                                            <rect key="frame" x="13" y="5" width="23" height="22"/>
+                                                            <rect key="frame" x="13" y="5" width="24" height="22"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="22" id="LiF-0I-3I6"/>
                                                             </constraints>
@@ -5666,7 +5666,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bio" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gz-p0-LYC">
-                                                                    <rect key="frame" x="13" y="5" width="23" height="22"/>
+                                                                    <rect key="frame" x="13" y="5" width="24" height="22"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="22" id="4SD-2E-FB6"/>
                                                                     </constraints>
@@ -6118,7 +6118,7 @@
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-nB-kEB">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icn-phone-grey" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-nB-kEB">
                                                                     <rect key="frame" x="138" y="67" width="20" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="YSp-lE-3UV"/>
@@ -6131,7 +6131,7 @@
                                                                     <color key="textColor" red="0.015686274510000001" green="0.2901960784" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ZG9-QO-3N1">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icn-mail-grey" translatesAutoresizingMaskIntoConstraints="NO" id="ZG9-QO-3N1">
                                                                     <rect key="frame" x="145" y="99" width="22.5" height="16.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="0Bl-x8-4Ee"/>
@@ -7510,7 +7510,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="96D-Wp-ZH6">
-                                                        <rect key="frame" x="8" y="39" width="123" height="25"/>
+                                                        <rect key="frame" x="8" y="39" width="130" height="25"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="gy4-Z1-S4G"/>
                                                         </constraints>
