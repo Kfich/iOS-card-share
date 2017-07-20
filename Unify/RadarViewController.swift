@@ -567,7 +567,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         lbl.text = user.getName()
         lbl.textAlignment = .left
         lbl.textColor = UIColor.white
-        lbl.font = UIFont(name: "Avenir", size: CGFloat(10))
+        lbl.font = UIFont(name: "SanFranciscoTextRegular", size: CGFloat(10))
         
         // Configure Hover Animation
         let hover = CABasicAnimation(keyPath: "position")
