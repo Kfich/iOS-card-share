@@ -660,6 +660,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
         conf?.circleSize = 170
+        conf?.lineWidth = 10
         conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
@@ -692,11 +693,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error sending your card. Please try again.")
+                KVNProgress.showError(withStatus: "There was an error. Please try again.")
                 
             }
-            // Hide indicator
-           // KVNProgress.dismiss()
+          
             
             // Clear List of recipients
             self.selectedUserIds.removeAll()
