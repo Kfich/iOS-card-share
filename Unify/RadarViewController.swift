@@ -692,7 +692,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
                 self.removePlottedPeople(self.pulseView)
                 self.radarUsers.removeAll()
-                self.radarStatus == true
+                self.radarStatus = true
                 
                 
             } else {
