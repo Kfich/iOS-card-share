@@ -562,7 +562,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         imageView.frame = CGRect(x: 0, y: 0 , width: 60, height: 60)
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(10, 60, 60, 15))
+        let lbl = UILabel(frame: CGRect(0, 60, 60, 15))
         // Set name to label
         lbl.text = user.getName()
         lbl.textAlignment = .center
@@ -583,7 +583,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Hover config
         hover.toValue = NSValue(cgPoint: CGPoint(x: xx, y: yy))
         hover.autoreverses = true
-        hover.duration = 0.5
+        hover.duration = 0.9
         hover.repeatCount = Float.infinity
         
         // Add animation to container
