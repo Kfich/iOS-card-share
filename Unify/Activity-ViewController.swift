@@ -34,6 +34,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        // Set currentUser object 
+        currentUser = ContactManager.sharedManager.currentUser
         
         // Fetch the users transactions 
         getTranstactions()
@@ -93,10 +95,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.selectedTransaction = self.transactions[indexPath.row]
         
         // Get users in transaction
-        //self.fetchUsersForTransaction()
+        self.fetchUsersForTransaction()
         
         // Pass in segue
-        self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
+        //self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
         
         
     }
@@ -253,31 +255,27 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                 
                 // Init dictionary to capture response
-                let userArray = response as? [String : Any]
+                let userArray = response as? NSDictionary
                     // // Parse dictionary for array of trans
                 print(userArray)
                     
-                    // Iterate over array, append trans to list
-                for item in userArray!{
+                let userList = userArray?["data"] as! NSArray
+                
+                
+                // Iterate over array, append trans to list
+                for item in userList{
                         
                         // Init user objects from array
-                    //let contact = item.value["profile_phone"] as? Dictionary
-                    //print(phone)
-                        
-                        
+                    let user = User(snapshot: item as! NSDictionary)
+                
                     // Append users to Selected array
-                    //self.selectedUsers.append(user)
+                    self.selectedUsers.append(user)
                 }
                 
-                let list = self.retrievePhoneForUsers(contactsArray: self.selectedUsers)
+                // Func to parse phone numbers and show sms client
+                self.parseAndSend()
                 
                 
-                for item in list {
-                    
-                    print(item)
-                    print("YOOOO")
-                    
-                }
                     
                 // Show sucess
                 KVNProgress.showSuccess()
@@ -332,6 +330,45 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         return phoneList
         
     }
+    
+    func createTransaction(type: String) {
+        // Set Type
+        self.selectedTransaction.type = type
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Making the introduction...")
+        
+        // Save card to DB
+        let parameters = ["data": self.selectedTransaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(response)")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.selectedTransaction.transactionId = (dictionary["uuid"] as? String)!
+                
+                // Insert to manager card array
+                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Created Error Response ---> \(error)")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+
 
     // View Configuration
 
@@ -415,7 +452,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             composeVC.messageComposeDelegate = self
             
             // Configure message
-            let str = "Hi\n\n, It was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n"
+            let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n"
             
             // Set message string
             composeVC.body = str
@@ -489,46 +526,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     
-    // Custom Methods
-    
-    func createTransaction(type: String) {
-        // Set Type
-        self.selectedTransaction.type = type
-        
-        // Show progress hud
-        KVNProgress.show(withStatus: "Making the introduction...")
-        
-        // Save card to DB
-        let parameters = ["data": self.selectedTransaction.toAnyObject()]
-        print(parameters)
-        
-        // Send to server
-        
-        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
-            if error == nil {
-                print("Card Created Response ---> \(response)")
-                
-                // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                self.selectedTransaction.transactionId = (dictionary["uuid"] as? String)!
-                
-                // Insert to manager card array
-                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
-                
-                // Hide HUD
-                KVNProgress.dismiss()
-                
-            } else {
-                print("Card Created Error Response ---> \(error)")
-                // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
-                
-            }
-            // Hide indicator
-            KVNProgress.dismiss()
-        }
-    }
-
     
     // MARK: MFMailComposeViewControllerDelegate Method
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {

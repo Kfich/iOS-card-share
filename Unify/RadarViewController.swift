@@ -137,18 +137,36 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.sendCardButton.tag = 5102
         
         //add halo to pulseview as sublayer only once when view loads to prevent dups
-
-        halo.position.y = pulseView.frame.height / 2.85
-        halo.position.x = pulseView.frame.width / 1.8
+        
+        if (UIScreen.main.bounds.size.height == 667.0 && UIScreen.main.nativeScale < UIScreen.main.scale){
+            //plus device
+            halo.position.y = pulseView.frame.height / 2.55
+            halo.position.x = pulseView.frame.width / 1.8
+            print("iphone 6 plus zoomed")
+        } else {
+            //standard device
+            halo.position.y = pulseView.frame.height / 2.55
+            halo.position.x = pulseView.frame.width / 1.8
+            print("iphone 6 plus")
+        }
+        if (UIScreen.main.bounds.size.height == 568.0 && UIScreen.main.nativeScale > UIScreen.main.scale) {
+            print("zoomed iphone 6")
+        } else {
+            print("none zoomed")
+        }
+        
 
         halo.haloLayerNumber = 3;
         
         // Set radius
-        halo.radius = 100;
+        halo.radius = 150;
         
         halo.backgroundColor = UIColor.white.cgColor
         
         pulseView.layer.addSublayer(halo)
+
+        halo.opacity = 0
+        halo.start()
 
   
     }
@@ -465,30 +483,20 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func pulseMe(status: String?){
         
-        print("status", status)
-        
-        
         if status == "show"
         {
         
-          
-        halo.start()
-        
-        //print("HALO COORDS")
-        //print("x --> \(halo.position.x)   y --> \(halo.position.y)")
+          halo.opacity = 0.7
+         
         
         } else {
             
-        
-            
-            //PulsingHaloLayer.removeFromSuperlayer(self.pulseView.layer)
-            
-             //self.removeHalo(self.pulseView)
+            halo.opacity = 0
             
         }
         
-        
     }
+    
     
     // Radar
     // -------------------------------------------------------------------
@@ -562,12 +570,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         imageView.frame = CGRect(x: 0, y: 0 , width: 60, height: 60)
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(0, 55, 80, 15))
+        let lbl = UILabel(frame: CGRect(0, 60, 60, 15))
         // Set name to label
         lbl.text = user.getName()
-        lbl.textAlignment = .left
+        lbl.textAlignment = .center
         lbl.textColor = UIColor.white
-        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        lbl.font = UIFont(name: ".SFUIText-Medium", size: CGFloat(10))
         
         // Configure Hover Animation
         let hover = CABasicAnimation(keyPath: "position")
@@ -583,7 +591,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Hover config
         hover.toValue = NSValue(cgPoint: CGPoint(x: xx, y: yy))
         hover.autoreverses = true
-        hover.duration = 0.5
+        hover.duration = 0.9
         hover.repeatCount = Float.infinity
         
         // Add animation to container
@@ -646,6 +654,19 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Set type
         transaction.type = type
         // Show progress hud
+        
+        let conf = KVNProgressConfiguration.default()
+        conf?.isFullScreen = true
+        conf?.statusColor = UIColor.white
+        conf?.successColor = UIColor.white
+        conf?.circleSize = 170
+        conf?.lineWidth = 10
+        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
+        conf?.circleStrokeBackgroundColor = UIColor.white
+        conf?.circleStrokeForegroundColor = UIColor.white
+        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+        KVNProgress.setConfiguration(conf)
+        
         KVNProgress.show(withStatus: "Sending your card...")
         
         // Save card to DB
@@ -666,17 +687,21 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
                 
                 // Hide HUD
-                KVNProgress.dismiss()
+                //KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "You are now connected!")
+                
+                self.removePlottedPeople(self.pulseView)
+                self.radarUsers.removeAll()
+                self.radarStatus = true
                 
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error sending your card. Please try again.")
+                KVNProgress.showError(withStatus: "There was an error. Please try again.")
                 
             }
-            // Hide indicator
-            KVNProgress.dismiss()
+          
             
             // Clear List of recipients
             self.selectedUserIds.removeAll()
@@ -690,18 +715,26 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if selectedUserList[(sender.view?.tag)!].isSelected != true {
             // Set to true
             selectedUserList[(sender.view?.tag)!].isSelected = true
-            // Toggle the image
-            let image = UIImage(named: "green")
-            let imageView = UIImageView(image: image!)
-            // Add new image to sender
-            sender.view?.addSubview(imageView)
             
-            // Make sender bigger 
+            
+            // Make sender bigger
+            radarStatus = false
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-                sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 100, height: 100)
                 
-            })
+                //assuming the image is loaded second
+                
+                sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 100, height: 100)
+                
+                sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! + 10, width: 100, height: 100)
+                
+            }) { (Bool) -> Void in
+                
+                sender.view?.subviews[1].layer.borderWidth = 4
+                sender.view?.subviews[1].layer.cornerRadius = 50
+                sender.view?.subviews[1].layer.borderColor = UIColor.green.cgColor
+
+            }
             
             // Set tint to show selected
             //sender.view?.tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
@@ -711,23 +744,26 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Test count
             print("Selected User List Count --> \(selectedUsers.count)")
             
-        }else{
+        } else{
             // Set to false
             selectedUserList[(sender.view?.tag)!].isSelected = false
             // Toggle the image
-            /*let image = UIImage(named: "radar-avatar")
-            let imageView = UIImageView(image: image!)
-            // Add new image to sender
-            //sender.view?.addSubview(imageView)*/
             
+            
+            sender.view?.subviews[1].layer.borderWidth = 0
+            sender.view?.subviews[1].layer.cornerRadius = 0
+            sender.view?.subviews[1].layer.borderColor = UIColor.clear.cgColor
+
             // Set tint to show deselection
             sender.view?.tintColor = UIColor.clear
             
             // Set to regular size 
+            radarStatus = true
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-                sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 60, height: 60)
+                sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 60, height: 60)
                 
+                sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! - 10, width: 60, height: 15)
             })
             
         }
