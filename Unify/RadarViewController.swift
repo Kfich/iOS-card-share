@@ -150,6 +150,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         pulseView.layer.addSublayer(halo)
 
+        halo.opacity = 0
+        halo.start()
+
   
     }
     
@@ -471,15 +474,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if status == "show"
         {
         
-          
-        halo.start()
+          halo.opacity = 1
+            
         
         //print("HALO COORDS")
         //print("x --> \(halo.position.x)   y --> \(halo.position.y)")
         
         } else {
             
-        
+            halo.opacity = 0
             
             //PulsingHaloLayer.removeFromSuperlayer(self.pulseView.layer)
             
