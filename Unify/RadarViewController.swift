@@ -486,7 +486,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if status == "show"
         {
         
-          halo.opacity = 1
+          halo.opacity = 0.7
          
         
         } else {
