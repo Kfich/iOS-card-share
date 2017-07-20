@@ -696,10 +696,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Add new image to sender
             sender.view?.addSubview(imageView)
             
-            // Make sender bigger 
+            // Make sender bigger
+            radarStatus = false
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-                sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 100, height: 100)
+                
+                //assuming the image is loaded second
+                sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 100, height: 100)
+                
+                sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! + 10, width: 100, height: 100)
                 
             })
             
@@ -724,10 +729,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             sender.view?.tintColor = UIColor.clear
             
             // Set to regular size 
+            radarStatus = true
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-                sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 60, height: 60)
+                sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 60, height: 60)
                 
+                sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! - 10, width: 60, height: 15)
             })
             
         }
