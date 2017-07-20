@@ -690,6 +690,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 //KVNProgress.dismiss()
                 KVNProgress.showSuccess(withStatus: "You are now connected!")
                 
+                self.removePlottedPeople(self.pulseView)
+                self.radarUsers.removeAll()
+                self.radarStatus == true
+                
+                
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
