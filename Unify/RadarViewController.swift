@@ -690,11 +690,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if selectedUserList[(sender.view?.tag)!].isSelected != true {
             // Set to true
             selectedUserList[(sender.view?.tag)!].isSelected = true
-            // Toggle the image
-            let image = UIImage(named: "green")
-            let imageView = UIImageView(image: image!)
-            // Add new image to sender
-            sender.view?.addSubview(imageView)
+            
             
             // Make sender bigger
             radarStatus = false
@@ -702,11 +698,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
                 
                 //assuming the image is loaded second
+                
                 sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 100, height: 100)
                 
                 sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! + 10, width: 100, height: 100)
                 
-            })
+            }) { (Bool) -> Void in
+                
+                sender.view?.subviews[1].layer.borderWidth = 4
+                sender.view?.subviews[1].layer.cornerRadius = 50
+                sender.view?.subviews[1].layer.borderColor = UIColor.green.cgColor
+
+            }
             
             // Set tint to show selected
             //sender.view?.tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
@@ -720,11 +723,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Set to false
             selectedUserList[(sender.view?.tag)!].isSelected = false
             // Toggle the image
-            /*let image = UIImage(named: "radar-avatar")
-            let imageView = UIImageView(image: image!)
-            // Add new image to sender
-            //sender.view?.addSubview(imageView)*/
             
+            
+            sender.view?.subviews[1].layer.borderWidth = 0
+            sender.view?.subviews[1].layer.cornerRadius = 0
+            sender.view?.subviews[1].layer.borderColor = UIColor.clear.cgColor
+
             // Set tint to show deselection
             sender.view?.tintColor = UIColor.clear
             
