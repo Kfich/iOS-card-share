@@ -33,6 +33,9 @@ class ContactManager{
     var userDidCreateCard = false
     var userSelectedEditCard = false
     
+    // ContactList for Refresh
+    var contactListHasAppeared = false
+    
     
     // Card and User Objects
     var currentUser = User()

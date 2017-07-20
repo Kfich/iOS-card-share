@@ -166,6 +166,13 @@ class CreateAccountViewController: UIViewController {
         let parameters = imageDict
         print(parameters)
         
+        // Create URL For Prod
+        //let prodURL = "https://project-unify-node-server-stag.herokuapp.com/uploadcdn"
+        
+        // Create URL For Test
+        let testURL = "https://project-unify-node-server.herokuapp.com/image/uploadcdn"
+        
+        
         // Show progress HUD
         KVNProgress.show(withStatus: "Generating profile..")
         
@@ -177,7 +184,9 @@ class CreateAccountViewController: UIViewController {
             /*for (key, value) in parameters {
                 multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
             }*/
-        }, to:"https://project-unify-node-server.herokuapp.com/image/uploadcdn")
+            
+            // Currently Set to point to Prod Server
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):

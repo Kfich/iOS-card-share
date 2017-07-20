@@ -112,7 +112,6 @@
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
 		FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE041F17FC0200AF3A08 /* RadarContactSelectionViewController.swift */; };
-		FBFDFE091F1D04D800AF3A08 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBB1D661F1C6C43009698D9 /* Eureka.framework */; };
 		FBFDFE0A1F1D04D800AF3A08 /* Eureka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBB1D661F1C6C43009698D9 /* Eureka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -320,7 +319,6 @@
 				FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */,
 				741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */,
 				FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */,
-				FBFDFE091F1D04D800AF3A08 /* Eureka.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -697,7 +695,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Crane by Elly";
 				TargetAttributes = {
 					1CAE5B7F1E913A06006EFF40 = {

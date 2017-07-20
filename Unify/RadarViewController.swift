@@ -516,12 +516,22 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
          
          image = UIImage(named: "radar-avatar")!*/
         
+        // Create URL For Prod
+        //let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
+        
+        // Create URL For Test
+        let testURL = "https://project-unify-node-server.herokuapp.com/image/"
+        
+        
+        
         // Fetch user image reference
         if user.profileImageId != ""{
             // Grab image ref using alamo
             
-            let url = URL(string: "https://project-unify-node-server.herokuapp.com/image/\(user.profileImageId).jpg")!
-            let placeholderImage = UIImage(named: "radar-avatar")!
+            // ** Currently Set to Prod URL
+            
+            let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+            let placeholderImage = UIImage(named: "user")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)
             
@@ -530,14 +540,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
         }else{
             // Set image to default image
-            image = UIImage(named: "radar-avatar")!
+            image = UIImage(named: "user")!
         }
         
-        
         //let imageView = UIImageView()
-        
-        // Changed the image rendering size
-        imageView.frame = CGRect(x: 100 + (10 * direction), y: 80 - (10 * distance), width: 60, height: 60)
         //imageView.frame = CGRect(x: 50, y: 80, width: 60, height: 60)
         
         //imageView.backgroundColor = .black
@@ -545,34 +551,58 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         imageView.layer.cornerRadius = imageView.frame.size.width/2
         imageView.clipsToBounds = true
         
-        let hover = CABasicAnimation(keyPath: "position")
+        // Init container view for wrapper
         
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
+        containerView.backgroundColor = UIColor.clear
+        
+        // Changed the image rendering size
+        containerView.frame = CGRect(x: 100 + (10 * direction), y: 80 - (10 * distance), width: 60, height: 60)
+        // Changed the image rendering size
+        imageView.frame = CGRect(x: 0, y: 0 , width: 60, height: 60)
+        
+        // Add label to the view
+        let lbl = UILabel(frame: CGRect(0, 55, 80, 15))
+        // Set name to label
+        lbl.text = user.getName()
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor.white
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        
+        // Configure Hover Animation
+        let hover = CABasicAnimation(keyPath: "position")
         hover.isAdditive = true
         hover.fromValue = NSValue(cgPoint: CGPoint.zero)
         
+        // Create coordinates for hovering
         let xx = Int(random: -5..<5)
         let yy = Int(random: -5..<5)
         
         print(">>\(xx, yy)")
         
+        // Hover config
         hover.toValue = NSValue(cgPoint: CGPoint(x: xx, y: yy))
         hover.autoreverses = true
         hover.duration = 0.5
         hover.repeatCount = Float.infinity
         
-        imageView.layer.add(hover, forKey: "myHoverAnimation")
+        // Add animation to container
+        containerView.layer.add(hover, forKey: "myHoverAnimation")
         
-        // Add action tap gesture to objects
-        // Add
+        // Add action tap gesture to view object
         let imageAction = UITapGestureRecognizer(target: self, action: #selector(radarContactSelected(sender:)))
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(imageAction)
+        containerView.isUserInteractionEnabled = true
+        containerView.addGestureRecognizer(imageAction)
         
         // Assign tag to image to identify what index in the array user lies
-        imageView.tag = tag
+        containerView.tag = tag
+        
+        // Add subviews
+        containerView.addSubview(lbl)
+        containerView.addSubview(imageView)
         
         // Adding image of contact to map screen
-        self.pulseView.addSubview(imageView)
+        self.pulseView.addSubview(containerView)
         
         // test on main view
         /*let lbl = UILabel()
@@ -666,11 +696,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Add new image to sender
             sender.view?.addSubview(imageView)
             
-            
+            // Make sender bigger 
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-             sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 100, height: 100)
-            
+                sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 100, height: 100)
+                
             })
             
             // Set tint to show selected
@@ -681,7 +711,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Test count
             print("Selected User List Count --> \(selectedUsers.count)")
             
-        }else{
+        } else{
             // Set to false
             selectedUserList[(sender.view?.tag)!].isSelected = false
             // Toggle the image
@@ -693,6 +723,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Set tint to show deselection
             sender.view?.tintColor = UIColor.clear
             
+            // Set to regular size 
+            UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                
+                sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 60, height: 60)
+                
+            })
             
         }
         
@@ -867,9 +903,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Update location tick
         updateLocation_tick = updateLocation_tick + 1
         
-        /*
+        
         // Flip switch if count == 4
-        if updateLocation_tick == 4 && radarStatus == true {
+        /*if updateLocation_tick == 4 && radarStatus == true {
             
             // Set receieved to false
             self.didReceieveList = false
@@ -886,8 +922,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             }else{
                 print("The radar is off so its cool")
             }
-        }
-        */
+        }*/
+ 
         
         print(updateLocation_tick)
         
@@ -938,7 +974,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             let userDict = item as? NSDictionary
                             
                             // Init user objects from array
-                            let user = User(snapshot: userDict!)
+                            let user = User(withRadarSnapshot: userDict!)
                             //user.printUser()
                             // Add to list of users on radar
                             self.radarUsers.append(user)
@@ -951,13 +987,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             // Append users to radarContacts array
                             self.radarContacts.append(user)
                             //print("Radar List Count >>>> \(self.radarContacts.count)")
+                            
                             // Set random coordinates for plotting images on radar
+                            let distance = user.distance
+                            let direction = user.direction
+                            
+                            /*
                             let distance = Int(random: -5..<10)
-                            let direction = Int(random: -5..<10)
+                            let direction = Int(random: -5..<10)*/
                             
                             // plot person on map
                             // The tag is used to tag images to identify their index in the array
-                            self.plotPerson(distance: distance, direction: direction, tag: self.counter)
+                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
                             print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
                             
                             // Update counter
