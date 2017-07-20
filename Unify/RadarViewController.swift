@@ -654,6 +654,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Set type
         transaction.type = type
         // Show progress hud
+        
+        let conf = KVNProgressConfiguration.default()
+        conf?.isFullScreen = true
+        conf?.statusColor = UIColor.white
+        conf?.successColor = UIColor.white
+        conf?.circleSize = 170
+        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
+        conf?.circleStrokeBackgroundColor = UIColor.white
+        conf?.circleStrokeForegroundColor = UIColor.white
+        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+        KVNProgress.setConfiguration(conf)
+        
         KVNProgress.show(withStatus: "Sending your card...")
         
         // Save card to DB
@@ -674,8 +686,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
                 
                 // Hide HUD
-                KVNProgress.dismiss()
-                
+                //KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "You are now connected!")
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
@@ -684,7 +696,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
             }
             // Hide indicator
-            KVNProgress.dismiss()
+           // KVNProgress.dismiss()
             
             // Clear List of recipients
             self.selectedUserIds.removeAll()
