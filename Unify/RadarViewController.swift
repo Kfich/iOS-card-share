@@ -137,9 +137,24 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.sendCardButton.tag = 5102
         
         //add halo to pulseview as sublayer only once when view loads to prevent dups
-
-        halo.position.y = pulseView.frame.height / 2.85
-        halo.position.x = pulseView.frame.width / 1.8
+        
+        if (UIScreen.main.bounds.size.height == 667.0 && UIScreen.main.nativeScale < UIScreen.main.scale){
+            //plus device
+            halo.position.y = pulseView.frame.height / 2.55
+            halo.position.x = pulseView.frame.width / 1.8
+            print("iphone 6 plus zoomed")
+        } else {
+            //standard device
+            halo.position.y = pulseView.frame.height / 2.55
+            halo.position.x = pulseView.frame.width / 1.8
+            print("iphone 6 plus")
+        }
+        if (UIScreen.main.bounds.size.height == 568.0 && UIScreen.main.nativeScale > UIScreen.main.scale) {
+            print("zoomed iphone 6")
+        } else {
+            print("none zoomed")
+        }
+        
 
         halo.haloLayerNumber = 3;
         
