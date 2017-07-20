@@ -144,7 +144,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         halo.haloLayerNumber = 3;
         
         // Set radius
-        halo.radius = 100;
+        halo.radius = 150;
         
         halo.backgroundColor = UIColor.white.cgColor
         
