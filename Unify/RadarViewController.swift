@@ -666,6 +666,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Add new image to sender
             sender.view?.addSubview(imageView)
             
+            
+            UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                
+             sender.view?.frame = CGRect(x: (sender.view?.frame.origin.x)!, y: (sender.view?.frame.origin.y)!, width: 100, height: 100)
+            
+            })
+            
             // Set tint to show selected
             //sender.view?.tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
             
@@ -892,7 +899,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             updateLocation_tick = 0
             
             // End radar first to clear instances of yourself
-            self.endRadar()
+            //self.endRadar()
             
             
             

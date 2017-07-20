@@ -21,6 +21,12 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     var firstCard = ContactCard()
     
     
+    // Variables
+    // --------------------------------
+
+    var retryAttempts = 0
+    
+    
     // Bar Styling
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -141,12 +147,53 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func sendConfirmationBtn_click(_ sender: Any) {
         
-         Countly.sharedInstance().recordEvent("send phone number for verification")
+        
+       
+        print(  validate(value: phoneNumberInput.text!) )
+        
+       if (phoneNumberInput.text!.isPhoneNumber == true)
+       {
+            retryAttempts = 0
+        
+            sendConfirmationBtn.isEnabled = false
+        
+            Countly.sharedInstance().recordEvent("send phone number for verification")
+        
+            sendPhoneVerificationCode()
+        
+       } else {
+        
+        
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.07
+        animation.repeatCount = 4
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(phoneNumberInput.center.x - 10, phoneNumberInput.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(phoneNumberInput.center.x + 10, phoneNumberInput.center.y))
+        phoneNumberInput.layer.add(animation, forKey: "position")
+        
+        Countly.sharedInstance().recordEvent("submitted bad phone number")
+        
+        
+        }
+        
+    }
+    
+    
+    
+    // Custom Methods
+    // ----------------------------------------
+    
+    
+    func sendPhoneVerificationCode()
+    {
+        retryAttempts += 1
+        
         
         // Assign phone number to currentUser Object
         currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
         
-        // Assign phone to card 
+        // Assign phone to card
         ContactManager.sharedManager.selectedCard.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumberInput.text!])
         
         
@@ -154,6 +201,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         // Create user dictionary to store to DB
         let parameters = ["data": currentUser.toAnyObject()]
+        
         
         KVNProgress.show(withStatus: "Sending Confirmation Code...")
         
@@ -184,45 +232,26 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 
                 
             } else {
-                print(error)
-                // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(error)\n\n")
-                KVNProgress.showError(withStatus: "There was an issue with your pin. Please try again.")
+
+                
+                // retry again
+                if self.retryAttempts < 3 {
+                    
+                    self.sendPhoneVerificationCode()
+                
+                } else {
+                    
+                    KVNProgress.showError(withStatus: "There was an error. Please try again.")
+                    
+                }
+                
+                
             }
             
         })
         
-    
-        
-        /*
-        print(  validate(value: phoneNumberInput.text!) )
-        
-       if (phoneNumberInput.text!.isPhoneNumber == true)
-       {
-        
-            sendConfirmationBtn.isEnabled = false
-        
-            issuePinConfirmation()
-
-        
-       } else {
-        
-        
-        let animation = CABasicAnimation(keyPath: "position")
-        animation.duration = 0.07
-        animation.repeatCount = 4
-        animation.autoreverses = true
-        animation.fromValue = NSValue(cgPoint: CGPoint(phoneNumberInput.center.x - 10, phoneNumberInput.center.y))
-        animation.toValue = NSValue(cgPoint: CGPoint(phoneNumberInput.center.x + 10, phoneNumberInput.center.y))
-        phoneNumberInput.layer.add(animation, forKey: "position")
-        
-        }
-        */
     }
-    
-    // Custom Methods
-    
-    
     
     
     func validate(value: String) -> Bool {

@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.19</string>
+	<string>0.20</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>1</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -41,6 +41,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>To create profile pictures which are displayed on your business cards in the app</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Import Users</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -78,7 +80,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>To create profile pictures which are displayed on your business cards in the app</string>
 </dict>
 </plist>
