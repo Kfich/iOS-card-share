@@ -152,7 +152,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if (UIScreen.main.bounds.size.height == 568.0 && UIScreen.main.nativeScale > UIScreen.main.scale) {
             print("zoomed iphone 6")
         } else {
-            print("none zoomed")
+            print("none zoomed standard iphone")
+            halo.position.x = pulseView.frame.width / 2
         }
         
 
@@ -528,7 +529,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         //let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
         
         // Create URL For Test
-        let testURL = "https://project-unify-node-server.herokuapp.com/image/"
+        let testURL = "https://project-unify-node-server-stag.herokuapp.com/image/" //"https://project-unify-node-server.herokuapp.com/image/"
         
         
         
