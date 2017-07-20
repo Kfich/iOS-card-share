@@ -562,12 +562,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         imageView.frame = CGRect(x: 0, y: 0 , width: 60, height: 60)
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(0, 55, 80, 15))
+        let lbl = UILabel(frame: CGRect(10, 60, 60, 15))
         // Set name to label
         lbl.text = user.getName()
-        lbl.textAlignment = .left
+        lbl.textAlignment = .center
         lbl.textColor = UIColor.white
-        lbl.font = UIFont(name: "SanFranciscoTextRegular", size: CGFloat(10))
+        lbl.font = UIFont(name: ".SFUIText-Medium", size: CGFloat(10))
         
         // Configure Hover Animation
         let hover = CABasicAnimation(keyPath: "position")
