@@ -63,7 +63,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "452"
             endingLineNumber = "452"
-            landmarkName = "pullUpViewController(_:update:forContentViewController:)"
+            landmarkName = "sendCardSelected(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
