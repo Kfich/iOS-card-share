@@ -468,30 +468,20 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func pulseMe(status: String?){
         
-        print("status", status)
-        
-        
         if status == "show"
         {
         
           halo.opacity = 1
-            
-        
-        //print("HALO COORDS")
-        //print("x --> \(halo.position.x)   y --> \(halo.position.y)")
+         
         
         } else {
             
             halo.opacity = 0
             
-            //PulsingHaloLayer.removeFromSuperlayer(self.pulseView.layer)
-            
-             //self.removeHalo(self.pulseView)
-            
         }
         
-        
     }
+    
     
     // Radar
     // -------------------------------------------------------------------
