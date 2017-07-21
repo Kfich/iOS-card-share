@@ -51,6 +51,45 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     // Page Setup
     
+    override func viewWillAppear(_ animated: Bool) {
+     
+        //set height to zero so assets move to bottom for smoother transaition
+        let height = CGFloat(0)
+        
+        //hide the assets
+        self.sendConfirmationBtn.layer.opacity = 0
+        self.termsBox.layer.opacity = 0
+        self.phoneVerBox.layer.opacity = 0
+        self.phoneNumberInput.layer.opacity = 0
+        self.UsePhoneTxtBox.layer.opacity = 0
+        
+        
+        //position them on screen based on keyboard
+        self.sendConfirmationBtn.frame.origin.y = self.view.frame.height - self.sendConfirmationBtn.frame.height - height
+        self.termsBox.frame.origin.y = self.view.frame.height - (self.sendConfirmationBtn.frame.height - height) - (self.termsBox.frame.height - height)
+        self.phoneVerBox.frame.origin.y = self.view.frame.height - (self.sendConfirmationBtn.frame.height - height) - (self.phoneVerBox.frame.height - height) - (self.termsBox.frame.height - height)
+        self.phoneNumberInput.delegate = self
+
+        //animate their fade in to handle any screen glitches
+        //due to weird constrains stuff
+        UIView.animate(withDuration: 0.25, delay: 1, animations: { () -> Void in
+            
+            self.sendConfirmationBtn.layer.opacity = 1
+            self.termsBox.layer.opacity = 1
+            self.phoneVerBox.layer.opacity = 1
+            self.phoneNumberInput.layer.opacity = 1
+            self.UsePhoneTxtBox.layer.opacity = 1
+
+            
+        }) { (Bool) -> Void in
+
+            //in case we need callback
+        }
+        
+        
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
