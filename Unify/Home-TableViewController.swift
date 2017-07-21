@@ -122,6 +122,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
        
         var isPhoneVerified = currentUser.getVerificationStatus()
         
+        print("HOME","isPhoneVerified", isPhoneVerified)
+        
         if !isPhoneVerified {
             //send user to phone verification
             print("FAIL")
