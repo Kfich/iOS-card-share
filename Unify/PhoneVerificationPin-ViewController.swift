@@ -220,6 +220,8 @@ class PhoneVerificationPinViewController: UIViewController {
                 // Store user to device 
                 UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
                 
+                self.currentUser.setVerificationPhoneStatus(status: true)
+                
                 // Create first card then hit segue
                 self.createFirstCard()
                 
