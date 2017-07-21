@@ -58,14 +58,7 @@ class PhoneVerificationPinViewController: UIViewController {
         
         DispatchQueue.main.async {
            
-            //self.indicator.stopAnimating()
-            
-            //print("Passed Token... \(self.uuid_token)")
-
-            //global_uuid = self.uuid_token
-            
-            
-            //self.pinCodeArea.becomeFirstResponder()
+           self.pinCodeArea.becomeFirstResponder()
         }
         
         
