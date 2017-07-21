@@ -19,7 +19,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     // Properties
     // ------------------------------------
-
+    var currentUser = User()
+    
     var store: CNContactStore!
     var updateLocation_tick = 5
     var parallaxEffect: RKParallaxEffect!
@@ -116,13 +117,25 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        //route handling
+       
+        var isPhoneVerified = currentUser.getVerificationStatus()
+        
+        print("HOME","isPhoneVerified", isPhoneVerified)
+        
+        if !isPhoneVerified {
+            //send user to phone verification
+            print("FAIL")
+        }
+        
         store = CNContactStore()
 
         checkContactsAccess()
         
-        print("before", self.pageControl.frame.origin.y)
+        //print("before", self.pageControl.frame.origin.y)
         self.pageControl.frame.origin.y = self.homeView.frame.height / 4
-        print("after", self.pageControl.frame.origin.y)
+        //print("after", self.pageControl.frame.origin.y)
        
         
         /*

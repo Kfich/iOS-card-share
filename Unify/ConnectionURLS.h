@@ -21,6 +21,8 @@
 #define kCreateCard           kServerURL(kAppwsServerURL, @"card/create")
 #define kGetCard              kServerURL(kAppwsServerURL, @"card/get")
 #define kUpdateCard           kServerURL(kAppwsServerURL, @"card/update/")
+// * Test
+#define kGetSingleCard        kServerURL(kAppwsServerURL, @"card/getSingleCard")
 
 // Transactions
 #define kCreateTransaction    kServerURL(kAppwsServerURL, @"transaction/create")

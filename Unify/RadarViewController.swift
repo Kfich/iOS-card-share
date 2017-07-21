@@ -118,6 +118,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+      
         // Do any additional setup after loading the view.
         
         // Setup views
@@ -152,7 +154,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if (UIScreen.main.bounds.size.height == 568.0 && UIScreen.main.nativeScale > UIScreen.main.scale) {
             print("zoomed iphone 6")
         } else {
-            print("none zoomed")
+            print("none zoomed standard iphone")
+            halo.position.x = pulseView.frame.width / 2
         }
         
 

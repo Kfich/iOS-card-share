@@ -51,12 +51,52 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     // Page Setup
     
+    override func viewWillAppear(_ animated: Bool) {
+     
+        //set height to zero so assets move to bottom for smoother transaition
+        let height = CGFloat(0)
+        
+        //hide the assets
+        self.sendConfirmationBtn.layer.opacity = 0
+        self.termsBox.layer.opacity = 0
+        self.phoneVerBox.layer.opacity = 0
+        self.phoneNumberInput.layer.opacity = 0
+        self.UsePhoneTxtBox.layer.opacity = 0
+        
+        
+        //position them on screen based on keyboard
+        self.sendConfirmationBtn.frame.origin.y = self.view.frame.height - self.sendConfirmationBtn.frame.height - height
+        self.termsBox.frame.origin.y = self.view.frame.height - (self.sendConfirmationBtn.frame.height - height) - (self.termsBox.frame.height - height)
+        self.phoneVerBox.frame.origin.y = self.view.frame.height - (self.sendConfirmationBtn.frame.height - height) - (self.phoneVerBox.frame.height - height) - (self.termsBox.frame.height - height)
+        self.phoneNumberInput.delegate = self
+
+        //animate their fade in to handle any screen glitches
+        //due to weird constrains stuff
+        UIView.animate(withDuration: 0.25, delay: 1, animations: { () -> Void in
+            
+            self.sendConfirmationBtn.layer.opacity = 1
+            self.termsBox.layer.opacity = 1
+            self.phoneVerBox.layer.opacity = 1
+            self.phoneNumberInput.layer.opacity = 1
+            self.UsePhoneTxtBox.layer.opacity = 1
+
+            
+        }) { (Bool) -> Void in
+
+            //in case we need callback
+        }
+        
+        
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Test to see if passed
         print("PHONE verification USER")
         currentUser.printUser()
+        
         
         
         UIView.animate(withDuration: 1.5, animations: {
@@ -72,6 +112,17 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         // Add Action to textfield
         phoneNumberInput.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
+        let conf = KVNProgressConfiguration.default()
+        conf?.isFullScreen = true
+        conf?.statusColor = UIColor.white
+        conf?.successColor = UIColor.white
+        conf?.circleSize = 170
+        conf?.lineWidth = 10
+        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(20))
+        conf?.circleStrokeBackgroundColor = UIColor.white
+        conf?.circleStrokeForegroundColor = UIColor.white
+        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+        KVNProgress.setConfiguration(conf)
         
         // Add Oberservers for keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -192,6 +243,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         // Assign phone number to currentUser Object
         currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
+        currentUser.setVerificationPhone(phone: phoneNumberInput.text!)
+
         
         // Assign phone to card
         ContactManager.sharedManager.selectedCard.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumberInput.text!])

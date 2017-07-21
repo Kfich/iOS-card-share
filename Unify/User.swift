@@ -21,6 +21,9 @@ public class User{
     var emails = [[String : String]]()
     var phoneNumbers = [[String : String]]()
     
+    var userPhoneVerified: Bool = false
+    var userPhoneForVerification: String = ""
+    
     // For radar 
     var distance = Double()
     var direction = Double()
@@ -63,10 +66,13 @@ public class User{
         
         profileImageId = snapshot["profile_image_id"] as? String ?? ""
         
+        userPhoneForVerification = snapshot.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = snapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
-        printUser()
+        //printUser()
     }
     
     init(withRadarSnapshot: NSDictionary) {
@@ -85,10 +91,13 @@ public class User{
         distance = withRadarSnapshot["distance"] as? Double ?? 0.0
         direction = withRadarSnapshot["direction"] as? Double ?? 0.0
         
+        userPhoneForVerification = withRadarSnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = withRadarSnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
-        printUser()
+        //printUser()
     }
     
     
@@ -104,10 +113,13 @@ public class User{
         
         //profileImageId = withDefaultsSnapshot["profile_image_id"] as? String ?? ""
         
+        userPhoneForVerification = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
-        printUser()
+        //printUser()
         
         if userId != ""
         {
@@ -135,7 +147,9 @@ public class User{
             "mobile_numbers" : phoneNumbers,
             "email" : emails,
             "scope" : scope,
-            "profile_image_id": profileImageId
+            "profile_image_id": profileImageId,
+            "userPhoneVerified": userPhoneVerified,
+            "userPhoneForVerification": userPhoneForVerification
             
         ]
     }
@@ -150,7 +164,10 @@ public class User{
             "mobile_numbers" : phoneNumbers,
             "email" : emails,
             "scope" : scope,
-            "profile_image": profileImages
+            "profile_image": profileImages,
+            "userPhoneVerified": userPhoneVerified,
+            "userPhoneForVerification": userPhoneForVerification
+      
             
         ]
     }
@@ -182,6 +199,27 @@ public class User{
         
         scope = value
     }
+    
+    //Verification
+    func getVerificationPhone()->String{
+        return userPhoneForVerification
+    }
+    
+    func getVerificationStatus()->Bool{
+        return userPhoneVerified
+    }
+    
+    func setVerificationPhone(phone : String)
+    {
+        userPhoneForVerification = phone
+    }
+   
+    func setVerificationPhoneStatus(status : Bool)
+    {
+        userPhoneVerified = status
+    }
+    
+    
     
     // Names
     func getName()->String{
@@ -248,6 +286,9 @@ public class User{
         print("Image Data -->")
         print(profileImages)
         
+        print("Verification Data -->")
+        print("userPhoneVerified", userPhoneVerified )
+        print("userPhoneForVerification", userPhoneForVerification )
         
     }
     

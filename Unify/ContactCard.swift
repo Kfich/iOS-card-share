@@ -17,8 +17,9 @@ public class ContactCard: NSObject, NSCoding{
     var cardId : String?
     var cardName : String?
     var cardHolderName : String?
-    var imageURL : Data?
+    var imageURL : String?
     var image : UIImage?
+    var imageId : String = ""
     var profileDictionary = NSDictionary()
     
     // Set UserID to card
@@ -54,7 +55,7 @@ public class ContactCard: NSObject, NSCoding{
         cardId = snapshot["ownerId"] as? String
         cardName = snapshot["card_name"] as? String
         cardHolderName = snapshot["card_holder_name"] as? String
-        imageURL = snapshot["image_url"] as? Data
+        imageURL = snapshot["image_url"] as? String
         profileDictionary = (snapshot["card_profile"] as? NSDictionary)!
         // Create card profile
         cardProfile = CardProfile(snapshot: profileDictionary)
@@ -69,7 +70,7 @@ public class ContactCard: NSObject, NSCoding{
         cardId = withSnapshotLite["ownerId"] as? String
         cardName = withSnapshotLite["card_name"] as? String
         cardHolderName = withSnapshotLite["card_holder_name"] as? String
-        imageURL = withSnapshotLite["image_url"] as? Data
+        imageURL = withSnapshotLite["image_url"] as? String
 
     }
     
@@ -78,7 +79,7 @@ public class ContactCard: NSObject, NSCoding{
         cardId = withSnapshotFromDefaults["ownerId"] as? String
         cardName = withSnapshotFromDefaults["card_name"] as? String
         cardHolderName = withSnapshotFromDefaults["card_holder_name"] as? String
-        imageURL = withSnapshotFromDefaults["image_url"] as? Data
+        imageURL = withSnapshotFromDefaults["image_url"] as? String
         profileDictionary = (withSnapshotFromDefaults["card_profile"] as? NSDictionary)!
         // Create card profile
         cardProfile = CardProfile(fromDefaultsWithDictionary: profileDictionary)

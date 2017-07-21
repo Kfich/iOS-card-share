@@ -65,6 +65,9 @@
 - (NSURLSessionDataTask*)updateCardCall:(NSDictionary*)parameters cardID:(NSString*)cardID completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUpdateCard];
 }
+- (NSURLSessionDataTask*)getSingleCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetSingleCard];
+}
 
 
 // Transactions

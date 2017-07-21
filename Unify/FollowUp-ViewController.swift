@@ -21,12 +21,22 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     var currentUser = User()
     var transaction = Transaction()
     
-    var recipientIds = [String]()
-    var recipientObjects = [User]()
+    // Arrays to hold contact info
+    var phoneNumbers = [String]()
+    var emailAddresses = [String]()
     
+    // Bool checks to see which medium to use
+    var useEmails = false
+    var usePhones = false
+    
+    var recipientIds = [String]()
+    var selectedUsers = [User]()
     var selectedUserCard = ContactCard()
-
     var active_card_unify_uuid: String?
+    
+    //
+    var usersHaveEmails = false
+    var usersHavePhoneNumbers = false
     
     // IBOutlets
     // ---------------------------------------
@@ -100,7 +110,10 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
 
     @IBAction func sendTextBtn_click(_ sender: Any) {
         
-        self.showSMSCard()
+        // Parse user objects to retrieve phone numbers 
+        let phoneList = self.retrievePhoneForUsers(contactsArray: self.selectedUsers)
+        // Show SMS client with phone number list
+        self.showSMSCard(recipientList: phoneList)
     }
     
     @IBAction func sendEmailBtn_click(_ sender: Any) {
@@ -135,8 +148,8 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         mediaButton3.image = UIImage(named: "icn-social-harvard.png")
         mediaButton4.image = UIImage(named: "icn-social-instagram.png")
         mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
-        mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        mediaButton7.image = UIImage(named: "icn-social-facebook.png")
+        mediaButton6.image = UIImage(named: "social-blank")
+        mediaButton7.image = UIImage(named: "social-blank")
         
         // Config buttons for chat, call, email
         chatButton.image = UIImage(named: "btn-chat-blue")
@@ -193,9 +206,9 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         
         // Send to server
         
-        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+        Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(response)")
+                print("Card Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
@@ -208,7 +221,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
                 KVNProgress.dismiss()
                 
             } else {
-                print("Card Created Error Response ---> \(error)")
+                print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
                 KVNProgress.showError(withStatus: "There was an error with your follow up. Please try again.")
                 
@@ -218,14 +231,177 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         }
     }
     
-    func launchMailAppOnDevice()
-    {
-        /*
-        let recipients:NSString="";
-        let body:NSString="follow up"
-        var email:NSString="example@unifiy.demo"
-        email=email.addingPercentEscapes(using: String.Encoding.utf8.rawValue)! as NSString
-        UIApplication.shared.openURL(NSURL(string: email as String)! as URL)*/
+    func getCardForTransaction(type: String) {
+        // Show progress HUD
+        KVNProgress.show(withStatus: "Fetching the card...")
+        
+        // Set senderCardId to params
+        let parameters = ["uuid": self.transaction.senderCardId]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).getSingleCardCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Fetched Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                // Init temp card
+                let card = ContactCard(snapshot: dictionary as NSDictionary)
+                
+                // Set selected card
+                self.selectedUserCard = card
+                
+                // Populate the card rendering with info
+                self.populateCards()
+                
+                // Make call to get users associated
+                self.fetchUsersForTransaction()
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Fetched Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error fecthing your card. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+    
+    
+    func fetchUsersForTransaction() {
+        // Fetch the user data associated with users
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["data": self.transaction.recipientList]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        // Show progress
+        KVNProgress.show(withStatus: "Fetching users for follow up ...")
+        
+        // Create User Objects
+        Connection(configuration: nil).getUserListCall(parameters, completionBlock: { response, error in
+            
+            if error == nil {
+                
+                //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                
+                // Init dictionary to capture response
+                let userArray = response as? NSDictionary
+                // // Parse dictionary for array of trans
+                print(userArray ?? "")
+                
+                // Create temp user list
+                let userList = userArray?["data"] as! NSArray
+                
+                // Iterate over array, append trans to list
+                for item in userList{
+                    
+                    // Init user objects from array
+                    let user = User(snapshot: item as! NSDictionary)
+                    
+                    // Append users to Selected array
+                    self.selectedUsers.append(user)
+                }
+                
+                // Show sucess
+                KVNProgress.showSuccess()
+                
+            } else {
+                print(error ?? "")
+                // Show user popup of error message
+                print("\n\nConnection - User Fetch Error: \n\n>>>>>>>> \(String(describing: error))\n\n")
+                KVNProgress.showError(withStatus: "There was an issue getting users. Please try again.")
+            }
+            // Regardless, hide hud
+            KVNProgress.dismiss()
+        })
+        
+    }
+    
+    func retrievePhoneForUsers(contactsArray: [User]) -> [String] {
+        
+        // Init email array
+        var phoneList = [String]()
+        
+        // Iterate through email list for contact emails
+        for contact in contactsArray {
+            // Check for phone number
+            if contact.phoneNumbers[0]["profile_phone"] != nil{
+                let phone = contact.phoneNumbers[0]["profile_phone"]
+                
+                // Add phone to list
+                phoneList.append(phone!)
+                
+                // Print to test phone
+                print("PHONE !!!! PHONE")
+                print("\n\n\(String(describing: phone))")
+                print(phoneList.count)
+            }
+            
+        }
+        // Append emails to a list of emails
+        
+        // Return the list of emails
+        return phoneList
+        
+    }
+    
+    func retrieveEmailsForUsers(contactsArray: [User]) -> [String] {
+        
+        // Init email array
+        var emailList = [String]()
+        
+        // Iterate through email list for contact emails
+        for contact in contactsArray {
+            
+            // Check for phone number
+            if contact.emails[0]["profile_email"] != nil{
+                let email = contact.emails[0]["profile_email"]
+                
+                // Add phone to list
+                emailList.append(email!)
+                
+                // Print to test phone
+                print("PHONE !!!! PHONE")
+                print("\n\n\(String(describing: email))")
+                print(emailList.count)
+            }else{
+                // Set all have emails switch to false
+                
+            }
+            
+        }
+        // Append emails to a list of emails
+        
+        // Return the list of emails
+        return emailList
+    }
+    
+    
+    
+    func parseUserList(){
+        
+        // Get emails 
+        self.emailAddresses = self.retrieveEmailsForUsers(contactsArray: self.selectedUsers)
+        
+        // Get phoneNumbers
+        self.phoneNumbers = self.retrievePhoneForUsers(contactsArray: self.selectedUsers)
+        
+        // Check which medium to use
+        if emailAddresses.count >= selectedUsers.count {
+            // This means they all have emails 
+            self.useEmails = true
+        }else{
+            // Default to use the phones
+            self.usePhones = true
+        }
+        
     }
     
     
@@ -239,9 +415,11 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         
         print("EMAIL CARD SELECTED")
         
-        // Send post notif
+        // Parse user list for emails
+        let mailsList = self.retrieveEmailsForUsers(contactsArray: self.selectedUsers)
+        
         // Create instance of controller
-        let mailComposeViewController = configuredMailComposeViewController()
+        let mailComposeViewController = configuredMailComposeViewController(recipientList: mailsList)
         
         // Check if deviceCanSendMail
         if MFMailComposeViewController.canSendMail() {
@@ -253,12 +431,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         
     }
     
-    func showSMSCard() {
-        // Set Selected Card
-        
-        //selectedCardIndex = cardCollectionView.inde
-        
-        //selectedUserCard = The card associated with the trans
+    func showSMSCard(recipientList: [String]) {
         
         print("SMS CARD SELECTED")
         // Send post notif
@@ -268,35 +441,13 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
             
             composeVC.messageComposeDelegate = self
             
-            // 6468251231
-            // Configure the fields of the interface.
-            composeVC.recipients = ["6463597308"]
+            // Configure message
+            let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n"
             
-            // Check for nil vals
-            
-            var name = ""
-            var phone = ""
-            var email = ""
-            var title = ""
-            
-            // Populate label fields
-            if selectedUserCard.cardHolderName != "" || selectedUserCard.cardHolderName != nil{
-                name = selectedUserCard.cardHolderName!
-            }
-            if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-                phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]!
-            }
-            if selectedUserCard.cardProfile.emails.count > 0{
-                email = selectedUserCard.cardProfile.emails[0]["email"]!
-            }
-            if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
-                title = self.selectedUserCard.cardProfile.title ?? ""
-            }
-            
-            
-            selectedUserCard.printCard()
-            
-            composeVC.body = "Hi, I'd like to connect with you. Here's my information \n\n\(name)\n\(title)\n\(email)\n\(title)"
+            // Set message string
+            composeVC.body = str
+            // Set recipient list
+            composeVC.recipients = recipientList
             
             // Present the view controller modally.
             self.present(composeVC, animated: true, completion: nil)
@@ -308,7 +459,7 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     
     // Email Composer Delegate Methods
     
-    func configuredMailComposeViewController() -> MFMailComposeViewController {
+    func configuredMailComposeViewController(recipientList: [String]) -> MFMailComposeViewController {
         
         // Set Selected Card
         //selectedUserCard = The one associated with the trans
@@ -317,32 +468,11 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
         
-        // Check for nil vals
-        
-        var name = ""
-        var phone = ""
-        var email = ""
-        var title = ""
-        
-        // Populate label fields
-        if selectedUserCard.cardHolderName != "" || selectedUserCard.cardHolderName != nil{
-            name = selectedUserCard.cardHolderName!
-        }
-        if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-            phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]!
-        }
-        if selectedUserCard.cardProfile.emails.count > 0{
-            email = selectedUserCard.cardProfile.emails[0]["email"]!
-        }
-        if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
-            title = self.selectedUserCard.cardProfile.title ?? ""
-        }
-        
         
         // Create Message
-        mailComposerVC.setToRecipients(["kfich7@gmail.com"])
-        mailComposerVC.setSubject("Greetings - Let's Connect")
-        mailComposerVC.setMessageBody("Hi, I'd like to connect with you. Here's my information \n\n\(name)\n\(title)\n\(email)\n\(title)", isHTML: false)
+        mailComposerVC.setToRecipients(recipientList)
+        mailComposerVC.setSubject("\(currentUser.getName()) - Nice to meet you")
+        mailComposerVC.setMessageBody("Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n", isHTML: false)
         
         return mailComposerVC
     }
