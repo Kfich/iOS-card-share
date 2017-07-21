@@ -72,7 +72,7 @@ public class User{
         // To get full username
         fullName = getName()
         // Testing to see if populated
-        printUser()
+        //printUser()
     }
     
     init(withRadarSnapshot: NSDictionary) {
@@ -97,7 +97,7 @@ public class User{
         // To get full username
         fullName = getName()
         // Testing to see if populated
-        printUser()
+        //printUser()
     }
     
     
@@ -119,7 +119,7 @@ public class User{
         // To get full username
         fullName = getName()
         // Testing to see if populated
-        printUser()
+        //printUser()
         
         if userId != ""
         {

@@ -118,18 +118,22 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
         super.viewDidLoad()
         
         
-        //establish current user
-        currentUser.printUser()
+        //route handling
+       
+        var isPhoneVerified = currentUser.getVerificationStatus()
         
-        
+        if !isPhoneVerified {
+            //send user to phone verification
+            print("FAIL")
+        }
         
         store = CNContactStore()
 
         checkContactsAccess()
         
-        print("before", self.pageControl.frame.origin.y)
+        //print("before", self.pageControl.frame.origin.y)
         self.pageControl.frame.origin.y = self.homeView.frame.height / 4
-        print("after", self.pageControl.frame.origin.y)
+        //print("after", self.pageControl.frame.origin.y)
        
         
         /*
