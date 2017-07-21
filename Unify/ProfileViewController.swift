@@ -339,35 +339,35 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         switch indexPath.section {
         case 0:
-            cell.titleLabel.text = "Bio \(indexPath.row)"
-            cell.descriptionLabel.text = bios[indexPath.row] 
+            //cell.titleLabel.text = "Bio \(indexPath.row)"
+            cell.descriptionLabel.text = bios[indexPath.row]
             return cell
         case 1:
-            cell.titleLabel.text = "Work \(indexPath.row)"
+            //cell.titleLabel.text = "Work \(indexPath.row)"
             cell.descriptionLabel.text = workInformation[indexPath.row] 
             return cell
         case 2:
-            cell.titleLabel.text = "Title \(indexPath.row)"
+            //cell.titleLabel.text = "Title \(indexPath.row)"
             cell.descriptionLabel.text = titles[indexPath.row]
             return cell
         case 3:
-            cell.titleLabel.text = "Email \(indexPath.row)"
+            //cell.titleLabel.text = "Email \(indexPath.row)"
             cell.descriptionLabel.text = emails[indexPath.row] 
             return cell
         case 4:
-            cell.titleLabel.text = "Phone \(indexPath.row)"
+            //cell.titleLabel.text = "Phone \(indexPath.row)"
             cell.descriptionLabel.text = phoneNumbers[indexPath.row]
             return cell
         case 5:
-            cell.titleLabel.text = "Social Media Link \(indexPath.row)"
+            //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
             cell.descriptionLabel.text = socialLinks[indexPath.row]
             return cell
         case 6:
-            cell.titleLabel.text = "Website \(indexPath.row)"
+            //cell.titleLabel.text = "Website \(indexPath.row)"
             cell.descriptionLabel.text = websites[indexPath.row]
             return cell
         case 7:
-            cell.titleLabel.text = "Organization \(indexPath.row)"
+            //cell.titleLabel.text = "Organization \(indexPath.row)"
             cell.descriptionLabel.text = organizations[indexPath.row]
             return cell
         default:
@@ -378,6 +378,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         
         
+    }
+    // Set row height
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        return 45.0
     }
 
     
@@ -498,9 +503,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.profileInfoTableView.clipsToBounds = true
         self.profileInfoTableView.layer.borderWidth = 0.5
         self.profileInfoTableView.layer.borderColor = UIColor.white.cgColor
-        
-        
-
 
     }
     

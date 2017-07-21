@@ -528,10 +528,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
          image = UIImage(named: "radar-avatar")!*/
         
         // Create URL For Prod
-        //let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
+        let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
         
         // Create URL For Test
-        let testURL = "https://project-unify-node-server.herokuapp.com/image/"
+        //let testURL = "https://project-unify-node-server.herokuapp.com/image/"
         
         
         
@@ -541,7 +541,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             // ** Currently Set to Prod URL
             
-            let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+            let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
             let placeholderImage = UIImage(named: "user")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)

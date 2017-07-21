@@ -8,8 +8,9 @@
 
 import UIKit
 import Contacts
+import MessageUI
 
-class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate{
     
     // Properties
     // --------------------------------------------
@@ -21,9 +22,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     // This contact card is really a transaction object
     var card = ContactCard()
-    
-    
+    var transaction = Transaction()
     var currentUser = User()
+    
+    var selectedUserPhone = ""
+    var selectedUserEmail = ""
     
     // Parsed profile arrays
     var bios = [String]()
@@ -63,7 +66,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBOutlet var outreachChatButton: UIBarButtonItem!
     @IBOutlet var outreachCallButton: UIBarButtonItem!
     @IBOutlet var outreachMailButton: UIBarButtonItem!
-    
+    @IBOutlet var outreachCalendarButton: UIBarButtonItem!
     
     // Tableview
     @IBOutlet var profileInfoTableView: UITableView!
@@ -106,23 +109,29 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     }
     
     @IBAction func smsSelected(_ sender: AnyObject) {
-        /*
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)*/
+        // Call sms function 
+        self.showSMSCard()
         
     }
     
     @IBAction func emailSelected(_ sender: AnyObject) {
-        /*
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
-        self.present(controller, animated: true, completion: nil)*/
+        // Call email function 
+        self.showEmailCard()
         
     }
     @IBAction func callSelected(_ sender: AnyObject) {
         
+        // Set phone val
+        let phone = selectedUserPhone
+        
         // configure call 
+        if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
         
     }
     
@@ -130,6 +139,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBAction func calendarSelected(_ sender: Any) {
         
         // Configure calendar
+        UIApplication.shared.openURL(NSURL(string: "calshow://")! as URL)
     }
     
     
@@ -140,7 +150,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
  
-        // Do any additional setup after loading the view.
+        // Set selected card 
+        self.card = ContactManager.sharedManager.selectedCard
+        // Set currentUser object
+        self.currentUser = ContactManager.sharedManager.currentUser
+            
         // Test is segue passed properly
         
         print("Selected Contact -> \(selectedContact)")
@@ -149,50 +163,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         formatter.style = .fullName
 
         // Parse card for profile info 
-        
-        /*
-        if card.cardProfile.bio != ""{
-            bios.append(card.cardProfile.bio!)
-        }
-        if card.cardProfile.workInfo != ""{
-            workInformation.append(card.cardProfile.bio!)
-        }
-        if card.cardProfile.phoneNumbers.count > 0{
-            for number in card.cardProfile.phoneNumbers{
-                phoneNumbers.append(number["phone"]!)
-            }
-        }
-        if card.cardProfile.emails.count > 0{
-            for email in card.cardProfile.phoneNumbers{
-                emails.append(email["email"]!)
-            }
-        }
-        if card.cardProfile.websites.count > 0{
-            for site in card.cardProfile.websites{
-                websites.append(site["website"]!)
-            }
-        }
-        if card.cardProfile.organizations.count > 0{
-            for org in card.cardProfile.organizations{
-                organizations.append(org["organization"]!)
-            }
-        }
-        if card.cardProfile.tags.count > 0{
-            for hashtag in card.cardProfile.tags{
-                tags.append(hashtag["tag"]!)
-            }
-        }
-        if card.cardProfile.notes.count > 0{
-            for note in card.cardProfile.notes{
-                notes.append(note["note"]!)
-            }
-        }
-        if card.cardProfile.socialLinks.count > 0{
-            for link in card.cardProfile.socialLinks{
-                notes.append(link["link"]!)
-            }
-        }
-        */
+        //self.parseContactProfile()
         
         
         // Config Views
@@ -350,7 +321,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             }
             
         default:
-            return ""
+            return "No data"
         }
 
     }
@@ -358,40 +329,40 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
         
         
         switch indexPath.section {
         case 0:
-            cell.titleLabel.text = "Bio \(indexPath.row)"
+            //cell.titleLabel.text = "Bio \(indexPath.row)"
             cell.descriptionLabel.text = bios[indexPath.row]
             return cell
         case 1:
-            cell.titleLabel.text = "Work \(indexPath.row)"
+            //cell.titleLabel.text = "Work \(indexPath.row)"
             cell.descriptionLabel.text = workInformation[indexPath.row]
             return cell
         case 2:
-            cell.titleLabel.text = "Title \(indexPath.row)"
+            //cell.titleLabel.text = "Title \(indexPath.row)"
             cell.descriptionLabel.text = titles[indexPath.row]
             return cell
         case 3:
-            cell.titleLabel.text = "Email \(indexPath.row)"
+            //cell.titleLabel.text = "Email \(indexPath.row)"
             cell.descriptionLabel.text = emails[indexPath.row]
             return cell
         case 4:
-            cell.titleLabel.text = "Phone \(indexPath.row)"
+            //cell.titleLabel.text = "Phone \(indexPath.row)"
             cell.descriptionLabel.text = phoneNumbers[indexPath.row]
             return cell
         case 5:
-            cell.titleLabel.text = "Social Media Link \(indexPath.row)"
+            //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
             cell.descriptionLabel.text = socialLinks[indexPath.row]
             return cell
         case 6:
-            cell.titleLabel.text = "Website \(indexPath.row)"
+            //cell.titleLabel.text = "Website \(indexPath.row)"
             cell.descriptionLabel.text = websites[indexPath.row]
             return cell
         case 7:
-            cell.titleLabel.text = "Organization \(indexPath.row)"
+            //cell.titleLabel.text = "Organization \(indexPath.row)"
             cell.descriptionLabel.text = organizations[indexPath.row]
             return cell
         default:
@@ -408,6 +379,36 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     // Custom Methods
     // -------------------------------------------
+    
+    func parseContactProfile() {
+        // Check for values 
+        if selectedContact.phoneNumbers.count > 0 {
+            // Iterate over phones array
+            for phone in selectedContact.phoneNumbers {
+                self.phoneNumbers.append(phone.value.value(forKey: "digits") as! String)
+            }
+            
+            // Set label text
+            phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
+            
+            // Set global phone val
+            self.selectedUserPhone = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as! String
+        }
+        
+        if selectedContact.emailAddresses.count > 0 {
+            // Iterate over emails array
+            for email in selectedContact.emailAddresses {
+                // Add to emails array 
+                self.emails.append((selectedContact.emailAddresses[0].value as String))
+                print(email)
+                
+            }
+            
+        }
+
+    }
+    
+    
     func checkForArrayLenth(array: Array<Any>) -> Bool {
         var isEmpty = Bool()
         if array.count != 0{
@@ -426,16 +427,41 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
         
         if selectedContact.phoneNumbers.count > 0 {
+            // Set label text
             phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
+            
+            // Set global phone val
+            self.selectedUserPhone = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as! String
         }else{
             // Hide phone icon image 
             phoneImageView.isHidden = true
+            // Disable buttons
+            callButton.isEnabled = false
+            smsButton.isEnabled = false
+            
+            // Set tint for buttons
+            callButton.tintColor = UIColor.gray
+            smsButton.tintColor = UIColor.gray
+            
+            // Toggle image
+            callButton.image = UIImage(named: "btn-call-gray")
+            smsButton.image = UIImage(named: "btn-chat-gray")
+            
         }
         if selectedContact.emailAddresses.count > 0 {
+            // Set label text
             emailLabel.text = (selectedContact.emailAddresses[0].value as String)
+            // Set global email
+            self.selectedUserEmail = (selectedContact.emailAddresses[0].value as String)
         }else{
             // Hide email icon
             emailImageView.isHidden = true
+            // Disable button
+            emailButton.isEnabled = false
+            // Set tint
+            emailButton.tintColor = UIColor.gray
+            // Toggle image
+            emailButton.image = UIImage(named: "btn-message-gray")
         }
         // Check if image data available
         if selectedContact.imageDataAvailable {
@@ -493,13 +519,14 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         outreachCallButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
         
+        outreachCalendarButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
         
         
         // Config buttons
         // ** Email and call inverted
         smsButton.image = UIImage(named: "btn-chat-blue")
-        callButton.image = UIImage(named: "btn-message-blue")
-        emailButton.image = UIImage(named: "btn-call-blue")
+        emailButton.image = UIImage(named: "btn-message-blue")
+        callButton.image = UIImage(named: "btn-call-blue")
         calendarButton.image = UIImage(named: "btn-calendar-blue")
     }
     
@@ -514,6 +541,194 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         cardShadowView.layer.shadowPath = UIBezierPath(rect: cardShadowView.bounds).cgPath
         cardShadowView.layer.shouldRasterize = true
         cardShadowView.layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    
+    // Custom Methods
+    
+    func createTransaction(type: String) {
+        // Set Type
+        self.transaction.type = type
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Making the connection...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(response)")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Created Error Response ---> \(error)")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection request. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+    
+    
+    // Message Composer Functions
+    
+    func showEmailCard() {
+        
+        print("EMAIL CARD SELECTED")
+        
+        // Send post notif
+        // Create instance of controller
+        let mailComposeViewController = configuredMailComposeViewController()
+        
+        // Check if deviceCanSendMail
+        if MFMailComposeViewController.canSendMail() {
+            
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+        
+    }
+    
+    func showSMSCard() {
+        // Set Selected Card
+        
+        //selectedCardIndex = cardCollectionView.inde
+        
+        
+        print("SMS CARD SELECTED")
+        // Send post notif
+        
+        let composeVC = MFMessageComposeViewController()
+        if(MFMessageComposeViewController .canSendText()){
+            
+            composeVC.messageComposeDelegate = self
+            
+            // 6468251231
+            
+            // Check for nil vals
+            
+            var name = ""
+            var recipientName = ""
+            var phone = ""
+            var email = ""
+            //var title = ""
+            
+            
+            // CNContact Objects
+            let contact = ContactManager.sharedManager.contactToIntro
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            
+            // Check if they both have email
+            name = formatter.string(from: contact) ?? "No Name"
+            recipientName = formatter.string(from: recipient) ?? ""
+            
+            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                
+                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                // Set contact phone number
+                phone = contactPhone!
+                
+                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                
+                // Launch text client
+                composeVC.recipients = [contactPhone!, recipientPhone!]
+            }
+            
+            if contact.emailAddresses.count > 0 {
+                email = (contact.emailAddresses[0].value as String)
+            }
+            
+            // Configure message
+            /*let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"*/
+            
+            // Test String
+            let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+            
+            // Set string as message body
+            composeVC.body = str
+            
+            // Present the view controller modally.
+            self.present(composeVC, animated: true, completion: nil)
+        }
+        
+    }
+    
+    
+    // Email Composer Delegate Methods
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        
+        // Create Instance of controller
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        // Check for nil vals
+        
+        var name = ""
+        var emailContact = ""
+        //var title = ""
+        
+        
+        // CNContact Objects
+        let contact = self.selectedContact
+        
+        // Check if they both have email
+        name = formatter.string(from: contact) ?? "No Name"
+        
+        if contact.emailAddresses.count > 0{
+            // Set email string
+            let contactEmail = contact.emailAddresses[0].value as String
+            
+            // Set variable
+            emailContact = contactEmail
+        }
+        
+        // Create Message
+        
+        //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
+        
+        // Test String
+        let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+        
+        // Create Message
+        mailComposerVC.setToRecipients([emailContact])
+        mailComposerVC.setSubject("Unify Connection - I'd like to connect with you")
+        mailComposerVC.setMessageBody(str, isHTML: false)
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    // Message Composer Delegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        // Make checks here for
+        controller.dismiss(animated: true) {
+            print("Message composer dismissed")
+        }
     }
 
     /*
