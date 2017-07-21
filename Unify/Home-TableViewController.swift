@@ -19,7 +19,8 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     // Properties
     // ------------------------------------
-
+    var currentUser = User()
+    
     var store: CNContactStore!
     var updateLocation_tick = 5
     var parallaxEffect: RKParallaxEffect!
@@ -115,6 +116,12 @@ class HomeTableViewController: UITableViewController, CLLocationManagerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        //establish current user
+        currentUser.printUser()
+        
+        
         
         store = CNContactStore()
 
