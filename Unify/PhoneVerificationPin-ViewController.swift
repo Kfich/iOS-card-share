@@ -214,13 +214,17 @@ class PhoneVerificationPinViewController: UIViewController {
         
                 // Show indicator
                 KVNProgress.showSuccess(withStatus: "Profile Creation Complete. Welcome to Unify.")
+
+                
+                self.currentUser.setVerificationPhoneStatus(status: true)
+
+                
                 // Assign current user to manager object
                 ContactManager.sharedManager.currentUser = self.currentUser
 
-                // Store user to device 
+                // Store user to device
                 UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
                 
-                self.currentUser.setVerificationPhoneStatus(status: true)
                 
                 // Create first card then hit segue
                 self.createFirstCard()
