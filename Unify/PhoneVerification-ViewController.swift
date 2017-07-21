@@ -112,6 +112,17 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         // Add Action to textfield
         phoneNumberInput.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
+        let conf = KVNProgressConfiguration.default()
+        conf?.isFullScreen = true
+        conf?.statusColor = UIColor.white
+        conf?.successColor = UIColor.white
+        conf?.circleSize = 170
+        conf?.lineWidth = 10
+        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(20))
+        conf?.circleStrokeBackgroundColor = UIColor.white
+        conf?.circleStrokeForegroundColor = UIColor.white
+        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+        KVNProgress.setConfiguration(conf)
         
         // Add Oberservers for keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)

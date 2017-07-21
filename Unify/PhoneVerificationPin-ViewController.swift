@@ -41,9 +41,58 @@ class PhoneVerificationPinViewController: UIViewController {
         return .lightContent
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        //set height to zero so assets move to bottom for smoother transaition
+        let height = CGFloat(0)
+        
+        //hide the assets
+        self.verifyBtn.layer.opacity = 0
+        self.termBox.layer.opacity = 0
+        
+        
+        //hide the assets
+        self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
+        self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
+        
+        
+        
+        UIView.animate(withDuration: 0.25, delay: 1, animations: { () -> Void in
+            
+            self.verifyBtn.layer.opacity = 1
+            self.termBox.layer.opacity = 1
+            
+        }) { (Bool) -> Void in
+            
+            //in case we need callback
+        }
+        
+
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: PinCodeTextField) {
+        //set height to zero so assets move to bottom for smoother transaition
+        let height = CGFloat(0)
+        
+        //hide the assets
+        self.verifyBtn.layer.opacity = 0
+        self.termBox.layer.opacity = 0
+        
+        
+        //hide the assets
+        self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
+        self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
+        
+        print("pin done")
+        
+
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         // Test to see if user passed successfully 
         currentUser.printUser()
@@ -65,6 +114,8 @@ class PhoneVerificationPinViewController: UIViewController {
         // Notifications for keyboard delegate
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
         
     }
     
@@ -131,7 +182,7 @@ class PhoneVerificationPinViewController: UIViewController {
             if view.frame.origin.y != 0 {
                 let height = keyboardSize.height
                 self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
-                
+                 self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
                 print("no keyboard")
             }
             
@@ -176,9 +227,12 @@ class PhoneVerificationPinViewController: UIViewController {
                 
             } else {
                 print(error)
+                
+                self.verifyBtn.isEnabled = true
+                
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(error)\n\n")
-                KVNProgress.showError(withStatus: "There was an issue with your pin. Please try again.")
+                KVNProgress.showError(withStatus: "Your pin is incorrect. Please try again")
             }
             
         })
@@ -242,4 +296,6 @@ class PhoneVerificationPinViewController: UIViewController {
     }
     
 }
+
+
 
