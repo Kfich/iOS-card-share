@@ -59,6 +59,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         currentUser.printUser()
         
         
+        
         UIView.animate(withDuration: 1.5, animations: {
             self.modalFadeBox.alpha = 0.7
         })
@@ -192,6 +193,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         // Assign phone number to currentUser Object
         currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
+        currentUser.setVerificationPhone(phone: phoneNumberInput.text!)
+
         
         // Assign phone to card
         ContactManager.sharedManager.selectedCard.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumberInput.text!])

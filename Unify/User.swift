@@ -147,7 +147,9 @@ public class User{
             "mobile_numbers" : phoneNumbers,
             "email" : emails,
             "scope" : scope,
-            "profile_image_id": profileImageId
+            "profile_image_id": profileImageId,
+            "userPhoneVerified": userPhoneVerified,
+            "userPhoneForVerification": userPhoneForVerification
             
         ]
     }
@@ -162,7 +164,10 @@ public class User{
             "mobile_numbers" : phoneNumbers,
             "email" : emails,
             "scope" : scope,
-            "profile_image": profileImages
+            "profile_image": profileImages,
+            "userPhoneVerified": userPhoneVerified,
+            "userPhoneForVerification": userPhoneForVerification
+      
             
         ]
     }
