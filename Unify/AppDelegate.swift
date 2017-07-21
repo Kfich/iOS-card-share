@@ -79,11 +79,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("CURRENT USER FROM APP DELEGATE")
             ContactManager.sharedManager.currentUser.printUser()
             
-            // Send to home screen 
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-            TabBarViewController
-            window!.rootViewController = homeViewController
+            var isPhoneVerified = ContactManager.sharedManager.currentUser.getVerificationStatus()
+            
+            if isPhoneVerified {
+             
+                // Send to home screen user is verified 
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                TabBarViewController
+                window!.rootViewController = homeViewController
+
+            } else {
+                
+                // Send to home screen user is verified
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let phoneVerificationController = mainStoryboard.instantiateViewController(withIdentifier: "phoneVerificationSegue") as!
+                PhoneVerificationViewController
+                window!.rootViewController = phoneVerificationController
+
+                
+            }
+            
+            
+            
             
         }else{
             print("User has no profile")

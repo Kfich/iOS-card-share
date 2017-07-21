@@ -119,18 +119,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         super.viewDidLoad()
         
         
-        var isPhoneVerified = currentUser.getVerificationStatus()
-        
-        print("RADARHOME","isPhoneVerified", isPhoneVerified)
-        
-        if !isPhoneVerified {
-            //send user to phone verification
-            print("FAIL")
-        }
-        
-
-        
-        
+      
         // Do any additional setup after loading the view.
         
         // Setup views
