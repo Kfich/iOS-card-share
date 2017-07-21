@@ -21,6 +21,9 @@ public class User{
     var emails = [[String : String]]()
     var phoneNumbers = [[String : String]]()
     
+    var userPhoneVerified: Bool = false
+    var userPhoneForVerification: String = ""
+    
     // For radar 
     var distance = Double()
     var direction = Double()
@@ -63,6 +66,9 @@ public class User{
         
         profileImageId = snapshot["profile_image_id"] as? String ?? ""
         
+        userPhoneForVerification = snapshot.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = snapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
@@ -85,6 +91,9 @@ public class User{
         distance = withRadarSnapshot["distance"] as? Double ?? 0.0
         direction = withRadarSnapshot["direction"] as? Double ?? 0.0
         
+        userPhoneForVerification = withRadarSnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = withRadarSnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
@@ -103,6 +112,9 @@ public class User{
         profileImages = (withDefaultsSnapshot["profile_image"] as? [[String : Any]])!
         
         //profileImageId = withDefaultsSnapshot["profile_image_id"] as? String ?? ""
+        
+        userPhoneForVerification = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
         
         // To get full username
         fullName = getName()
@@ -183,6 +195,27 @@ public class User{
         scope = value
     }
     
+    //Verification
+    func getVerificationPhone()->String{
+        return userPhoneForVerification
+    }
+    
+    func getVerificationStatus()->Bool{
+        return userPhoneVerified
+    }
+    
+    func setVerificationPhone(phone : String)
+    {
+        userPhoneForVerification = phone
+    }
+   
+    func setVerificationPhoneStatus(status : Bool)
+    {
+        userPhoneVerified = status
+    }
+    
+    
+    
     // Names
     func getName()->String{
         return firstName + " " + lastName
@@ -248,6 +281,9 @@ public class User{
         print("Image Data -->")
         print(profileImages)
         
+        print("Verification Data -->")
+        print("userPhoneVerified", userPhoneVerified )
+        print("userPhoneForVerification", userPhoneForVerification )
         
     }
     
