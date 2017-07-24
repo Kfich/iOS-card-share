@@ -694,40 +694,100 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         switch indexPath.section {
         case 0:
             card.cardProfile.bio = bios[indexPath.row]
+            
+            if self.selectedBios.contains(bios[indexPath.row]) {
+                // Print Already selected
+                print("Item already selected")
+                // Most likely show an alert
+            }else{
+                // Append bio to list if not selected
+                card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
+            }
+            
         case 1:
             card.cardProfile.workInfo = workInformation[indexPath.row]
+            
+            if self.selectedWorkInformation.contains(workInformation[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+            }else{
+                // Append to work list
+                card.cardProfile.setWorkRecords(emailRecords: ["work" : workInformation[indexPath.row]])
+            }
+            
         case 2:
             card.cardProfile.title = titles[indexPath.row]
             
+            // Check if already selected
+            if self.selectedTitles.contains(titles[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+            }else{
+                // Add to list
+                card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
+            }
             // Assign label value
             self.titleLabel.text = titles[indexPath.row]
-        case 3:
             
-            card.cardProfile.emails.append(["email" : emails[indexPath.row]])
-            print(card.cardProfile.emails as Any)
+        case 3:
+            // Check if in array already
+            if self.selectedEmails.contains(emails[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+            }else{
+                // Append to list
+                card.cardProfile.emails.append(["email" : emails[indexPath.row]])
+                print(card.cardProfile.emails as Any)
+            }
             // Assign label value
             self.emailLabel.text = emails[indexPath.row]
             
         case 4:
-            // Add dictionary value to cardProfile
-            card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
-            // Print for testing
-            print(card.cardProfile.phoneNumbers as Any)
+            // Check if in array
+            if self.selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+            }else{
+                // Add dictionary value to cardProfile
+                card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
+                // Print for testing
+                print(card.cardProfile.phoneNumbers as Any)
+            }
             // Assign label value
             self.numberLabel.text = phoneNumbers[indexPath.row]
             
         case 5:
-            card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
-            // Print for test
-            print(card.cardProfile.socialLinks as Any)
+            // Check if in array 
+            if self.selectedSocialLinks.contains(socialLinks[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+            }else{
+                // Append to array
+                card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.socialLinks as Any)
+            }
         case 6:
-            card.cardProfile.websites.append(["website" : websites[indexPath.row]])
-            // Print for test
-            print(card.cardProfile.websites as Any)
+            // Check if in array 
+            if self.selectedWebsites.contains(websites[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+            }else{
+                // Append to array
+                card.cardProfile.websites.append(["website" : websites[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.websites as Any)
+            }
         case 7:
-            card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
-            // Print for test
-            print(card.cardProfile.organizations as Any)
+            if self.selectedOrganizations.contains(organizations[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+            }else{
+                // Append to array
+                card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.organizations as Any)
+            }
         default:
             print("Nothing doing here..")
         }
