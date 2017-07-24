@@ -8162,7 +8162,7 @@
         <!--Edit Card View Controller-->
         <scene sceneID="bCn-Vt-V7m">
             <objects>
-                <viewController id="krk-qZ-4Wf" customClass="EditCardViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditCardVC" id="krk-qZ-4Wf" customClass="EditCardViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g0O-zJ-nCD"/>
                         <viewControllerLayoutGuide type="bottom" id="Cr1-iR-Dqi"/>

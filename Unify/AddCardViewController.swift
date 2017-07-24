@@ -15,9 +15,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     // ----------------------------------------
     
     let reuseIdentifier = "cardViewCell"
-    
     var selectedUserCard = ContactCard()
-    
     
     
     // IBOutlets
