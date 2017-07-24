@@ -489,7 +489,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // 2. add the gesture recognizer to a view
         containerView.addGestureRecognizer(tapGesture)
         
-        
         // Add subviews
         containerView.addSubview(imageView)
 
@@ -555,16 +554,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.mediaButton6.image = UIImage(named: "social-blank")
         cell.mediaButton7.image = UIImage(named: "social-blank")
         
-        
-        // Config tool bar
-        /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
-         // Set shadow on the container view
-         cell.mediaButtonToolBar.layer.shadowColor = UIColor.black.cgColor
-         cell.mediaButtonToolBar.layer.shadowOpacity = 1.5
-         cell.mediaButtonToolBar.layer.shadowOffset = CGSize.zero
-         cell.mediaButtonToolBar.layer.shadowRadius = 2*/
-        
-        
     }
     
     // MARK: ISHPullUpStateDelegate
@@ -612,7 +601,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Set selected card
         ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
         
-        // Call viewcontroller 
+        // Set toggle nav to true
+        ContactManager.sharedManager.userEmailCard = true
+        
         // Call the viewController
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
@@ -624,6 +615,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Set selected card
         ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
         
+        // Set toggle nav to true
+        ContactManager.sharedManager.userSMSCard = true
+        
         // Call the viewController
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
@@ -631,67 +625,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
     }
     
-   /*
-    // Email Composer Delegate Methods
-    
-    func configuredMailComposeViewController() -> MFMailComposeViewController {
-        
-        // Set Selected Card
-        selectedUserCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
-        
-        // Create Instance of controller
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
-        
-        // Check for nil vals
-        
-        var name = ""
-        var phone = ""
-        var email = ""
-        var title = ""
-        
-        // Populate label fields
-        if selectedUserCard.cardHolderName != "" || selectedUserCard.cardHolderName != nil{
-            name = selectedUserCard.cardHolderName!
-        }
-        if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-            phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! 
-        }
-        if selectedUserCard.cardProfile.emails.count > 0{
-            email = selectedUserCard.cardProfile.emails[0]["email"]!
-        }
-        if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
-            title = self.selectedUserCard.cardProfile.title ?? ""
-        }
-        
-        
-        // Create Message
-        mailComposerVC.setToRecipients(["kfich7@gmail.com"])
-        mailComposerVC.setSubject("Greetings - Let's Connect")
-        mailComposerVC.setMessageBody("Hi, I'd like to connect with you. Here's my information \n\n\(name)\n\(title)\n\(email)\n\(title)", isHTML: false)
-        
-        return mailComposerVC
-    }
-    
-    func showSendMailErrorAlert() {
-        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
-        sendMailErrorAlert.show()
-    }
-    
-    // MARK: MFMailComposeViewControllerDelegate Method
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    // Message Composer Delegate
-    
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        // Make checks here for
-        controller.dismiss(animated: true) {
-            print("Message composer dismissed")
-        }
-    }
-    */
     
 }
 

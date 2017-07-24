@@ -43,6 +43,8 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
     // Page Setup
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Set Current user object
+        self.currentUser = ContactManager.sharedManager.currentUser
         
         // Set Contact formatter style
         formatter.style = .fullName
@@ -94,6 +96,15 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // IBActions / Buttons pressed
+    // ---------------------------------------
+    
+    @IBAction func cancelButtonSelected(_ sender: Any) {
+        // Dismiss VC
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     
     
     // Search Bar Delegate
@@ -210,38 +221,43 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
     
     func parseContactsForInfo(){
         
-        if selectedContact.phoneNumbers.count > 0 && ContactManager.sharedManager.userSMSCard{
+        // Check where user arrived from
+        if ContactManager.sharedManager.userSMSCard{
+            // If phone numbers exist
+            if selectedContact.phoneNumbers.count > 0{
+                // Execute sms call
+                self.showSMSCard()
+            }else{
+                
+                // Show alert that info unavailable
+                let alertView = UIAlertController(title: "", message: "You do not have a phone number for this user.. Please chose another way to connect.", preferredStyle: .alert)
+                 let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+                 // Print action
+                 print("Action selected")
+                 })
+                 alertView.addAction(action)
+                 self.present(alertView, animated: true, completion: nil)
+            }
             
-            // Execute sms call
-            self.showSMSCard()
-            
-        }else{
-            
-            // Show alert that info unavailable
-            let alertView = UIAlertController(title: "", message: "You do not have a phone number for this user.. Please chose another way to connect.", preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
-                // Print action
-                print("Action selected")
-            })
-            alertView.addAction(action)
-            self.present(alertView, animated: true, completion: nil)
         }
         
-        if selectedContact.emailAddresses.count > 0 && ContactManager.sharedManager.userEmailCard{
-            
-            // Execute email
-            self.showEmailCard()
-            
-        }else{
-            // Show alert that info unavailable
-            // Show alert that info unavailable
-            let alertView = UIAlertController(title: "", message: "You do not have an email address for this user.. Please chose another way to connect.", preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
-                // Print action 
-                print("Action selected")
-            })
-            alertView.addAction(action)
-            self.present(alertView, animated: true, completion: nil)
+        
+        // Check where user arrived from
+        if ContactManager.sharedManager.userEmailCard{
+            // If emails exist
+            if selectedContact.emailAddresses.count > 0 {
+                // Execute email
+                self.showEmailCard()
+            }else{
+                // Show alert that info unavailable
+                let alertView = UIAlertController(title: "", message: "You do not have an email address for this user.. Please chose another way to connect.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+                    // Print action
+                    print("Action selected")
+                })
+                alertView.addAction(action)
+                self.present(alertView, animated: true, completion: nil)
+            }
             
         }
         

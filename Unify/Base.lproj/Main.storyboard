@@ -863,6 +863,9 @@
                                                         <state key="normal" title="Cancel">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="cancelButtonSelected:" destination="8CS-eL-B82" eventType="touchUpInside" id="TUe-3B-oAd"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
