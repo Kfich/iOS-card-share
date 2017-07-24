@@ -219,7 +219,43 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.refreshCollectionView), name: NSNotification.Name(rawValue: "AddNewCardFinished"), object: nil)
         
+        // Nofications for sending card from profile
+        NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.showEmailCard), name: NSNotification.Name(rawValue: "EmailCardFromProfile"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.showSMSCard), name: NSNotification.Name(rawValue: "SMSCardFromProfile"), object: nil)
+        
     }
+    
+    func showEmailCard() {
+        // Show VC
+        print("EMAIL CARD SELECTED")
+        // Set selected card
+        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[contactPageControl.currentPage]
+        
+        // Set toggle nav to true
+        ContactManager.sharedManager.userEmailCard = true
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func showSMSCard() {
+        // Show VC
+        print("EMAIL CARD SELECTED")
+        // Set selected card
+        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[contactPageControl.currentPage]
+        
+        // Set toggle nav to true
+        ContactManager.sharedManager.userSMSCard = true
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     
     func refreshCollectionView() {
         // Reset table background

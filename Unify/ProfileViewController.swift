@@ -395,8 +395,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Call to refresh table
         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.parseData), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
         
+        
     }
-    
+
     func parseData() {
         // Re parse for values 
         

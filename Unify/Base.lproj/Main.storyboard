@@ -2126,8 +2126,7 @@
                                                             </constraints>
                                                             <state key="normal" image="icn-mail-blue"/>
                                                             <connections>
-                                                                <action selector="showEmailCard:" destination="EB3-gn-77P" eventType="touchUpInside" id="c9A-Ad-JkO"/>
-                                                                <action selector="showSMSRecipient:" destination="ToP-Xd-t3l" eventType="touchUpInside" id="D8P-pS-aji"/>
+                                                                <action selector="showEmailFromProfile:" destination="EB3-gn-77P" eventType="touchUpInside" id="SWv-0U-SBi"/>
                                                             </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="InN-nq-9uL">
@@ -2148,8 +2147,7 @@
                                                             </constraints>
                                                             <state key="normal" image="icn-chat-blue"/>
                                                             <connections>
-                                                                <action selector="showSMSCard:" destination="EB3-gn-77P" eventType="touchUpInside" id="onf-Oh-bS4"/>
-                                                                <action selector="showSMSRecipient:" destination="ToP-Xd-t3l" eventType="touchUpInside" id="nuo-qJ-AVd"/>
+                                                                <action selector="showSMSFromProfile:" destination="EB3-gn-77P" eventType="touchUpInside" id="I0u-iX-V35"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -8988,6 +8986,6 @@
         <image name="white-fade-home-card" width="456" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DUc-wk-wjY"/>
+        <segue reference="yAj-N5-fTc"/>
     </inferredMetricsTieBreakers>
 </document>

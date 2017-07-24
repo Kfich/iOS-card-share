@@ -69,6 +69,19 @@ class CardCollectionViewCell: UICollectionViewCell{
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "EmailCardFromRadar"), object: self)
     }
     
+    @IBAction func showEmailFromProfile(_ sender: Any) {
+        // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "EmailCardFromProfile"), object: self)
+    }
+    
+    
+    
+    @IBAction func showSMSFromProfile(_ sender: Any) {
+        // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SMSCardFromProfile"), object: self)
+    }
+    
+    
     @IBAction func showSMSCard(_ sender: Any) {
         // Post notification for radarPullupVC
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SMSCardFromRadar"), object: self)
