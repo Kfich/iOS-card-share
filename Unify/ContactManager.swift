@@ -33,6 +33,10 @@ class ContactManager{
     var userDidCreateCard = false
     var userSelectedEditCard = false
     
+    // Account for nav from card send view
+    var userSMSCard = false
+    var userEmailCard = false
+    
     // ContactList for Refresh
     var contactListHasAppeared = false
     

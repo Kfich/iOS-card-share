@@ -146,13 +146,11 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
         // Assign selected contact
         selectedContact = ContactManager.sharedManager.phoneContactList[indexPath.row]
-        // Parse contact for info
-        
-        
-        // Call to present email/sms depending on where they came from
-        
-        
-        // Set navigation switch to false
+        // Parse contact for info & Call mail or sms accordingly
+        self.parseContactsForInfo()
+        // Set both navigation switches to false
+        ContactManager.sharedManager.userEmailCard = false
+        ContactManager.sharedManager.userSMSCard = false
         
     }
     
@@ -209,69 +207,45 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
     }
     
     
-    /*
+    
     func parseContactsForInfo(){
         
-        
-        nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
-        
-        if selectedContact.phoneNumbers.count > 0 {
-            // Set label text
-            phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
+        if selectedContact.phoneNumbers.count > 0 && ContactManager.sharedManager.userSMSCard{
             
-            // Set global phone val
-            self.selectedUserPhone = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as! String
+            // Execute sms call
+            self.showSMSCard()
+            
         }else{
-            // Hide phone icon image
-            phoneImageView.isHidden = true
-            // Disable buttons
-            callButton.isEnabled = false
-            smsButton.isEnabled = false
             
-            // Set tint for buttons
-            callButton.tintColor = UIColor.gray
-            smsButton.tintColor = UIColor.gray
-            
-            // Toggle image
-            callButton.image = UIImage(named: "btn-call-gray")
-            smsButton.image = UIImage(named: "btn-chat-gray")
-            
-        }
-        if selectedContact.emailAddresses.count > 0 {
-            // Set label text
-            emailLabel.text = (selectedContact.emailAddresses[0].value as String)
-            // Set global email
-            self.selectedUserEmail = (selectedContact.emailAddresses[0].value as String)
-        }else{
-            // Hide email icon
-            emailImageView.isHidden = true
-            // Disable button
-            emailButton.isEnabled = false
-            // Set tint
-            emailButton.tintColor = UIColor.gray
-            // Toggle image
-            emailButton.image = UIImage(named: "btn-message-gray")
-        }
-        // Check if image data available
-        if selectedContact.imageDataAvailable {
-            
-            print("Has IMAGE")
-            // Create image var
-            let image = UIImage(data: selectedContact.imageData!)
-            // Set image for contact
-            contactImageView.image = image
-        }else{
-            // Set to placeholder image
-            contactImageView.image = UIImage(named: "profile")
+            // Show alert that info unavailable
+            let alertView = UIAlertController(title: "", message: "You do not have a phone number for this user.. Please chose another way to connect.", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+                // Print action
+                print("Action selected")
+            })
+            alertView.addAction(action)
+            self.present(alertView, animated: true, completion: nil)
         }
         
-        // Senders card
-        //contactImageView.image = UIImage(named: "throwback.png")
-        //nameLabel.text = "Harold Fich"
-        //phoneLabel.text = "1+ (123)-345-6789"
-        //emailLabel.text = "Kev.fich12@gmail.com"
-        //titleLabel.text = "Founder & CEO, CleanSwipe"
-    }*/
+        if selectedContact.emailAddresses.count > 0 && ContactManager.sharedManager.userEmailCard{
+            
+            // Execute email
+            self.showEmailCard()
+            
+        }else{
+            // Show alert that info unavailable
+            // Show alert that info unavailable
+            let alertView = UIAlertController(title: "", message: "You do not have an email address for this user.. Please chose another way to connect.", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+                // Print action 
+                print("Action selected")
+            })
+            alertView.addAction(action)
+            self.present(alertView, animated: true, completion: nil)
+            
+        }
+        
+    }
 
     // Message Composer Functions
     
@@ -298,55 +272,34 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         
         //selectedCardIndex = cardCollectionView.inde
         
-        
         print("SMS CARD SELECTED")
         // Send post notif
         
         let composeVC = MFMessageComposeViewController()
         if(MFMessageComposeViewController .canSendText()){
             
+            // Set Delegate
             composeVC.messageComposeDelegate = self
             
-            // 6468251231
-            
-            // Check for nil vals
-            
+            // Init name variable
             var name = ""
-            var recipientName = ""
-            var phone = ""
-            var email = ""
-            //var title = ""
-            
             
             // CNContact Objects
-            let contact = ContactManager.sharedManager.contactToIntro
-            let recipient = ContactManager.sharedManager.recipientToIntro
+            let contact = self.selectedContact
             
-            // Check if they both have email
+            // Set name
             name = formatter.string(from: contact) ?? "No Name"
-            recipientName = formatter.string(from: recipient) ?? ""
             
-            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+            // Check if they have phone number
+            if contact.phoneNumbers.count > 0{
                 
                 let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
                 // Set contact phone number
-                phone = contactPhone!
-                
-                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
-                
-                // Launch text client
-                composeVC.recipients = [contactPhone!, recipientPhone!]
+                composeVC.recipients = [contactPhone!]
             }
-            
-            if contact.emailAddresses.count > 0 {
-                email = (contact.emailAddresses[0].value as String)
-            }
-            
-            // Configure message
-            /*let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"*/
             
             // Test String
-            let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+            let str = "Hi \(name), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
             
             // Set string as message body
             composeVC.body = str
@@ -366,19 +319,16 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
         
-        // Check for nil vals
-        
+        // Create temp vals
         var name = ""
         var emailContact = ""
-        //var title = ""
-        
         
         // CNContact Objects
         let contact = self.selectedContact
         
-        // Check if they both have email
+        // Set name
         name = formatter.string(from: contact) ?? "No Name"
-        
+        // Check if they have email
         if contact.emailAddresses.count > 0{
             // Set email string
             let contactEmail = contact.emailAddresses[0].value as String
@@ -392,7 +342,7 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
         
         // Test String
-        let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+        let str = "Hi \(name), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact])
@@ -421,9 +371,6 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
             print("Message composer dismissed")
         }
     }
-
-
-    
     
     // MARK: - Navigation
     
