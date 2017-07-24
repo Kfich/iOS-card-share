@@ -92,6 +92,8 @@
 		FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738331EDDD6CD0074200F /* BusinessCardView.xib */; };
 		FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738351EDDDE0F0074200F /* ContactCardView.swift */; };
 		FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738371EDDDE240074200F /* ContactCardView.xib */; };
+		FB90A8AD1F265E9900E67B1E /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */; };
+		FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */; };
 		FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */; };
 		FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
@@ -282,6 +284,8 @@
 		FB3738331EDDD6CD0074200F /* BusinessCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessCardView.xib; sourceTree = "<group>"; };
 		FB3738351EDDDE0F0074200F /* ContactCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCardView.swift; sourceTree = "<group>"; };
 		FB3738371EDDDE240074200F /* ContactCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCardView.xib; sourceTree = "<group>"; };
+		FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
+		FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardRecipientListViewController.swift; sourceTree = "<group>"; };
 		FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
@@ -572,7 +576,6 @@
 				1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */,
 				FB1A34121EE1BC88003B5A73 /* RadarContainerViewController.swift */,
 				FB1A34141EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift */,
-				FBE807451F04159700A05292 /* CardSelectionViewController.swift */,
 				FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */,
 				FBFDFE041F17FC0200AF3A08 /* RadarContactSelectionViewController.swift */,
 			);
@@ -645,7 +648,10 @@
 		FBE8075B1F06D61200A05292 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				FBE807451F04159700A05292 /* CardSelectionViewController.swift */,
 				FBE807591F06D36200A05292 /* CreateCardViewController.swift */,
+				FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */,
+				FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */,
 			);
 			name = Cards;
 			sourceTree = "<group>";
@@ -913,6 +919,8 @@
 				1CAE5B841E913A06006EFF40 /* AppDelegate.swift in Sources */,
 				1C31040C1E94A1F700F4D70D /* EditProfile-TableViewController.swift in Sources */,
 				1CB31CA71E94273E00A0C4A5 /* QuickShare-ViewController.swift in Sources */,
+				FB90A8AD1F265E9900E67B1E /* EditCardViewController.swift in Sources */,
+				FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */,
 				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
 				1C151D2F1F1DBE73004B23CE /* CountlyCommon.m in Sources */,

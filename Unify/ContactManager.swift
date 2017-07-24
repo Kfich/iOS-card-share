@@ -46,10 +46,17 @@ class ContactManager{
     var contactToIntro = CNContact()
     var recipientToIntro = CNContact()
     
+    // Contact for sending cards
+    var contactForCardShare = CNContact()
+    
+    // Card list exported
     var currentUserCardsDictionaryArray = [[NSDictionary]]()
     
     // Phone ContactList Sync
     var phoneContactList = [CNContact]()
+    
+    // Transaction Handling
+    var transaction = Transaction()
     
     
     
@@ -67,6 +74,47 @@ class ContactManager{
         userArrivedFromContactList = false
         
     }
+    
+    // Transaction handling
+    
+    func createTransaction(type: String) {
+        // Set type
+        transaction.type = type
+        // Show progress hud
+        KVNProgress.show(withStatus: "Creating your connection...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Transaction Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                
+                // Insert to manager card array
+                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+    
+    
     
     // Phone Contact Access and Sync
     
@@ -239,6 +287,9 @@ class ContactManager{
             
             var contacts = [CNContact]()
             let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor])
+            // Sort users by last name
+            request.sortOrder = CNContactSortOrder.familyName
+            // Execute request
             do {
                 try store.enumerateContacts(with: request) { contact, stop in
                     contacts.append(contact)
@@ -255,14 +306,14 @@ class ContactManager{
                 print(formatter.string(from: contact) ?? "No Name")
                 
                 if contact.phoneNumbers.count > 0 {
-                  print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
+                  //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
                 }
                 if contact.emailAddresses.count > 0 {
-                    print((contact.emailAddresses[0].value))
+                    //print((contact.emailAddresses[0].value))
                 }
                 if contact.imageDataAvailable {
                     //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
-                    print("Has IMAGE")
+                    //print("Has IMAGE")
                 }
                 // Previous apprend area
                  self.phoneContactList.append(contact)
@@ -271,8 +322,133 @@ class ContactManager{
                 //print(contact)
             }
             self.postContactListRefresh()
+            
+            // Test sort contacts code
+            //self.sortContacts()
+            //self.sort()
         }
     }
+   
+    
+    // **** Functions for sorting contacts into sections *** //
+    
+    func sort() {
+        // Test for sorting contacts by last name into sections
+        
+        let data = phoneContactList // Example data, use your phonebook data here.
+        
+        // Build letters array:
+        
+        var letters: [Character]
+        
+        letters = data.map { (contact) -> Character in
+            print(contact.familyName.startIndex)
+            // Set index of letter 
+            let index = contact.familyName.index(contact.familyName.startIndex, offsetBy: 0)
+            // Return index value
+            return contact.familyName[index]
+        }
+        
+        letters = letters.sorted()
+        // Print letters array
+        print("\n\nLETTERS >>>> \(letters)")
+        
+        // Make sure no redundancies in section list
+        letters = letters.reduce([], { (list, name) -> [Character] in
+            if !list.contains(name) {
+                // Test to see if letters added
+                print("\n\nAdded >>>> \(list + [name])")
+                return list + [name]
+            }
+            return list
+        })
+        
+        
+        // Build contacts array:
+        
+        // Init sorted contacts array
+        var contactNames = [Character: [CNContact]]()
+        // Iterate over contact list
+        for item in data {
+            
+            if contactNames[item.familyName[item.familyName.startIndex]] == nil {
+                // Set index if doesn't exist
+                contactNames[item.familyName[item.familyName.startIndex]] = [CNContact]()
+            }
+            
+            // Add contact to section
+            contactNames[item.familyName[item.familyName.startIndex]]!.append(item)
+            
+        }
+        
+        // Sort list
+        
+        for (letter, list) in contactNames {
+            contactNames[letter] = list.sorted(by: {
+                (firt: CNContact, second: CNContact) -> Bool in firt.familyName < second.familyName
+            })
+
+            // Test output
+            print(contactNames[letter] ?? "")
+        }
+    }
+
+    
+    
+    func sortContacts() {
+        // Test for sorting contacts by last name into sections
+        
+        let data = ["Anton", "Anna", "John", "Caesar"] // Example data, use your phonebook data here.
+        
+        // Build letters array:
+        
+        var letters: [Character]
+        
+        letters = data.map { (name) -> Character in
+            print(name[name.startIndex])
+            return name[name.startIndex]
+        }
+        
+        letters = letters.sorted()
+        // Print letters array
+        print("\n\nLETTERS >>>> \(letters)")
+        
+        letters = letters.reduce([], { (list, name) -> [Character] in
+            if !list.contains(name) {
+                // Test to see if letters added
+                print("\n\nAdded >>>> \(list + [name])")
+                return list + [name]
+            }
+            return list
+        })
+        
+        
+        // Build contacts array:
+        
+        // Init sorted contacts array
+        var contacts = [Character: [String]]()
+        // Iterate over contact list
+        for entry in data {
+            
+            if contacts[entry[entry.startIndex]] == nil {
+                // Set index if doesn't exist
+                contacts[entry[entry.startIndex]] = [String]()
+            }
+            
+            // Add entry to section
+            contacts[entry[entry.startIndex]]!.append(entry)
+            
+        }
+        
+        // Sort list
+        for (letter, list) in contacts {
+            contacts[letter] = list.sorted()
+            // Test output
+            print(contacts[letter])
+        }
+    }
+    
+    // END **** Functions for sorting contacts into sections *** END//
     
     func presentSettingsActionSheet() {
         let alert = UIAlertController(title: "Permission to Contacts", message: "This app needs access to contacts in order to ...", preferredStyle: .actionSheet)
@@ -290,6 +466,8 @@ class ContactManager{
         // Post notification
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactList"), object: self)
     }
+    
+    
     
     
     

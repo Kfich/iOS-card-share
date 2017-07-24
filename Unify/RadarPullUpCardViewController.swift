@@ -10,7 +10,7 @@ import UIKit
 import MessageUI
 
 
-class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, ISHPullUpStateDelegate, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate{
+class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, ISHPullUpStateDelegate, UICollectionViewDelegate, UICollectionViewDataSource{
     
     // Properties
     // ---------------------------------------
@@ -609,7 +609,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     func showEmailCard(_ sender: Any) {
         
         print("EMAIL CARD SELECTED")
+        // Set selected card
         
+        
+        // Call viewcontroller 
+        
+        
+        /*
         // Send post notif
         // Create instance of controller
         let mailComposeViewController = configuredMailComposeViewController()
@@ -620,16 +626,18 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             self.present(mailComposeViewController, animated: true, completion: nil)
         } else {
             self.showSendMailErrorAlert()
-        }
+        }*/
         
     }
     
     func showSMSCard(_ sender: Any) {
         // Set Selected Card
         
+        // Call the viewController
+        
         //selectedCardIndex = cardCollectionView.inde
         
-        selectedUserCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
+        /*selectedUserCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
         
         print("SMS CARD SELECTED")
         // Send post notif
@@ -672,11 +680,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Present the view controller modally.
             self.present(composeVC, animated: true, completion: nil)
             
-        }
+        }*/
         
     }
     
-    
+   /*
     // Email Composer Delegate Methods
     
     func configuredMailComposeViewController() -> MFMailComposeViewController {
@@ -736,7 +744,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             print("Message composer dismissed")
         }
     }
-    
+    */
     
 }
 
