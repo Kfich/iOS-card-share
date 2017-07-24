@@ -610,77 +610,24 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         print("EMAIL CARD SELECTED")
         // Set selected card
-        
+        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
         
         // Call viewcontroller 
-        
-        
-        /*
-        // Send post notif
-        // Create instance of controller
-        let mailComposeViewController = configuredMailComposeViewController()
-        
-        // Check if deviceCanSendMail
-        if MFMailComposeViewController.canSendMail() {
-            
-            self.present(mailComposeViewController, animated: true, completion: nil)
-        } else {
-            self.showSendMailErrorAlert()
-        }*/
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
+        self.present(controller, animated: true, completion: nil)
         
     }
     
     func showSMSCard(_ sender: Any) {
-        // Set Selected Card
+        // Set selected card
+        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
         
         // Call the viewController
-        
-        //selectedCardIndex = cardCollectionView.inde
-        
-        /*selectedUserCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
-        
-        print("SMS CARD SELECTED")
-        // Send post notif
-        
-        let composeVC = MFMessageComposeViewController()
-        if(MFMessageComposeViewController .canSendText()){
-            
-            composeVC.messageComposeDelegate = self
-            
-            // 6468251231
-            // Configure the fields of the interface.
-            composeVC.recipients = ["6463597308"]
-            
-            // Check for nil vals
-            
-            var name = ""
-            var phone = ""
-            var email = ""
-            var title = ""
-            
-            // Populate label fields
-            if selectedUserCard.cardHolderName != "" || selectedUserCard.cardHolderName != nil{
-                name = selectedUserCard.cardHolderName!
-            }
-            if selectedUserCard.cardProfile.phoneNumbers.count > 0{
-                phone = selectedUserCard.cardProfile.phoneNumbers[0]["phone"]! 
-            }
-            if selectedUserCard.cardProfile.emails.count > 0{
-                email = selectedUserCard.cardProfile.emails[0]["email"]! 
-            }
-            if selectedUserCard.cardProfile.title != "" || selectedUserCard.cardProfile.title != nil{
-                title = self.selectedUserCard.cardProfile.title ?? ""
-            }
-            
-            
-            selectedUserCard.printCard()
-            
-            composeVC.body = "Hi, I'd like to connect with you. Here's my information \n\n\(name)\n\(title)\n\(email)\n\(title)"
-            
-            // Present the view controller modally.
-            self.present(composeVC, animated: true, completion: nil)
-            
-        }*/
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
+        self.present(controller, animated: true, completion: nil)
         
     }
     
