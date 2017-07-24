@@ -27,9 +27,11 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
 
     var selectedContact = CNContact()
     var currentUserContact = CNContact()
+    var selectedIndexPath = Int()
     
     // Progress hud
     var progressHUD = KVNProgress()
+    
     
     
     // IBOutlets
@@ -132,6 +134,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         // Add tap gesture to follow up button
+        self.addGestureToImage(image: (cell?.introImageView)!, index: indexPath.row)
+        
+        
         
         return cell!
     }
@@ -200,6 +205,38 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     // Custom Methods
+    
+    func addGestureToImage(image: UIImageView, index: Int) {
+        // Init tap gesture
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showIntroWithContact(sender:)))
+        image.isUserInteractionEnabled = true
+        // Add gesture to image
+        image.addGestureRecognizer(tapGestureRecognizer)
+        // Set image index
+        image.tag = index
+    }
+    
+    func showIntroWithContact(sender: UITapGestureRecognizer){
+        // Set selected contact on manager using tag
+        ContactManager.sharedManager.contactToIntro = ContactManager.sharedManager.phoneContactList[(sender.view?.tag)!]
+        
+        // Set navigation toggle on manager to indicate intent
+        ContactManager.sharedManager.userArrivedFromContactList = true
+        ContactManager.sharedManager.userArrivedFromIntro = true
+        
+        // Notification for intro screen
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+        // Set selected tab
+        
+        
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            // Set selected tab
+         self.tabBarController?.selectedIndex = 1
+        }
+        
+    }
+    
     func addObservers() {
         // Call to refresh table
         NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTableData), name: NSNotification.Name(rawValue: "RefreshContactList"), object: nil)
@@ -207,11 +244,11 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func refreshTableData() {
-        // Hide HUD
-        KVNProgress.showSuccess()
         
         // Reload contact list
         DispatchQueue.main.async {
+            // Hide HUD
+            KVNProgress.showSuccess()
             // Update UI
             self.contactListTableView.reloadData()
         }

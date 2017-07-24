@@ -61,7 +61,14 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         // Add Obersvers
         addObservers()
         
-        //
+        // Check if user came from contact list 
+        if ContactManager.sharedManager.userArrivedFromContactList {
+            // Execute call to configure views
+            self.configureViewForContact()
+            
+            // Reset Manager value to false 
+            ContactManager.sharedManager.userArrivedFromContactList = false
+        }
     }
     
     override func viewDidLoad() {
@@ -77,6 +84,9 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Hide cancel button
         cancelIntroButton.isHidden = true
+        
+        //
+        
         
         /*self.contactImageView.isUserInteractionEnabled = true
         self.contactImageView.addGestureRecognizer(tapGestureRecognizer)
@@ -339,7 +349,11 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     
     func showContactList() {
         // Perform seggy
-        performSegue(withIdentifier: "showIntroContactList", sender: self)
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            // Set selected tab
+            self.performSegue(withIdentifier: "showIntroContactList", sender: self)
+        }
     }
     
     func resetViews() {

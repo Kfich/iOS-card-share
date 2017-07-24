@@ -910,7 +910,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
-    
     // Alert Controller to Add CardName
     
     func showAlertWithTextField(description: String, placeholder: String, actionType: String){
