@@ -33,6 +33,7 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
     
     // Selected Card
     var selectedUserCard = ContactCard()
+    var transaction = Transaction()
     
     
     // IBOutlets
@@ -216,7 +217,45 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
             self.contactListTableView.reloadData()
         }
     }
+    // Create when user done sending email or sms
     
+    func createTransaction(type: String) {
+        // Set Type
+        self.transaction.type = type
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Making the introduction...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(response)")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                
+                // Insert to manager card array
+                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Created Error Response ---> \(error)")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
     
     
     func parseContactsForInfo(){
