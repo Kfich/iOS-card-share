@@ -615,10 +615,16 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         switch indexPath.section {
         case 0:
             card.cardProfile.bio = bios[indexPath.row]
+            // Append bio to list
+            card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
         case 1:
             card.cardProfile.workInfo = workInformation[indexPath.row]
+            // Append to work list
+            card.cardProfile.setWorkRecords(emailRecords: ["work" : workInformation[indexPath.row]])
         case 2:
             card.cardProfile.title = titles[indexPath.row]
+            // Add to list
+            card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
             
             // Assign label value
             self.titleLabel.text = titles[indexPath.row]

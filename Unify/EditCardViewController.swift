@@ -29,6 +29,19 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var notes = [String]()
     var tags = [String]()
     
+    // Selected Items 
+    var selectedBios = [String]()
+    var selectedWorkInformation = [String]()
+    var selectedOrganizations = [String]()
+    var selectedTitles = [String]()
+    var selectedPhoneNumbers = [String]()
+    var selectedEmails = [String]()
+    var selectedWebsites = [String]()
+    var selectedSocialLinks = [String]()
+    var selectedNotes = [String]()
+    var selectedTags = [String]()
+    
+    
     var isSimulator = false
     
     // Photo picker variable
@@ -93,6 +106,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         // Parse card for profile info
+        self.parseCardForSelections()
+        
         
         // Parse bio info
         
@@ -361,19 +376,18 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         card.cardHolderName = currentUser.fullName
         // Assign card image id
         card.cardProfile.imageIds.append(["card_image_id": idString])
+        // Set ownerid on card
+        card.ownerId = currentUser.userId
         
         // Print card to see if generated
         card.printCard()
         //card.cardProfile.printProfle()
         
         // Add card to manager object card suite
-        ContactManager.sharedManager.currentUserCards.insert(card, at: 0)
-        print("\n\nUSER Cards\n\n\(ContactManager.sharedManager.currentUserCards)")
-        print("\n\nUSER CARD COUNT\n\n\(ContactManager.sharedManager.currentUserCards.count)")
+        //ContactManager.sharedManager.currentUserCards.insert(card, at: 0)
         
-        // Add card to current user object card suite
-        currentUser.cards.append(card)
-        
+        // Overwrite card to current user object card suite
+    
         
         // Send to server
         
@@ -386,16 +400,14 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
         //UDWrapper.setData("contact_cards", value: encodedData)
         
-        // Set ownerid on card
-        card.ownerId = currentUser.userId
         
         // Show progress hud
-        KVNProgress.show(withStatus: "Saving your new card...")
+        //KVNProgress.show(withStatus: "Saving your new card...")
         
         // Save card to DB
-        let parameters = ["data": card.toAnyObject()]
-        
-        Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+        //let parameters = ["data": card.toAnyObject()]
+        /*
+        Connection(configuration: nil).updateCardCall(parameters as! [AnyHashable : Any]){ response, error in
             if error == nil {
                 print("Card Created Response ---> \(response)")
                 
@@ -427,7 +439,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             // Hide indicator
             KVNProgress.dismiss()
-        }
+        }*/
         
     }
     
@@ -549,35 +561,103 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         case 0:
             //cell.titleLabel.text = "Bio \(indexPath.row)"
             cell.descriptionLabel.text = bios[indexPath.row]
+            
+            if selectedBios.contains(bios[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
             return cell
         case 1:
             //cell.titleLabel.text = "Work \(indexPath.row)"
             cell.descriptionLabel.text = workInformation[indexPath.row]
+            
+            // Check if in list
+            if selectedWorkInformation.contains(workInformation[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
+
             return cell
         case 2:
             //cell.titleLabel.text = "Title \(indexPath.row)"
             cell.descriptionLabel.text = titles[indexPath.row]
+            
+            // Check if in list
+            if selectedTitles.contains(titles[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
+
             return cell
         case 3:
             //cell.titleLabel.text = "Email \(indexPath.row)"
             cell.descriptionLabel.text = emails[indexPath.row]
+            
+            // Check if in list
+            if selectedEmails.contains(emails[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
+            
             return cell
         case 4:
             //cell.titleLabel.text = "Phone \(indexPath.row)"
             cell.descriptionLabel.text = phoneNumbers[indexPath.row]
+            
+            // Check if in list
+            if selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
             return cell
         case 5:
             //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
             cell.descriptionLabel.text = socialLinks[indexPath.row]
+            
+            // Check if in list
+            if selectedSocialLinks.contains(socialLinks[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
             return cell
         case 6:
             //cell.titleLabel.text = "Website \(indexPath.row)"
             cell.descriptionLabel.text = websites[indexPath.row]
+            
+            // Check if in list
+            if selectedWebsites.contains(websites[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
+            
             return cell
         case 7:
             //cell.titleLabel.text = "Organization \(indexPath.row)"
             cell.descriptionLabel.text = organizations[indexPath.row]
+            
+            // Check if in list
+            if selectedOrganizations.contains(organizations[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
             return cell
+            
         default:
             return cell
         }
@@ -585,6 +665,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         
     }
+    
     
     //MARK: - UITableViewDelegate
     
@@ -663,12 +744,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // Custom Methods
-    func setSeletedListItems() {
-        
-        // Set card vals to table
-        
-    }
-    
     
     // Configuration
     func configureViews(){
@@ -708,6 +783,73 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         photoPicker.actionTitleCancel = "Cancel"
         photoPicker.actionTitleOther = "Import From..."
     }
+    
+    // Parse card for selected values
+    func parseCardForSelections() {
+
+        // Parse card for profile info
+        
+        if card.cardProfile.bios.count > 0{
+            // Iterate throught array and append available content
+            for bio in card.cardProfile.bios{
+                selectedBios.append(bio["bio"]!)
+                print(selectedBios.count)
+            }
+            
+        }
+        // Parse work info
+        if card.cardProfile.workInformationList.count > 0{
+            for info in card.cardProfile.workInformationList{
+                selectedWorkInformation.append(info["work"]!)
+            }
+        }
+        
+        // Parse work info
+        if card.cardProfile.titles.count > 0{
+            for info in card.cardProfile.titles{
+                selectedTitles.append((info["title"])!)
+            }
+        }
+
+        if card.cardProfile.phoneNumbers.count > 0{
+            for number in card.cardProfile.phoneNumbers{
+                selectedPhoneNumbers.append(number["phone"]! )
+            }
+        }
+        
+        if card.cardProfile.emails.count > 0{
+            for email in card.cardProfile.emails{
+                selectedEmails.append(email["email"]! )
+            }
+        }
+        if card.cardProfile.websites.count > 0{
+            for site in card.cardProfile.websites{
+                selectedWebsites.append(site["website"]! )
+            }
+        }
+        if card.cardProfile.organizations.count > 0{
+            for org in card.cardProfile.organizations{
+                selectedOrganizations.append(org["organization"]! )
+            }
+        }
+        if card.cardProfile.tags.count > 0{
+            for hashtag in card.cardProfile.tags{
+                selectedTags.append(hashtag["tag"]! )
+            }
+        }
+        if card.cardProfile.notes.count > 0{
+            for note in card.cardProfile.notes{
+                selectedNotes.append(note["note"]! )
+            }
+        }
+        if card.cardProfile.socialLinks.count > 0{
+            for link in card.cardProfile.socialLinks{
+                selectedSocialLinks.append(link["link"]! )
+            }
+        }
+    }
+    
+    
     
     // Alert Controller to Add CardName
     

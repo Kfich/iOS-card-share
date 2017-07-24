@@ -112,20 +112,17 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     @IBAction func editCardSelected(_ sender: Any) {
         
-       
-        /*// Show add card vc
+        // Show add card vc
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
+        let controller = storyboard.instantiateViewController(withIdentifier: "EditCardVC")
         self.present(controller, animated: true, completion: nil)
         
         // Pass selected card to view
         ContactManager.sharedManager.selectedCard = selectedCard
         
         // Set switch to true
-        ContactManager.sharedManager.userSelectedEditCard = true*/
+        ContactManager.sharedManager.userSelectedEditCard = true
         
-        // For the boys
-        KVNProgress.showSuccess(withStatus: "Coming soon, don't worry")
         
     }
     

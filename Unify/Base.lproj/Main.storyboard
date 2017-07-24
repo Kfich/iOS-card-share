@@ -923,7 +923,7 @@
                 <navigationController storyboardIdentifier="ProfileVC" navigationBarHidden="YES" id="wbp-bP-tiH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="SLj-8d-qLN"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xVx-3S-WBA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xVx-3S-WBA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1548,7 +1548,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ActivityVC" navigationBarHidden="YES" id="1Oc-5A-vEL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Activity" id="vMf-bf-9I9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bx0-lP-1KU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bx0-lP-1KU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3137,7 +3137,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ContactVC" navigationBarHidden="YES" id="pli-7b-Vvs" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Contacts" image="contactsicon" selectedImage="contactsicon" id="fnb-zs-j2f"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="SOC-E3-VL8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SOC-E3-VL8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5395,7 +5395,7 @@
                 <navigationController storyboardIdentifier="RadarVC" navigationBarHidden="YES" id="xIZ-TC-ypV" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" id="CI6-FL-GhO"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N9h-YD-6eO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N9h-YD-6eO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8198,6 +8198,7 @@
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
+                                                    <action selector="doneCreatingCard:" destination="krk-qZ-4Wf" eventType="touchUpInside" id="QXn-XI-DSt"/>
                                                     <action selector="doneCreatingCard:" destination="j5R-8u-hRu" eventType="touchUpInside" id="REm-XB-HUY"/>
                                                 </connections>
                                             </button>
@@ -8212,6 +8213,7 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="addCardName:" destination="j5R-8u-hRu" eventType="touchUpInside" id="6mJ-hV-zIZ"/>
+                                                    <action selector="addCardName:" destination="krk-qZ-4Wf" eventType="touchUpInside" id="GRX-72-0L8"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -8342,7 +8344,7 @@
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="17"/>
                                                         <state key="normal" title="Edit Image"/>
                                                         <connections>
-                                                            <action selector="selectProfileImage:" destination="j5R-8u-hRu" eventType="touchUpInside" id="T7B-fY-AEi"/>
+                                                            <action selector="selectProfileImage:" destination="krk-qZ-4Wf" eventType="touchUpInside" id="Y1v-tf-L9N"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -8625,8 +8627,8 @@
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
-                                            <outlet property="dataSource" destination="j5R-8u-hRu" id="QZo-d0-gRt"/>
-                                            <outlet property="delegate" destination="j5R-8u-hRu" id="KC5-Kf-IQk"/>
+                                            <outlet property="dataSource" destination="krk-qZ-4Wf" id="iwK-ic-xRc"/>
+                                            <outlet property="delegate" destination="krk-qZ-4Wf" id="EQL-hp-inb"/>
                                         </connections>
                                     </tableView>
                                 </subviews>
@@ -8662,6 +8664,25 @@
                             <constraint firstItem="sBX-X8-9hl" firstAttribute="leading" secondItem="bsJ-RO-mnA" secondAttribute="leading" id="gjw-CF-kE9"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="addCardNameButton" destination="28S-HR-k8c" id="sLF-Mw-6g0"/>
+                        <outlet property="addImageButton" destination="377-nn-58v" id="UO0-JR-POs"/>
+                        <outlet property="cardOptionsTableView" destination="7L8-w7-Nzo" id="1A0-KU-2yk"/>
+                        <outlet property="emailLabel" destination="KqL-js-cki" id="W93-YT-986"/>
+                        <outlet property="mediaButton1" destination="Ebi-H3-uvS" id="ooB-MR-zOx"/>
+                        <outlet property="mediaButton2" destination="YtC-4g-I4M" id="CQ9-S8-Vjb"/>
+                        <outlet property="mediaButton3" destination="yid-Gb-wAo" id="Ovm-F7-Hal"/>
+                        <outlet property="mediaButton4" destination="Y2W-JH-3A1" id="o7c-wT-DSs"/>
+                        <outlet property="mediaButton5" destination="k0k-Sa-S16" id="Aci-dZ-3za"/>
+                        <outlet property="mediaButton6" destination="GGH-rm-HIN" id="OPC-f1-l0c"/>
+                        <outlet property="mediaButton7" destination="jra-yu-4dV" id="KeT-EQ-2D3"/>
+                        <outlet property="nameLabel" destination="d7o-qs-PPc" id="A6e-rc-yuI"/>
+                        <outlet property="numberLabel" destination="j9y-be-UrO" id="dR7-qv-b9W"/>
+                        <outlet property="profileCardWrapperView" destination="PE4-Nt-VsJ" id="Hjf-qO-CvE"/>
+                        <outlet property="profileImageView" destination="mn1-7A-bmq" id="MZA-tB-P2f"/>
+                        <outlet property="socialMediaToolBar" destination="Pqw-d2-Zsr" id="7el-Kr-5Ca"/>
+                        <outlet property="titleLabel" destination="jS2-14-S41" id="gTa-gy-WAn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Gg-zv-emU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -8671,7 +8692,7 @@
         <scene sceneID="gZp-VV-fQI">
             <objects>
                 <collectionViewController id="tOI-Kc-32Q" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="O9M-i8-w5a">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="O9M-i8-w5a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -8718,7 +8739,7 @@
                     <tabBarItem key="tabBarItem" title="Intro" id="0XH-iX-L6l"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="LSz-30-GH9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="JhS-bM-a1h">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JhS-bM-a1h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8931,7 +8952,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Qm7-hw-6AV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mbv-kk-ivS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mbv-kk-ivS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
