@@ -18,6 +18,7 @@ class SettingsViewCell: UITableViewCell {
     // ------------------------
     @IBOutlet var incongnitoSwitch: UISwitch!
     
+    @IBOutlet var syncContactsSwitch: UISwitch!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,6 +45,20 @@ class SettingsViewCell: UITableViewCell {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "IncognitoToggled"), object: self)
         }
         
+    }
+    
+    
+    @IBAction func syncContactsToggled(_ sender: Any) {
+        
+        if syncContactsSwitch.isOn == false {
+            // Do nothing
+            print("Toggled off")
+            // Set currentUser incognito to flase
+            
+        }else{
+            // Post notification
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SyncContacts"), object: self)
+        }
     }
     
 

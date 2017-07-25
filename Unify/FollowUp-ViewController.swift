@@ -105,6 +105,8 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
     @IBAction func scheduleMeeting_click(_ sender: Any) {
         
         print("open calendar app with as much pre-populated data possible")
+        // Configure calendar
+        UIApplication.shared.openURL(NSURL(string: "calshow://")! as URL)
     }
     
 

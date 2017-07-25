@@ -21,6 +21,8 @@ public class User{
     var emails = [[String : String]]()
     var phoneNumbers = [[String : String]]()
     
+    var incognitoData = IncognitoData()
+    
     // Bools to check user state
     var userPhoneVerified: Bool = false
     var userPhoneForVerification: String = ""
@@ -43,6 +45,26 @@ public class User{
     // Card Profiles
     var userProfile = CardProfile()
     
+    
+    // Struct to carry incognito data
+    struct IncognitoData {
+        // Properties
+        // --------------------
+        var name: String
+        var image: UIImage
+
+        // Init
+        // --------------------
+        init() {
+            self.name = ""
+            self.image = UIImage()
+        }
+        
+        init(name: String, image: UIImage) {
+            self.name = name
+            self.image = image
+        }
+    }
     
     // Init
     
@@ -292,6 +314,12 @@ public class User{
         print("userPhoneVerified", userPhoneVerified )
         print("userPhoneForVerification", userPhoneForVerification )
         
+    }
+    
+    func printIncognito() {
+        print("")
+        print("Incognito Name: \(incognitoData.name)")
+        print("Incognito Image: \(incognitoData.image)")
     }
     
     

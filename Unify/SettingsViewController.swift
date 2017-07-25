@@ -17,11 +17,13 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     var photoPicker = MBPhotoPicker()
     var imagePicker = UIImagePickerController()
     var selectedImage = UIImage()
+    var selectedName = ""
     
     var alert = SCLAlertView()
     
     // Toggle switch
     var editImageSelected = false
+    var editNameSelected = false
     
     // IBOutlets
     // ------------------------------
@@ -62,9 +64,17 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Custom Methods
     func addObservers() {
-        // Call to refresh table
+        // Call to show options
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.showIncognitoOptions), name: NSNotification.Name(rawValue: "IncognitoToggled"), object: nil)
         
+        // Call Contacts sync
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.syncContactList), name: NSNotification.Name(rawValue: "SyncContacts"), object: nil)
+        
+        
+    }
+    
+    func syncContactList() {
+        //
     }
 
     func showIncognitoOptions() {
@@ -154,12 +164,26 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(0, containerView.frame.height - 15, containerView.frame.width, 20))
-        // Set name to label
-        lbl.text = currentUser.getName() // Set to current user name
+       
+        
+        if editNameSelected {
+            // Set to selected name
+            lbl.text = self.selectedName
+        }else{
+            // Set name to label
+            lbl.text = currentUser.getName() // Set to current user name
+        }
+        
+        // Config lable
         lbl.textAlignment = .center
         lbl.textColor = UIColor.black
         lbl.font = UIFont(name: "HelveticaNeue", size: CGFloat(16))
         
+        // Add action tap gesture to view object
+        let labelAction = UITapGestureRecognizer(target: self, action: #selector(showAlertWithTextField))
+        // Config label for action
+        lbl.isUserInteractionEnabled = true
+        lbl.addGestureRecognizer(labelAction)
         
         // Add action tap gesture to view object
         let imageAction = UITapGestureRecognizer(target: self, action: #selector(editImageSelected(sender:)))
@@ -183,14 +207,25 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         alert.customSubview = subview
         
         // Add buttons to alert
-        alert.addButton("Keep On") {
+        alert.addButton("On") {
             print("Keep On")
              // Toggle the isIncognito on
+            self.currentUser.userIsIncognito = true
+            ContactManager.sharedManager.userIsIncognito = true
+            
+            // Set incognito data
+            self.currentUser.incognitoData.image = self.selectedImage
+            self.currentUser.incognitoData.name = self.selectedName
+            
+            // Test to see if working
+            self.currentUser.printIncognito()
         }
         
-        alert.addButton("Turn Off") {
+        alert.addButton("Off") {
             print("Turn off")
             // Toggle the isIncognito off
+            self.currentUser.userIsIncognito = false
+            ContactManager.sharedManager.userIsIncognito = false
         }
         
         // Change background color for views
@@ -207,6 +242,51 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Show Alert
         alert.showInfo("You Are Incognito", subTitle: "", closeButtonTitle: "Close")
     }
+    
+    // Alert Controller to Add CardName
+    
+    func showAlertWithTextField(){
+        
+        // Dismiss the incognito popover
+        self.alert.hideView()
+        
+        // Init alert
+        let alertVC = PMAlertController(title: "", description: "Enter your incognito name", image: nil, style: .alert)
+        
+        alertVC.addTextField { (textField) in
+            textField?.placeholder = "Name"
+        }
+        
+        // Add 'done' action
+        alertVC.addAction(PMAlertAction(title: "Done", style: .default, action: { () in
+            print("Capture action OK")
+            if alertVC.textFields[0].text != nil{
+                
+                // Toggle switch to indicate option selected 
+                self.editNameSelected = true
+                
+                // Set selected name 
+                self.selectedName = alertVC.textFields[0].text!
+                
+                // Show popover again
+                self.configureAndShowIncognitoAlert()
+            }
+        }))
+        
+        // Add 'cancel' action
+        alertVC.addAction(PMAlertAction(title: "Cancel", style: .cancel, action: { () -> Void in
+            print("Capture action Cancel")
+            
+            // Show popover again
+            self.configureAndShowIncognitoAlert()
+            
+        }))
+        
+        
+        // Show VC
+        self.present(alertVC, animated: true, completion: nil)
+    }
+
     
     // Handle tap gesture
     func editImageSelected(sender:UITapGestureRecognizer) {
@@ -334,7 +414,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4 // your number of cell here
+        return 5 // your number of cell here
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -350,14 +430,18 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
             
         }else if indexPath.row == 1 {
+            // Show incognito cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "SyncCell", for: indexPath) as! SettingsViewCell
+            
+        }else if indexPath.row == 2 {
             // Show contact us cell
             cell = tableView.dequeueReusableCell(withIdentifier: "ContactUsCell", for: indexPath) as! SettingsViewCell
             
-        }else if indexPath.row == 2{
+        }else if indexPath.row == 3{
             // Show privacy cell
             cell = tableView.dequeueReusableCell(withIdentifier: "PrivacyCell", for: indexPath) as! SettingsViewCell
             
-        }else if indexPath.row == 3{
+        }else if indexPath.row == 4{
             // Show logout cell
             cell = tableView.dequeueReusableCell(withIdentifier: "LogoutCell", for: indexPath) as! SettingsViewCell
         }
@@ -372,14 +456,14 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         //Change the selected background view of the cell.
         settingsTableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath.row == 1 {
+        if indexPath.row == 2 {
             // Show contact us segue
             performSegue(withIdentifier: "showContactUs", sender: self)
-        }else if indexPath.row == 2{
+        }else if indexPath.row == 3{
             // Show privacy webview
             showPrivacy()
             
-        }else if indexPath.row == 3{
+        }else if indexPath.row == 4{
             // Log user out
             self.showLogoutAlert()
         }
