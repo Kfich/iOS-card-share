@@ -15,6 +15,13 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     // ------------------------------
     var currentUser = User()
     var photoPicker = MBPhotoPicker()
+    var imagePicker = UIImagePickerController()
+    var selectedImage = UIImage()
+    
+    var alert = SCLAlertView()
+    
+    // Toggle switch
+    var editImageSelected = false
     
     // IBOutlets
     // ------------------------------
@@ -22,7 +29,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet var settingsTableView: UITableView!
     
     
-
+    // Page setup
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,6 +40,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Set currentUser object
         currentUser = ContactManager.sharedManager.currentUser
+        
+        // Config picker 
+        self.configurePhotoPicker()
         
     }
 
@@ -81,7 +91,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         // Initialize SCLAlertView using custom Appearance
-        let alert = SCLAlertView(appearance: appearance)
+        alert = SCLAlertView(appearance: appearance)
         
         
         // Creat the subview
@@ -108,12 +118,22 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Config imageview
         var image = UIImage()
         
-        // Check if user has an image
-        if currentUser.profileImages.count > 0 {
-            image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)!
+        // Check if user has selected an image to edit
+        
+        if editImageSelected {
+            // Set to image selected by user
+            image = selectedImage
         }else{
-            image = UIImage(named: "search")!
+            
+            // Check if user has an image
+            if currentUser.profileImages.count > 0 {
+                image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)!
+            }else{
+                image = UIImage(named: "search")!
+            }
+
         }
+        
         // Set image to imageview
         let imageView = UIImageView(image: image)
 
@@ -143,8 +163,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Add action tap gesture to view object
         let imageAction = UITapGestureRecognizer(target: self, action: #selector(editImageSelected(sender:)))
-        containerView.isUserInteractionEnabled = true
-        containerView.addGestureRecognizer(imageAction)
+        
+        // Add action to imageView
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(imageAction)
         
         // Assign tag to image to identify what index in the array user lies
         //containerView.tag = tag
@@ -188,17 +210,26 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Handle tap gesture
     func editImageSelected(sender:UITapGestureRecognizer) {
-        //
+        
+        
+        // Dismiss the incognito popover
+        self.alert.hideView()
         
         // Add code to edit photo here
         photoPicker.onPhoto = { (image: UIImage?) -> Void in
             print("Selected image")
             
-            // Change button text
-            //self.selectProfileImageButton.titleLabel?.text = "Change"
+            // Set selectedImage
+            self.selectedImage = image!
+            
+            // Toggle new image switch
+            self.editImageSelected = true
             
             // Set image to view
             let selectedImageView = self.configureSelectedImageView(selectedImage: image!)
+            
+            // Show ingonito popover again
+            self.configureAndShowIncognitoAlert()
             
             // Set image view to sender view 
             sender.view?.addSubview(selectedImageView)
@@ -214,10 +245,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             print("Photo selection Error")
             print("Error: \(error.rawValue)")
         }
+        
         photoPicker.present(self)
-
+        
     
     }
+    
     
     // When user selects from photoPicker, config image and set to sender view
     func configureSelectedImageView(selectedImage: UIImage) -> UIImageView{
