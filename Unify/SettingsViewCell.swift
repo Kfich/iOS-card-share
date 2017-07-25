@@ -34,8 +34,15 @@ class SettingsViewCell: UITableViewCell {
     // --------------------------
     @IBAction func incognitoSwitchToggled(_ sender: Any) {
         
-        // Post notification
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "IncognitoToggled"), object: self)
+        if incongnitoSwitch.isOn == false {
+            // Do
+            print("Toggled off")
+            // Set currentUser incognito to flase 
+            
+        }else{
+            // Post notification
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "IncognitoToggled"), object: self)
+        }
         
     }
     

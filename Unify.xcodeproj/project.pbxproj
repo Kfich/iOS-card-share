@@ -97,6 +97,9 @@
 		FB90A8B11F278F6400E67B1E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */; };
 		FB90A8B41F27929700E67B1E /* SettingsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B31F27929700E67B1E /* SettingsViewCell.swift */; };
 		FB90A8B61F27941600E67B1E /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B51F27941600E67B1E /* ContactUsViewController.swift */; };
+		FB90A8B91F279C1800E67B1E /* SCLAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B71F279C1800E67B1E /* SCLAlertView.swift */; };
+		FB90A8BA1F279C1800E67B1E /* SCLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B81F279C1800E67B1E /* SCLExtensions.swift */; };
+		FB90A8BC1F27AC1600E67B1E /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8BB1F27AC1600E67B1E /* PrivacyViewController.swift */; };
 		FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */; };
 		FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
@@ -292,6 +295,9 @@
 		FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		FB90A8B31F27929700E67B1E /* SettingsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewCell.swift; sourceTree = "<group>"; };
 		FB90A8B51F27941600E67B1E /* ContactUsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
+		FB90A8B71F279C1800E67B1E /* SCLAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCLAlertView.swift; sourceTree = "<group>"; };
+		FB90A8B81F279C1800E67B1E /* SCLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCLExtensions.swift; sourceTree = "<group>"; };
+		FB90A8BB1F27AC1600E67B1E /* PrivacyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
@@ -593,6 +599,8 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FB90A8B71F279C1800E67B1E /* SCLAlertView.swift */,
+				FB90A8B81F279C1800E67B1E /* SCLExtensions.swift */,
 				FB2F42771F1526CB00E3D6B5 /* KVNProgress.h */,
 				FB2F42781F1526CB00E3D6B5 /* KVNProgress.m */,
 				FB2F42791F1526CB00E3D6B5 /* KVNProgressConfiguration.h */,
@@ -644,6 +652,7 @@
 			children = (
 				FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */,
 				FB90A8B51F27941600E67B1E /* ContactUsViewController.swift */,
+				FB90A8BB1F27AC1600E67B1E /* PrivacyViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -919,6 +928,7 @@
 				FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */,
 				FB37382D1EDDD59D0074200F /* BusinessCardView.swift in Sources */,
 				1CB31C971E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift in Sources */,
+				FB90A8BA1F279C1800E67B1E /* SCLExtensions.swift in Sources */,
 				FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */,
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,
 				FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */,
@@ -931,6 +941,7 @@
 				FB1A34131EE1BC88003B5A73 /* RadarContainerViewController.swift in Sources */,
 				1C151D351F1DBE73004B23CE /* CountlyNotificationService.m in Sources */,
 				1C151D361F1DBE73004B23CE /* CountlyPersistency.m in Sources */,
+				FB90A8B91F279C1800E67B1E /* SCLAlertView.swift in Sources */,
 				FB2F42891F1526CB00E3D6B5 /* UIImage+KVNEmpty.m in Sources */,
 				1CB31C951E93C6A700A0C4A5 /* CardCollectionViewCell.swift in Sources */,
 				FB2F42841F1526CB00E3D6B5 /* KVNProgress.m in Sources */,
@@ -948,6 +959,7 @@
 				FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */,
 				FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
+				FB90A8BC1F27AC1600E67B1E /* PrivacyViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */,
 				FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */,

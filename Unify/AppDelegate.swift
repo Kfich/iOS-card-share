@@ -96,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 var userDetails = ContactManager.sharedManager.currentUser
                 if userDetails.firstName != "" && userDetails.lastName != "" && userDetails.userId != ""
                 {
-                    // Send to home screen user is verified
+                    // Send to verification screen
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     let phoneVerificationController = mainStoryboard.instantiateViewController(withIdentifier: "phoneVerificationSegue") as!
                     PhoneVerificationViewController

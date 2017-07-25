@@ -21,8 +21,10 @@ public class User{
     var emails = [[String : String]]()
     var phoneNumbers = [[String : String]]()
     
+    // Bools to check user state
     var userPhoneVerified: Bool = false
     var userPhoneForVerification: String = ""
+    var userIsIncognito = false
     
     // For radar 
     var distance = Double()

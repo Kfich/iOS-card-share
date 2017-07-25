@@ -33,6 +33,9 @@ class ContactManager{
     var userDidCreateCard = false
     var userSelectedEditCard = false
     
+    // Incognito toggle 
+    var userIsIncognito = false 
+    
     // Account for nav from card send view
     var userSMSCard = false
     var userEmailCard = false
