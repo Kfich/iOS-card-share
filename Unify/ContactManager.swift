@@ -251,14 +251,17 @@ class ContactManager{
                // print(self.phoneContactList.count)
                 //print(contact)
             }
-            self.postContactListRefresh()
             
-            // Testing
+            // Create contact objects
             self.contactObjectList = self.createContactRecords()
             
-            // Test sort contacts code
-            //self.sortContacts()
-            //self.sort()
+            
+            // Post refresh
+            self.postContactListRefresh()
+            
+            // Upload Contacts
+            //self.uploadContactRecords()
+            
         }
     }
    
@@ -394,8 +397,37 @@ class ContactManager{
         return contactObjectList
     }
     
-    func uploadContactRecords(contacts: [CNContact]){
+    func uploadContactRecords(){
+        // Create ContactObjectList by executing call
+        //self.contactObjectList = self.createContactRecords()
+  
+        // Iterate over object array - for each, upload
         
+        for contact in self.contactObjectList {
+    
+            // Create dictionary
+            let parameters = ["data" : contact.toAnyObject()]
+            print(parameters)
+            
+            // Send to server
+            Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
+                if error == nil {
+                    // Call successful
+                    print("Transaction Created Response ---> \(String(describing: response))")
+                    
+                    
+                } else {
+                    // Error occured
+                    print("Transaction Created Error Response ---> \(String(describing: error))")
+                    
+                    // Show user popup of error message
+                    
+                }
+                // Hide indicator
+                
+            }
+            
+        }
         
     }
     

@@ -45,6 +45,8 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 - (NSURLSessionDataTask*)uploadImageCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)getImageCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
+// Contacts
+- (NSURLSessionDataTask*)uploadContactCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
 
 

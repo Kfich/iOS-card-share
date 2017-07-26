@@ -46,5 +46,8 @@
 #define kUploadImages         kServerURL(kAppwsServerURL, @"image/uploadcdn")
 #define kGetUserImage         kServerURL(kAppwsServerURL, @"image/%@")
 
+// Contacts
+#define kUploadContact        kServerURL(kAppwsServerURL, @"contacts/add")
+
 
 #endif

@@ -120,6 +120,11 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUploadImages];
 }
 
+// Contacts
+- (NSURLSessionDataTask*)uploadContactCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUploadContact];
+}
+
 
 
 #pragma mark - Response Handling

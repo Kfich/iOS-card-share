@@ -251,14 +251,24 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
 
     func refreshTableData() {
         
+        self.uploadContactRecords()
+        
         // Reload contact list
         DispatchQueue.main.async {
             // Hide HUD
             KVNProgress.showSuccess()
             // Update UI
             self.contactListTableView.reloadData()
+            
         }
     }
+    
+    func uploadContactRecords(){
+        // Call function from manager
+        ContactManager.sharedManager.uploadContactRecords()
+        
+    }
+
     
     
     // MARK: - Navigation
