@@ -311,8 +311,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Iterate through email list for contact emails
         for contact in contactsArray {
             // Check for phone number
-            if contact.phoneNumbers[0]["profile_phone"] != nil{
-                let phone = contact.phoneNumbers[0]["profile_phone"]
+            if contact.userProfile.phoneNumbers[0]["phone"] != nil{
+                let phone = contact.userProfile.phoneNumbers[0]["phone"]
                 
                 // Add phone to list
                 phoneList.append(phone!)

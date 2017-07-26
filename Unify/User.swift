@@ -18,8 +18,8 @@ public class User{
     var firstName : String = ""
     var lastName : String = ""
     var fullName : String = ""
-    var emails = [[String : String]]()
-    var phoneNumbers = [[String : String]]()
+    //var emails = [[String : String]]()
+    //var phoneNumbers = [[String : String]]()
     
     var incognitoData = IncognitoData()
     
@@ -70,11 +70,11 @@ public class User{
     
     init() {}
     
-    init(firstName first:String, lastName last:String, email emailAddress:[[String : String]]){
+    init(firstName first:String, lastName last:String/*, email emailAddress:[[String : String]]*/){
         
         firstName = first
         lastName  = last
-        emails = emailAddress
+        //emails = emailAddress
         
     }
     
@@ -83,8 +83,11 @@ public class User{
         userId = snapshot.object(forKey: "unify_uuid") as? String ?? ""
         firstName = snapshot["first_name"] as? String ?? ""
         lastName = snapshot["last_name"] as? String ?? ""
-        emails = snapshot["email"] as? [[String : String]] ?? [["":""]]
-        phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        
+        // Removed and added to user profile
+        //emails = snapshot["email"] as? [[String : String]] ?? [["":""]]
+        //phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        
         scope = snapshot["scope"] as? String ?? ""
         //profileImages = (snapshot["profile_image"] as? [[String : Any]])!
         
@@ -108,8 +111,11 @@ public class User{
         userId = withRadarSnapshot.object(forKey: "unify_uuid") as? String ?? ""
         firstName = withRadarSnapshot["first_name"] as? String ?? ""
         lastName = withRadarSnapshot["last_name"] as? String ?? ""
-        emails = withRadarSnapshot["email"] as? [[String : String]] ?? [["":""]]
-        phoneNumbers = withRadarSnapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        
+        // Removed and added to user profile
+        //emails = withRadarSnapshot["email"] as? [[String : String]] ?? [["":""]]
+        //phoneNumbers = withRadarSnapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        
         scope = withRadarSnapshot["scope"] as? String ?? ""
         //profileImages = (snapshot["profile_image"] as? [[String : Any]])!
         
@@ -134,8 +140,11 @@ public class User{
         userId = withDefaultsSnapshot.object(forKey: "unify_uuid") as? String ?? ""
         firstName = withDefaultsSnapshot["first_name"] as? String ?? ""
         lastName = withDefaultsSnapshot["last_name"] as? String ?? ""
-        emails = withDefaultsSnapshot["email"] as? [[String : String]] ?? [["":""]]
-        phoneNumbers = withDefaultsSnapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        
+        // Removed and added to user profile
+        //emails = withDefaultsSnapshot["email"] as? [[String : String]] ?? [["":""]]
+        //phoneNumbers = withDefaultsSnapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        
         scope = withDefaultsSnapshot["scope"] as? String ?? ""
         profileImages = (withDefaultsSnapshot["profile_image"] as? [[String : Any]])!
         
@@ -170,10 +179,10 @@ public class User{
         return [
             "first_name": firstName,
             "last_name": lastName,
-            "email": emails,
+            //"email": emails,
             "unify_uuid": userId,
-            "mobile_numbers" : phoneNumbers,
-            "email" : emails,
+            //"mobile_numbers" : phoneNumbers,
+            //"email" : emails,
             "scope" : scope,
             "profile_image_id": profileImageId,
             "userPhoneVerified": userPhoneVerified,
@@ -188,10 +197,10 @@ public class User{
         return [
             "first_name": firstName,
             "last_name": lastName,
-            "email": emails,
+            //"email": emails,
             "unify_uuid": userId,
-            "mobile_numbers" : phoneNumbers,
-            "email" : emails,
+            //"mobile_numbers" : phoneNumbers,
+            //"email" : emails,
             "scope" : scope,
             "profile_image": profileImages,
             "userPhoneVerified": userPhoneVerified,
@@ -274,20 +283,20 @@ public class User{
     
     // Emails
     func getEmailRecords()->[[String : String]]{
-        return emails
+        return userProfile.getEmailRecords()
     }
     
     func setEmailRecords(emailRecords : [String : String]){
-        emails.append(emailRecords)
+        userProfile.setEmailRecords(emailRecords: emailRecords)
     }
     
     // Phone Numbers
     func getPhoneRecords()->[[String : String]]{
-        return phoneNumbers
+        return userProfile.getPhoneRecords()
     }
     
     func setPhoneRecords(phoneRecords : [String : String]){
-        phoneNumbers.append(phoneRecords)
+        userProfile.setPhoneRecords(phoneRecords: phoneRecords)
     }
     
     // Images
@@ -308,10 +317,10 @@ public class User{
         print("\n")
         print("UserId :" + userId)
         print("Name :" + getName())
-        print("Email :" )
-        print(emails)
-        print("Mobile Number : ")
-        print(phoneNumbers)
+        //print("Email :" )
+        //print(emails)
+        //print("Mobile Number : ")
+        //print(phoneNumbers)
         // Test image data
         print("Image Data -->")
         print(profileImages)

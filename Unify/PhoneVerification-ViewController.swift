@@ -242,7 +242,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         
         // Assign phone number to currentUser Object
-        currentUser.setPhoneRecords(phoneRecords: ["profile_phone": phoneNumberInput.text!])
+        currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone": phoneNumberInput.text!])
         currentUser.setVerificationPhone(phone: phoneNumberInput.text!)
 
         

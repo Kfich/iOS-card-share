@@ -75,9 +75,6 @@ class EditProfileViewController: UIViewController {
             // Previous location for image assignment to user object
             
             
-            
-            
-            
             //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
             
         }

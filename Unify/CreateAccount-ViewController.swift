@@ -179,7 +179,7 @@ class CreateAccountViewController: UIViewController {
         
         if isValid {
         // Assign form values to user object
-        newUser.emails.append(["profile_email": email.text!])
+        newUser.userProfile.emails.append(["email": email.text!])
         newUser.firstName = firstName.text!
         newUser.lastName = lastName.text!
         newUser.setName(first: firstName.text!, last: lastName.text!)
@@ -217,11 +217,14 @@ class CreateAccountViewController: UIViewController {
         let parameters = imageDict
         print(parameters)
         
+        // Init imageURLS
+        let urls = ImageURLS()
+            
         // Create URL For Prod
-        let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/uploadcdn"
+        let prodURL = urls.uploadToStagingURL
         
         // Create URL For Test
-        //let testURL = "https://project-unify-node-server.herokuapp.com/image/uploadcdn"
+        //let testURL = urls.uploadToDevelopmentURL
         
         
         // Show progress HUD

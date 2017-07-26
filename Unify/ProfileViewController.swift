@@ -519,11 +519,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         if currentUser.fullName != ""{
             nameLabel.text = currentUser.fullName
         }
-        if currentUser.phoneNumbers[0]["profile_phone"] != nil{
-            numberLabel.text = currentUser.phoneNumbers[0]["profile_phone"]
+        if currentUser.userProfile.phoneNumbers[0]["phone"] != nil{
+            numberLabel.text = currentUser.userProfile.phoneNumbers[0]["phone"]
         }
-        if currentUser.emails[0]["profile_email"] != nil{
-            emailLabel.text = currentUser.emails[0]["profile_email"]
+        if currentUser.userProfile.emails[0]["email"] != nil{
+            emailLabel.text = currentUser.userProfile.emails[0]["email"]
         }
         
         //titleLabel.text = "Founder & CEO, CleanSwipe"

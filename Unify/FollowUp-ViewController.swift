@@ -334,8 +334,8 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         // Iterate through email list for contact emails
         for contact in contactsArray {
             // Check for phone number
-            if contact.phoneNumbers[0]["profile_phone"] != nil{
-                let phone = contact.phoneNumbers[0]["profile_phone"]
+            if contact.userProfile.phoneNumbers[0]["phone"] != nil{
+                let phone = contact.userProfile.phoneNumbers[0]["phone"]
                 
                 // Add phone to list
                 phoneList.append(phone!)
@@ -363,8 +363,8 @@ class FollowUpViewController: UIViewController, MFMessageComposeViewControllerDe
         for contact in contactsArray {
             
             // Check for phone number
-            if contact.emails[0]["profile_email"] != nil{
-                let email = contact.emails[0]["profile_email"]
+            if contact.userProfile.emails[0]["email"] != nil{
+                let email = contact.userProfile.emails[0]["email"]
                 
                 // Add phone to list
                 emailList.append(email!)

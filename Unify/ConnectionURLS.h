@@ -46,4 +46,12 @@
 #define kUploadImages         kServerURL(kAppwsServerURL, @"image/uploadcdn")
 #define kGetUserImage         kServerURL(kAppwsServerURL, @"image/%@")
 
+
+
+// Create URL For Prod
+//let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
+
+// Create URL For Test
+//let testURL = "https://project-unify-node-server.herokuapp.com/image/"
+
 #endif

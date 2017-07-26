@@ -64,6 +64,7 @@
 		1CBB1D691F1C6C55009698D9 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBB1D661F1C6C43009698D9 /* Eureka.framework */; };
 		1CDD50A51E914CF40073B893 /* Home-TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */; };
 		741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */; };
+		FB019A9F1F28E7B500908A67 /* ImageURLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB019A9E1F28E7B500908A67 /* ImageURLS.swift */; };
 		FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */; };
 		FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */; };
 		FB0F48621F1E9A0200EF9871 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */; };
@@ -241,6 +242,7 @@
 		C72C6F2CF4B43BDC0BCB93EC /* Pods-Unify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unify.release.xcconfig"; path = "Pods/Target Support Files/Pods-Unify/Pods-Unify.release.xcconfig"; sourceTree = "<group>"; };
 		C8E9B2DD0A4B9BD2E00CAF19 /* Pods-Unify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unify.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Unify/Pods-Unify.debug.xcconfig"; sourceTree = "<group>"; };
 		D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Unify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB019A9E1F28E7B500908A67 /* ImageURLS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageURLS.swift; sourceTree = "<group>"; };
 		FB0812FF1F02B00800CF14BE /* SanFranciscoDisplayBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayBold.ttf; sourceTree = "<group>"; };
 		FB0813001F02B00800CF14BE /* SanFranciscoDisplayMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayMedium.ttf; sourceTree = "<group>"; };
 		FB0813011F02B00800CF14BE /* SanFranciscoDisplayRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayRegular.ttf; sourceTree = "<group>"; };
@@ -667,6 +669,7 @@
 				FBE807501F06C07C00A05292 /* JSONResponseSerializerWithData.m */,
 				FBE807511F06C07C00A05292 /* NSData+PKCS12.m */,
 				FBE807521F06C07C00A05292 /* JSONResponseSerializerWithData.h */,
+				FB019A9E1F28E7B500908A67 /* ImageURLS.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -900,6 +903,7 @@
 				FBE807531F06C07C00A05292 /* Connection.m in Sources */,
 				1C151D311F1DBE73004B23CE /* CountlyConnectionManager.m in Sources */,
 				FBE8075D1F06DBBE00A05292 /* CardOptionsViewCell.swift in Sources */,
+				FB019A9F1F28E7B500908A67 /* ImageURLS.swift in Sources */,
 				FB90A8B11F278F6400E67B1E /* SettingsViewController.swift in Sources */,
 				1C151D2D1F1DBE73004B23CE /* CountlyAPM.m in Sources */,
 				1C151D341F1DBE73004B23CE /* CountlyEvent.m in Sources */,

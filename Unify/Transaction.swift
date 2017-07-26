@@ -31,7 +31,7 @@ public class Transaction{
     var recipientList = [String]()
     
     // Make a dict [string:any] due to timestamps
-    var notes : [String : String]?
+    var notes : [[String : String]]?
     
     // Hashtags
     var tags : [String]?
@@ -92,8 +92,7 @@ public class Transaction{
             "type": type,
             "latitude" : latitude,
             "longitude" : longitude,
-            "notes": notes ?? ["notes" : ""],
-            "recipient_list": recipientList,
+            "recipient_list": recipientList
             
         ]
     }
