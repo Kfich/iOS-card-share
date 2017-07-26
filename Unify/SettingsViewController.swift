@@ -451,7 +451,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // cell selected code here
-        
+         
         // Deselect cell
         //Change the selected background view of the cell.
         settingsTableView.deselectRow(at: indexPath, animated: true)

@@ -51,7 +51,7 @@ public class ContactCard: NSObject, NSCoding{
     
     // Init from server 
     init(snapshot: NSDictionary) {
-        cardId = snapshot["uuid"] as? String
+        cardId = snapshot["unify_uuid"] as? String
         cardId = snapshot["ownerId"] as? String
         cardName = snapshot["card_name"] as? String
         cardHolderName = snapshot["card_holder_name"] as? String
@@ -66,7 +66,7 @@ public class ContactCard: NSObject, NSCoding{
     
     init(withSnapshotLite: NSDictionary)
     {
-        cardId = withSnapshotLite["uuid"] as? String
+        cardId = withSnapshotLite["unify_uuid"] as? String
         cardId = withSnapshotLite["ownerId"] as? String
         cardName = withSnapshotLite["card_name"] as? String
         cardHolderName = withSnapshotLite["card_holder_name"] as? String
@@ -75,7 +75,7 @@ public class ContactCard: NSObject, NSCoding{
     }
     
     init(withSnapshotFromDefaults: NSDictionary) {
-        cardId = withSnapshotFromDefaults["uuid"] as? String
+        cardId = withSnapshotFromDefaults["unify_uuid"] as? String
         cardId = withSnapshotFromDefaults["ownerId"] as? String
         cardName = withSnapshotFromDefaults["card_name"] as? String
         cardHolderName = withSnapshotFromDefaults["card_holder_name"] as? String
@@ -119,7 +119,7 @@ public class ContactCard: NSObject, NSCoding{
     
     func toAnyObject() -> NSDictionary {
         return [
-            "uuid": cardId ?? "",
+            "unify_uuid": cardId ?? "",
             "card_name": cardName ?? "",
             "card_holder_name": cardHolderName ?? "",
             "image_url" : imageURL ?? Data(),
@@ -131,7 +131,7 @@ public class ContactCard: NSObject, NSCoding{
     
     func toAnyObjectWithImage() -> NSDictionary {
         return [
-            "uuid": cardId ?? "",
+            "unify_uuid": cardId ?? "",
             "card_name": cardName ?? "",
             "card_holder_name": cardHolderName ?? "",
             "image_url" : imageURL ?? Data(),

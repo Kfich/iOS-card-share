@@ -58,7 +58,7 @@ public class Transaction{
     
     init(snapshot: NSDictionary) {
         
-        transactionId = snapshot["uuid"] as! String
+        transactionId = snapshot["unify_uuid"] as! String
         date = snapshot["date"] as! String
         location = snapshot["location"] as! String
         //notes = snapshot["notes"] as! String
@@ -84,7 +84,7 @@ public class Transaction{
     
     func toAnyObject() -> NSDictionary {
         return [
-            "uuid": transactionId,
+            "unify_uuid": transactionId,
             "date": date,
             "location": location,
             "sender_id": senderId,

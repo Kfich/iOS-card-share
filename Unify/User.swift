@@ -80,7 +80,7 @@ public class User{
     
     init(snapshot: NSDictionary) {
         
-        userId = snapshot.object(forKey: "uuid") as? String ?? ""
+        userId = snapshot.object(forKey: "unify_uuid") as? String ?? ""
         firstName = snapshot["first_name"] as? String ?? ""
         lastName = snapshot["last_name"] as? String ?? ""
         emails = snapshot["email"] as? [[String : String]] ?? [["":""]]
@@ -93,6 +93,10 @@ public class User{
         userPhoneForVerification = snapshot.object(forKey: "userPhoneVerified") as? String ?? ""
         userPhoneVerified = snapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
         
+        // Create card profile
+        userProfile = CardProfile(snapshot: snapshot["profile"] as! NSDictionary) 
+        
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
@@ -101,7 +105,7 @@ public class User{
     
     init(withRadarSnapshot: NSDictionary) {
         
-        userId = withRadarSnapshot.object(forKey: "uuid") as? String ?? ""
+        userId = withRadarSnapshot.object(forKey: "unify_uuid") as? String ?? ""
         firstName = withRadarSnapshot["first_name"] as? String ?? ""
         lastName = withRadarSnapshot["last_name"] as? String ?? ""
         emails = withRadarSnapshot["email"] as? [[String : String]] ?? [["":""]]
@@ -127,7 +131,7 @@ public class User{
     
     init(withDefaultsSnapshot: NSDictionary) {
         
-        userId = withDefaultsSnapshot.object(forKey: "uuid") as? String ?? ""
+        userId = withDefaultsSnapshot.object(forKey: "unify_uuid") as? String ?? ""
         firstName = withDefaultsSnapshot["first_name"] as? String ?? ""
         lastName = withDefaultsSnapshot["last_name"] as? String ?? ""
         emails = withDefaultsSnapshot["email"] as? [[String : String]] ?? [["":""]]
@@ -167,13 +171,14 @@ public class User{
             "first_name": firstName,
             "last_name": lastName,
             "email": emails,
-            "uuid": userId,
+            "unify_uuid": userId,
             "mobile_numbers" : phoneNumbers,
             "email" : emails,
             "scope" : scope,
             "profile_image_id": profileImageId,
             "userPhoneVerified": userPhoneVerified,
-            "userPhoneForVerification": userPhoneForVerification
+            "userPhoneForVerification": userPhoneForVerification,
+            "profile" : userProfile.toAnyObject()
             
         ]
     }
@@ -184,13 +189,14 @@ public class User{
             "first_name": firstName,
             "last_name": lastName,
             "email": emails,
-            "uuid": userId,
+            "unify_uuid": userId,
             "mobile_numbers" : phoneNumbers,
             "email" : emails,
             "scope" : scope,
             "profile_image": profileImages,
             "userPhoneVerified": userPhoneVerified,
-            "userPhoneForVerification": userPhoneForVerification
+            "userPhoneForVerification": userPhoneForVerification,
+            "profile" : userProfile.toAnyObject()
       
             
         ]
@@ -313,6 +319,9 @@ public class User{
         print("Verification Data -->")
         print("userPhoneVerified", userPhoneVerified )
         print("userPhoneForVerification", userPhoneForVerification )
+        
+        print("")
+        userProfile.printProfle()
         
     }
     
