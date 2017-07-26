@@ -196,7 +196,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Parse socials links
         if currentUser.userProfile.socialLinks.count > 0{
             for link in currentUser.userProfile.socialLinks{
-                notes.append(link["link"]!)
+                socialLink.append(link["link"]!)
             }
         }*/
         

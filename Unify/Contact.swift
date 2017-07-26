@@ -22,6 +22,7 @@ public class Contact{
     
     // For image storage
     var imageId : String = ""
+    var imageDictionary = [String : Any]()
     
     // Initializers
     init(){}
@@ -70,8 +71,8 @@ public class Contact{
         return titles
     }
     
-    func setTitleRecords(emailRecords : [String : String]){
-        titles.append(emailRecords)
+    func setTitleRecords(title : String){
+        titles.append(["title" : title])
     }
     
     // Emails
@@ -79,8 +80,8 @@ public class Contact{
         return emails
     }
     
-    func setEmailRecords(emailRecords : [String : String]){
-        emails.append(emailRecords)
+    func setEmailRecords(emailAddress : String){
+        emails.append(["email" : emailAddress])
     }
     
     // Phone Numbers
@@ -88,8 +89,8 @@ public class Contact{
         return phoneNumbers
     }
     
-    func setPhoneRecords(phoneRecords : [String : String]){
-        phoneNumbers.append(phoneRecords)
+    func setPhoneRecords(phoneRecord : String){
+        phoneNumbers.append(["phone" : phoneRecord])
     }
     
     // Links
@@ -97,8 +98,8 @@ public class Contact{
         return socialLinks
     }
     
-    func setSocialLinks(socialRecords : [String : String]){
-        socialLinks.append(socialRecords)
+    func setSocialLinks(socialLink : String){
+        socialLinks.append(["link" : socialLink])
     }
     
     // Notes
@@ -106,16 +107,16 @@ public class Contact{
         return notes
     }
     
-    func setNotes(noteRecords : [String : String]){
-        notes.append(noteRecords)
+    func setNotes(note : String){
+        notes.append(["note" : note])
     }
     
     // Websites
     func getWebsites()->[[String : String]]{
         return websites
     }
-    func setWebsites(websiteRecords : [String : String]){
-        websites.append(websiteRecords)
+    func setWebsites(websiteRecord : String){
+        websites.append(["website" : websiteRecord])
     }
     
     // Organizations
@@ -123,8 +124,8 @@ public class Contact{
         return organizations
     }
     
-    func setOrganizations(organizationRecords : [String : String]){
-        organizations.append(organizationRecords)
+    func setOrganizations(organization : String){
+        organizations.append(["organization" : organization])
     }
     
     // Custom Methods
@@ -149,8 +150,10 @@ public class Contact{
     
     // Testing
     
-    func printProfle(){
+    func printContact(){
         print("\n")
+        print("Name :")
+        print(name)
         print("Titles :")
         print(titles)
         print("Emails : ")
@@ -165,9 +168,11 @@ public class Contact{
         print(websites as Any)
         print("Organizations : ")
         print(organizations as Any)
-        
+        print("Image ID: ")
+        print(imageId)
+        print("--------------------")
         print("Images : ")
-        //print(images as Any)
+        print(imageDictionary as Any)
         
     }
 

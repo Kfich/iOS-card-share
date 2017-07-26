@@ -262,18 +262,16 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         Connection(configuration: nil).issuePinCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                print("\n\nConnection - Create User Response: \(response)\n\n")
+                print("\n\nConnection - Create User Response: \(String(describing: response))\n\n")
                 
                 // Here you set the id for the user and resubmit the object
                 
                 let dictionary : Dictionary = response as! [String : Any]
+                // Assign uuid to user object
                 self.currentUser.userId = dictionary["uuid"] as! String
                 self.currentUser.printUser()
-                // Perfom seggy to next vc
-                
-                // Store to device
-                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
-                
+                                
+                // Show success
                 KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
                 
                 
@@ -285,7 +283,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 
                 
             } else {
-                print("\n\nConnection - Create User Error: \(error)\n\n")
+                print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")
 
                 
                 // retry again

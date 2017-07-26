@@ -61,6 +61,7 @@ class ContactManager{
     
     // Phone ContactList Sync
     var phoneContactList = [CNContact]()
+    var contactObjectList = [Contact]()
     
     // Transaction Handling
     var transaction = Transaction()
@@ -171,85 +172,7 @@ class ContactManager{
         getContacts()
     }
     
-    
-    
-    
-    
-    func uploadContactRecords(contacts: [CNContact])
-    {
-        print(contacts)
-        
-        let json = [ "uid":"12345" , "contacts": contacts ] as [String : Any]
-        
-        let data = [AnyObject]()
-        
-        
-        
-         for contact in contacts{
-            print("----------------------------")
-         
-            print(contact.givenName)
-         
-         //data.append(givenName: givenName)
-            for email in contact.emailAddresses{
-                print(email.label!)
-                print(email.value)
-        
-            }
-            print("----------------------------")
-         
-        }
-        
-         for contact in contacts as! [CNContact] {
-            print("Contact ---> \(contact)")
-         }
-        
-        do {
-         
-         
-         jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-         
-         print(jsonData)
-         
-         } catch let error as NSError {
-         
-         print(error)
-         
-         }
-         
-         let url:URL = URL(string: "https://unifyalphaapi.herokuapp.com/importContactRecords")!
-         let session = URLSession.shared
-         
-         var request = URLRequest(url: url)
-         request.httpMethod = "POST"
-         request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-         
-         //let paramString = "fileUrl=\(fileUrl)&employeeId=hickmanTest&moveId=12345&notes=\(globalNotes!)&barcodeId=\(globalCode!)"
-         
-         //request.httpBody = contacts.data(using: String.Encoding.utf8)
-         
-         request.httpBody = jsonData
-         
-         
-         let task = session.dataTask(with: request as URLRequest) {
-         (
-         data, response, error) in
-         
-         guard let data = data, let _:URLResponse = response, error == nil else {
-         print("error")
-         return
-         }
-         
-         let dataString =  String(data: data, encoding: String.Encoding.utf8)
-         print(dataString)
-         
-         }
-         
-         task.resume()
- 
-    }
-    
-    // Pull contacts and sync to server
+    // Pull contacts
     
     func retrieveContactsWithStore(store: CNContactStore) {
         do {
@@ -293,7 +216,7 @@ class ContactManager{
             // get the contacts
             
             var contacts = [CNContact]()
-            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor])
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor])
             // Sort users by last name
             request.sortOrder = CNContactSortOrder.familyName
             // Execute request
@@ -310,7 +233,7 @@ class ContactManager{
             let formatter = CNContactFormatter()
             formatter.style = .fullName
             for contact in contacts {
-                print(formatter.string(from: contact) ?? "No Name")
+                //print(formatter.string(from: contact) ?? "No Name")
                 
                 if contact.phoneNumbers.count > 0 {
                   //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
@@ -330,12 +253,154 @@ class ContactManager{
             }
             self.postContactListRefresh()
             
+            // Testing
+            self.contactObjectList = self.createContactRecords()
+            
             // Test sort contacts code
             //self.sortContacts()
             //self.sort()
         }
     }
    
+    // Initialize contact objects for upload
+    
+    func createContactRecords() -> [Contact] {
+        // Create array of contacts
+        var contactObjectList = [Contact]()
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        for contact in phoneContactList{
+            
+            // Init temp contact object 
+            let contactObject = Contact()
+            
+            // Set name
+            contactObject.name = formatter.string(from: contact) ?? "No Name"
+            
+            // Check for count
+            if contact.phoneNumbers.count > 0 {
+                // Iterate over items
+                for number in contact.phoneNumbers{
+                    // print to test
+                    print("Number: \((number.value.value(forKey: "digits" )!))")
+                    
+                    // Init the number 
+                    let digits = number.value.value(forKey: "digits") as! String
+                    
+                    // Append to object
+                    contactObject.setPhoneRecords(phoneRecord: digits)
+                }
+                
+            }
+            if contact.emailAddresses.count > 0 {
+                // Iterate over array and pull value
+                for address in contact.emailAddresses {
+                    // Print to test
+                    print("Email : \(address.value)")
+                    
+                    // Append to object
+                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                }
+            }
+            if contact.imageDataAvailable {
+                // Print to test
+                print("Has IMAGE Data")
+                
+                // Create ID and add to dictionary
+                // Image data png
+                let imageData = contact.imageData!
+                print(imageData)
+                
+                // Assign asset name and type
+                let idString = contactObject.randomString(length: 20)
+                
+                // Name image with id string
+                let fname = idString
+                let mimetype = "image/png"
+                
+                // Create image dictionary
+                let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+                
+                
+                // Append to object
+                contactObject.setContactImageId(id: idString)
+                contactObject.imageDictionary = imageDict
+                
+            }
+            if contact.urlAddresses.count > 0{
+                // Iterate over items
+                for address in contact.urlAddresses {
+                    // Print to test
+                    print("Website : \(address.value as String)")
+        
+                    // Append to object
+                    contactObject.setWebsites(websiteRecord: address.value as String)
+                }
+
+            }
+            if contact.socialProfiles.count > 0{
+                // Iterate over items
+                for profile in contact.socialProfiles {
+                    // Print to test
+                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                    
+                    // Create temp link 
+                    let link = profile.value.value(forKey: "urlString")  as! String
+                    
+                    // Append to object
+                    contactObject.setSocialLinks(socialLink: link)
+                }
+                
+            }
+            
+            if contact.jobTitle != "" {
+                //Print to test
+                print("Job Title: \(contact.jobTitle)")
+                
+                // Append to object
+                contactObject.setTitleRecords(title: contact.jobTitle)
+            }
+            if contact.organizationName != "" {
+                //print to test
+                print("Organization : \(contact.organizationName)")
+                
+                // Append to object
+                contactObject.setOrganizations(organization: contact.organizationName)
+            }
+            if contact.note != "" {
+                //print to test
+                print(contact.note)
+                
+                // Append to object
+                contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            // Test object
+            print("Contact >> \n\(contactObject.toAnyObject()))")
+            
+            // Append object to contactObjectList
+            contactObjectList.append(contactObject)
+            
+            
+            // Print count
+            print("List Count ... \(contactObjectList.count)")
+        }
+        
+        return contactObjectList
+    }
+    
+    func uploadContactRecords(contacts: [CNContact]){
+        
+        
+    }
+    
+    
+    
     
     // **** Functions for sorting contacts into sections *** //
     

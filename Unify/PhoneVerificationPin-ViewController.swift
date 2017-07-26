@@ -206,7 +206,7 @@ class PhoneVerificationPinViewController: UIViewController {
         Connection(configuration: nil).verifyPinCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                print("\n\nConnection - Create User Response: \(response)\n\n")
+                print("\n\nConnection - Create User Response: \(String(describing: response))\n\n")
                 
                 Countly.sharedInstance().recordEvent("phone verification successful")
 
@@ -232,12 +232,12 @@ class PhoneVerificationPinViewController: UIViewController {
                 
                 
             } else {
-                print(error)
+                print(error ?? "Error Occured Processing pin")
                 
                 self.verifyBtn.isEnabled = true
                 
                 // Show user popup of error message
-                print("\n\nConnection - Create User Error: \(error)\n\n")
+                print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")
                 KVNProgress.showError(withStatus: "Your pin is incorrect. Please try again")
             }
             
@@ -251,6 +251,12 @@ class PhoneVerificationPinViewController: UIViewController {
         // Create the card 
         let card = ContactManager.sharedManager.selectedCard
         
+        // Add card ownerId
+        card.ownerId = currentUser.userId
+        
+        // Process image for card
+        
+        
         // Show progress hud
         KVNProgress.show(withStatus: "Creating your first card...")
         
@@ -262,7 +268,7 @@ class PhoneVerificationPinViewController: UIViewController {
         
          Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
          if error == nil {
-            print("Card Created Response ---> \(response)")
+            print("Card Created Response ---> \(String(describing: response))")
          
             // Set card uuid with response from network
             let dictionary : Dictionary = response as! [String : Any]
@@ -291,7 +297,7 @@ class PhoneVerificationPinViewController: UIViewController {
          
          
         } else {
-            print("Card Created Error Response ---> \(error)")
+            print("Card Created Error Response ---> \(String(describing: error))")
             // Show user popup of error message
             KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
         

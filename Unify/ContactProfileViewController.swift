@@ -19,6 +19,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     var selectedContact = CNContact()
     let formatter = CNContactFormatter()
+    var contact = Contact()
     
     // This contact card is really a transaction object
     var card = ContactCard()
@@ -162,9 +163,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         // Set format style 
         formatter.style = .fullName
 
-        // Parse card for profile info 
-        //self.parseContactProfile()
-        
+        // Parse card for profile info
+        self.contact = self.parseContactRecord(contact: selectedContact)
         
         // Config Views
         configureViews()
@@ -194,7 +194,6 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         // reload table data
         
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -207,6 +206,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     // MARK: - Table view data source
     
@@ -380,9 +381,169 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     // Custom Methods
     // -------------------------------------------
     
+    func emptyArrays() {
+        // Reset all array values to nil
+        
+    }
+    
+    // Initialize contact objects for upload
+    
+    func parseContactRecord(contact: CNContact) -> Contact {
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+            
+            // Init temp contact object
+            let contactObject = Contact()
+            
+            // Set name
+            contactObject.name = formatter.string(from: contact) ?? "No Name"
+            
+            // Check for count
+            if contact.phoneNumbers.count > 0 {
+                // Iterate over items
+                for number in contact.phoneNumbers{
+                    // print to test
+                    print("Number: \((number.value.value(forKey: "digits" )!))")
+                    
+                    // Init the number
+                    let digits = number.value.value(forKey: "digits") as! String
+                    
+                    // Append to object
+                    contactObject.setPhoneRecords(phoneRecord: digits)
+                    
+                    // Append to array
+                    self.phoneNumbers.append(digits)
+                    print(phoneNumbers.count)
+                }
+                
+            }
+            if contact.emailAddresses.count > 0 {
+                // Iterate over array and pull value
+                for address in contact.emailAddresses {
+                    // Print to test
+                    print("Email : \(address.value)")
+                    
+                    // Append to object
+                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                    
+                    // Append to array
+                    self.emails.append(address.value as String)
+                    print(emails.count)
+                }
+            }
+            if contact.imageDataAvailable {
+                // Print to test
+                print("Has IMAGE Data")
+                
+                // Create ID and add to dictionary
+                // Image data png
+                let imageData = contact.imageData!
+                print(imageData)
+                
+                // Assign asset name and type
+                let idString = contactObject.randomString(length: 20)
+                
+                // Name image with id string
+                let fname = idString
+                let mimetype = "image/png"
+                
+                // Create image dictionary
+                let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+                
+                
+                // Append to object
+                contactObject.setContactImageId(id: idString)
+                contactObject.imageDictionary = imageDict
+                
+            }
+            if contact.urlAddresses.count > 0{
+                // Iterate over items
+                for address in contact.urlAddresses {
+                    // Print to test
+                    print("Website : \(address.value as String)")
+                    
+                    // Append to object
+                    contactObject.setWebsites(websiteRecord: address.value as String)
+                    
+                    // Append to list
+                    self.websites.append(address.value as String)
+                    print(websites.count)
+                }
+                
+            }
+            if contact.socialProfiles.count > 0{
+                // Iterate over items
+                for profile in contact.socialProfiles {
+                    // Print to test
+                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                    
+                    // Create temp link
+                    let link = profile.value.value(forKey: "urlString")  as! String
+                    
+                    // Append to object
+                    contactObject.setSocialLinks(socialLink: link)
+                    
+                    // Append to list
+                    self.socialLinks.append(link)
+                    print(socialLinks.count)
+                }
+                
+            }
+            
+            if contact.jobTitle != "" {
+                //Print to test
+                print("Job Title: \(contact.jobTitle)")
+                
+                // Append to object
+                contactObject.setTitleRecords(title: contact.jobTitle)
+                
+                // Append to list 
+                self.titles.append(contact.jobTitle)
+            }
+            if contact.organizationName != "" {
+                //print to test
+                print("Organization : \(contact.organizationName)")
+                
+                // Append to object
+                contactObject.setOrganizations(organization: contact.organizationName)
+                
+                // Append to list
+                self.organizations.append(contact.organizationName)
+            }
+            if contact.note != "" {
+                //print to test
+                print(contact.note)
+                
+                // Append to object
+                contactObject.setNotes(note: contact.note)
+                
+                // Append to list
+                self.notes.append(contact.note)
+                
+            }
+            
+            // Test object
+            print("Contact >> \n\(contactObject.toAnyObject()))")
+        
+        // Reload table data 
+        self.profileInfoTableView.reloadData()
+        
+        return contactObject
+    }
+
+    
+    
     func parseContactProfile() {
         // Check for values 
-        if selectedContact.phoneNumbers.count > 0 {
+        
+        
+        
+        
+        /*if selectedContact.phoneNumbers.count > 0 {
             // Iterate over phones array
             for phone in selectedContact.phoneNumbers {
                 self.phoneNumbers.append(phone.value.value(forKey: "digits") as! String)
@@ -404,9 +565,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 
             }
             
-        }
+        }*/
 
     }
+    
+    
     
     
     func checkForArrayLenth(array: Array<Any>) -> Bool {

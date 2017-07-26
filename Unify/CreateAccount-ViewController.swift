@@ -29,6 +29,7 @@ class CreateAccountViewController: UIViewController {
     
     // To track image ids
     var idString = ""
+    //var imageDictionary = [String : Any]
 
     
     // IBOutlets
@@ -221,10 +222,10 @@ class CreateAccountViewController: UIViewController {
         let urls = ImageURLS()
             
         // Create URL For Prod
-        let prodURL = urls.uploadToStagingURL
+        //let prodURL = urls.uploadToStagingURL
         
         // Create URL For Test
-        //let testURL = urls.uploadToDevelopmentURL
+        let testURL = urls.uploadToDevelopmentURL
         
         
         // Show progress HUD
@@ -240,7 +241,7 @@ class CreateAccountViewController: UIViewController {
             }*/
             
             // Currently Set to point to Prod Server
-        }, to:prodURL)
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):
@@ -265,30 +266,6 @@ class CreateAccountViewController: UIViewController {
             }
         }
         
-        
-        // Send to server
-        
-        /*Connection(configuration: nil).uploadImageCall(parameters as [AnyHashable : Any]){ response, error in
-            if error == nil {
-                print("Card Created Response ---> \(String(describing: response))")
-                
-                // Store profile image id after response from network
-                // Store image locally
-                UDWrapper.setString("profile_image_id", value: self.idString as NSString)
-                
-                // Hide HUD
-                KVNProgress.show(withStatus: "Profile generated")
-                
-            } else {
-                print("Card Created Error Response ---> \(String(describing: error))")
-                // Show user popup of error message
-                KVNProgress.show(withStatus: "There was an error with your follow up. Please try again.")
-                
-            }
-            // Hide indicator
-            KVNProgress.dismiss()
-        }*/
-
         
         // Test if image stored
         print(self.newUser.profileImages)
@@ -325,10 +302,7 @@ class CreateAccountViewController: UIViewController {
         
         // Create image dictionary
         let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
-        
-        // ***** Send image to server ****
-        
-        
+    
         // Assign name, cardname, email and phone values to card
         card.cardName = "Default"
         card.cardProfile.setEmailRecords(emailRecords: ["email" : email.text!])
@@ -339,8 +313,6 @@ class CreateAccountViewController: UIViewController {
         // Add card to current user object card suite
         newUser.cards.append(card)
         
-        // Set ownerid on card
-        card.ownerId = newUser.userId
         
         // Add image to contact card profile images
         self.card.cardProfile.setImages(imageRecords: imageDict)

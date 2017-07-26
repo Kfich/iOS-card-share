@@ -6,10 +6,10 @@
 
 
 // Test Server
-//#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
+#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
 
 // Production Server
-#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
+//#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
 
 // User
 #define kCreateUser           kServerURL(kAppwsServerURL, @"user/create")
@@ -46,12 +46,5 @@
 #define kUploadImages         kServerURL(kAppwsServerURL, @"image/uploadcdn")
 #define kGetUserImage         kServerURL(kAppwsServerURL, @"image/%@")
 
-
-
-// Create URL For Prod
-//let prodURL = "https://project-unify-node-server-stag.herokuapp.com/image/"
-
-// Create URL For Test
-//let testURL = "https://project-unify-node-server.herokuapp.com/image/"
 
 #endif

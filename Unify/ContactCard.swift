@@ -17,7 +17,7 @@ public class ContactCard: NSObject, NSCoding{
     var cardId : String?
     var cardName : String?
     var cardHolderName : String?
-    var imageURL : String?
+    //var imageURL : String?
     var image : UIImage?
     var imageId : String = ""
     var profileDictionary = NSDictionary()
@@ -55,7 +55,7 @@ public class ContactCard: NSObject, NSCoding{
         cardId = snapshot["ownerId"] as? String
         cardName = snapshot["card_name"] as? String
         cardHolderName = snapshot["card_holder_name"] as? String
-        imageURL = snapshot["image_url"] as? String
+        //imageURL = snapshot["image_url"] as? String
         profileDictionary = (snapshot["card_profile"] as? NSDictionary)!
         // Create card profile
         cardProfile = CardProfile(snapshot: profileDictionary)
@@ -70,7 +70,7 @@ public class ContactCard: NSObject, NSCoding{
         cardId = withSnapshotLite["ownerId"] as? String
         cardName = withSnapshotLite["card_name"] as? String
         cardHolderName = withSnapshotLite["card_holder_name"] as? String
-        imageURL = withSnapshotLite["image_url"] as? String
+        //imageURL = withSnapshotLite["image_url"] as? String
 
     }
     
@@ -79,7 +79,7 @@ public class ContactCard: NSObject, NSCoding{
         cardId = withSnapshotFromDefaults["ownerId"] as? String
         cardName = withSnapshotFromDefaults["card_name"] as? String
         cardHolderName = withSnapshotFromDefaults["card_holder_name"] as? String
-        imageURL = withSnapshotFromDefaults["image_url"] as? String
+        //imageURL = withSnapshotFromDefaults["image_url"] as? String
         profileDictionary = (withSnapshotFromDefaults["card_profile"] as? NSDictionary)!
         // Create card profile
         cardProfile = CardProfile(fromDefaultsWithDictionary: profileDictionary)
@@ -122,7 +122,7 @@ public class ContactCard: NSObject, NSCoding{
             "unify_uuid": cardId ?? "",
             "card_name": cardName ?? "",
             "card_holder_name": cardHolderName ?? "",
-            "image_url" : imageURL ?? Data(),
+            //"image_url" : imageURL ?? Data(),
             "ownerId" : ownerId,
             "card_profile" : cardProfile.toAnyObject()
             
@@ -134,7 +134,7 @@ public class ContactCard: NSObject, NSCoding{
             "unify_uuid": cardId ?? "",
             "card_name": cardName ?? "",
             "card_holder_name": cardHolderName ?? "",
-            "image_url" : imageURL ?? Data(),
+            //"image_url" : imageURL ?? Data(),
             "ownerId" : ownerId,
             "card_profile" : cardProfile.toAnyObjectWithImage()
         ]

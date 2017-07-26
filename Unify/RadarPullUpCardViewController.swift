@@ -296,8 +296,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             if currentCard.cardHolderName != nil {
                 cell.cardDisplayName.text = currentCard.cardHolderName
             }
-            if currentCard.cardProfile.title != nil {
-                cell.cardTitle.text = currentCard.cardProfile.getTitle()
+            if currentCard.cardProfile.titles.count > 0 {
+                cell.cardTitle.text = currentCard.cardProfile.titles[0]["title"]
             }
             if currentCard.cardProfile.emails.count > 0 {
                 cell.cardEmail.text = currentCard.cardProfile.emails[0]["email"]!

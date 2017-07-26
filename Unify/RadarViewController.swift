@@ -531,18 +531,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let urls = ImageURLS()
         
         // Create URL For Prod
-        let prodURL = urls.getFromStagingURL
+        //let prodURL = urls.getFromStagingURL
         
         // Create URL For Test
-        //let testURL = urls.getFromDevelopmentURL
+        let testURL = urls.getFromDevelopmentURL
         
         
         // Fetch user image reference
         if user.profileImageId != ""{
             // Grab image ref using alamo
             
-            // ** Currently Set to Prod URL
-            let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
+            // ** Currently Set to Test URL
+            let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
             let placeholderImage = UIImage(named: "user")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)

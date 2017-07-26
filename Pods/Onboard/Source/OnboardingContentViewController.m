@@ -173,7 +173,7 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     
     // Configure tap gesture
     
-    //The setup code (in viewDidLoad in your view controller)
+    /*//The setup code (in viewDidLoad in your view controller)
     UITapGestureRecognizer *tripleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleTap:)];
@@ -182,7 +182,7 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     tripleFingerTap.numberOfTapsRequired = 1;
     
     // Add gestures to the view
-    [self.view addGestureRecognizer:tripleFingerTap];
+    [self.view addGestureRecognizer:tripleFingerTap];*/
     
 
     

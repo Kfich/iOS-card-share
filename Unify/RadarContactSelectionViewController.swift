@@ -194,7 +194,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
         // Parse socials links
         if selectedUser.userProfile.socialLinks.count > 0{
             for link in currentUser.userProfile.socialLinks{
-                notes.append(link["link"]!)
+                socialLinks.append(link["link"]!)
             }
         }
         

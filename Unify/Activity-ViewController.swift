@@ -412,7 +412,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         print("recipientCard", trans.recipientCard )
 
-        print("img", trans.recipientCard.imageURL)
+        //print("img", trans.recipientCard.imageURL)
         
         
         // Set location

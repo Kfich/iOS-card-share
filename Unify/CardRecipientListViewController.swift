@@ -55,7 +55,13 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         KVNProgress.show(withStatus: "Syncing Contacts...")
         
         // Parse for contacts in contact list
-        ContactManager.sharedManager.getContacts()
+        if ContactManager.sharedManager.phoneContactList.isEmpty{
+            // Make call to get contacts
+            ContactManager.sharedManager.getContacts()
+        }else{
+            // Refresh table
+            print("Contacts should be set")
+        }
         
         // Observers for notifications
         addObservers()
