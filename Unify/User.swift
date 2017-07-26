@@ -153,6 +153,9 @@ public class User{
         userPhoneForVerification = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
         userPhoneVerified = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
         
+        // Create card profile
+        userProfile = CardProfile(snapshot: withDefaultsSnapshot["profile"] as! NSDictionary)
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated

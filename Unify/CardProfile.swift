@@ -80,9 +80,9 @@ public class CardProfile{
     // Exporting the object
     func toAnyObject() -> NSDictionary {
         return [
-            "bio": bio ?? "",
-            "work_info": workInfo ?? "",
-            "title": title ?? "",
+            "bios": bios,
+            "work_info": workInformationList,
+            "title": titles,
             "emails" : emails,
             "phone_numbers" : phoneNumbers,
             "social_links" : socialLinks,
@@ -91,15 +91,14 @@ public class CardProfile{
             "websites" : websites,
             "organizations" : organizations,
             "image_ids": imageIds
-            //"images" : images
         ]
     }
 
     func toAnyObjectWithImage() -> NSDictionary {
         return [
-            "bio": bio ?? "",
-            "work_info": workInfo ?? "",
-            "title": title ?? "",
+            "bio": bios,
+            "work_info": workInformationList,
+            "title": titles,
             "emails" : emails,
             "phone_numbers" : phoneNumbers,
             "social_links" : socialLinks,
@@ -114,29 +113,29 @@ public class CardProfile{
 
     
     // Bio
-    func getBio()->String{
-        return bio ?? ""
+    func getBios()->[[String : String]]{
+        return bios
     }
     
     func setBio(bioString : String){
-        bio = bioString
+        bios.append(["bio" : bioString])
     }
     
     // Title
-    func getTitle()->String{
-        return title ?? ""
+    func getTitle()->[[String : String]]{
+        return titles
     }
     func setTitle(titleString : String){
-        title = titleString
+        titles.append(["title" : titleString])
     }
     
     // Work info
-    func setWorkInfo(titleString : String){
-        title = titleString
+    func setWorkInfo(workString : String){
+        workInformationList.append(["work" : workString])
     }
     
-    func getWorkInfo()->String{
-        return workInfo ?? ""
+    func getWorkInfo()->[[String : String]]{
+        return workInformationList
     }
    
     // Bios array
@@ -252,11 +251,11 @@ public class CardProfile{
     func printProfle(){
         print("\n")
         print("Bio :")
-        print(bio ?? "")
+        print(bios)
         print("Work Info :")
-        print(workInfo ?? "")
+        print(workInformationList)
         print("Title :")
-        print(title ?? "")
+        print(titles)
         print("Emails : ")
         print(emails)
         print("Phones : ")
