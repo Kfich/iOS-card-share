@@ -69,6 +69,8 @@
 		FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */; };
 		FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */; };
 		FB0F48621F1E9A0200EF9871 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */; };
+		FB199CF81F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FB199CF71F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m */; };
+		FB199CFB1F2A560000FFFCC1 /* RecipientOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB199CFA1F2A560000FFFCC1 /* RecipientOptionsViewController.swift */; };
 		FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */; };
 		FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34081EE1B5F9003B5A73 /* ISHPullUpHandleView.m */; };
 		FB1A340D1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A340A1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m */; };
@@ -258,6 +260,9 @@
 		FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListViewController.swift; sourceTree = "<group>"; };
 		FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListCell.swift; sourceTree = "<group>"; };
 		FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		FB199CF61F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+EmptyDataSet.h"; sourceTree = "<group>"; };
+		FB199CF71F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+EmptyDataSet.m"; sourceTree = "<group>"; };
+		FB199CFA1F2A560000FFFCC1 /* RecipientOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientOptionsViewController.swift; sourceTree = "<group>"; };
 		FB1A34051EE1B5F9003B5A73 /* ISHPullUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpViewController.h; sourceTree = "<group>"; };
 		FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISHPullUpViewController.m; sourceTree = "<group>"; };
 		FB1A34071EE1B5F9003B5A73 /* ISHPullUpHandleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpHandleView.h; sourceTree = "<group>"; };
@@ -533,6 +538,7 @@
 				1CB31C9A1E9407B000A0C4A5 /* Intro-ViewController.swift */,
 				1CB31C9C1E94087100A0C4A5 /* SelectRecipient-ViewController.swift */,
 				1CB31CA61E94273E00A0C4A5 /* QuickShare-ViewController.swift */,
+				FB199CFA1F2A560000FFFCC1 /* RecipientOptionsViewController.swift */,
 			);
 			name = Intro;
 			sourceTree = "<group>";
@@ -603,6 +609,8 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FB199CF61F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.h */,
+				FB199CF71F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m */,
 				FB90A8B71F279C1800E67B1E /* SCLAlertView.swift */,
 				FB90A8B81F279C1800E67B1E /* SCLExtensions.swift */,
 				FB2F42771F1526CB00E3D6B5 /* KVNProgress.h */,
@@ -939,6 +947,7 @@
 				FB90A8BA1F279C1800E67B1E /* SCLExtensions.swift in Sources */,
 				FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */,
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,
+				FB199CFB1F2A560000FFFCC1 /* RecipientOptionsViewController.swift in Sources */,
 				FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
 				1C151D3A1F1DBE73004B23CE /* CountlyViewTracking.m in Sources */,
@@ -970,6 +979,7 @@
 				FB90A8BC1F27AC1600E67B1E /* PrivacyViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */,
+				FB199CF81F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m in Sources */,
 				FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */,
 				FB2F42881F1526CB00E3D6B5 /* UIColor+KVNContrast.m in Sources */,
 				1CB31CA31E940B4200A0C4A5 /* TabBar-ViewController.swift in Sources */,

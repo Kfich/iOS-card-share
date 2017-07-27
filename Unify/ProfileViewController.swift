@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate{
 
     // Properties
     // ===================================
@@ -28,17 +28,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     var tags = [String]()
     
     // Bools to check if array contents empty
-    var biosPopulated = false
-    var workInformationPopulated = false
-    var organizationsPopulated = false
-    var titlesPopulated = false
-    var phoneNumbersPopulated = false
-    var emailsPopulated = false
-    var websitesPopulated = false
-    var socialLinksPopulated = false
-    var notesPopulated = false
-    var tagsPopulated = false
-
+    var arraysPopulated = false
     
     
     // IBOutlets
@@ -121,10 +111,23 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
         
         // Assign profile values
-        self.parseData()
+        self.parseDataFromProfile()
         
         // For notifications
         addObservers()
+        
+        // Set table delegate and data source
+        profileInfoTableView.delegate = self
+        profileInfoTableView.dataSource = self
+        
+        
+        // Set delegate for empty state
+        profileInfoTableView.emptyDataSetSource = self
+        profileInfoTableView.emptyDataSetDelegate = self
+        // View to remove separators
+        profileInfoTableView.tableFooterView = UIView()
+        
+        profileInfoTableView.reloadData()
         
     }
 
@@ -138,68 +141,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         currentUser = ContactManager.sharedManager.currentUser
         
-        // Parse bio info
-       /* if currentUser.userProfile.bios.count > 0{
-            // Iterate throught array and append available content
-            for bio in currentUser.userProfile.bios{
-                bios.append((bio["bio"])!)
-            }
-        }
-        // Parse work info
-        if currentUser.userProfile.workInformationList.count > 0{
-            for info in currentUser.userProfile.workInformationList{
-                workInformation.append((info["work"])!)
-            }
-        }
-        // Parse work info
-        if currentUser.userProfile.titles.count > 0{
-            for info in currentUser.userProfile.titles{
-                titles.append((info["title"])!)
-            }
-        }
         
-        if currentUser.userProfile.phoneNumbers.count > 0{
-            for number in currentUser.userProfile.phoneNumbers{
-                phoneNumbers.append((number["phone"])!)
-            }
-        }
-        // Parse emails
-        if currentUser.userProfile.emails.count > 0{
-            for email in currentUser.userProfile.emails{
-                emails.append(email["email"]!)
-            }
-        }
-        // Parse websites
-        if currentUser.userProfile.websites.count > 0{
-            for site in currentUser.userProfile.websites{
-                websites.append(site["website"]!)
-            }
-        }
-        // Parse organizations
-        if currentUser.userProfile.organizations.count > 0{
-            for org in currentUser.userProfile.organizations{
-                organizations.append(org["organization"]!)
-            }
-        }
-        // Parse Tags
-        if currentUser.userProfile.tags.count > 0{
-            for hashtag in currentUser.userProfile.tags{
-                tags.append(hashtag["tag"]!)
-            }
-        }
-        // Parse notes
-        if currentUser.userProfile.notes.count > 0{
-            for note in currentUser.userProfile.notes{
-                notes.append(note["note"]!)
-            }
-        }
-        // Parse socials links
-        if currentUser.userProfile.socialLinks.count > 0{
-            for link in currentUser.userProfile.socialLinks{
-                socialLink.append(link["link"]!)
-            }
-        }*/
-        
+        // Assign profile values
+       // self.parseDataFromProfile()
     }
     
     
@@ -393,18 +337,114 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // Custom Methods
     func addObservers() {
         // Call to refresh table
-        NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.parseData), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.parseDataFromProfile), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
         
         
     }
+    
+    func parseDataFromProfile() {
+        
+        // Reset arrays
+        self.bios = [String]()
+        self.titles = [String]()
+        self.emails = [String]()
+        self.phoneNumbers = [String]()
+        self.socialLinks = [String]()
+        self.organizations = [String]()
+        self.websites = [String]()
+        self.workInformation = [String]()
+        
+        // Parse bio info
+         if currentUser.userProfile.bios.count > 0{
+            // Iterate throught array and append available content
+            for bio in currentUser.userProfile.bios{
+                bios.append((bio["bio"])!)
+            }
+            
+        }
+        
+        // Parse work info
+        
+        if currentUser.userProfile.workInformationList.count > 0{
+        
+            for info in currentUser.userProfile.workInformationList{
+                workInformation.append((info["work"])!)
+            }
+        }
+        // Parse work info
+        if currentUser.userProfile.titles.count > 0{
+            for info in currentUser.userProfile.titles{
+                titles.append((info["title"])!)
+            }
+        }
+         
+         if currentUser.userProfile.phoneNumbers.count > 0{
+            for number in currentUser.userProfile.phoneNumbers{
+                phoneNumbers.append((number["phone"])!)
+            }
+         
+        }
+        // Parse emails
+        
+        if currentUser.userProfile.emails.count > 0{
+            for email in currentUser.userProfile.emails{
+                emails.append(email["email"]!)
+            }
+        }
+        
+        // Parse websites
+        if currentUser.userProfile.websites.count > 0{
+            for site in currentUser.userProfile.websites{
+                websites.append(site["website"]!)
+            }
+         
+        }
+         // Parse organizations
+        if currentUser.userProfile.organizations.count > 0{
+            for org in currentUser.userProfile.organizations{
+                organizations.append(org["organization"]!)
+            }
+        }
+         // Parse Tags
+        if currentUser.userProfile.tags.count > 0{
+            
+            for hashtag in currentUser.userProfile.tags{
+         
+                tags.append(hashtag["tag"]!)
+        
+            }
+         }
+        
+        // Parse notes
+         if currentUser.userProfile.notes.count > 0{
+         
+            for note in currentUser.userProfile.notes{
+         
+            notes.append(note["note"]!)
+         
+            }
+         }
+         // Parse socials links
+         if currentUser.userProfile.socialLinks.count > 0{
+         
+            for link in currentUser.userProfile.socialLinks{
+         
+                socialLinks.append(link["link"]!)
+         
+            }
+         }
+        // Refresh table
+        profileInfoTableView.reloadData()
+
+    }
 
     func parseData() {
-        // Re parse for values 
+        // Re parse for values
         
         // Reload data values
         // Assign profile image val
         
-        if let biosArray = UDWrapper.getArray("bios"){
+        /*if let biosArray = UDWrapper.getArray("bios"){
             
             // Reload table data
             for value in biosArray {
@@ -483,11 +523,21 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             
         }else{
             print("User has no cards")
-        }
+        }*/
+        
         
         
         profileInfoTableView.reloadData()
         
+    }
+    
+    func checkForEmptyData() -> Bool {
+        if bios.count == 0 && titles.count == 0 && workInformation.count == 0 && socialLinks.count == 0 && websites.count == 0 && emails.count == 0 && phoneNumbers.count == 0 && organizations.count == 0{
+            // Everything is empty
+            return true
+        }else{
+            return false
+        }
     }
 
     
@@ -538,6 +588,76 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         mediaButton7.image = UIImage(named: "social-blank")
     }
     
+    // Empty State Delegate Methods
+    
+    // Settings
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+        
+        // All arrays are empty
+        if checkForEmptyData() == true {
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        // Lock scroll
+        return false
+    }
+    
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Configure string
+        
+        let emptyString = "No Profile Info Found"
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Config Message for user
+        
+        let emptyString = ""
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+        
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
+        // Config button for data set
+        
+        let emptyString = "Tap to Start Unifying"
+        
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        let attributes = [ NSForegroundColorAttributeName: blue ]
+        
+        let attrString = NSAttributedString(string: emptyString, attributes: attributes)
+        
+        return attrString
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        // Set to height of header bar
+        return -64
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap view: UIView) {
+        // Configure action for tap
+        print("The View Was tapped")
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap button: UIButton) {
+        // Configure action for button tap
+        print("The Button Was tapped")
+    }
+
     
 
     /*

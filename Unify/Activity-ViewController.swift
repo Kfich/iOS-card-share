@@ -12,7 +12,7 @@ import UIDropDown
 import MessageUI
 
 
-class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
+class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Properties
     // ----------------------------------------
@@ -43,6 +43,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Configure tableview
         tableView.dataSource = self
         tableView.delegate = self
+        
+        // Set delegate for empty state 
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        // View to remove separators
+        tableView.tableFooterView = UIView()
+        
+        
         //tableView.estimatedSectionHeaderHeight = 8.0
         self.automaticallyAdjustsScrollViewInsets = false
         // Set a header for the table view
@@ -344,9 +352,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Send to server
         
-        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+        Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(response)")
+                print("Card Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
@@ -359,7 +367,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 KVNProgress.dismiss()
                 
             } else {
-                print("Card Created Error Response ---> \(error)")
+                print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
                 KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
@@ -368,7 +376,71 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             KVNProgress.dismiss()
         }
     }
+    
+    
+    // Empty State Delegate Methods 
+    
+    // Settings
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        // Lock scroll
+        return false
+    }
+    
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Configure string 
+        
+        let emptyString = "No Transactions Found"
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Config Message for user
+        
+        let emptyString = ""
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
 
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
+        // Config button for data set
+        
+        let emptyString = "Tap to Start Unifying"
+        
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        let attributes = [ NSForegroundColorAttributeName: blue ]
+        
+        let attrString = NSAttributedString(string: emptyString, attributes: attributes)
+        
+        return attrString
+    }
+
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        // Set to height of header bar
+        return -64
+    }
+
+    func emptyDataSet(_ scrollView: UIScrollView, didTap view: UIView) {
+        // Configure action for tap
+        print("The View Was tapped")
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap button: UIButton) {
+        // Configure action for button tap 
+        print("The Button Was tapped")
+    }
 
     // View Configuration
 
@@ -394,7 +466,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set location
         cell.locationLabel.text = trans.location
     }
-
+    
     
     func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
         // Set transaction values for cell

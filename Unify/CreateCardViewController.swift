@@ -75,14 +75,23 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         currentUser = ContactManager.sharedManager.currentUser
         
         // Check where user arrived from 
-        if ContactManager.sharedManager.userSelectedEditCard{
+        /*if ContactManager.sharedManager.userSelectedEditCard{
             // Set card to selected card
             self.card = ContactManager.sharedManager.selectedCard
             
             // Populate card and tableviews with card profile info
             
-        }
+        }*/
         
+        // Reset arrays
+        self.bios = [String]()
+        self.titles = [String]()
+        self.emails = [String]()
+        self.phoneNumbers = [String]()
+        self.socialLinks = [String]()
+        self.organizations = [String]()
+        self.websites = [String]()
+        self.workInformation = [String]()
         
         // If user has default image, set as container view
         if currentUser.profileImages.count > 0{
@@ -96,9 +105,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Parse card for profile info
         
-        // Parse bio info
-        
-        /*if currentUser.userProfile.bios.count > 0{
+        if currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
             for bio in currentUser.userProfile.bios{
                 bios.append(bio["bio"]!)
@@ -158,11 +165,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             for link in currentUser.userProfile.socialLinks{
                 notes.append(link["link"]!)
             }
-        }*/
+        }
         
         // Assign profile image val
         
-        if let biosArray = UDWrapper.getArray("bios"){
+        /*if let biosArray = UDWrapper.getArray("bios"){
             
             // Reload table data
             for value in biosArray {
@@ -241,7 +248,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
         }else{
             print("User has no cards")
-        }
+        }*/
 
         // View config
         configureViews()

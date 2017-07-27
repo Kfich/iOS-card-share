@@ -83,7 +83,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewWillAppear(true)
         
         // Set current user
-        currentUser = ContactManager.sharedManager.currentUser
+        /*currentUser = ContactManager.sharedManager.currentUser
         
         // Check where user arrived from
         if ContactManager.sharedManager.userSelectedEditCard{
@@ -92,7 +92,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
             // Populate card and tableviews with card profile info
             
-        }
+        }*/
         
         
         // If user has default image, set as container view

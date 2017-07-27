@@ -28,6 +28,9 @@ class EditProfileContainerViewController: FormViewController {
     var notes = [String]()
     var tags = [String]()
     
+    // To check user intent
+    //var doneButtonSelected = false
+    
     var count = 0
     
     // IBOutlets
@@ -53,7 +56,7 @@ class EditProfileContainerViewController: FormViewController {
         
         // Assign profile image val
         
-        if let biosArray = UDWrapper.getArray("bios"){
+        /*if let biosArray = UDWrapper.getArray("bios"){
             
             // Reload table data
             for value in biosArray {
@@ -132,7 +135,7 @@ class EditProfileContainerViewController: FormViewController {
             
         }else{
             print("User has no cards")
-        }
+        }*/
         
         
         // Parse card for profile info
@@ -140,7 +143,7 @@ class EditProfileContainerViewController: FormViewController {
         
         // Parse bio info
         
-        /*if currentUser.userProfile.bios.count > 0{
+        if currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
             for bio in currentUser.userProfile.bios{
                 bios.append(bio["bio"] as! String)
@@ -200,7 +203,7 @@ class EditProfileContainerViewController: FormViewController {
             for link in currentUser.userProfile.socialLinks{
                 notes.append(link["link"]!)
             }
-         }*/
+         }
         
         
         
@@ -459,12 +462,19 @@ class EditProfileContainerViewController: FormViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
+    if ContactManager.sharedManager.userSelectedEditCard{
+            
+        
+        // Clear the arrays 
+        self.removeAllFromArrays()
+        
         // Assign all the items in each list to the contact profile on manager
         // Parse table section vals
         
         // Bios Section
         let bioValues = form.sectionBy(tag: "Bio Section")
         for val in bioValues! {
+            
             print(val.baseValue ?? "")
             if let str = "\(val.baseValue ?? "")" as? String {
                 // Append to user profile
@@ -560,14 +570,14 @@ class EditProfileContainerViewController: FormViewController {
         
         // Set the array values as the profile
         
-        UDWrapper.setArray("bios", value: bios as NSArray)
+        /*UDWrapper.setArray("bios", value: bios as NSArray)
         UDWrapper.setArray("titles", value: titles as NSArray)
         UDWrapper.setArray("workInfo", value: workInformation as NSArray)
         UDWrapper.setArray("phoneNumbers", value: phoneNumbers as NSArray)
         UDWrapper.setArray("emails", value: emails as NSArray)
         UDWrapper.setArray("websites", value: websites as NSArray)
         UDWrapper.setArray("socialLinks", value: socialLinks as NSArray)
-        UDWrapper.setArray("organizations", value: organizations as NSArray)
+        UDWrapper.setArray("organizations", value: organizations as NSArray)*/
         
         
         ContactManager.sharedManager.currentUser = self.currentUser
@@ -575,7 +585,9 @@ class EditProfileContainerViewController: FormViewController {
         ContactManager.sharedManager.currentUser.userProfile.printProfle()
         
         self.postNotification()
-        
+    }else{
+        print("They chose to cancel")
+        }
     }
     
     // Custom methods
@@ -591,7 +603,17 @@ class EditProfileContainerViewController: FormViewController {
     
     
     
-    
+    func removeAllFromArrays() {
+        // Clear all profile info to prepare for override 
+        currentUser.userProfile.bios.removeAll()
+        currentUser.userProfile.titles.removeAll()
+        currentUser.userProfile.emails.removeAll()
+        currentUser.userProfile.phoneNumbers.removeAll()
+        currentUser.userProfile.websites.removeAll()
+        currentUser.userProfile.organizations.removeAll()
+        currentUser.userProfile.socialLinks.removeAll()
+        currentUser.userProfile.workInformationList.removeAll()
+    }
     
     
     

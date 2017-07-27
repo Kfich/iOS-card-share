@@ -94,7 +94,8 @@ class EditProfileViewController: UIViewController {
         // Drop the keyboard
         self.view.endEditing(true)
         
-        // Gather all the arrays and add to the manager
+        // Set Manager intent switch to true 
+        ContactManager.sharedManager.userSelectedEditCard = true
         
         
         // Nav out the view

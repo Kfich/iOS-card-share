@@ -400,6 +400,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         self.addContactLabel.text = name
         
     }
+    
     func configureViewForRecipient(){
         
         let selected = ContactManager.sharedManager.recipientToIntro

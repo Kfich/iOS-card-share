@@ -52,12 +52,13 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         
         // Add loading indicator
         
-        KVNProgress.show(withStatus: "Syncing Contacts...")
         
         // Parse for contacts in contact list
         if ContactManager.sharedManager.phoneContactList.isEmpty{
             // Make call to get contacts
             ContactManager.sharedManager.getContacts()
+            // Show progress
+            KVNProgress.show(withStatus: "Syncing Contacts...")
         }else{
             // Refresh table
             print("Contacts should be set")

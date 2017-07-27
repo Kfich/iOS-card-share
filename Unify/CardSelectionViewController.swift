@@ -121,7 +121,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         ContactManager.sharedManager.selectedCard = selectedCard
         
         // Set switch to true
-        ContactManager.sharedManager.userSelectedEditCard = true
+        //ContactManager.sharedManager.userSelectedEditCard = true
         
         
     }

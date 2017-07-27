@@ -255,6 +255,8 @@ class ContactManager{
             // Create contact objects
             self.contactObjectList = self.createContactRecords()
             
+            // Set appeared to true
+            self.contactListHasAppeared = true
             
             // Post refresh
             self.postContactListRefresh()
@@ -401,10 +403,15 @@ class ContactManager{
         // Create ContactObjectList by executing call
         //self.contactObjectList = self.createContactRecords()
   
+        // Create Delay
+        let delayInSeconds = 1.0
+    
+        // Hit delay
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
         // Iterate over object array - for each, upload
-        
         for contact in self.contactObjectList {
     
+                
             // Create dictionary
             let parameters = ["data" : contact.toAnyObject()]
             print(parameters)
@@ -422,11 +429,16 @@ class ContactManager{
                     
                     // Show user popup of error message
                     
+                
                 }
                 // Hide indicator
                 
+            
+                }
+        
             }
             
+        
         }
         
     }
