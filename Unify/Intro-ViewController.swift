@@ -329,7 +329,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 KVNProgress.dismiss()
                 
             } else {
-                print("Card Created Error Response ---> \(error)")
+                print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
                 KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
@@ -350,9 +350,15 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     func showContactList() {
         // Perform seggy
         // Sync up with main queue
-        DispatchQueue.main.async {
-            // Set selected tab
-            self.performSegue(withIdentifier: "showIntroContactList", sender: self)
+        
+        
+        if ContactManager.sharedManager.userArrivedFromIntro != true{
+            DispatchQueue.main.async {
+                // Set selected tab
+                self.performSegue(withIdentifier: "showIntroContactList", sender: self)
+            }
+        }else{
+            self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
         }
     }
     

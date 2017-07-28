@@ -224,33 +224,37 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         
     }
     
-    func deleteCard() {
-        //let parameters = ["data": card.toAnyObject()]
-        /*
-         Connection(configuration: nil).updateCardCall(parameters as! [AnyHashable : Any]){ response, error in
-            if error == nil {
-            print("Card Created Response ---> \(response)")
-         
-            // Set card uuid with response from network
-            let dictionary : Dictionary = response as! [String : Any]
-            self.card.cardId = dictionary["uuid"] as? String
-         
-            // Insert to manager card array
-            ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([self.card.toAnyObjectWithImage()], at: 0)
-         
-            // Set array to defualts
-            UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
-         
-            // Hide HUD
-            KVNProgress.dismiss()
-         
-            // Post notification for radar view to refresh
-            self.postNotification()
-            // Dismiss VC
-            self.dismiss(animated: true, completion: {
-            // Send to database to update card with the new uuid
-            print("Send to db")
+    /*func deleteCard() {
         
+        // Create params with cardId
+        let parameters = ["data": selectedUserCard.cardId]
+        
+         Connection(configuration: nil).deleteCardCall(parameters){ response, error in
+            if error == nil {
+            print("Card Created Response ---> \(String(describing: response))")
+         
+            
+         
+                // Delete from manager card array
+                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([self.card.toAnyObjectWithImage()], at: 0)
+         
+                // Set array to defualts
+            
+                UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+         
+                // Hide HUD
+            
+                KVNProgress.dismiss()
+         
+                // Post notification for radar view to refresh
+                //self.postNotification()
+                // Dismiss VC
+                self.dismiss(animated: true, completion: {
+                // Send to database to update card with the new uuid
+            
+                print("Deleted to db")
+        
+            
             })
          
         
@@ -261,9 +265,9 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             // Hide indicator
             KVNProgress.dismiss()
-        }*/
+        }
 
-    }
+    }*/
     
     func showEmailCard() {
         // Show VC

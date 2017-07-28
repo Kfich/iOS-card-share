@@ -266,7 +266,7 @@ class PhoneVerificationPinViewController: UIViewController {
         
         // Send to server
         
-         Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
+         Connection(configuration: nil).createCardCall(parameters as [AnyHashable : Any]){ response, error in
          if error == nil {
             print("Card Created Response ---> \(String(describing: response))")
          

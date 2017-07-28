@@ -97,9 +97,9 @@ class EditProfileViewController: UIViewController {
         // Set Manager intent switch to true 
         ContactManager.sharedManager.userSelectedEditCard = true
         
+        // Execute call to send to server 
+        self.updateCurrentUser()
         
-        // Nav out the view
-        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {
@@ -107,7 +107,6 @@ class EditProfileViewController: UIViewController {
         navigationController?.popViewController(animated: true)
         
     }
-    
     
     
     // Page Setup
@@ -143,6 +142,55 @@ class EditProfileViewController: UIViewController {
         // Bring a manager here to handle setting the inputs back and forth
         
         print("Done editing")
+    }
+    
+    func updateCurrentUser() {
+        // Configure to send to server 
+        
+        
+        // Send to server
+        let parameters = ["data" : currentUser.toAnyObject(), "uuid" : currentUser.userId] as [String : Any]
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        // Store current user cards to local device
+        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
+        //UDWrapper.setData("contact_cards", value: encodedData)
+        
+        
+        // Show progress hud
+        //KVNProgress.show(withStatus: "Saving your new card...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).updateUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print(dictionary)
+                
+                
+                // Store user to device
+                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+                // Nav out the view
+                self.navigationController?.popViewController(animated: true)
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
     }
     
     /*

@@ -120,7 +120,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // your cell coding
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactsCell", for: indexPath) as! ContactListCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
         
         cell.contactNameLabel.text = "Peter Jenkins"
         cell.contactImageView.image = UIImage(named: "contact")

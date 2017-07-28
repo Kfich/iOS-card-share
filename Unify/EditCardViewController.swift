@@ -82,182 +82,26 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        // Set current user
-        /*currentUser = ContactManager.sharedManager.currentUser
+        // Set current user 
+        currentUser = ContactManager.sharedManager.currentUser
+        // Set Selected card
+        card = ContactManager.sharedManager.selectedCard
         
-        // Check where user arrived from
-        if ContactManager.sharedManager.userSelectedEditCard{
-            // Set card to selected card
-            self.card = ContactManager.sharedManager.selectedCard
-            
-            // Populate card and tableviews with card profile info
-            
-        }*/
-        
-        
-        // If user has default image, set as container view
-        if currentUser.profileImages.count > 0{
-            profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
-        }
-        
-        // Set name as default value
-        if currentUser.fullName != ""{
-            nameLabel.text = currentUser.fullName
-        }
+        // Parse bio info
+        self.parseDataFromProfile()
         
         // Parse card for profile info
         self.parseCardForSelections()
+    
         
+        // Populate the card 
+        self.populateCards()
         
-        // Parse bio info
-        
-        /*if currentUser.userProfile.bios.count > 0{
-         // Iterate throught array and append available content
-         for bio in currentUser.userProfile.bios{
-         bios.append(bio["bio"]!)
-         }
-         }
-         // Parse work info
-         if currentUser.userProfile.workInformationList.count > 0{
-         for info in currentUser.userProfile.workInformationList{
-         workInformation.append(info["work"]!)
-         }
-         }
-         
-         // Parse work info
-         if currentUser.userProfile.titles.count > 0{
-         for info in currentUser.userProfile.titles{
-         titles.append((info["title"])!)
-         }
-         }
-         
-         if currentUser.userProfile.phoneNumbers.count > 0{
-         for number in currentUser.userProfile.phoneNumbers{
-         phoneNumbers.append(number["phone"]!)
-         }
-         }
-         // Parse emails
-         if currentUser.userProfile.emails.count > 0{
-         for email in currentUser.userProfile.emails{
-         emails.append(email["email"]!)
-         }
-         }
-         // Parse websites
-         if currentUser.userProfile.websites.count > 0{
-         for site in currentUser.userProfile.websites{
-         websites.append(site["website"]!)
-         }
-         }
-         // Parse organizations
-         if currentUser.userProfile.organizations.count > 0{
-         for org in currentUser.userProfile.organizations{
-         organizations.append(org["organization"]!)
-         }
-         }
-         // Parse Tags
-         if currentUser.userProfile.tags.count > 0{
-         for hashtag in currentUser.userProfile.tags{
-         tags.append(hashtag["tag"]!)
-         }
-         }
-         // Parse notes
-         if currentUser.userProfile.notes.count > 0{
-         for note in currentUser.userProfile.notes{
-         notes.append(note["note"]!)
-         }
-         }
-         // Parse socials links
-         if currentUser.userProfile.socialLinks.count > 0{
-         for link in currentUser.userProfile.socialLinks{
-         notes.append(link["link"]!)
-         }
-         }*/
-        
-        // Assign profile image val
-        
-        if let biosArray = UDWrapper.getArray("bios"){
-            
-            // Reload table data
-            for value in biosArray {
-                self.bios.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        
-        if let titlesArray = UDWrapper.getArray("titles"){
-            
-            // Reload table data
-            for value in titlesArray {
-                self.titles.append(value as! String)
-            }
-        }else{
-            print("User has no titles")
-        }
-        if let workArray = UDWrapper.getArray("workInfo"){
-            
-            // Reload table data
-            for value in workArray {
-                self.workInformation.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let phonesArray = UDWrapper.getArray("phoneNumbers"){
-            
-            // Reload table data
-            for value in phonesArray {
-                self.phoneNumbers.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let emailsArray = UDWrapper.getArray("emails"){
-            
-            // Reload table data
-            for value in emailsArray {
-                self.emails.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let socialArray = UDWrapper.getArray("socialLinks"){
-            
-            // Reload table data
-            for value in socialArray {
-                self.socialLinks.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let orgsArray = UDWrapper.getArray("organizations"){
-            
-            // Reload table data
-            for value in orgsArray {
-                self.organizations.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let webArray = UDWrapper.getArray("websites"){
-            
-            // Reload table data
-            for value in webArray {
-                self.websites.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
+
         
         // View config
         configureViews()
+        
         
         // Photo picker config
         configurePhotoPicker()
@@ -391,10 +235,10 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Send to server
         
-        /*
-         let parameters = card.toAnyObject()
+        
+        let parameters = ["data" : card.toAnyObject(), "uuid" : currentUser.userId] as [String : Any]
          print("\n\nTHE CARD TO ANY - PARAMS")
-         print(parameters)*/
+         print(parameters)
         
         // Store current user cards to local device
         //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
@@ -406,10 +250,10 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Save card to DB
         //let parameters = ["data": card.toAnyObject()]
-        /*
-        Connection(configuration: nil).updateCardCall(parameters as! [AnyHashable : Any]){ response, error in
+        
+        Connection(configuration: nil).updateCardCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(response)")
+                print("Card Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
@@ -433,15 +277,65 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 })
                 
             } else {
-                print("Card Created Error Response ---> \(error)")
+                print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
                 KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
             }
             // Hide indicator
             KVNProgress.dismiss()
-        }*/
+        }
         
     }
+    
+    @IBAction func deleteCard(_ sender: Any) {
+        
+        // Delete card
+        
+        // Send to server
+        let parameters = ["uuid" : card.cardId]
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        // Show alert 
+        KVNProgress.show(withStatus: "Deleting current card ...")
+        
+        // Connect to server
+        Connection(configuration: nil).deleteCardCall(parameters){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print(dictionary)
+                
+                // Remove from manager card array
+                ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
+                
+                // Reset array to defualts
+                //UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+                // Post notification for radar view to refresh
+                self.postNotification()
+                // Dismiss VC
+                self.dismiss(animated: true, completion: {
+                    // Send to database to update card with the new uuid
+                    print("Send to db")
+                })
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error deleting your card. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
+    
     
     // Photo Picker Delegate Methods
     
@@ -910,6 +804,104 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
+    func parseDataFromProfile() {
+        
+        // Reset arrays
+        self.bios = [String]()
+        self.titles = [String]()
+        self.emails = [String]()
+        self.phoneNumbers = [String]()
+        self.socialLinks = [String]()
+        self.organizations = [String]()
+        self.websites = [String]()
+        self.workInformation = [String]()
+        
+        // Parse bio info
+        if currentUser.userProfile.bios.count > 0{
+            // Iterate throught array and append available content
+            for bio in currentUser.userProfile.bios{
+                bios.append((bio["bio"])!)
+            }
+            
+        }
+        
+        // Parse work info
+        
+        if currentUser.userProfile.workInformationList.count > 0{
+            
+            for info in currentUser.userProfile.workInformationList{
+                workInformation.append((info["work"])!)
+            }
+        }
+        // Parse work info
+        if currentUser.userProfile.titles.count > 0{
+            for info in currentUser.userProfile.titles{
+                titles.append((info["title"])!)
+            }
+        }
+        
+        if currentUser.userProfile.phoneNumbers.count > 0{
+            for number in currentUser.userProfile.phoneNumbers{
+                phoneNumbers.append((number["phone"])!)
+            }
+            
+        }
+        // Parse emails
+        
+        if currentUser.userProfile.emails.count > 0{
+            for email in currentUser.userProfile.emails{
+                emails.append(email["email"]!)
+            }
+        }
+        
+        // Parse websites
+        if currentUser.userProfile.websites.count > 0{
+            for site in currentUser.userProfile.websites{
+                websites.append(site["website"]!)
+            }
+            
+        }
+        // Parse organizations
+        if currentUser.userProfile.organizations.count > 0{
+            for org in currentUser.userProfile.organizations{
+                organizations.append(org["organization"]!)
+            }
+        }
+        // Parse Tags
+        if currentUser.userProfile.tags.count > 0{
+            
+            for hashtag in currentUser.userProfile.tags{
+                
+                tags.append(hashtag["tag"]!)
+                
+            }
+        }
+        
+        // Parse notes
+        if currentUser.userProfile.notes.count > 0{
+            
+            for note in currentUser.userProfile.notes{
+                
+                notes.append(note["note"]!)
+                
+            }
+        }
+        // Parse socials links
+        if currentUser.userProfile.socialLinks.count > 0{
+            
+            for link in currentUser.userProfile.socialLinks{
+                
+                socialLinks.append(link["link"]!)
+                
+            }
+        }
+        // Refresh table
+        cardOptionsTableView.reloadData()
+        
+    }
+
+    
+    
     // Alert Controller to Add CardName
     
     func showAlertWithTextField(description: String, placeholder: String, actionType: String){
@@ -955,6 +947,32 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         }))
         // Show VC
         self.present(alertVC, animated: true, completion: nil)
+    }
+    
+    // Custom Methods
+    // -------------------------------------------
+    
+    func populateCards(){
+        // Senders card config
+        
+        // Populate image view
+        if card.cardProfile.images.count > 0{
+            profileImageView.image = UIImage(data: card.cardProfile.images[0]["image_data"] as! Data)
+        }
+        // Populate label fields
+        if let name = card.cardHolderName{
+            nameLabel.text = name
+        }
+        if card.cardProfile.phoneNumbers.count > 0{
+            numberLabel.text = card.cardProfile.phoneNumbers[0]["phone"]!
+        }
+        if card.cardProfile.emails.count > 0{
+            emailLabel.text = card.cardProfile.emails[0]["email"]
+        }
+        if let title = card.cardProfile.title{
+            titleLabel.text = title
+        }
+        // Here, parse data to populate tableview
     }
     
     // Notifications

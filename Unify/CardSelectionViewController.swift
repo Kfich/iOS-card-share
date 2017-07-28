@@ -169,13 +169,27 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         // Parse card for profile info
         
+        if selectedCard.cardProfile.bios.count > 0{
+            // Iterate throught array and append available content
+            for bio in selectedCard.cardProfile.bios{
+                bios.append(bio["bio"]!)
+            }
+            
+        }
+        // Parse work info
+        if selectedCard.cardProfile.workInformationList.count > 0{
+            for info in selectedCard.cardProfile.workInformationList{
+                workInformation.append(info["work"]!)
+            }
+        }
         
-        if selectedCard.cardProfile.bio != ""{
-            bios.append(selectedCard.cardProfile.bio!)
+        // Parse work info
+        if selectedCard.cardProfile.titles.count > 0{
+            for info in selectedCard.cardProfile.titles{
+                titles.append((info["title"])!)
+            }
         }
-        if selectedCard.cardProfile.workInfo != ""{
-            workInformation.append(selectedCard.cardProfile.bio!)
-        }
+        
         if selectedCard.cardProfile.phoneNumbers.count > 0{
             for number in selectedCard.cardProfile.phoneNumbers{
                 phoneNumbers.append(number["phone"]! )

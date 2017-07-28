@@ -584,6 +584,9 @@ class EditProfileContainerViewController: FormViewController {
         // Test to print profile
         ContactManager.sharedManager.currentUser.userProfile.printProfle()
         
+        // Store user to device
+        UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+        
         self.postNotification()
     }else{
         print("They chose to cancel")

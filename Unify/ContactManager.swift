@@ -83,6 +83,29 @@ class ContactManager{
         
     }
     
+    // Card Handling 
+    func deleteCardFromArray(cardIdString : String) {
+        //  Iterate over cards 
+        var index = 0
+        
+        for card in currentUserCards {
+            // Find id match
+            if card.cardId == cardIdString {
+                // Remove index 
+                currentUserCards.remove(at: index)
+                currentUserCardsDictionaryArray.remove(at: index)
+                
+                print("Card Removed .. ")
+            }
+            
+            // increment index 
+            index = index + 1
+        }
+        print(currentUserCardsDictionaryArray)
+        print(currentUserCards)
+    }
+    
+    
     // Transaction handling
     
     func createTransaction(type: String) {

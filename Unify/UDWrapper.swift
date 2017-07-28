@@ -153,6 +153,14 @@ class UDWrapper: NSObject {
         setObject(key, value: value)
     }
     
+    // ----------------------------------------------
+    // Remove Objects
+    
+    class func removeObject(_ key: String) {
+        UserDefaults.standard.removeObject(forKey: key)
+        UserDefaults.standard.synchronize()
+    }
+    
     
     //-------------------------------------------------------------------------------------------
     // MARK: - Synchronize

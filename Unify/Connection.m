@@ -62,9 +62,14 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetCard];
 }
 
-- (NSURLSessionDataTask*)updateCardCall:(NSDictionary*)parameters cardID:(NSString*)cardID completionBlock:(CompletionBlock)completionBlock {
+- (NSURLSessionDataTask*)updateCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUpdateCard];
 }
+
+- (NSURLSessionDataTask*)deleteCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kDeleteCard];
+}
+
 - (NSURLSessionDataTask*)getSingleCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetSingleCard];
 }
