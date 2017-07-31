@@ -148,6 +148,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.newCardAdded), name: NSNotification.Name(rawValue: "CardCreated"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.cardUpdated), name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.addNewCard), name: NSNotification.Name(rawValue: "CreateCardSelected"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.showEmailCard(_:)), name: NSNotification.Name(rawValue: "EmailCardFromRadar"), object: nil)
@@ -163,6 +165,26 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             KVNProgress.showSuccess(withStatus: "Card Created Successfully!")
         }
         
+        
+        print("New Card Added")
+        print("\(ContactManager.sharedManager.currentUserCards.count)")
+        
+        // Set background image on collectionview
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        self.cardCollectionView.backgroundView = bgImage
+        
+        // Refresh table data
+        cardCollectionView.reloadData()
+    }
+    
+    func cardUpdated() {
+        
+        DispatchQueue.main.async {
+            // Update UI
+            KVNProgress.showSuccess(withStatus: "Card Removed Successfully!")
+        }
         
         print("New Card Added")
         print("\(ContactManager.sharedManager.currentUserCards.count)")

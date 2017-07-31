@@ -289,6 +289,15 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func deleteCard(_ sender: Any) {
         
+        ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
+        
+        
+        
+        // Set array to defualts
+        UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+        
+        self.postNotification()
+        
         // Delete card
         
         // Send to server
@@ -309,7 +318,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 print(dictionary)
                 
                 // Remove from manager card array
-                ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
+                //ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
                 
                 // Reset array to defualts
                 //UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
@@ -320,10 +329,10 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 // Post notification for radar view to refresh
                 self.postNotification()
                 // Dismiss VC
-                self.dismiss(animated: true, completion: {
+                /*self.dismiss(animated: true, completion: {
                     // Send to database to update card with the new uuid
                     print("Send to db")
-                })
+                })*/
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
@@ -333,6 +342,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             // Hide indicator
             KVNProgress.dismiss()
         }
+        // Dismiss VC
+        self.dismiss(animated: true, completion: {
+            // Send to database to update card with the new uuid
+            print("Send to db")
+        })
         
     }
     
@@ -593,6 +607,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 // Print Already selected
                 print("Item already selected")
                 // Most likely show an alert
+                selectedBios.remove(at: indexPath.row)
             }else{
                 // Append bio to list if not selected
                 card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
@@ -604,6 +619,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedWorkInformation.contains(workInformation[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
+                self.selectedWorkInformation.remove(at: indexPath.row)
             }else{
                 // Append to work list
                 card.cardProfile.setWorkRecords(emailRecords: ["work" : workInformation[indexPath.row]])
@@ -616,6 +632,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedTitles.contains(titles[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
+                self.selectedTitles.remove(at: indexPath.row)
             }else{
                 // Add to list
                 card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
@@ -628,6 +645,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedEmails.contains(emails[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
+                self.selectedEmails.remove(at: indexPath.row)
             }else{
                 // Append to list
                 card.cardProfile.emails.append(["email" : emails[indexPath.row]])
@@ -641,6 +659,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
+                self.selectedPhoneNumbers.remove(at: indexPath.row)
             }else{
                 // Add dictionary value to cardProfile
                 card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
@@ -655,6 +674,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedSocialLinks.contains(socialLinks[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
+                self.selectedSocialLinks.remove(at: indexPath.row)
             }else{
                 // Append to array
                 card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
@@ -666,6 +686,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedWebsites.contains(websites[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
+                self.selectedWebsites.remove(at: indexPath.row)
             }else{
                 // Append to array
                 card.cardProfile.websites.append(["website" : websites[indexPath.row]])
@@ -676,6 +697,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedOrganizations.contains(organizations[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
+                self.selectedOrganizations.remove(at: indexPath.row)
             }else{
                 // Append to array
                 card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
@@ -981,6 +1003,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Notification for radar screen
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: self)
+        
         
     }
     

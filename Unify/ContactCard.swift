@@ -76,7 +76,7 @@ public class ContactCard: NSObject, NSCoding{
     
     init(withSnapshotFromDefaults: NSDictionary) {
         cardId = withSnapshotFromDefaults["unify_uuid"] as? String
-        cardId = withSnapshotFromDefaults["ownerId"] as? String
+        ownerId = (withSnapshotFromDefaults["ownerId"] as? String)!
         cardName = withSnapshotFromDefaults["card_name"] as? String
         cardHolderName = withSnapshotFromDefaults["card_holder_name"] as? String
         //imageURL = withSnapshotFromDefaults["image_url"] as? String

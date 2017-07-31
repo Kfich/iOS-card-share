@@ -410,6 +410,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
+                print("New Card ID \(dictionary["uuid"] as? String)")
                 self.card.cardId = dictionary["uuid"] as? String
                 
                 // Insert to manager card array

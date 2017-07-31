@@ -88,21 +88,29 @@ class ContactManager{
         //  Iterate over cards 
         var index = 0
         
-        for card in currentUserCards {
+        for card in 0..<currentUserCards.count {
             // Find id match
+            let card = currentUserCards[index]
+            
             if card.cardId == cardIdString {
-                // Remove index 
+                
+                print(index)
+                card.printCard()
+                // Remove index
                 currentUserCards.remove(at: index)
                 currentUserCardsDictionaryArray.remove(at: index)
                 
                 print("Card Removed .. ")
+                print("Current User Cards \(currentUserCardsDictionaryArray.count)")
+                print("Current User Cards Dictionaries \(currentUserCards.count)")
+                break
             }
             
             // increment index 
             index = index + 1
         }
-        print(currentUserCardsDictionaryArray)
-        print(currentUserCards)
+        print("Current User Cards \(currentUserCardsDictionaryArray.count)")
+        print("Current User Cards Dictionaries \(currentUserCards.count)")
     }
     
     

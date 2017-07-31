@@ -139,6 +139,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        selectedCard = ContactManager.sharedManager.selectedCard
+        
         // Do any additional setup after loading the view.
         
         // Config Views
