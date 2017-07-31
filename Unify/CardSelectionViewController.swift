@@ -139,7 +139,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        selectedCard = ContactManager.sharedManager.selectedCard
+        //selectedCard = ContactManager.sharedManager.selectedCard
         
         // Do any additional setup after loading the view.
         
@@ -169,8 +169,17 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
         
         
-        // Parse card for profile info
+        // Reset arrays
+        self.bios = [String]()
+        self.titles = [String]()
+        self.emails = [String]()
+        self.phoneNumbers = [String]()
+        self.socialLinks = [String]()
+        self.organizations = [String]()
+        self.websites = [String]()
+        self.workInformation = [String]()
         
+        // Parse card for profile info
         if selectedCard.cardProfile.bios.count > 0{
             // Iterate throught array and append available content
             for bio in selectedCard.cardProfile.bios{

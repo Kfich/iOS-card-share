@@ -438,7 +438,7 @@ class EditProfileContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("organizationRow_\(index)") {
                                         $0.placeholder = "Name"
-                                        $0.tag = "Add Organizations"
+                                        //$0.tag = "Add Organizations"
                                     }
                                 }
                                 
