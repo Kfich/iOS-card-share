@@ -430,19 +430,16 @@ class ContactManager{
         return contactObjectList
     }
     
-    func uploadContactRecords(){
+    func uploadContactRecords(index: Int){
         // Create ContactObjectList by executing call
         //self.contactObjectList = self.createContactRecords()
-  
+        let contact = contactObjectList[index]
+        
         // Create Delay
         let delayInSeconds = 1.0
     
         // Hit delay
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-        // Iterate over object array - for each, upload
-        for contact in self.contactObjectList {
     
-                
             // Create dictionary
             let parameters = ["data" : contact.toAnyObject()]
             print(parameters)
@@ -452,6 +449,8 @@ class ContactManager{
                 if error == nil {
                     // Call successful
                     print("Transaction Created Response ---> \(String(describing: response))")
+                    
+                    
                     
                     
                 } else {
@@ -464,14 +463,6 @@ class ContactManager{
                 }
                 // Hide indicator
                 
-            
-                }
-        
-            }
-            
-        
-        }
-        
     }
     
     

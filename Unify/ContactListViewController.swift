@@ -150,6 +150,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        // Deselect rows 
+        contactListTableView.deselectRow(at: indexPath, animated: true)
         
         print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
         // Assign selected contact
@@ -252,7 +254,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func refreshTableData() {
         
         //DispatchQueue.main.async {
-        //self.uploadContactRecords()
+        self.uploadContactRecords()
         
         
         // Reload contact list

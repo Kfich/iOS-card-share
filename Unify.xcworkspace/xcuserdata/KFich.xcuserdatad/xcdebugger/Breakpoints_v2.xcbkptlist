@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactListViewController.swift"
-            timestampString = "522783214.551482"
+            timestampString = "523227789.834999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
             landmarkName = "ContactListViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -321,6 +321,54 @@
             endingLineNumber = "601"
             landmarkName = "configureViews(cell:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Unify/ContactListViewController.swift"
+            timestampString = "523228497.311106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
+            landmarkName = "refreshTableData()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Unify.ContactListViewController.refreshTableData () -&gt; ()"
+                  moduleName = "Unify"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/KFich/Desktop/Git/Project-Unify-iOS-App/Unify/ContactListViewController.swift"
+                  timestampString = "523228498.301005"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "261"
+                  endingLineNumber = "261"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Unify.ContactListViewController.(refreshTableData () -&gt; ()).(closure #1)"
+                  moduleName = "Unify"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/KFich/Desktop/Git/Project-Unify-iOS-App/Unify/ContactListViewController.swift"
+                  timestampString = "523228498.310917"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "266"
+                  endingLineNumber = "266"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
