@@ -18,6 +18,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // ----------------------------------------
     var currentUser = User()
     var transactions = [Transaction]()
+    
+    // Individual lists for segments
+    var connections = [Transaction]()
+    var introductions = [Transaction]()
+    
     var selectedUsers = [User]()
     var selectedIndex = Int()
     var selectedTransaction = Transaction()
@@ -73,9 +78,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         segmentedControl.insertSegment(withTitle: "All", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Introductions", at: 1, animated: false)
         segmentedControl.insertSegment(withTitle: "Connections", at: 2, animated: false)
-        //segmentedControl.insertSegment(withTitle: "Follow Up",at: 3, animated: false)
-        
+        // Init index
         segmentedControl.selectedSegmentIndex = 0
+        
+        // Add target action method
+        segmentedControl.addTarget(self, action: #selector(ActivtiyViewController.reloadTableWithList(sender:)), for: .valueChanged)
+        
         
         // Add segment control to navigation bar
         self.navigationBar.titleView = segmentedControl
@@ -106,10 +114,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected transaction
-        //self.selectedTransaction = self.transactions[indexPath.row]
+        self.selectedTransaction = self.transactions[indexPath.row]
         
         // Get users in transaction
-        //self.fetchUsersForTransaction()
+        self.fetchUsersForTransaction()
         
         // Pass in segue
         //self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
@@ -158,37 +166,71 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5 //self.transactions.count
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            return self.transactions.count
+        case 1:
+            return self.connections.count
+        case 2:
+            return self.introductions.count
+        default:
+            return 0
+        }
+
+        //return 5 //self.transactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Check what cell is needed
-        //var cell = UITableViewCell()
+        var cell = UITableViewCell()
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+       // var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
         
-        self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
-        self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
+       // self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
+       // self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
         
-        // Init transaction 
-        /*let trans = transactions[indexPath.row]
-        
-        if trans.type == "connection" {
+        // config cell
+       
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // Set to all transactions list 
+            
+            // Init transaction
+            let trans = transactions[indexPath.row]
+             
+             if trans.type == "connection" {
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+             
+             }else if trans.type == "intro"{
+             
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+             }
+
+        }else if segmentedControl.selectedSegmentIndex == 1 {
+            // Config for connections
+            //let trans = connections[indexPath.row]
             // Configure Cell
             cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
             // Execute func
             configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
-            
-        }else if trans.type == "intro"{
-            
+
+        }else if segmentedControl.selectedSegmentIndex == 2{
+            // Config for intro 
+            //let trans = introductions[indexPath.row]
             // Configure Cell
             cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
             // Execute func
             configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
-        }*/
- 
-        // config cell
+        }
+        
+        
         
 
         
@@ -196,6 +238,29 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // Custom Methods
+    
+    // Event handler for segment control
+    func reloadTableWithList(sender: UISegmentedControl) {
+        
+        print("Change color handler is called.")
+        print("Changing Color to ")
+        
+        switch sender.selectedSegmentIndex {
+        case 1:
+            self.view.backgroundColor = UIColor.green
+            print("Green")
+            self.tableView.reloadData()
+        case 2:
+            self.view.backgroundColor = UIColor.blue
+            print("Blue")
+            self.tableView.reloadData()
+        default:
+            self.view.backgroundColor = UIColor.purple
+            print("Purple")
+            self.tableView.reloadData()
+        }
+    }
+
     
     func addObservers() {
         // Call to show options
@@ -266,8 +331,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Test callback
                 print(dictionary)
                 
-                // Change status for activity 
-                //self.transactions[]
+                // Change status for trans
+                self.transactions[self.selectedIndex].approved = true
                 
                 // Reload table
                 self.tableView.reloadData()
@@ -308,6 +373,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 let dictionary : Dictionary = response as! [String : Any]
                 // Test callback 
                 print(dictionary)
+                
+                // Change status for trans
+                self.transactions[self.selectedIndex].approved = false
                 
                 // Reload table 
                 self.tableView.reloadData()
@@ -366,6 +434,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                     // Update the table values
                     self.tableView.reloadData()
                     
+                    // Parse lists for segment control 
+                    self.parseTransactionList(transactionList: self.transactions)
+                    
                     // Show sucess
                     KVNProgress.showSuccess()
                 }else{
@@ -386,6 +457,34 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             KVNProgress.dismiss()
         })
     
+    }
+    
+    // Retrieve lists from all transactions
+    func parseTransactionList(transactionList : [Transaction]) {
+        // Iterate over list
+        for transaction in transactionList {
+            // Check for tran type
+            switch transaction.type {
+            case "connection":
+                // Print to test
+                print(transaction.type)
+                // Append to connection list
+                self.connections.append(transaction)
+                // Exit
+                break
+                
+            case "introduction":
+                // Print to test
+                print(transaction.type)
+                // Append to connection list
+                self.introductions.append(transaction)
+                // Exit
+                break
+                
+            default:
+                print("No transaction type")
+            }
+        }
     }
     
     func fetchUsersForTransaction() {
@@ -564,7 +663,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.cardWrapperView.tag = index
         cell.approveButton.tag = index
         // Make rejection tag index + 1 to identify the users action intent
-        cell.rejectButton.tag = index + 1
+        cell.rejectButton.tag = index
         
     }
     
@@ -611,7 +710,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.connectionCardWrapperView.tag = index
         cell.connectionApproveButton.tag = index
         // Make rejection tag index + 1 to identify the users action intent
-        cell.connectionRejectButton.tag = index + 1
+        cell.connectionRejectButton.tag = index
         
         
     }
