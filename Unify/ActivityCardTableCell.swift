@@ -26,8 +26,8 @@ class ActivityCardTableCell: UITableViewCell {
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
     // Buttons
-    @IBOutlet var approveButton: UIButton!
-    @IBOutlet var rejectButton: UIButton!
+    @IBOutlet var approveButton: UILabel!
+    @IBOutlet var rejectButton: UILabel!
     
     // Configuration and connections for Connection
     // activity card

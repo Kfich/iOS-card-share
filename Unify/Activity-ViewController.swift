@@ -19,6 +19,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     var currentUser = User()
     var transactions = [Transaction]()
     var selectedUsers = [User]()
+    var selectedIndex = Int()
     var selectedTransaction = Transaction()
     var segmentedControl = UISegmentedControl()
     
@@ -105,10 +106,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected transaction
-        self.selectedTransaction = self.transactions[indexPath.row]
+        //self.selectedTransaction = self.transactions[indexPath.row]
         
         // Get users in transaction
-        self.fetchUsersForTransaction()
+        //self.fetchUsersForTransaction()
         
         // Pass in segue
         //self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
@@ -165,19 +166,25 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Check what cell is needed
         //var cell = UITableViewCell()
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+        
+        self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
+        self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
         
         // Init transaction 
-      /*  let trans = transactions[indexPath.row]
+        /*let trans = transactions[indexPath.row]
         
         if trans.type == "connection" {
             // Configure Cell
             cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+            // Execute func
             configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+            
         }else if trans.type == "intro"{
             
             // Configure Cell
             cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+            // Execute func
             configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
         }*/
  
@@ -192,15 +199,56 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func addObservers() {
         // Call to show options
-        NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.approveTransaction), name: NSNotification.Name(rawValue: "Approve Connection"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.setSelectedTransaction(sender:)), name: NSNotification.Name(rawValue: "Approve Connection"), object: nil)
         
         // Call Contacts sync
-        NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.rejectTransaction), name: NSNotification.Name(rawValue: "Reject Connection"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.setSelectedTransaction(sender:)), name: NSNotification.Name(rawValue: "Reject Connection"), object: nil)
         
         
     }
     
+    func addGestureToLabel(label: UILabel, index: Int, intent: String) {
+        // Init tap gesture
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(setSelectedTransaction(sender:)))
+        label.isUserInteractionEnabled = true
+        // Add gesture to image
+        label.addGestureRecognizer(tapGestureRecognizer)
+        // Set image index
+        label.tag = index
+        
+        // Set description to view 
+        //label.
+    }
+    
+    func setSelectedTransaction(sender: UITapGestureRecognizer){
+        
+        let label = sender.view as! UILabel
+        let intent = label.text!
+        
+        print("Sender Index: \((sender.view?.tag)!)")
+        print("Intent : \(intent)")
+        
+        // Set index 
+        self.selectedIndex = (sender.view?.tag)!
+        // Set selected transaction using tag
+        //self.selectedTransaction = self.transactions[(sender.view?.tag)!]
+        
+        // Post notification
+        if intent == "Approve" {
+            // Approve transaction 
+            self.approveTransaction()
+            
+        }else{
+            // Reject transaction 
+            self.rejectTransaction()
+        }
+    }
+    
+    
     func approveTransaction() {
+        // Test
+        print("Approving transaction")
+        
         // Export transaction
         let parameters = ["uuid" : self.selectedTransaction.transactionId]
         
@@ -217,6 +265,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 let dictionary : Dictionary = response as! [String : Any]
                 // Test callback
                 print(dictionary)
+                
+                // Change status for activity 
+                //self.transactions[]
                 
                 // Reload table
                 self.tableView.reloadData()
@@ -235,6 +286,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func rejectTransaction() {
+        
+        print("Rejecting transaction")
+        
+        // Set selected transaction 
+        //self.selectedTransaction = self.transactions[]
+        
         // Export transaction
         let parameters = ["uuid" : self.selectedTransaction.transactionId]
         
@@ -430,7 +487,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.selectedTransaction.type = type
         
         // Show progress hud
-        KVNProgress.show(withStatus: "Making the introduction...")
+        KVNProgress.show(withStatus: "Following up..")
         
         // Save card to DB
         let parameters = ["data": self.selectedTransaction.toAnyObject()]
@@ -463,7 +520,102 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    // View Configuration
     
+    
+    func configureViewsForIntro(cell: ActivityCardTableCell, index: Int){
+        // Set transaction values for cell
+        let trans = transactions[index]
+        
+        // Assign user objects
+        
+        //let user1 = selectedUsers[0]
+        //let user2 = selectedUsers[1]
+        
+        let name1 = "Frank Smith"
+        let name2 = "Fred Jackson"
+        
+        // See if image ref available
+        let image = UIImage(named: "contact")
+        cell.profileImage.image = image
+        // Set description text
+        cell.descriptionLabel.text = "You introduced \(trans.recipientList[0]) to \(trans.recipientList[1])"
+        
+        // Set location
+        cell.locationLabel.text = trans.location
+        
+        
+        // Hide buttons if already approved
+        if trans.approved {
+            // Hide and replace
+            cell.rejectButton.isHidden = true
+            cell.rejectButton.isEnabled = false
+            
+            // Change the label
+            //cell.approveButton.setTitle("Follow up", for: .normal)
+            
+        }else{
+            // Show
+            cell.rejectButton.isHidden = false
+            cell.rejectButton.isEnabled = true
+        }
+        
+        // Add tag to view
+        cell.cardWrapperView.tag = index
+        cell.approveButton.tag = index
+        // Make rejection tag index + 1 to identify the users action intent
+        cell.rejectButton.tag = index + 1
+        
+    }
+    
+    
+    func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
+        // Set transaction values for cell
+        let trans = transactions[index]
+        
+        // Assign user objects
+        //let user1 = selectedUsers[0]
+        let name = trans.recipientCard.cardHolderName
+        
+        // See if image ref available
+        let image = UIImage(named: "contact")
+        cell.connectionOwnerProfileImage.image = image
+        // Set description text
+        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientCard.cardHolderName!)"
+        
+        print("recipientCard", trans.recipientCard )
+        
+        //print("img", trans.recipientCard.imageURL)
+        
+        
+        // Set location
+        cell.connectionLocationLabel.text = trans.location
+        
+        
+        // Hide buttons if already approved
+        if trans.approved {
+            // Hide and replace
+            cell.connectionRejectButton.isHidden = true
+            cell.connectionRejectButton.isEnabled = false
+            
+            // Change the label
+            cell.connectionApproveButton.setTitle("Follow up", for: .normal)
+            
+        }else{
+            // Show
+            cell.connectionRejectButton.isHidden = false
+            cell.connectionRejectButton.isEnabled = true
+        }
+        
+        // Add tag to view
+        cell.connectionCardWrapperView.tag = index
+        cell.connectionApproveButton.tag = index
+        // Make rejection tag index + 1 to identify the users action intent
+        cell.connectionRejectButton.tag = index + 1
+        
+        
+    }
+
     
     
     // Empty State Delegate Methods 
@@ -530,56 +682,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         print("The Button Was tapped")
     }
 
-    // View Configuration
-
-
-    func configureViewsForIntro(cell: ActivityCardTableCell, index: Int){
-        // Set transaction values for cell
-        let trans = transactions[index]
-        
-        // Assign user objects
-        
-        //let user1 = selectedUsers[0]
-        //let user2 = selectedUsers[1]
-        
-        let name1 = "Frank Smith"
-        let name2 = "Fred Jackson"
-        
-        // See if image ref available
-        let image = UIImage(named: "contact")
-        cell.profileImage.image = image
-        // Set description text
-        cell.descriptionLabel.text = "You introduced \(trans.recipientList[0]) to \(trans.recipientList[1])"
-        
-        // Set location
-        cell.locationLabel.text = trans.location
-    }
-    
-    
-    func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
-        // Set transaction values for cell
-        let trans = transactions[index]
-        
-        // Assign user objects
-        //let user1 = selectedUsers[0]
-        let name = trans.recipientCard.cardHolderName
-        
-        // See if image ref available
-        let image = UIImage(named: "contact")
-        cell.connectionOwnerProfileImage.image = image
-        // Set description text
-        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientCard.cardHolderName!)"
-        
-        print("recipientCard", trans.recipientCard )
-
-        //print("img", trans.recipientCard.imageURL)
-        
-        
-        // Set location
-        cell.connectionLocationLabel.text = trans.location
-        
-        
-    }
     
     // Message Composer Functions
     
