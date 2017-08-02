@@ -272,7 +272,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func uploadContactRecords(){
         // Call function from manager
-        ContactManager.sharedManager.uploadContactRecords()
+        //ContactManager.sharedManager.uploadContactRecords()
         
     }
 

@@ -34,6 +34,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        
+        // Add observers 
+        self.addObservers()
+        
         // Set currentUser object 
         currentUser = ContactManager.sharedManager.currentUser
         
@@ -152,16 +157,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.transactions.count
+        return 5 //self.transactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Check what cell is needed
-        var cell = UITableViewCell()
+        //var cell = UITableViewCell()
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
         
         // Init transaction 
-        let trans = transactions[indexPath.row]
+      /*  let trans = transactions[indexPath.row]
         
         if trans.type == "connection" {
             // Configure Cell
@@ -172,7 +179,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Configure Cell
             cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
             configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
-        }
+        }*/
  
         // config cell
         
@@ -182,6 +189,85 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // Custom Methods
+    
+    func addObservers() {
+        // Call to show options
+        NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.approveTransaction), name: NSNotification.Name(rawValue: "Approve Connection"), object: nil)
+        
+        // Call Contacts sync
+        NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.rejectTransaction), name: NSNotification.Name(rawValue: "Reject Connection"), object: nil)
+        
+        
+    }
+    
+    func approveTransaction() {
+        // Export transaction
+        let parameters = ["uuid" : self.selectedTransaction.transactionId]
+        
+        // Show HUD 
+        KVNProgress.show(withStatus: "Approving the connection...")
+        
+        // Send to sever
+        
+        Connection(configuration: nil).approveTransactionCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Approval Response ---> \(String(describing: response))")
+                
+                // Set response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                // Test callback
+                print(dictionary)
+                
+                // Reload table
+                self.tableView.reloadData()
+                // Hide HUD
+                KVNProgress.showSuccess(withStatus: "Approved.")
+                
+            } else {
+                print("Approval Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+    
+    func rejectTransaction() {
+        // Export transaction
+        let parameters = ["uuid" : self.selectedTransaction.transactionId]
+        
+        // Show HUD
+        KVNProgress.show(withStatus: "Rejecting the connection...")
+        
+        // Send to sever
+        
+        Connection(configuration: nil).rejectTransactionCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Rejection Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                // Test callback 
+                print(dictionary)
+                
+                // Reload table 
+                self.tableView.reloadData()
+                
+                // Hide HUD
+                KVNProgress.showSuccess(withStatus: "Rejected.")
+                
+            } else {
+                print("Rejection Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
     
     func getTranstactions() {
         
@@ -376,6 +462,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             KVNProgress.dismiss()
         }
     }
+    
+    
     
     
     // Empty State Delegate Methods 

@@ -25,6 +25,9 @@ class ActivityCardTableCell: UITableViewCell {
     @IBOutlet var recipientLabel: UILabel!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
+    // Buttons
+    @IBOutlet var approveButton: UIButton!
+    @IBOutlet var rejectButton: UIButton!
     
     // Configuration and connections for Connection
     // activity card
@@ -44,7 +47,9 @@ class ActivityCardTableCell: UITableViewCell {
     @IBOutlet var connectionFollowupViewContainer:UIView!
     @IBOutlet var connectionFollowupButton: UIButton!
     
-    
+    // Buttons
+    @IBOutlet var connectionApproveButton: UIButton!
+    @IBOutlet var connectionRejectButton: UIButton!
     // Cleanup down here
   
     @IBOutlet weak var activityMessage: UILabel!
@@ -71,8 +76,48 @@ class ActivityCardTableCell: UITableViewCell {
         
     }
     
+    // CellD - Button config
+    @IBAction func approveIntroActivity(_ sender: Any) {
+        // Test 
+        print("Approve intro")
+        
+        // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Approve Connection"), object: self)
+    }
+    
+    @IBAction func rejectIntroActivity(_ sender: Any) {
+        // Test
+        print("Reject intro")
+        // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Reject Connection"), object: self)
+
+    }
+    
+    @IBAction func approveConnectionActivity(_ sender: Any) {
+        // Test
+        print("Approve connect ")
+        // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Approve Connection"), object: self)
+
+    }
+    
+    @IBAction func rejectConnectionActivity(_ sender: Any) {
+        // Test
+        print("Reject connect ")
+        // Post notification for radarPullupVC
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Reject Connection"), object: self)
+
+    }
+    
     
     
     
     
 }
+
+
+
+
+
+
+

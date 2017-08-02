@@ -21,8 +21,8 @@ public class Transaction{
     // Lat and Long for location
     var latitude = Double()
     var longitude = Double()
-
     var location : String = ""
+    
     //var sender : User = User()
     //var recipient : User = User()
     var senderCard : ContactCard = ContactCard()
@@ -45,6 +45,10 @@ public class Transaction{
     var recipientCardId : String = ""
 
     var contactDictionary = NSDictionary()
+    
+    // Approval
+    var approved = false
+    
     
     // Init
     
@@ -74,6 +78,8 @@ public class Transaction{
         
         recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
         
+        approved = snapshot["approved"] as! Bool
+        
         
         // Testing to see if populated
         printTransaction()
@@ -92,7 +98,8 @@ public class Transaction{
             "type": type,
             "latitude" : latitude,
             "longitude" : longitude,
-            "recipient_list": recipientList
+            "recipient_list": recipientList,
+            "approved" : approved
             
         ]
     }
@@ -211,6 +218,14 @@ public class Transaction{
         recipientList.append(contactRecords)
     }
 
+    // Approval
+    func getApprovalStatus() -> Bool{
+        return approved
+    }
+    
+    func setApprovalStatus(status : Bool){
+        approved = status
+    }
     
     
     
@@ -250,6 +265,10 @@ public class Transaction{
         print("\nRecipient List :")
         print("\nRecipient Card :", recipientCard)
         print(recipientList)
+
+        print("\nApproval Status :")
+        print(approved)
+
         
         // Testing
         print("\n======================================\n\n")
