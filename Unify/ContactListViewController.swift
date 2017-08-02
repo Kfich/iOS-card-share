@@ -32,6 +32,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // Progress hud
     var progressHUD = KVNProgress()
     
+    // Index in track of contact records
+    var index = 0
+    var helloWorldTimer = Timer()
+    
     
     
     // IBOutlets
@@ -254,13 +258,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func refreshTableData() {
         
         //DispatchQueue.main.async {
-        self.uploadContactRecords()
+        //self.uploadContactRecords()
         
         
         // Reload contact list
         DispatchQueue.main.async {
             
-            //self.uploadContactRecords()
+            self.uploadContactRecords()
             
             // Hide HUD
             KVNProgress.showSuccess()
@@ -273,6 +277,54 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func uploadContactRecords(){
         // Call function from manager
         //ContactManager.sharedManager.uploadContactRecords()
+        
+        helloWorldTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(ContactListViewController.uploadRecord), userInfo: nil, repeats: true)
+        
+        //  Start timer
+        helloWorldTimer.fire()
+        
+    }
+    
+    func uploadRecord(){
+        
+        print("hello World")
+        // Assign contact
+        let contact = ContactManager.sharedManager.contactObjectList[self.index]
+        
+        // Create dictionary
+        let parameters = ["data" : contact.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
+        print(parameters)
+        
+        // Send to server
+        Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                // Call successful
+                print("Transaction Created Response ---> \(String(describing: response))")
+                
+                
+            } else {
+                // Error occured
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                
+                // Show user popup of error message
+                
+                
+            }
+            // Hide indicator
+            
+            
+        }
+        
+        // Check if we're at the end of the list
+        if self.index < ContactManager.sharedManager.contactObjectList.count/6{
+            // Increment index
+            self.index = self.index + 1
+            
+        }else{
+            // Turn off timer to end execution
+            self.helloWorldTimer.invalidate()
+        }
+        
         
     }
 

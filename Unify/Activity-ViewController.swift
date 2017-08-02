@@ -114,10 +114,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected transaction
-        self.selectedTransaction = self.transactions[indexPath.row]
+        //self.selectedTransaction = self.transactions[indexPath.row]
         
         // Get users in transaction
-        self.fetchUsersForTransaction()
+        //self.fetchUsersForTransaction()
         
         // Pass in segue
         //self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
@@ -184,12 +184,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Check what cell is needed
-        var cell = UITableViewCell()
+        //var cell = UITableViewCell()
         
-       // var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
-        
-       // self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
-       // self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
+        var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
         
         // config cell
             // Set to all transactions list 
@@ -201,14 +198,22 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+                configureViewsForConnection(cell: cell , index: indexPath.row)
+                
+                // Add tap gesture to cell labels
+                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
              
              }else if trans.type == "intro"{
              
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+                configureViewsForIntro(cell: cell , index: indexPath.row)
+                
+                // Add tap gesture to cell labels
+                self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
              }
 
         if segmentedControl.selectedSegmentIndex == 0 {
@@ -229,7 +234,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Execute func
             configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
         }*/
-        
         
         
 
@@ -296,7 +300,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set index 
         self.selectedIndex = (sender.view?.tag)!
         // Set selected transaction using tag
-        //self.selectedTransaction = self.transactions[(sender.view?.tag)!]
+        self.selectedTransaction = self.transactions[(sender.view?.tag)!]
         
         // Post notification
         if intent == "Approve" {
@@ -329,7 +333,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Set response from network
                 let dictionary : Dictionary = response as! [String : Any]
                 // Test callback
-                print(dictionary)
+                print("THE DICTIONARY OF APPROVAL", dictionary)
                 
                 // Change status for trans
                 self.transactions[self.selectedIndex].approved = true
@@ -372,7 +376,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
                 // Test callback 
-                print(dictionary)
+                print("THE DICTIONARY OF DENIAL" , dictionary)
                 
                 // Change status for trans
                 self.transactions[self.selectedIndex].approved = false
@@ -516,7 +520,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 for item in userList{
                         
                         // Init user objects from array
-                    let user = User(snapshot: item as! NSDictionary)
+                    let user = User(snapshotWithLiteProfile: item as! NSDictionary)
                 
                     // Append users to Selected array
                     self.selectedUsers.append(user)
@@ -698,7 +702,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.connectionRejectButton.isEnabled = false
             
             // Change the label
-            cell.connectionApproveButton.setTitle("Follow up", for: .normal)
+            //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
             
         }else{
             // Show

@@ -106,6 +106,34 @@ public class User{
         //printUser()
     }
     
+    init(snapshotWithLiteProfile: NSDictionary) {
+        
+        userId = snapshotWithLiteProfile.object(forKey: "unify_uuid") as? String ?? ""
+        firstName = snapshotWithLiteProfile["first_name"] as? String ?? ""
+        lastName = snapshotWithLiteProfile["last_name"] as? String ?? ""
+        
+        // Removed and added to user profile
+        //emails = snapshot["email"] as? [[String : String]] ?? [["":""]]
+        //phoneNumbers = snapshot["mobile_numbers"] as? [[String : String]] ?? [["":""]]
+        
+        scope = snapshotWithLiteProfile["scope"] as? String ?? ""
+        //profileImages = (snapshot["profile_image"] as? [[String : Any]])!
+        
+        profileImageId = snapshotWithLiteProfile["profile_image_id"] as? String ?? ""
+        
+        userPhoneForVerification = snapshotWithLiteProfile.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = snapshotWithLiteProfile.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
+        // Create card profile
+        userProfile = CardProfile(withSnapshotLite: snapshotWithLiteProfile["profile"] as! NSDictionary)
+        
+        
+        // To get full username
+        fullName = getName()
+        // Testing to see if populated
+        //printUser()
+    }
+    
     init(withRadarSnapshot: NSDictionary) {
         
         userId = withRadarSnapshot.object(forKey: "unify_uuid") as? String ?? ""

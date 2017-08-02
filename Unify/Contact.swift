@@ -30,7 +30,7 @@ public class Contact{
     // Exporting the object
     func toAnyObject() -> NSDictionary {
         return [
-            ";" : name,
+            "name" : name,
             "titles": titles,
             "emails" : emails,
             "phone_numbers" : phoneNumbers,

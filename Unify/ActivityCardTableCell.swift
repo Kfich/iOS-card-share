@@ -48,8 +48,8 @@ class ActivityCardTableCell: UITableViewCell {
     @IBOutlet var connectionFollowupButton: UIButton!
     
     // Buttons
-    @IBOutlet var connectionApproveButton: UIButton!
-    @IBOutlet var connectionRejectButton: UIButton!
+    @IBOutlet var connectionApproveButton: UILabel!
+    @IBOutlet var connectionRejectButton: UILabel!
     // Cleanup down here
   
     @IBOutlet weak var activityMessage: UILabel!
