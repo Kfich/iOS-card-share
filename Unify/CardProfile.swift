@@ -57,6 +57,15 @@ public class CardProfile{
         // Testing to see if populated
     
     }
+    
+    init(withSnapshotLite: NSDictionary) {
+        
+        emails = withSnapshotLite["emails"] as! [[String : String]]
+        phoneNumbers = withSnapshotLite["phone_numbers"] as! [[String : String]]
+        
+        // Testing to see if populated
+        
+    }
 
     init(fromDefaultsWithDictionary: NSDictionary) {
         

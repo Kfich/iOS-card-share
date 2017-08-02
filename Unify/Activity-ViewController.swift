@@ -192,8 +192,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
        // self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
         
         // config cell
-       
-        if segmentedControl.selectedSegmentIndex == 0 {
             // Set to all transactions list 
             
             // Init transaction
@@ -213,7 +211,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
              }
 
-        }else if segmentedControl.selectedSegmentIndex == 1 {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // norhing
+        }/*else if segmentedControl.selectedSegmentIndex == 1 {
             // Config for connections
             //let trans = connections[indexPath.row]
             // Configure Cell
@@ -228,7 +228,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
             // Execute func
             configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
-        }
+        }*/
         
         
         
@@ -702,15 +702,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }else{
             // Show
-            cell.connectionRejectButton.isHidden = false
-            cell.connectionRejectButton.isEnabled = true
+            //cell.connectionRejectButton.isHidden = false
+            //cell.connectionRejectButton.isEnabled = true
         }
         
         // Add tag to view
-        cell.connectionCardWrapperView.tag = index
-        cell.connectionApproveButton.tag = index
+        //cell.connectionCardWrapperView.tag = index
+        //cell.connectionApproveButton.tag = index
         // Make rejection tag index + 1 to identify the users action intent
-        cell.connectionRejectButton.tag = index
+        //cell.connectionRejectButton.tag = index
         
         
     }
@@ -721,7 +721,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Settings
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-        return true
+        
+        /*if self.transactions.count > 0 {
+            // Hide empty
+            return false
+        }else{
+            // Show empty
+            return true
+        }*/
+        return false
     }
     
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {

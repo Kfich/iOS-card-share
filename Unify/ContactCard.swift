@@ -52,7 +52,7 @@ public class ContactCard: NSObject, NSCoding{
     // Init from server 
     init(snapshot: NSDictionary) {
         cardId = snapshot["unify_uuid"] as? String
-        cardId = snapshot["ownerId"] as? String
+        ownerId = snapshot["ownerId"] as! String
         cardName = snapshot["card_name"] as? String
         cardHolderName = snapshot["card_holder_name"] as? String
         //imageURL = snapshot["image_url"] as? String
@@ -67,11 +67,18 @@ public class ContactCard: NSObject, NSCoding{
     init(withSnapshotLite: NSDictionary)
     {
         cardId = withSnapshotLite["unify_uuid"] as? String
-        cardId = withSnapshotLite["ownerId"] as? String
-        cardName = withSnapshotLite["card_name"] as? String
-        cardHolderName = withSnapshotLite["card_holder_name"] as? String
+        //ownerId = withSnapshotLite["ownerId"] as! String
+        //cardName = withSnapshotLite["first_name"] as? String
+        //cardHolderName = withSnapshotLite["card_holder_name"] as? String
         //imageURL = withSnapshotLite["image_url"] as? String
+        
+        let first = withSnapshotLite["first_name"] as? String
+        let last = withSnapshotLite["last_name"] as? String
 
+        cardHolderName = "\(first!) \(last!)"
+        
+        cardProfile = CardProfile(withSnapshotLite: withSnapshotLite["profile"] as! NSDictionary)
+        
     }
     
     init(withSnapshotFromDefaults: NSDictionary) {

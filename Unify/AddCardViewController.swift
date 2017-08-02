@@ -36,6 +36,16 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         dismiss(animated: true, completion: nil)
     }
     
+    
+    @IBAction func addNewCard(_ sender: Any) {
+
+        // Show add card vc
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    
     // Page Setup
     
     override func viewDidLoad() {
@@ -217,11 +227,57 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.refreshCollectionView), name: NSNotification.Name(rawValue: "AddNewCardFinished"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.cardUpdated), name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.cardDeleted), name: NSNotification.Name(rawValue: "CardDeleted"), object: nil)
+        
+        
         // Nofications for sending card from profile
         NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.showEmailCard), name: NSNotification.Name(rawValue: "EmailCardFromProfile"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.showSMSCard), name: NSNotification.Name(rawValue: "SMSCardFromProfile"), object: nil)
         
+    }
+    
+    func cardDeleted() {
+        
+        DispatchQueue.main.async {
+            // Update UI
+            //KVNProgress.showSuccess(withStatus: "Card Removed Successfully")
+        }
+        
+        
+        print("New Card Added")
+        print("\(ContactManager.sharedManager.currentUserCards.count)")
+        
+        // Set background image on collectionview
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        self.collectionView.backgroundView = bgImage
+        
+        // Refresh table data
+        self.collectionView.reloadData()
+    }
+    
+    func cardUpdated() {
+        
+        DispatchQueue.main.async {
+            // Update UI
+            //KVNProgress.showSuccess(withStatus: "Card Updated Successfully!")
+        }
+        
+        print("New Card Added")
+        print("\(ContactManager.sharedManager.currentUserCards.count)")
+        
+        // Set background image on collectionview
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        self.collectionView.backgroundView = bgImage
+        
+        // Refresh table data
+        self.collectionView.reloadData()
     }
     
     /*func deleteCard() {

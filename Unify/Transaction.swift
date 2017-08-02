@@ -75,11 +75,19 @@ public class Transaction{
         //longitude = snapshot["latitude"] as! String
         
         contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
+        print("THE CONTACT DICT .. >> \(contactDictionary)")
         
         recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
         
-        approved = snapshot["approved"] as! Bool
+        print(recipientCard.cardHolderName ?? "No name")
         
+        let approval = snapshot["approved"] as! String
+        
+        if approval == "0"{
+            approved = false
+        }else{
+            approved = true
+        }
         
         // Testing to see if populated
         printTransaction()
@@ -263,7 +271,9 @@ public class Transaction{
         print("Lat :  \(latitude)")
         print("Long :  + \(longitude)")
         print("\nRecipient List :")
-        print("\nRecipient Card :", recipientCard)
+        print("\nRecipient Card :")
+        recipientCard.printCard()
+        
         print(recipientList)
 
         print("\nApproval Status :")

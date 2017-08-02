@@ -1,16 +1,14 @@
 //
-//  RecipientOptionsViewController.swift
+//  RadarListViewController.swift
 //  Unify
 //
-//  Created by Kevin Fich on 7/27/17.
+//  Created by Kevin Fich on 8/2/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
 import UIKit
-import CoreLocation
 
-
-class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate{
+class RadarListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CLLocationManagerDelegate {
     
     // Properties
     // --------------------------
@@ -22,90 +20,32 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var segmentedControl = UISegmentedControl()
     var selectedCells = [NSIndexPath]()
     
-    // Location 
+    // Location
     var lat : Double = 0.0
     var long : Double = 0.0
     var address = String()
     var updateLocation_tick = 5
     let locationManager = CLLocationManager()
+    
+    
+    // Radar
+    var radarStatus: Bool = false
 
     
-    // Radar 
-    var radarStatus: Bool = false
-    
-    
     // IBOutlets
-    // ----------------------------------------
-    @IBOutlet var navigationBar: UINavigationItem!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet var radarSwitch: UISwitch!
+    // --------------------------
     
-    
-    @IBOutlet var phoneLabel: UITextField!
-    @IBOutlet var emailLabel: UITextField!
-    
-    
+    @IBOutlet var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-        // Init and configure segment controller
-        segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: tableView.frame.width - 20, height: 30))
-        // Set tint
-        segmentedControl.tintColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-        
-        segmentedControl.insertSegment(withTitle: "Tools", at: 0, animated: false)
-        segmentedControl.insertSegment(withTitle: "Contacts", at: 1, animated: false)
-        
-        
-        segmentedControl.selectedSegmentIndex = 0
-        
-        // Add segment control to navigation bar
-        self.navigationBar.titleView = segmentedControl
-
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    // IBActions
-    // --------------------------
-    
-    @IBAction func radarSwitchSelected(_ sender: Any) {
-        // Turn on location service
-        if radarSwitch.isOn == false {
-            // Hide tableview
-            //self.tableView.isHidden = true
-            // Toggle radar status
-            self.radarStatus = false
-        }else{
-            // Show table
-            //self.tableView.isHidden = false
-            
-            // Toggle radar status 
-            //self.radarStatus = true
-            
-            // Start updating location
-            //self.updateLocation()
-        }
-    }
-    
-    @IBAction func dismissViewController(_ sender: Any) {
-        
-        // Pop view 
-        navigationController?.popViewController(animated: true)
-    }
-    
-    
-    @IBAction func shareWithContact(_ sender: Any) {
-        
-        // Create the transaction and share
-        self.createTransaction(type: "connection", uuid: currentUser.userId)
-        
     }
     
     
@@ -165,7 +105,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Update location tick
         updateLocation_tick = updateLocation_tick + 1
-    
+        
         print(updateLocation_tick)
         
         // Check is list should be refreshed
@@ -191,7 +131,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                     let dictionary : NSArray = response as! NSArray
                     
                     print("data length", dictionary.count)
-            
+                    
                     
                     for item in dictionary {
                         
@@ -208,10 +148,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                         // Append users to radarContacts array
                         self.radarContactList.append(user)
                         print("Radar List Count >>>> \(self.radarContactList.count)")
-                    
+                        
                     }
                     
-                    // Reload table 
+                    // Reload table
                     self.tableView.reloadData()
                     
                     
@@ -284,11 +224,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
     }
     
-
     // Custom Methods
     
     func createTransaction(type: String, uuid: String) {
-        // Set type & Transaction data 
+        // Set type & Transaction data
         transaction.type = type
         transaction.recipientList = selectedUserIds
         transaction.setTransactionDate()
@@ -354,8 +293,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
-    
-    
+
     /*
     // MARK: - Navigation
 
