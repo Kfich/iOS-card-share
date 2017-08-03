@@ -336,7 +336,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // Call the viewController
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
+        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
         self.present(controller, animated: true, completion: nil)
     }
     
@@ -351,7 +351,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // Call the viewController
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "CardRecipientListVC")
+        let controller = storyboard.instantiateViewController(withIdentifier: "QuickShareVC")
         self.present(controller, animated: true, completion: nil)
     }
     

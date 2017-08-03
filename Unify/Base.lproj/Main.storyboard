@@ -4103,6 +4103,220 @@
             </objects>
             <point key="canvasLocation" x="4602" y="670"/>
         </scene>
+        <!--Social Media View Controller-->
+        <scene sceneID="vCl-7R-Orv">
+            <objects>
+                <viewController id="HCe-Wv-ari" customClass="SocialMediaViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dvN-oG-LuA"/>
+                        <viewControllerLayoutGuide type="bottom" id="Zbt-QS-oEE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EyD-q4-2mO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UlX-vr-Xzt">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Social Media" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jCc-IV-Um9">
+                                        <rect key="frame" x="130" y="34" width="116" height="24"/>
+                                        <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
+                                        <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJf-ci-Drc">
+                                        <rect key="frame" x="8" y="31" width="60" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="aQo-Y6-kd9"/>
+                                            <constraint firstAttribute="height" constant="30" id="jws-GY-bhA"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-UltraLightP2" family="San Francisco Display" pointSize="17"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissView:" destination="HCe-Wv-ari" eventType="touchUpInside" id="lSa-qU-XyJ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hh6-Mc-brg">
+                                        <rect key="frame" x="307" y="31" width="60" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="bS2-zW-hpF"/>
+                                            <constraint firstAttribute="width" constant="60" id="tgf-J9-3uP"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-UltraLightP2" family="San Francisco Display" pointSize="17"/>
+                                        <state key="normal" title="Done">
+                                            <color key="titleColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissView:" destination="HCe-Wv-ari" eventType="touchUpInside" id="DIL-31-e8I"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Hh6-Mc-brg" firstAttribute="trailing" secondItem="UlX-vr-Xzt" secondAttribute="trailingMargin" id="0rE-sz-Flc"/>
+                                    <constraint firstItem="Hh6-Mc-brg" firstAttribute="baseline" secondItem="HJf-ci-Drc" secondAttribute="baseline" id="6wK-St-2rW"/>
+                                    <constraint firstItem="HJf-ci-Drc" firstAttribute="top" secondItem="UlX-vr-Xzt" secondAttribute="top" constant="31" id="B1I-bZ-c18"/>
+                                    <constraint firstItem="jCc-IV-Um9" firstAttribute="centerX" secondItem="UlX-vr-Xzt" secondAttribute="centerX" id="Hhg-yT-7b1"/>
+                                    <constraint firstAttribute="height" constant="75" id="Yyw-B1-MNo"/>
+                                    <constraint firstItem="jCc-IV-Um9" firstAttribute="top" secondItem="UlX-vr-Xzt" secondAttribute="top" constant="34" id="eSD-H5-QDK"/>
+                                    <constraint firstItem="HJf-ci-Drc" firstAttribute="leading" secondItem="UlX-vr-Xzt" secondAttribute="leading" constant="8" id="w4d-dU-UKX"/>
+                                </constraints>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FaS-Sm-MSa">
+                                <rect key="frame" x="0.0" y="83" width="375" height="584"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yRT-rg-06H">
+                                    <size key="itemSize" width="150" height="145"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="15" minY="15" maxX="15" maxY="15"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ThumbnailCell" id="gbn-dh-dYf" customClass="MediaThumbnailCell" customModule="Unify" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="15" width="150" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="145"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wpf-vA-EC0">
+                                                    <rect key="frame" x="10" y="8" width="130" height="128"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="Wpf-vA-EC0" firstAttribute="top" secondItem="gbn-dh-dYf" secondAttribute="topMargin" id="6CZ-TG-M8Z"/>
+                                            <constraint firstItem="Wpf-vA-EC0" firstAttribute="centerY" secondItem="gbn-dh-dYf" secondAttribute="centerY" id="Fs5-wa-99L"/>
+                                            <constraint firstItem="Wpf-vA-EC0" firstAttribute="centerX" secondItem="gbn-dh-dYf" secondAttribute="centerX" id="JKK-Z3-Gly"/>
+                                            <constraint firstItem="Wpf-vA-EC0" firstAttribute="leading" secondItem="gbn-dh-dYf" secondAttribute="leadingMargin" constant="2" id="XfM-a1-wdR"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="mediaImageView" destination="Wpf-vA-EC0" id="Bjj-hS-YCC"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="HCe-Wv-ari" id="qv3-E7-tw5"/>
+                                    <outlet property="delegate" destination="HCe-Wv-ari" id="Maj-4j-Suc"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UlX-vr-Xzt" firstAttribute="top" secondItem="EyD-q4-2mO" secondAttribute="top" id="6eY-mz-YSy"/>
+                            <constraint firstAttribute="trailing" secondItem="FaS-Sm-MSa" secondAttribute="trailing" id="qTW-hC-Fbh"/>
+                            <constraint firstAttribute="trailing" secondItem="UlX-vr-Xzt" secondAttribute="trailing" id="qnl-b3-mUD"/>
+                            <constraint firstItem="UlX-vr-Xzt" firstAttribute="leading" secondItem="EyD-q4-2mO" secondAttribute="leading" id="voM-vQ-QHI"/>
+                            <constraint firstItem="FaS-Sm-MSa" firstAttribute="leading" secondItem="EyD-q4-2mO" secondAttribute="leading" id="w2b-Uv-5Xr"/>
+                            <constraint firstItem="FaS-Sm-MSa" firstAttribute="top" secondItem="UlX-vr-Xzt" secondAttribute="bottom" constant="8" id="x3t-86-gco"/>
+                            <constraint firstItem="Zbt-QS-oEE" firstAttribute="top" secondItem="FaS-Sm-MSa" secondAttribute="bottom" id="xCK-9g-Nxx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mediaCollectionView" destination="FaS-Sm-MSa" id="o6R-oo-vkJ"/>
+                        <segue destination="xIK-as-tC6" kind="presentation" identifier="showAddSocialLink" id="gQJ-ot-5PN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WSV-Zw-JRZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4557.6000000000004" y="2276.3118440779613"/>
+        </scene>
+        <!--Social Media Detail View Controller-->
+        <scene sceneID="M98-lw-bDg">
+            <objects>
+                <viewController id="xIK-as-tC6" customClass="SocialMediaDetailViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SJf-qg-vER"/>
+                        <viewControllerLayoutGuide type="bottom" id="cjW-S5-IMm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="K6H-pr-hRr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KXa-zT-HxD">
+                                <rect key="frame" x="0.0" y="161" width="375" height="175"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://www.facebook.com/" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LaO-Nd-x7o" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
+                                        <rect key="frame" x="33" y="65" width="309" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="6G7-VJ-CNX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Thin" family="San Francisco Text" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
+                                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedPlaceHolderColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the link below:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2dp-bd-h5c">
+                                        <rect key="frame" x="110" y="9" width="155" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fVd-ms-jIU">
+                                        <rect key="frame" x="168.5" y="137" width="37" height="30"/>
+                                        <state key="normal" title="Done"/>
+                                        <connections>
+                                            <action selector="doneEditing:" destination="xIK-as-tC6" eventType="touchUpInside" id="FWT-Z3-AXY"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="6Jv-JY-qJM"/>
+                                    <constraint firstItem="LaO-Nd-x7o" firstAttribute="centerX" secondItem="2dp-bd-h5c" secondAttribute="centerX" id="Dc8-ma-vve"/>
+                                    <constraint firstItem="LaO-Nd-x7o" firstAttribute="centerY" secondItem="KXa-zT-HxD" secondAttribute="centerY" id="UYO-es-wgW"/>
+                                    <constraint firstItem="fVd-ms-jIU" firstAttribute="centerX" secondItem="LaO-Nd-x7o" secondAttribute="centerX" id="WtX-Y9-8Zy"/>
+                                    <constraint firstItem="LaO-Nd-x7o" firstAttribute="top" secondItem="2dp-bd-h5c" secondAttribute="bottom" constant="36" id="eMg-TG-wKT"/>
+                                    <constraint firstItem="LaO-Nd-x7o" firstAttribute="leading" secondItem="KXa-zT-HxD" secondAttribute="leading" constant="33" id="h4N-PT-BsW"/>
+                                    <constraint firstItem="fVd-ms-jIU" firstAttribute="bottom" secondItem="KXa-zT-HxD" secondAttribute="bottomMargin" id="lK8-yZ-vuJ"/>
+                                    <constraint firstItem="LaO-Nd-x7o" firstAttribute="centerX" secondItem="KXa-zT-HxD" secondAttribute="centerX" id="y3j-De-DTq"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C16-n3-zDO">
+                                <rect key="frame" x="11" y="20" width="48" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Hk2-VT-evg"/>
+                                    <constraint firstAttribute="width" constant="48" id="YR7-Xe-4Bh"/>
+                                </constraints>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancel:" destination="xIK-as-tC6" eventType="touchUpInside" id="FoS-Be-ms5"/>
+                                    <action selector="doneEditing:" destination="xIK-as-tC6" eventType="touchUpInside" id="0uA-XT-nKN"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fVd-ms-jIU" firstAttribute="centerX" secondItem="LaO-Nd-x7o" secondAttribute="centerX" id="BsR-Sa-S9A"/>
+                            <constraint firstItem="KXa-zT-HxD" firstAttribute="centerX" secondItem="K6H-pr-hRr" secondAttribute="centerX" id="F8z-UT-EQx"/>
+                            <constraint firstItem="KXa-zT-HxD" firstAttribute="leading" secondItem="K6H-pr-hRr" secondAttribute="leading" id="LI1-oC-8aM"/>
+                            <constraint firstItem="KXa-zT-HxD" firstAttribute="centerY" secondItem="K6H-pr-hRr" secondAttribute="centerY" constant="-85" id="Utn-vz-jae"/>
+                            <constraint firstItem="C16-n3-zDO" firstAttribute="leading" secondItem="K6H-pr-hRr" secondAttribute="leading" constant="11" id="eLg-5T-zzr"/>
+                            <constraint firstItem="fVd-ms-jIU" firstAttribute="bottom" secondItem="K6H-pr-hRr" secondAttribute="bottomMargin" constant="-339" id="uP8-SE-Mbm"/>
+                            <constraint firstItem="C16-n3-zDO" firstAttribute="top" secondItem="SJf-qg-vER" secondAttribute="bottom" id="zLW-7r-K7E"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mediaTextField" destination="LaO-Nd-x7o" id="qaa-VI-49j"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pv3-9x-dQs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5238" y="2276"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="1ZK-EN-LP3">
             <objects>
@@ -5780,12 +5994,12 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="radar_logo" translatesAutoresizingMaskIntoConstraints="NO" id="reK-k5-yI2">
                                                 <rect key="frame" x="0.0" y="14" width="380" height="219"/>
                                             </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DY6-ES-QSy">
-                                                <rect key="frame" x="291" y="73" width="46" height="30"/>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ZN-It-GIe">
+                                                <rect key="frame" x="291" y="150" width="46" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
-                                                    <segue destination="mLC-1N-36h" kind="presentation" id="pff-vT-0GH"/>
+                                                    <segue destination="HCe-Wv-ari" kind="presentation" id="aki-zR-f6v"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -5836,7 +6050,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wcA-Ez-piM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3516" y="2460"/>
+            <point key="canvasLocation" x="3703" y="2441"/>
         </scene>
         <!--Radar Contact Selection View Controller-->
         <scene sceneID="j4P-zB-D2J">
@@ -7981,7 +8195,7 @@
                     <state key="normal" title="SHARE"/>
                 </button>
             </objects>
-            <point key="canvasLocation" x="4517.6000000000004" y="2221.4392803598203"/>
+            <point key="canvasLocation" x="5633" y="1748"/>
         </scene>
         <!--Create Card View Controller-->
         <scene sceneID="RjU-r0-M5h">
@@ -9693,7 +9907,7 @@
         <image name="white-fade-home-card" width="456" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cPv-Jr-ON4"/>
+        <segue reference="TbL-8d-Kw2"/>
         <segue reference="DUc-wk-wjY"/>
     </inferredMetricsTieBreakers>
 </document>

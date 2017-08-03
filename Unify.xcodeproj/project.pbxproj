@@ -72,6 +72,9 @@
 		FB199CF81F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FB199CF71F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m */; };
 		FB199CFB1F2A560000FFFCC1 /* RecipientOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB199CFA1F2A560000FFFCC1 /* RecipientOptionsViewController.swift */; };
 		FB199CFD1F324F6D00FFFCC1 /* RadarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB199CFC1F324F6D00FFFCC1 /* RadarListViewController.swift */; };
+		FB199D031F339A0F00FFFCC1 /* SocialMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB199D021F339A0E00FFFCC1 /* SocialMediaViewController.swift */; };
+		FB199D051F339A9200FFFCC1 /* MediaThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB199D041F339A9200FFFCC1 /* MediaThumbnailCell.swift */; };
+		FB199D071F339D7300FFFCC1 /* SocialMediaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB199D061F339D7300FFFCC1 /* SocialMediaDetailViewController.swift */; };
 		FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */; };
 		FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A34081EE1B5F9003B5A73 /* ISHPullUpHandleView.m */; };
 		FB1A340D1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A340A1EE1B5F9003B5A73 /* ISHPullUpRoundedView.m */; };
@@ -265,6 +268,9 @@
 		FB199CF71F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+EmptyDataSet.m"; sourceTree = "<group>"; };
 		FB199CFA1F2A560000FFFCC1 /* RecipientOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientOptionsViewController.swift; sourceTree = "<group>"; };
 		FB199CFC1F324F6D00FFFCC1 /* RadarListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarListViewController.swift; sourceTree = "<group>"; };
+		FB199D021F339A0E00FFFCC1 /* SocialMediaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaViewController.swift; sourceTree = "<group>"; };
+		FB199D041F339A9200FFFCC1 /* MediaThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailCell.swift; sourceTree = "<group>"; };
+		FB199D061F339D7300FFFCC1 /* SocialMediaDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaDetailViewController.swift; sourceTree = "<group>"; };
 		FB1A34051EE1B5F9003B5A73 /* ISHPullUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpViewController.h; sourceTree = "<group>"; };
 		FB1A34061EE1B5F9003B5A73 /* ISHPullUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISHPullUpViewController.m; sourceTree = "<group>"; };
 		FB1A34071EE1B5F9003B5A73 /* ISHPullUpHandleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISHPullUpHandleView.h; sourceTree = "<group>"; };
@@ -530,6 +536,7 @@
 				FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */,
 				FBE8075C1F06DBBE00A05292 /* CardOptionsViewCell.swift */,
 				FB90A8B31F27929700E67B1E /* SettingsViewCell.swift */,
+				FB199D041F339A9200FFFCC1 /* MediaThumbnailCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -573,6 +580,8 @@
 				FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */,
 				FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */,
 				FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */,
+				FB199D021F339A0E00FFFCC1 /* SocialMediaViewController.swift */,
+				FB199D061F339D7300FFFCC1 /* SocialMediaDetailViewController.swift */,
 				FB90A8B21F278F6D00E67B1E /* Settings */,
 			);
 			name = Profile;
@@ -899,6 +908,7 @@
 				FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */,
 				1C151D381F1DBE73004B23CE /* CountlyStarRating.m in Sources */,
 				1C31041A1E95B06600F4D70D /* EditProfileHeader.swift in Sources */,
+				FB199D051F339A9200FFFCC1 /* MediaThumbnailCell.swift in Sources */,
 				FB37382A1EDDCE970074200F /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				1CAE5B861E913A06006EFF40 /* ViewController.swift in Sources */,
 				FBE8075A1F06D36200A05292 /* CreateCardViewController.swift in Sources */,
@@ -945,6 +955,7 @@
 				FB90A8B61F27941600E67B1E /* ContactUsViewController.swift in Sources */,
 				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
 				FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */,
+				FB199D071F339D7300FFFCC1 /* SocialMediaDetailViewController.swift in Sources */,
 				FB37382D1EDDD59D0074200F /* BusinessCardView.swift in Sources */,
 				1CB31C971E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift in Sources */,
 				FB90A8BA1F279C1800E67B1E /* SCLExtensions.swift in Sources */,
@@ -981,6 +992,7 @@
 				FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
 				FB90A8BC1F27AC1600E67B1E /* PrivacyViewController.swift in Sources */,
+				FB199D031F339A0F00FFFCC1 /* SocialMediaViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */,
 				FB199CF81F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m in Sources */,
