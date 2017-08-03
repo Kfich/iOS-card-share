@@ -278,7 +278,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Call function from manager
         //ContactManager.sharedManager.uploadContactRecords()
         
-        helloWorldTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(ContactListViewController.uploadRecord), userInfo: nil, repeats: true)
+        helloWorldTimer = Timer.scheduledTimer(timeInterval: 0.2 , target: self, selector: #selector(ContactListViewController.uploadRecord), userInfo: nil, repeats: true)
         
         //  Start timer
         helloWorldTimer.fire()

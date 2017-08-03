@@ -591,7 +591,6 @@
                                 <connections>
                                     <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="cAf-91-hwv"/>
                                     <action selector="makeIntroduction:" destination="amh-e7-NqF" eventType="touchUpInside" id="jkp-U4-4zo"/>
-                                    <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="RRU-Qt-fIr"/>
                                     <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="VbJ-TR-A1K"/>
                                 </connections>
                             </button>
@@ -1100,7 +1099,7 @@
                 <navigationController storyboardIdentifier="ProfileVC" navigationBarHidden="YES" id="wbp-bP-tiH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="SLj-8d-qLN"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xVx-3S-WBA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xVx-3S-WBA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1330,7 +1329,6 @@
                                                                 <color key="titleColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             </state>
                                                             <connections>
-                                                                <action selector="backButtonPressed:" destination="mLC-1N-36h" eventType="touchUpInside" id="wLf-en-u1y"/>
                                                                 <action selector="selectProfilePicture:" destination="0r0-aF-rwB" eventType="touchUpInside" id="d1r-Js-JR4"/>
                                                             </connections>
                                                         </button>
@@ -1378,7 +1376,6 @@
                                         </state>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="N2C-XP-IWx" eventType="touchUpInside" id="49t-Hg-joN"/>
-                                            <action selector="backButtonPressed:" destination="mLC-1N-36h" eventType="touchUpInside" id="Rqi-dc-Wpy"/>
                                             <action selector="backButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="fYU-B8-6Kv"/>
                                         </connections>
                                     </button>
@@ -1392,7 +1389,6 @@
                                             <color key="titleColor" red="0.0" green="0.3803921569" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="backButtonPressed:" destination="mLC-1N-36h" eventType="touchUpInside" id="0Om-yW-RgD"/>
                                             <action selector="backButtonPressed:" destination="N2C-XP-IWx" eventType="touchUpInside" id="NYs-K4-kQm"/>
                                             <action selector="backButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="xWC-lm-7D4"/>
                                             <action selector="doneButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="Dr7-4f-mRs"/>
@@ -1718,7 +1714,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ActivityVC" navigationBarHidden="YES" id="1Oc-5A-vEL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Activity" id="vMf-bf-9I9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bx0-lP-1KU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bx0-lP-1KU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2532,7 +2528,6 @@
                                         </state>
                                         <connections>
                                             <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="tpr-9r-BtN"/>
-                                            <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="hUT-Gf-7zk"/>
                                             <action selector="sendTextBtn_click:" destination="qgV-Fo-gwR" eventType="touchUpInside" id="UgR-iR-GSH"/>
                                             <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="zaJ-Va-Feg"/>
                                         </connections>
@@ -2549,7 +2544,6 @@
                                         </state>
                                         <connections>
                                             <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="eYT-1X-Ndf"/>
-                                            <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="gQ9-aE-mAx"/>
                                             <action selector="sendEmailBtn_click:" destination="qgV-Fo-gwR" eventType="touchUpInside" id="4L4-ZG-yMU"/>
                                             <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="WB9-9J-U3r"/>
                                         </connections>
@@ -2566,7 +2560,6 @@
                                         </state>
                                         <connections>
                                             <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="plq-8v-Zy8"/>
-                                            <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="Ikj-Xn-5Cf"/>
                                             <action selector="sendEmailBtn_click:" destination="qgV-Fo-gwR" eventType="touchUpInside" id="P3f-66-FB4"/>
                                             <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="f5O-5q-2rc"/>
                                         </connections>
@@ -2610,7 +2603,6 @@
                                         <state key="normal" image="arrow-down"/>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="N2C-XP-IWx" eventType="touchUpInside" id="37r-K4-vsR"/>
-                                            <action selector="backButtonPressed:" destination="mLC-1N-36h" eventType="touchUpInside" id="ULb-6P-ZqG"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fNQ-9d-FNK">
@@ -3258,7 +3250,6 @@
                                         </state>
                                         <connections>
                                             <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="1q6-h8-zBK"/>
-                                            <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="1jK-ux-m8Q"/>
                                             <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="Ty4-WO-3Df"/>
                                         </connections>
                                     </button>
@@ -3274,7 +3265,6 @@
                                         </state>
                                         <connections>
                                             <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="tJz-8A-cp1"/>
-                                            <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="IUG-LN-Vpk"/>
                                             <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="QpG-G3-G4F"/>
                                         </connections>
                                     </button>
@@ -3290,7 +3280,6 @@
                                         </state>
                                         <connections>
                                             <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="acC-BE-zQ9"/>
-                                            <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="3zb-zo-AeB"/>
                                             <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="uqt-Wa-3PJ"/>
                                         </connections>
                                     </button>
@@ -3306,7 +3295,6 @@
                                         </state>
                                         <connections>
                                             <action selector="createAccountBtn_click:" destination="xJ1-LW-Ier" eventType="touchUpInside" id="fdq-aK-el0"/>
-                                            <action selector="saveBtn_click:" destination="mLC-1N-36h" eventType="touchUpInside" id="6uY-aj-BA1"/>
                                             <action selector="scheduleMeeting_click:" destination="qgV-Fo-gwR" eventType="touchUpInside" id="wBR-Fa-EdK"/>
                                             <action selector="verify_tap:" destination="3fW-LO-0Pa" eventType="touchUpInside" id="cEU-y4-9ns"/>
                                         </connections>
@@ -3429,7 +3417,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ContactVC" navigationBarHidden="YES" id="pli-7b-Vvs" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Contacts" image="contactsicon" selectedImage="contactsicon" id="fnb-zs-j2f"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SOC-E3-VL8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="SOC-E3-VL8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5685,7 +5673,7 @@
                 <navigationController storyboardIdentifier="RadarVC" navigationBarHidden="YES" id="xIZ-TC-ypV" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" id="CI6-FL-GhO"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N9h-YD-6eO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N9h-YD-6eO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5792,6 +5780,14 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="radar_logo" translatesAutoresizingMaskIntoConstraints="NO" id="reK-k5-yI2">
                                                 <rect key="frame" x="0.0" y="14" width="380" height="219"/>
                                             </imageView>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DY6-ES-QSy">
+                                                <rect key="frame" x="291" y="73" width="46" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <segue destination="mLC-1N-36h" kind="show" id="pff-vT-0GH"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="reK-k5-yI2" firstAttribute="top" secondItem="oqB-lr-BSg" secondAttribute="top" constant="14" id="3Ew-CC-eXh"/>
@@ -7591,7 +7587,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OwD-hD-pkZ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="E3g-6d-dN1">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OwD-hD-pkZ" customClass="TPKeyboardAvoidingScrollView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="akf-n2-qmj">
@@ -7758,14 +7757,14 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gFU-TV-GXX">
                                                 <rect key="frame" x="0.0" y="284" width="375" height="325"/>
                                                 <subviews>
-                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3AO-xt-LXC">
-                                                        <rect key="frame" x="297" y="91" width="51" height="31"/>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3AO-xt-LXC">
+                                                        <rect key="frame" x="297" y="16" width="51" height="31"/>
                                                         <connections>
                                                             <action selector="saveToContactsSelected:" destination="mLC-1N-36h" eventType="valueChanged" id="mUI-G7-bXn"/>
                                                         </connections>
                                                     </switch>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0DH-Vm-Uwc" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
-                                                        <rect key="frame" x="28" y="138" width="309" height="45"/>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0DH-Vm-Uwc" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
+                                                        <rect key="frame" x="28" y="63" width="309" height="45"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="45" id="B6x-up-Epp"/>
                                                         </constraints>
@@ -7787,8 +7786,8 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w8t-B9-Rek" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
-                                                        <rect key="frame" x="28" y="191" width="309" height="45"/>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w8t-B9-Rek" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
+                                                        <rect key="frame" x="28" y="116" width="309" height="45"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="45" id="yoo-nt-PYs"/>
                                                         </constraints>
@@ -7810,8 +7809,8 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FW9-jE-MOG" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
-                                                        <rect key="frame" x="28" y="244" width="309" height="45"/>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FW9-jE-MOG" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
+                                                        <rect key="frame" x="28" y="169" width="309" height="45"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="45" id="u87-rH-mr0"/>
                                                         </constraints>
@@ -7833,8 +7832,8 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save to Contacts" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eQp-24-2A1">
-                                                        <rect key="frame" x="28" y="89" width="156" height="35"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Save to Contacts" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eQp-24-2A1">
+                                                        <rect key="frame" x="28" y="14" width="156" height="35"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="156" id="g6Q-em-rm7"/>
                                                         </constraints>
@@ -7842,11 +7841,9 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Recipient" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iyE-zR-qVt" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
-                                                        <rect key="frame" x="28" y="36" width="309" height="45"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="45" id="84C-U0-ID7"/>
-                                                        </constraints>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Notes" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iyE-zR-qVt" customClass="ACFloatingTextfield" customModule="ACFloatingTextfield_Swift">
+                                                        <rect key="frame" x="28" y="222" width="309" height="45"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Thin" family="San Francisco Text" pointSize="16"/>
                                                         <textInputTraits key="textInputTraits"/>
@@ -7866,45 +7863,19 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PwM-Fg-PMC" customClass="InstagramActivityIndicator" customModule="Unify" customModuleProvider="target">
-                                                        <rect key="frame" x="97" y="98" width="181" height="180"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        <gestureRecognizers/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="numSegments">
-                                                                <integer key="value" value="20"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
-                                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                                <real key="value" value="7"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
                                                 </subviews>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="w8t-B9-Rek" firstAttribute="top" secondItem="0DH-Vm-Uwc" secondAttribute="bottom" constant="8" symbolic="YES" id="00L-TB-71S"/>
-                                                    <constraint firstItem="PwM-Fg-PMC" firstAttribute="centerY" secondItem="gFU-TV-GXX" secondAttribute="centerY" constant="25" id="1RS-IO-KxW"/>
                                                     <constraint firstItem="eQp-24-2A1" firstAttribute="centerY" secondItem="3AO-xt-LXC" secondAttribute="centerY" id="3Yl-Tk-NiA"/>
                                                     <constraint firstItem="w8t-B9-Rek" firstAttribute="trailing" secondItem="FW9-jE-MOG" secondAttribute="trailing" id="5kj-3X-m0x"/>
-                                                    <constraint firstItem="iyE-zR-qVt" firstAttribute="leading" secondItem="eQp-24-2A1" secondAttribute="leading" id="A9d-06-Vop"/>
                                                     <constraint firstItem="0DH-Vm-Uwc" firstAttribute="top" secondItem="eQp-24-2A1" secondAttribute="bottom" constant="14" id="Fvq-Nu-4wS"/>
-                                                    <constraint firstItem="iyE-zR-qVt" firstAttribute="trailing" secondItem="0DH-Vm-Uwc" secondAttribute="trailing" id="Hcs-WR-0bi"/>
                                                     <constraint firstItem="w8t-B9-Rek" firstAttribute="leading" secondItem="FW9-jE-MOG" secondAttribute="leading" id="Kah-zS-dxG"/>
                                                     <constraint firstItem="0DH-Vm-Uwc" firstAttribute="trailing" secondItem="w8t-B9-Rek" secondAttribute="trailing" id="Lsb-jh-nrJ"/>
-                                                    <constraint firstItem="3AO-xt-LXC" firstAttribute="leading" secondItem="PwM-Fg-PMC" secondAttribute="trailing" constant="19" id="M36-p3-0we"/>
                                                     <constraint firstAttribute="trailing" secondItem="3AO-xt-LXC" secondAttribute="trailing" constant="29" id="UQS-Qk-cp1"/>
                                                     <constraint firstItem="0DH-Vm-Uwc" firstAttribute="leading" secondItem="w8t-B9-Rek" secondAttribute="leading" id="Z44-7x-tcq"/>
-                                                    <constraint firstItem="eQp-24-2A1" firstAttribute="top" secondItem="iyE-zR-qVt" secondAttribute="bottom" constant="8" symbolic="YES" id="ZSV-lk-eCm"/>
-                                                    <constraint firstItem="iyE-zR-qVt" firstAttribute="leading" secondItem="gFU-TV-GXX" secondAttribute="leading" constant="28" id="bRG-FI-TTr"/>
-                                                    <constraint firstItem="PwM-Fg-PMC" firstAttribute="top" secondItem="iyE-zR-qVt" secondAttribute="bottom" constant="17" id="exP-ix-fe1"/>
-                                                    <constraint firstItem="3AO-xt-LXC" firstAttribute="top" secondItem="iyE-zR-qVt" secondAttribute="bottom" constant="10" id="gTT-B1-Cf0"/>
                                                     <constraint firstItem="FW9-jE-MOG" firstAttribute="top" secondItem="w8t-B9-Rek" secondAttribute="bottom" constant="8" symbolic="YES" id="hML-gI-QAG"/>
-                                                    <constraint firstAttribute="trailing" secondItem="iyE-zR-qVt" secondAttribute="trailing" constant="38" id="k7A-R8-48t"/>
                                                     <constraint firstItem="eQp-24-2A1" firstAttribute="leading" secondItem="0DH-Vm-Uwc" secondAttribute="leading" id="lAm-q2-lDZ"/>
-                                                    <constraint firstItem="iyE-zR-qVt" firstAttribute="top" secondItem="gFU-TV-GXX" secondAttribute="top" constant="36" id="xSL-qB-rDB"/>
-                                                    <constraint firstItem="PwM-Fg-PMC" firstAttribute="centerX" secondItem="gFU-TV-GXX" secondAttribute="centerX" id="zSh-aV-fLS"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VjK-Ki-ifk">
@@ -7914,12 +7885,8 @@
                                                     <constraint firstAttribute="height" constant="35" id="Chm-nx-ftZ"/>
                                                 </constraints>
                                                 <state key="normal" image="arrow-down"/>
-                                                <connections>
-                                                    <action selector="backButtonPressed:" destination="mLC-1N-36h" eventType="touchUpInside" id="8j5-04-CCx"/>
-                                                </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstItem="f2Q-gK-7NE" firstAttribute="trailing" secondItem="gFU-TV-GXX" secondAttribute="trailing" id="2t7-a5-udc"/>
                                             <constraint firstAttribute="bottom" secondItem="xq7-d4-AGb" secondAttribute="bottom" id="5KO-Bk-SWA"/>
@@ -7949,9 +7916,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="FCs-us-dKz" firstAttribute="top" secondItem="E3g-6d-dN1" secondAttribute="bottom" id="9vF-6K-p3F"/>
                             <constraint firstItem="OwD-hD-pkZ" firstAttribute="top" secondItem="rSV-sW-HuT" secondAttribute="top" id="OnT-v2-E6o"/>
+                            <constraint firstItem="E3g-6d-dN1" firstAttribute="top" secondItem="rSV-sW-HuT" secondAttribute="top" id="bkN-vf-Fqz"/>
                             <constraint firstItem="OwD-hD-pkZ" firstAttribute="bottom" secondItem="FCs-us-dKz" secondAttribute="top" id="bpd-Nl-GFt"/>
+                            <constraint firstItem="E3g-6d-dN1" firstAttribute="leading" secondItem="rSV-sW-HuT" secondAttribute="leading" id="fQb-Dc-3wk"/>
                             <constraint firstItem="OwD-hD-pkZ" firstAttribute="leading" secondItem="rSV-sW-HuT" secondAttribute="leading" id="maf-fs-cbi"/>
+                            <constraint firstAttribute="trailing" secondItem="E3g-6d-dN1" secondAttribute="trailing" id="nuo-x2-1SA"/>
                             <constraint firstAttribute="trailing" secondItem="OwD-hD-pkZ" secondAttribute="trailing" id="xOR-xm-Hdo"/>
                         </constraints>
                     </view>
@@ -7959,11 +7930,9 @@
                         <outlet property="cardWrapperView" destination="8tn-5K-gcJ" id="nYe-Pf-8YQ"/>
                         <outlet property="emailTextField" destination="FW9-jE-MOG" id="uej-8j-IgQ"/>
                         <outlet property="firstNameTextField" destination="0DH-Vm-Uwc" id="bdC-e8-ZDa"/>
-                        <outlet property="indicator" destination="PwM-Fg-PMC" id="Jay-RM-Dj7"/>
                         <outlet property="lastNameTextField" destination="w8t-B9-Rek" id="W3U-SE-SEn"/>
-                        <outlet property="recipientTextField" destination="iyE-zR-qVt" id="QXb-Ws-zTp"/>
-                        <outlet property="saveBtn" destination="Ohd-PV-bix" id="xhw-x8-Zyi"/>
-                        <outlet property="saveToContactsSwitch" destination="3AO-xt-LXC" id="XGY-WD-crP"/>
+                        <outlet property="notesTextField" destination="iyE-zR-qVt" id="9lF-Re-4z4"/>
+                        <outlet property="syncToContactsSwitch" destination="3AO-xt-LXC" id="xGp-nt-T3a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dX-M9-QA4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -7975,7 +7944,7 @@
                     <state key="normal" title="SHARE"/>
                 </button>
             </objects>
-            <point key="canvasLocation" x="5270" y="1782"/>
+            <point key="canvasLocation" x="4184.8000000000002" y="2335.6821589205401"/>
         </scene>
         <!--Create Card View Controller-->
         <scene sceneID="RjU-r0-M5h">
@@ -9373,7 +9342,7 @@
         <scene sceneID="gZp-VV-fQI">
             <objects>
                 <collectionViewController id="tOI-Kc-32Q" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="O9M-i8-w5a">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="O9M-i8-w5a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -9420,7 +9389,7 @@
                     <tabBarItem key="tabBarItem" title="Intro" id="0XH-iX-L6l"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="LSz-30-GH9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JhS-bM-a1h">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="JhS-bM-a1h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -9633,7 +9602,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Qm7-hw-6AV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mbv-kk-ivS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mbv-kk-ivS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

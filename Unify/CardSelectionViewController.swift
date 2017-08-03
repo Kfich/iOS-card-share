@@ -448,10 +448,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
            name = selectedCard.cardHolderName!
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
-            phone = selectedCard.cardProfile.phoneNumbers[0]["phone"]! as! String
+            phone = selectedCard.cardProfile.phoneNumbers[0]["phone"]! 
         }
         if selectedCard.cardProfile.emails.count > 0{
-            email = selectedCard.cardProfile.emails[0]["email"]! as! String
+            email = selectedCard.cardProfile.emails[0]["email"]! 
         }
         if selectedCard.cardProfile.title != "" || selectedCard.cardProfile.title != nil{
             title = self.selectedCard.cardProfile.title!
@@ -498,7 +498,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             phoneLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"]!
         }
         if selectedCard.cardProfile.emails.count > 0{
-            emailLabel.text = selectedCard.cardProfile.emails[0]["email"] as? String
+            emailLabel.text = selectedCard.cardProfile.emails[0]["email"]
         }
         if let title = selectedCard.cardProfile.title{
             titleLabel.text = title
