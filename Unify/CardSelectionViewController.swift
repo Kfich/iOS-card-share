@@ -453,9 +453,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         if selectedCard.cardProfile.emails.count > 0{
             email = selectedCard.cardProfile.emails[0]["email"]! 
         }
-        if selectedCard.cardProfile.title != "" || selectedCard.cardProfile.title != nil{
-            title = self.selectedCard.cardProfile.title!
+        if selectedCard.cardProfile.titles.count > 0{
+            title = selectedCard.cardProfile.titles[0]["title"]!
         }
+
         
         
         // Create Message
@@ -500,8 +501,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         if selectedCard.cardProfile.emails.count > 0{
             emailLabel.text = selectedCard.cardProfile.emails[0]["email"]
         }
-        if let title = selectedCard.cardProfile.title{
-            titleLabel.text = title
+        if selectedCard.cardProfile.titles.count > 0{
+            titleLabel.text = selectedCard.cardProfile.titles[0]["title"]
         }
         // Here, parse data to populate tableview
     }
