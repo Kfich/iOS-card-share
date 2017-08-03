@@ -11,7 +11,7 @@ import Contacts
 
 
 
-class ContactListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating
+class ContactListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate
 {
     
     
@@ -50,12 +50,12 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Set Contact formatter style
         formatter.style = .fullName
         
-        // Add loading indicator
     
-        KVNProgress.show(withStatus: "Syncing Contacts...")
         
         // Parse for contacts in contact list
         if ContactManager.sharedManager.phoneContactList.isEmpty{
+           // Add loading indicator
+            KVNProgress.show(withStatus: "Syncing Contacts...")
             // Make call to get contacts
             ContactManager.sharedManager.getContacts()
         }else{
@@ -69,6 +69,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Do any additional setup after loading the view.
         
         // Tableview config 
+        // Set delegate for empty state
+        contactListTableView.emptyDataSetSource = self
+        contactListTableView.emptyDataSetDelegate = self
         // Index tracking strip 
         contactListTableView.sectionIndexBackgroundColor = UIColor.white
         contactListTableView.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
@@ -327,6 +330,81 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         
     }
+    
+    // Empty State Delegate Methods
+    
+    // Settings
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+        
+        // All arrays are empty
+        /*if checkForEmptyData() == true {
+            return true
+        }else{
+            return false
+        }*/
+        return true
+    }
+    
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        // Lock scroll
+        return false
+    }
+    
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Configure string
+        
+        let emptyString = "No Profile Info Found"
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Config Message for user
+        
+        let emptyString = ""
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+        
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
+        // Config button for data set
+        
+        let emptyString = "Tap to Sync Contacts"
+        
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        let attributes = [ NSForegroundColorAttributeName: blue ]
+        
+        let attrString = NSAttributedString(string: emptyString, attributes: attributes)
+        
+        return attrString
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        // Set to height of header bar
+        return -64
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap view: UIView) {
+        // Configure action for tap
+        print("The View Was tapped")
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap button: UIButton) {
+        // Configure action for button tap
+        print("The Button Was tapped")
+        
+        // Sync contact list
+        ContactManager.sharedManager.getContacts()
+    }
+
 
     
     
@@ -349,6 +427,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     }
+    
+    
     
     
 }

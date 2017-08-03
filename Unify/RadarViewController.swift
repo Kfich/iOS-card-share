@@ -170,6 +170,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
 
         halo.opacity = 0
         halo.start()
+        
+        // For notifications 
+        self.addObservers()
 
   
     }
@@ -192,8 +195,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // -------------------------------------------
     
     
-    // TESTING -----------------------------
-    
     @IBAction func addCard(_ sender: Any) {
         
         // Test user
@@ -206,149 +207,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         
     }
-    
-    func testImage() {
-        // Pull image data
-        // Image data png
-        //let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!, 0.5)
-        let imageData = UIImageJPEGRepresentation(UIImage(named: "contact")!, 0.5)
-        print(imageData!)
-        
-        // Create user for string gen
-        let newUser = User()
-        // Generate id string for image
-        let idString = newUser.randomString(length: 20)
-        
-        // Set id string to user object for image
-        newUser.profileImageId = idString
-        
-        // Assign asset name and type
-        let fname = idString
-        let mimetype = "image/png"
-        
-        // Create image dictionary
-        let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
-        
-        // Add image to user profile images
-        //newUser.setImages(imageRecords: imageDict)
-        
-        
-        // Upload to Server
-        // Save card to DB
-        let parameters = imageDict
-        print(parameters)
-        
-        // Show progress HUD
-        KVNProgress.show(withStatus: "Generating profile..")
-        
-        //Alamofire.down
-        
-        // Upload image with Alamo
-        Alamofire.upload(multipartFormData: { multipartFormData in
-            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
-            
-            print("Multipart Data >>> \(multipartFormData)")
-            /*for (key, value) in parameters {
-             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
-             }*/
-        }, to:"https://project-unify-node-server.herokuapp.com/image/uploadcdn")
-        { (result) in
-            switch result {
-            case .success(let upload, _, _):
-                
-                upload.uploadProgress(closure: { (progress) in
-                    print("Upload Progress: \(progress.fractionCompleted)")
-                })
-                
-                upload.responseJSON { response in
-                    print("\n\n\n\n success...")
-                    print(response.result.value ?? "Successful upload")
-                    
-                    // Dismiss hud
-                    KVNProgress.dismiss()
-                }
-                
-            case .failure(let encodingError):
-                print("\n\n\n\n error....")
-                print(encodingError)
-                // Show error message
-                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
-            }
-        }
-        
-    }
-    
-    func testUser(){
-        // Test current user object
-        
-        /*currentUser.firstName = "Kevin"
-         currentUser.lastName = "Fich"
-         currentUser.userId = "54321"
-         currentUser.fullName = currentUser.getName()
-         currentUser.emails.append(["email": "kfich7@aol.com"])
-         currentUser.emails.append(["email": "kfich7@gmail.com"])
-         currentUser.phoneNumbers.append(["phone": "1234567890"])
-         currentUser.phoneNumbers.append(["phone": "0987654321"])
-         currentUser.phoneNumbers.append(["phone": "6463597308"])
-         currentUser.scope = "user"
-         
-         
-         
-         let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
-         print("\n\n")
-         print(parameters)
-         
-         
-         //let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
-         
-         
-         // Print to test
-         //print("Current User")
-         //currentUser.printUser()
-         
-         
-         // Print as dictionary
-         print("\nUser As Dictionary")
-         print(currentUser.toAnyObject())
-         
-         //genericPostCall(parameters as NSDictionary)
-         */
-        
-        /*let parameters = ["uuid" : "4b12ee87-9822-419a-b31a-b76bfdafdd78"]
-         
-         // Send current user to DB
-         
-         
-         Connection(configuration: nil).getUserCall(parameters, completionBlock: { response, error in
-         if error == nil {
-         
-         print("\n\nConnection - Create User Response: \(response)\n\n")
-         
-         // Here you set the id for the user and resubmit the object
-         
-         //let user = User(snapshot: response as! NSDictionary)
-         //user.printUser()
-         
-         
-         
-         } else {
-         print(error)
-         // Show user popup of error message
-         print("\n\nConnection - Create User Error: \(error)\n\n")
-         }
-         })*/
-    }
-    
-    
-    
-    
-    
-    // IBActions --------------------------------
-    
-    
-    
-    
-    
     
     
     @IBAction func radarButtonSelected(_ sender: AnyObject) {
@@ -459,6 +317,33 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
     }
     
+    // For notifications
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarViewController.toggleRadar), name: NSNotification.Name(rawValue: "TurnOnRadar"), object: nil)
+        
+    }
+    
+    func toggleRadar() {
+        // Turn radar on
+        radarSwitch.isOn = true
+        
+        radarStatus = true
+        pulseMe(status: "show")
+        
+        
+         halo.position = view.center
+         pulseView.layer.addSublayer(halo)
+         halo.start()
+         
+         
+         halo.isHidden = false
+        
+        self.locationManager.startUpdatingLocation()
+        
+        Countly.sharedInstance().recordEvent("turned radar on")
+        
+        self.radarButtonSelected(self)
+    }
     
     
     

@@ -1707,7 +1707,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F0k-Nb-rhg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7081" y="3308"/>
+            <point key="canvasLocation" x="8558" y="4427"/>
         </scene>
         <!--Activity-->
         <scene sceneID="fle-i4-0Uo">
@@ -4573,7 +4573,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rqm-iW-4LL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6716" y="1053"/>
+            <point key="canvasLocation" x="8788" y="436"/>
         </scene>
         <!--NearbyContacts-->
         <scene sceneID="rN0-EO-xLs">
@@ -9707,7 +9707,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EN5-YU-XHZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6716" y="1716"/>
+            <point key="canvasLocation" x="8788" y="1099"/>
         </scene>
         <!--Phone Verification View Controller-->
         <scene sceneID="dv5-kN-dWp">

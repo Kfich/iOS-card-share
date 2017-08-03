@@ -366,7 +366,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Parse work info
         
         if currentUser.userProfile.workInformationList.count > 0{
-        
+            // Iterate and parse
             for info in currentUser.userProfile.workInformationList{
                 workInformation.append((info["work"])!)
             }
@@ -569,11 +569,15 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         if currentUser.fullName != ""{
             nameLabel.text = currentUser.fullName
         }
-        if currentUser.userProfile.phoneNumbers[0]["phone"] != nil{
+        if currentUser.userProfile.phoneNumbers.count > 0{
             numberLabel.text = currentUser.userProfile.phoneNumbers[0]["phone"]
         }
-        if currentUser.userProfile.emails[0]["email"] != nil{
+        if currentUser.userProfile.emails.count > 0{
             emailLabel.text = currentUser.userProfile.emails[0]["email"]
+        }
+        
+        if currentUser.userProfile.titles.count > 0{
+            emailLabel.text = currentUser.userProfile.titles[0]["title"]
         }
         
         //titleLabel.text = "Founder & CEO, CleanSwipe"

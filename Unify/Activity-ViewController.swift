@@ -733,7 +733,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Show empty
             return true
         }*/
-        return false
+        return true
     }
     
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
@@ -791,7 +791,28 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func emptyDataSet(_ scrollView: UIScrollView, didTap button: UIButton) {
         // Configure action for button tap 
         print("The Button Was tapped")
+        
+        // Post notification for radar to turn on
+        self.postNotification()
+        
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            // Set selected tab
+            self.tabBarController?.selectedIndex = 2
+        }
+        
     }
+    
+    // Notifications
+    
+    func postNotification() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TurnOnRadar"), object: self)
+        
+    }
+    
+    
 
     
     // Message Composer Functions
