@@ -362,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/QuickShare-ViewController.swift"
-            timestampString = "523465037.616148"
+            timestampString = "523473481.169151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "375"
+            endingLineNumber = "375"
             landmarkName = "showSMSCard()"
             landmarkType = "7">
          </BreakpointContent>

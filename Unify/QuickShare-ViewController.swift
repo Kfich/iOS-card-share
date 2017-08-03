@@ -53,6 +53,9 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     @IBOutlet var profileImageView: UIImageView!
     @IBOutlet var socialMediaToolBar: UIToolbar!
     
+    @IBOutlet var phoneImageView: UIImageView!
+    @IBOutlet var emailImageView: UIImageView!
+    
     
     // Buttons on social toolbar
     
@@ -86,15 +89,17 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set contact card
+        selectedCard = ContactManager.sharedManager.selectedCard
+        
+        // Set current user
+        currentUser = ContactManager.sharedManager.currentUser
+        
         // View setup 
         configureViews()
         populateCards()
         
-        // Set contact card 
-        selectedCard = ContactManager.sharedManager.selectedCard
         
-        // Set current user 
-        currentUser = ContactManager.sharedManager.currentUser
         
 
     }
@@ -107,11 +112,22 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         // Execute call
         //self.uploadContactRecord()
         
-        // Set sync to true 
-        self.syncToContactsSelected = true
+        if syncToContactsSwitch.isOn == true {
+            // Set sync to true
+            self.syncToContactsSelected = true
+        }else{
+            // Set sync to false
+            self.syncToContactsSelected = false
+        }
         
     }
     
+    
+    @IBAction func shareContactCard(_ sender: Any) {
+        
+        // Execute call follow through 
+        self.validateForm()
+    }
     
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {
@@ -153,12 +169,18 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
             numberLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"]!
+        }else{
+            // Hide icon 
+            phoneImageView.isHidden = true
         }
         if selectedCard.cardProfile.emails.count > 0{
             emailLabel.text = selectedCard.cardProfile.emails[0]["email"]
+        }else{
+            // Hide icon
+            emailImageView.isHidden = true
         }
-        if let title = selectedCard.cardProfile.title{
-            titleLabel.text = title
+        if selectedCard.cardProfile.titles.count > 0{
+            titleLabel.text = selectedCard.cardProfile.titles[0]["title"]
         }
         // Here, parse data to populate tableview
     }
@@ -191,8 +213,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             // Pass form values into contact object 
             contact.name = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
             contact.emails.append(["email": emailTextField.text!])
-            
             //contact.phoneNumbers.append(["phone": phoneTextField.text!])
+            
+            if notesTextField.text != nil{
+                contact.setNotes(note: notesTextField.text!)
+            }
             
             // Execute send actions
             
@@ -201,6 +226,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 self.uploadContactRecord()
             }
             
+            // Create Transaction 
+            self.createTransaction(type: "connection")
             
         }
     }
@@ -256,6 +283,9 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 
                 // Hide HUD
                 KVNProgress.dismiss()
+                
+                // Dismiss VC
+                self.dismiss(animated: true, completion: nil)
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")

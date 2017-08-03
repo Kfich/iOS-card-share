@@ -109,9 +109,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Reload tableview data
             cardCollectionView.reloadData()
             // Set Selected card
-            /*if ContactManager.sharedManager.currentUserCards.count > 0 {
+            if ContactManager.sharedManager.currentUserCards.count > 0 {
               ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
-            }*/
+            }
             
             print("User has cards!")
             
