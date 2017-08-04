@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactListViewController.swift"
-            timestampString = "523488520.11563"
+            timestampString = "523554983.666366"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "ContactListViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -314,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactListViewController.swift"
-            timestampString = "523488520.11563"
+            timestampString = "523554983.666366"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
             landmarkName = "refreshTableData()"
             landmarkType = "7">
             <Locations>

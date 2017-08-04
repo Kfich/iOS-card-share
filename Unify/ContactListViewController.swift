@@ -23,6 +23,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     var contactStore = CNContactStore()
     
     var contactList = [CNContact]()
+    var filteredContactList : [CNContact]?
     let formatter = CNContactFormatter()
 
     var selectedContact = CNContact()
@@ -83,6 +84,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         searchController.searchBar.backgroundColor = UIColor.white
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "")
         
@@ -93,8 +95,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Style search bar
         //searchController.searchBar.barStyle = UIBarStyle.
-        searchController.searchBar.changeSearchBarColor(color: UIColor.white)
-        searchController.searchBar.backgroundColor = UIColor.white
+        //searchController.searchBar.changeSearchBarColor(color: UIColor.white)
+        //searchController.searchBar.backgroundColor = UIColor.white
         
         
         
@@ -110,18 +112,30 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     // Search Bar Delegate 
     
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
-    
+    /*func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            filteredNFLTeams = unfilteredNFLTeams.filter { team in
+                return team.lowercased().contains(searchText.lowercased())
+            }
+            
+        } else {
+            filteredNFLTeams = unfilteredNFLTeams
+        }
+        tableView.reloadData()
+    }*/
+
     
     // TableView Delegates and DataSource
     
     // number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        guard let contacts = filteredContactList else{
+            return 0
+        }
+        return contacts.count
         
-        return ContactManager.sharedManager.phoneContactList.count //contactList.count
+        //return ContactManager.sharedManager.phoneContactList.count //contactList.count
     }
     
     // create a cell for each table view row
@@ -129,6 +143,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // create a new cell if needed or reuse an old one
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ContactListCell!
+    
+        
         // Create var with current contact in array
         let contact = ContactManager.sharedManager.phoneContactList[indexPath.row]
         
@@ -218,6 +234,22 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         return "G"
     }
     
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        print("PRINTING")
+        
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            filteredContactList = ContactManager.sharedManager.phoneContactList.filter { contact in
+                return contact.givenName.lowercased().contains(searchText.lowercased())
+            }
+            
+        } else {
+            filteredContactList = ContactManager.sharedManager.phoneContactList
+        }
+        contactListTableView.reloadData()
+        
+        
+    }
     
     // Custom Methods
     
@@ -433,7 +465,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
 }
 
-
+/*
 extension UISearchBar {
     func changeSearchBarColor(color: UIColor) {
         UIGraphicsBeginImageContext(self.frame.size)
@@ -445,3 +477,4 @@ extension UISearchBar {
         self.setSearchFieldBackgroundImage(bgImage, for: .normal)
     }
 }
+*/

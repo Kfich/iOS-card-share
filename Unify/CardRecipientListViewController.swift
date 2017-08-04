@@ -91,8 +91,8 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         
         // Style search bar
         //searchController.searchBar.barStyle = UIBarStyle.
-        searchController.searchBar.changeSearchBarColor(color: UIColor.white)
-        searchController.searchBar.backgroundColor = UIColor.white
+        //searchController.searchBar.changeSearchBarColor(color: UIColor.white)
+        //searchController.searchBar.backgroundColor = UIColor.white
         
         
         
