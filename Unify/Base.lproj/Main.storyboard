@@ -56,12 +56,12 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
-                        <segue destination="xJ1-LW-Ier" kind="show" identifier="createProfileSegue" id="ZBe-ii-ktE"/>
+                        <segue destination="r3S-wR-FJP" kind="show" identifier="phoneVerificationSegue" id="q1x-Py-aQp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1295" y="-734"/>
+            <point key="canvasLocation" x="1289" y="-717"/>
         </scene>
         <!--Phone Verification Pin View Controller-->
         <scene sceneID="HiD-Ht-ddh">
@@ -192,11 +192,12 @@
                         <outlet property="pinCodeArea" destination="6Vr-dy-8eS" id="Lul-OE-2OS"/>
                         <outlet property="termBox" destination="VwB-Kw-Hwf" id="627-a9-ECV"/>
                         <outlet property="verifyBtn" destination="eNd-0r-7Yk" id="7p8-2E-If6"/>
+                        <segue destination="xJ1-LW-Ier" kind="show" identifier="createProfileSegue" id="KsW-JC-Z5w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fCP-3c-DuZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3989.5999999999999" y="-734.48275862068976"/>
+            <point key="canvasLocation" x="3070" y="-717"/>
         </scene>
         <!--Create Account View Controller-->
         <scene sceneID="8x7-wv-pjp">
@@ -423,12 +424,11 @@
                         <outlet property="firstName" destination="Fma-aE-RY2" id="BVb-z3-D9k"/>
                         <outlet property="lastName" destination="zlx-fG-ZZk" id="Usy-oE-pRB"/>
                         <outlet property="profileImageContainerView" destination="kB5-He-q13" id="p9i-OT-vEU"/>
-                        <segue destination="r3S-wR-FJP" kind="show" identifier="phoneVerificationSegue" id="2nS-ws-KKD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DmX-li-8XZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2109.5999999999999" y="-734.48275862068976"/>
+            <point key="canvasLocation" x="3898" y="-717"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ALN-CB-0JJ">
@@ -512,7 +512,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Introduction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwu-HV-9u8">
-                                        <rect key="frame" x="131" y="40.5" width="115" height="24"/>
+                                        <rect key="frame" x="130" y="40.5" width="115" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -8973,7 +8973,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khy-R3-ag1">
-                                        <rect key="frame" x="137.5" y="41" width="102" height="24"/>
+                                        <rect key="frame" x="136.5" y="41" width="102" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -9828,7 +9828,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bn3-3y-ehH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3112.8000000000002" y="-734.48275862068976"/>
+            <point key="canvasLocation" x="2201" y="-717"/>
         </scene>
         <!--Edit Profile Container View Controller-->
         <scene sceneID="xrt-Hb-nu0">

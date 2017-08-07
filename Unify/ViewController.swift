@@ -103,7 +103,7 @@ class ViewController: UIViewController {
         
         self.dismiss(animated: true) { 
             // Hit segue 
-            self.performSegue(withIdentifier: "createProfileSegue", sender: self)
+            self.performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
         }
     }
     

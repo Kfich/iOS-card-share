@@ -20,6 +20,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     var currentUser = User()
     var firstCard = ContactCard()
     
+    // Bool check for user existance
+    var isCurrentUser = false
+    
     
     // Variables
     // --------------------------------
@@ -269,7 +272,27 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 let dictionary : Dictionary = response as! [String : Any]
                 // Assign uuid to user object
                 self.currentUser.userId = dictionary["uuid"] as! String
-                self.currentUser.printUser()
+                
+                // Check if current user bool set 
+                let check = dictionary["isUser"] as! Int
+                
+                // Set bool with result
+                if check == 0{
+                    // False
+                    self.isCurrentUser = false
+                }else{
+                    // True
+                    self.isCurrentUser = true
+                }
+                // Check if user needs to be set
+                if self.isCurrentUser {
+                    // Init user object
+                    let user = User(snapshot: dictionary["user"] as! NSDictionary)
+                    self.currentUser = user
+                    // Print to test
+                    self.currentUser.printUser()
+                }
+                
                                 
                 // Show success
                 KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
@@ -363,6 +386,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             
             let nextScene =  segue.destination as! PhoneVerificationPinViewController
             nextScene.currentUser = self.currentUser
+            nextScene.isCurrentUser = self.isCurrentUser
             // Test the object has proper values
             currentUser.printUser()
             

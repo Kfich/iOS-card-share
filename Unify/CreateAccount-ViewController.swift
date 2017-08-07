@@ -270,8 +270,6 @@ class CreateAccountViewController: UIViewController {
         // Test if image stored
         print(self.newUser.profileImages)
         
-        // Assign a temp uuid
-        newUser.userId = newUser.randomString(length: 15)
         
         // Print to test
         newUser.printUser()
@@ -279,14 +277,82 @@ class CreateAccountViewController: UIViewController {
         // Create first card here
         createFirstCard()
     
-        
+        // Replaced with pinVerification Logics 
+            
         // Pass segue
-        performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
+        //performSegue(withIdentifier: "phoneVerificationSegue", sender: self)
         }
         
     }
     
+    
     func createFirstCard() {
+        // Create the card
+        let card = ContactManager.sharedManager.selectedCard
+        
+        // Add card ownerId
+        card.ownerId = newUser.userId
+        
+        // Populate card 
+        self.populateFirstCard()
+        
+        // Process image for card
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Creating your first card...")
+        
+        // Save card to DB
+        let parameters = ["data": card.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createCardCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                self.card.cardId = dictionary["uuid"] as? String
+                
+                
+                // Insert to manager card array
+                ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([self.card.toAnyObjectWithImage()], at: 0)
+                
+                // Set array to defualts
+                UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+                
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+                
+                 // Show homepage
+                 DispatchQueue.main.async {
+                    // Update UI
+                    // Show Home Tab
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                    TabBarViewController
+                    self.view.window?.rootViewController = homeViewController
+                 }
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+    
+    
+    func populateFirstCard() {
         // Assign image for card
         // Image data png
         let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!)
@@ -328,7 +394,7 @@ class CreateAccountViewController: UIViewController {
         
         //Set the selected card on manager
         ContactManager.sharedManager.selectedCard = card
-        //
+        
     }
     
     // Status bar
@@ -483,14 +549,16 @@ class CreateAccountViewController: UIViewController {
     
     // Navigation 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "phoneVerificationSegue" {
+        
+        
+        /*if segue.identifier == "phoneVerificationSegue" {
             
             let next = segue.destination as! PhoneVerificationViewController
             // Pass user obj
             next.currentUser = self.newUser
             next.firstCard = self.card
             print("Segue Performed for phone verif")
-        }
+        }*/
     }
     
 

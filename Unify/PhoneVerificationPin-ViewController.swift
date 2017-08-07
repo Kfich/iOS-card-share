@@ -21,6 +21,9 @@ class PhoneVerificationPinViewController: UIViewController {
     var pin = "1111"
     var userPin = ""
     
+    // Bool check for user existance
+    var isCurrentUser = false
+    
     // IBOutlets
     // --------------------------------
     
@@ -223,11 +226,11 @@ class PhoneVerificationPinViewController: UIViewController {
                 ContactManager.sharedManager.currentUser = self.currentUser
 
                 // Store user to device
-                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
                 
                 
-                // Create first card then hit segue
-                self.createFirstCard()
+                // Check if current user 
+                self.checkForExisitingAccount()
                 
                 
                 
@@ -246,8 +249,29 @@ class PhoneVerificationPinViewController: UIViewController {
         
     }
     
+    func checkForExisitingAccount()  {
+        // Bool check 
+        if isCurrentUser {
+            // Set to manager 
+            ContactManager.sharedManager.currentUser = self.currentUser
+            // Show homepage
+            DispatchQueue.main.async {
+                // Update UI
+                // Show Home Tab
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                TabBarViewController
+                self.view.window?.rootViewController = homeViewController
+            }
+            
+        }else{
+            // Send to create profile
+            performSegue(withIdentifier: "createProfileSegue", sender: self)
+        }
+    }
     
-    func createFirstCard() {
+    
+    /*func createFirstCard() {
         // Create the card 
         let card = ContactManager.sharedManager.selectedCard
         
@@ -285,6 +309,7 @@ class PhoneVerificationPinViewController: UIViewController {
          // Hide HUD
             KVNProgress.dismiss()
          
+            /*
             // Show homepage
             DispatchQueue.main.async {
                 // Update UI
@@ -293,7 +318,12 @@ class PhoneVerificationPinViewController: UIViewController {
                 let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
                 TabBarViewController
                 self.view.window?.rootViewController = homeViewController
-            }
+            }*/
+            
+            // Perfom createProfileSegue if user doesnt have account
+            
+            
+            // else send to home screen 
          
          
         } else {
@@ -305,7 +335,7 @@ class PhoneVerificationPinViewController: UIViewController {
          // Hide indicator
             KVNProgress.dismiss()
          }
-    }
+    }*/
     
 }
 
