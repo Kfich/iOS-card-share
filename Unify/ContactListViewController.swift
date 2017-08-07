@@ -579,6 +579,26 @@ class ContactListViewController: UIViewController, UITableViewDelegate, UITableV
         ContactManager.sharedManager.getContacts()
     }
 
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "showContactProfile"{
+            // Find destination
+            let destination = segue.destination as! ContactProfileViewController
+            // Assign selected contact object
+            destination.selectedContact = self.selectedContact
+            
+            // Test
+            print("Contact Passed in Seggy")
+        }
+        
+        
+    }
+
     
 }
 
