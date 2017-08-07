@@ -112,6 +112,8 @@
 		FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */; };
 		FBA1F5121F38CCF100CDCB76 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */; };
 		FBA1F5151F38CD1100CDCB76 /* AddContactContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */; };
+		FBA1F5171F38FA1300CDCB76 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5161F38FA1300CDCB76 /* CustomSearchBar.swift */; };
+		FBA1F5191F38FA5400CDCB76 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
 		FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C801EDF395000E37E0C /* ProfileViewController.swift */; };
 		FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */; };
@@ -321,6 +323,8 @@
 		FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 		FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactContainerViewController.swift; sourceTree = "<group>"; };
+		FBA1F5161F38FA1300CDCB76 /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
 		FBE76C801EDF395000E37E0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCardViewController.swift; sourceTree = "<group>"; };
@@ -722,6 +726,8 @@
 				FBF871311EE71F0100243CE2 /* ContactCard.swift */,
 				FBE807481F0566F300A05292 /* CardProfile.swift */,
 				FB019AA11F28EE7C00908A67 /* Contact.swift */,
+				FBA1F5161F38FA1300CDCB76 /* CustomSearchBar.swift */,
+				FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */,
 			);
 			name = Class_Files;
 			sourceTree = "<group>";
@@ -961,6 +967,7 @@
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
 				FB019AA21F28EE7C00908A67 /* Contact.swift in Sources */,
 				FB90A8B61F27941600E67B1E /* ContactUsViewController.swift in Sources */,
+				FBA1F5171F38FA1300CDCB76 /* CustomSearchBar.swift in Sources */,
 				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
 				FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */,
 				FB199D071F339D7300FFFCC1 /* SocialMediaDetailViewController.swift in Sources */,
@@ -1003,6 +1010,7 @@
 				FB199D031F339A0F00FFFCC1 /* SocialMediaViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */,
+				FBA1F5191F38FA5400CDCB76 /* CustomSearchController.swift in Sources */,
 				FB199CF81F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m in Sources */,
 				FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */,
 				FB2F42881F1526CB00E3D6B5 /* UIColor+KVNContrast.m in Sources */,

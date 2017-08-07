@@ -3549,7 +3549,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="G09-xr-nGj"/>
                     <connections>
-                        <outlet property="contactListTableView" destination="p68-Yw-IbX" id="dbj-T5-N5H"/>
+                        <outlet property="tblSearchResults" destination="p68-Yw-IbX" id="CNw-iv-Xx7"/>
                         <segue destination="KYR-zM-L97" kind="show" identifier="showContactProfile" id="Iab-cr-NkB"/>
                     </connections>
                 </viewController>

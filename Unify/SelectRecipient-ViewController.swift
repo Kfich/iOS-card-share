@@ -238,7 +238,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     // Custom Methods
     func addObservers() {
         // Call to refresh table
-        NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTableData), name: NSNotification.Name(rawValue: "RefreshContactList"), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTableData), name: NSNotification.Name(rawValue: "RefreshContactList"), object: nil)
         
     }
     
