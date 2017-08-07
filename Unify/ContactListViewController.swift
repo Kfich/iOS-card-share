@@ -295,11 +295,20 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         //DispatchQueue.main.async {
         //self.uploadContactRecords()
         
+        let synced = UDWrapper.getBool("contacts_synced")
+        
         
         // Reload contact list
         DispatchQueue.main.async {
             
-            self.uploadContactRecords()
+            // Check if contacts already synced
+            if synced{
+                // already done
+                print("Contacts already synced")
+            }else{
+                // Sync records
+                self.uploadContactRecords()
+            }
             
             // Hide HUD
             KVNProgress.showSuccess()
@@ -351,13 +360,16 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         // Check if we're at the end of the list
-        if self.index < ContactManager.sharedManager.contactObjectList.count/6{
+        if self.index < ContactManager.sharedManager.contactObjectList.count{
             // Increment index
             self.index = self.index + 1
             
         }else{
             // Turn off timer to end execution
             self.helloWorldTimer.invalidate()
+            
+            //Set bool to indicate contacts have been synced
+            UDWrapper.setBool("contacts_synced", value: true)
         }
         
         

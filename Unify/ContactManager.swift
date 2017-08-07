@@ -32,6 +32,7 @@ class ContactManager{
     var userArrivedFromRecipients = false
     var userDidCreateCard = false
     var userSelectedEditCard = false
+    var userCreatedNewContact = false
     
     // Incognito toggle 
     var userIsIncognito = false 
@@ -66,6 +67,8 @@ class ContactManager{
     // Transaction Handling
     var transaction = Transaction()
     
+    // Object for adding contacts 
+    var newContact = Contact()
     
     
     // Initialize class
@@ -290,6 +293,9 @@ class ContactManager{
             
             // Post refresh
             self.postContactListRefresh()
+            
+            //Set bool to indicate contacts have been synced
+            //UDWrapper.setBool("contacts_synced", value: true)
             
             // Upload Contacts
             //self.uploadContactRecords()

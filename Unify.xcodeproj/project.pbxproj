@@ -110,6 +110,8 @@
 		FB90A8BC1F27AC1600E67B1E /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8BB1F27AC1600E67B1E /* PrivacyViewController.swift */; };
 		FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */; };
 		FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */; };
+		FBA1F5121F38CCF100CDCB76 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */; };
+		FBA1F5151F38CD1100CDCB76 /* AddContactContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
 		FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C801EDF395000E37E0C /* ProfileViewController.swift */; };
 		FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */; };
@@ -317,6 +319,8 @@
 		FB90A8BB1F27AC1600E67B1E /* PrivacyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FB95D4BE1EE5ADCF009D58EA /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
+		FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactContainerViewController.swift; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
 		FBE76C801EDF395000E37E0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCardViewController.swift; sourceTree = "<group>"; };
@@ -558,6 +562,8 @@
 				1CB31C981E9406EB00A0C4A5 /* Contacts-TableViewController.swift */,
 				FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */,
 				FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */,
+				FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */,
+				FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -932,6 +938,7 @@
 				1C151D2D1F1DBE73004B23CE /* CountlyAPM.m in Sources */,
 				1C151D341F1DBE73004B23CE /* CountlyEvent.m in Sources */,
 				1CB31C991E9406EB00A0C4A5 /* Contacts-TableViewController.swift in Sources */,
+				FBA1F5121F38CCF100CDCB76 /* AddContactViewController.swift in Sources */,
 				FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */,
 				FBE807461F04159700A05292 /* CardSelectionViewController.swift in Sources */,
 				1CB31CB31E94358200A0C4A5 /* AlgoliaManager.swift in Sources */,
@@ -946,6 +953,7 @@
 				1CB31C9F1E94092000A0C4A5 /* Activity-ViewController.swift in Sources */,
 				FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */,
 				FB2F42871F1526CB00E3D6B5 /* KVNRotationViewController.m in Sources */,
+				FBA1F5151F38CD1100CDCB76 /* AddContactContainerViewController.swift in Sources */,
 				1CB31C8D1E93539A00A0C4A5 /* PhoneVerificationPin-ViewController.swift in Sources */,
 				1C151D2A1F1DBE73004B23CE /* Countly.m in Sources */,
 				1CB31C931E93C04D00A0C4A5 /* HomeCardTableCell.swift in Sources */,

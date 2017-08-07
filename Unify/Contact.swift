@@ -12,6 +12,8 @@ public class Contact{
     // Properties
     var contactId : String = ""
     var name : String = ""
+    var first = ""
+    var last = ""
     var emails = [[String : String]]()
     var phoneNumbers = [[String : String]]()
     var titles = [[String : String]]()
