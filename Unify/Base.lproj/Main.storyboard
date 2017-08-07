@@ -3557,10 +3557,10 @@
             </objects>
             <point key="canvasLocation" x="3105" y="690"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Contact View Controller-->
         <scene sceneID="Gia-GU-eK5">
             <objects>
-                <viewController id="8yW-mo-kBK" sceneMemberID="viewController">
+                <viewController id="8yW-mo-kBK" customClass="AddContactViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RmL-xi-Oz6"/>
                         <viewControllerLayoutGuide type="bottom" id="B2R-Fv-sgg"/>
@@ -3614,6 +3614,7 @@
                                                             <action selector="backButtonPressed:" destination="N2C-XP-IWx" eventType="touchUpInside" id="5ZN-is-KlJ"/>
                                                             <action selector="backButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="dge-Zu-W1f"/>
                                                             <action selector="doneButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="gX3-NP-oBb"/>
+                                                            <action selector="selectProfilePicture:" destination="8yW-mo-kBK" eventType="touchUpInside" id="UYk-FN-gqS"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -3654,6 +3655,7 @@
                                                 <connections>
                                                     <action selector="backButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="W8p-A6-mZa"/>
                                                     <action selector="backButtonPressed:" destination="N2C-XP-IWx" eventType="touchUpInside" id="jcO-my-hgO"/>
+                                                    <action selector="backButtonPressed:" destination="8yW-mo-kBK" eventType="touchUpInside" id="n2v-kR-FDd"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DIg-2C-hzm">
@@ -3669,6 +3671,7 @@
                                                     <action selector="backButtonPressed:" destination="N2C-XP-IWx" eventType="touchUpInside" id="KhO-2x-en7"/>
                                                     <action selector="backButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="goN-fd-py2"/>
                                                     <action selector="doneButtonPressed:" destination="0r0-aF-rwB" eventType="touchUpInside" id="FxR-DZ-jp3"/>
+                                                    <action selector="doneButtonPressed:" destination="8yW-mo-kBK" eventType="touchUpInside" id="dMI-qv-SXt"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -3707,10 +3710,17 @@
                             <constraint firstAttribute="trailing" secondItem="YDR-wv-j1L" secondAttribute="trailing" id="uGx-cn-Wfb"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="doneButton" destination="DIg-2C-hzm" id="HHb-Xi-4td"/>
+                        <outlet property="firstNameTextField" destination="PN1-f7-jaI" id="T0f-9V-EDe"/>
+                        <outlet property="lastNameTextField" destination="XeG-ue-N1L" id="GEf-Da-cCf"/>
+                        <outlet property="profileImageView" destination="p2E-Zq-5x0" id="A2x-8N-3Nn"/>
+                        <outlet property="selectProfileImageButton" destination="CmP-C3-LBk" id="Mo9-id-sSF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5e7-or-Qt3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3853.5999999999999" y="201.94902548725639"/>
+            <point key="canvasLocation" x="3854" y="224"/>
         </scene>
         <!--Contact Profile View Controller-->
         <scene sceneID="cla-A7-B8F">
@@ -10024,10 +10034,10 @@
             </objects>
             <point key="canvasLocation" x="1143" y="-6"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Contact Container View Controller-->
         <scene sceneID="mi6-z3-gRe">
             <objects>
-                <viewController id="UNv-Jm-uy4" sceneMemberID="viewController">
+                <viewController id="UNv-Jm-uy4" customClass="AddContactContainerViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tS3-vN-cti">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="446"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
