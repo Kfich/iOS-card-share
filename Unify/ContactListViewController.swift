@@ -130,12 +130,12 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        guard let contacts = filteredContactList else{
+        /*guard let contacts = filteredContactList else{
             return 0
         }
-        return contacts.count
+        return contacts.count*/
         
-        //return ContactManager.sharedManager.phoneContactList.count //contactList.count
+        return ContactManager.sharedManager.phoneContactList.count //contactList.count
     }
     
     // create a cell for each table view row
@@ -307,7 +307,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 print("Contacts already synced")
             }else{
                 // Sync records
-                self.uploadContactRecords()
+               // self.uploadContactRecords()
             }
             
             // Hide HUD
@@ -386,7 +386,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }else{
             return false
         }*/
-        return true
+        return false
     }
     
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {

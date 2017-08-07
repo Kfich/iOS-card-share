@@ -431,8 +431,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         
         //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
         
+        // Set card link from cardID
+        let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
+        
         // Test String
-        let str = "Hi \(contactName), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+        let str = "Hi \(contactName), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact])

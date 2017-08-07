@@ -70,6 +70,9 @@ class ContactManager{
     // Object for adding contacts 
     var newContact = Contact()
     
+    // Indexing the contact records for upload
+    var index = 0
+    var timer = Timer()
     
     // Initialize class
     init() {
@@ -435,47 +438,61 @@ class ContactManager{
         return contactObjectList
     }
     
+    // Func dispatches timer to upload contacts
     func uploadContactRecords(){
-        // Create ContactObjectList by executing call
-        //self.contactObjectList = self.createContactRecords()
-  
-        // Create Delay
-        let delayInSeconds = 1.0
-    
-        // Hit delay
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-        // Iterate over object array - for each, upload
-        for contact in self.contactObjectList {
-    
-                
-            // Create dictionary
-            let parameters = ["data" : contact.toAnyObject()]
-            print(parameters)
-            
-            // Send to server
-            Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
-                if error == nil {
-                    // Call successful
-                    print("Transaction Created Response ---> \(String(describing: response))")
-                    
-                    
-                } else {
-                    // Error occured
-                    print("Transaction Created Error Response ---> \(String(describing: error))")
-                    
-                    // Show user popup of error message
-                    
-                
-                }
-                // Hide indicator
-                
-            
-                }
+        // Call function from manager
+        //ContactManager.sharedManager.uploadContactRecords()
         
+        timer = Timer.scheduledTimer(timeInterval: 0.2 , target: self, selector: #selector(ContactManager.uploadRecord), userInfo: nil, repeats: true)
+        
+        //  Start timer
+        timer.fire()
+        
+    }
+    
+    // Func to upload individual record
+    
+    @objc func uploadRecord(){
+        
+        print("hello World")
+        // Assign contact
+        let contact = ContactManager.sharedManager.contactObjectList[self.index]
+        
+        // Create dictionary
+        let parameters = ["data" : contact.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
+        print(parameters)
+        
+        // Send to server
+        Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                // Call successful
+                print("Transaction Created Response ---> \(String(describing: response))")
+                
+                
+            } else {
+                // Error occured
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                
+                // Show user popup of error message
+                
+                
             }
-            
-        
+            // Hide indicator
         }
+        
+        // Check if we're at the end of the list
+        if self.index < ContactManager.sharedManager.contactObjectList.count{
+            // Increment index
+            self.index = self.index + 1
+            
+        }else{
+            // Turn off timer to end execution
+            self.timer.invalidate()
+            
+            //Set bool to indicate contacts have been synced
+            UDWrapper.setBool("contacts_synced", value: true)
+        }
+        
         
     }
     

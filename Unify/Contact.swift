@@ -22,6 +22,8 @@ public class Contact{
     var websites = [[String : String]]()
     var notes = [[String : String]]()
     
+    var origin : String = ""
+    
     // For image storage
     var imageId : String = ""
     var imageDictionary = [String : Any]()
@@ -40,6 +42,7 @@ public class Contact{
             "notes" : notes,
             "websites" : websites,
             "organizations" : organizations,
+            "origin" : origin,
             "image_id": imageId
         ]
     }
@@ -130,6 +133,15 @@ public class Contact{
         organizations.append(["organization" : organization])
     }
     
+    // Origin
+    func getOrigin()-> String{
+        return origin
+    }
+    
+    func setOrigin(org : String){
+        origin = org
+    }
+    
     // Custom Methods
     
     // Generate random string for transaction id
@@ -172,6 +184,8 @@ public class Contact{
         print(organizations as Any)
         print("Image ID: ")
         print(imageId)
+        print("Origin :")
+        print(origin)
         print("--------------------")
         print("Images : ")
         print(imageDictionary as Any)

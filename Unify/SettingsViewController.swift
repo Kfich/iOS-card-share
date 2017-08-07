@@ -74,7 +74,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func syncContactList() {
-        //
+        // Execute contact manager call 
+        ContactManager.sharedManager.getContacts()
     }
 
     func showIncognitoOptions() {
@@ -393,7 +394,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     // Logout 
     func logout() {
         // Set bool for auth to false
-        self.currentUser.setVerificationPhoneStatus(status: true)
+        self.currentUser.setVerificationPhoneStatus(status: false)
         
         // Store user to device
         UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())

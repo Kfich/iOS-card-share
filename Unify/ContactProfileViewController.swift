@@ -20,6 +20,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     var selectedContact = CNContact()
     let formatter = CNContactFormatter()
     var contact = Contact()
+    var cardLink = "https://project-unify-node-server.herokuapp.com/card/render/"
+    
+   // var selectedCard = ContactCard()
     
     // This contact card is really a transaction object
     var card = ContactCard()
@@ -151,8 +154,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
  
-        // Set selected card 
-        self.card = ContactManager.sharedManager.selectedCard
+        // Set selected card // Default for testing
+        self.card = ContactManager.sharedManager.currentUserCards[0]
+        self.card.printCard()
+        
         // Set currentUser object
         self.currentUser = ContactManager.sharedManager.currentUser
             
@@ -389,6 +394,16 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     // Initialize contact objects for upload
     
     func parseContactRecord(contact: CNContact) -> Contact {
+        // Clear all profile info to prepare for override
+        bios.removeAll()
+        titles.removeAll()
+        emails.removeAll()
+        phoneNumbers.removeAll()
+        websites.removeAll()
+        organizations.removeAll()
+        socialLinks.removeAll()
+        workInformation.removeAll()
+        
         
         // Init formatter
         let formatter = CNContactFormatter()
@@ -798,7 +813,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             name = formatter.string(from: contact) ?? "No Name"
             recipientName = formatter.string(from: recipient) ?? ""
             
-            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+           /* if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
                 
                 let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
                 // Set contact phone number
@@ -812,16 +827,19 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             
             if contact.emailAddresses.count > 0 {
                 email = (contact.emailAddresses[0].value as String)
-            }
+            }*/
             
-            // Configure message
-            /*let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"*/
+            
+            // Set card link from cardID
+            cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
             
             // Test String
-            let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+            let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n \(cardLink)"
             
             // Set string as message body
             composeVC.body = str
+            // Set recipient phone
+            composeVC.recipients = [selectedUserPhone]
             
             // Present the view controller modally.
             self.present(composeVC, animated: true, completion: nil)
@@ -863,8 +881,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
         
+        // Set card link from cardID
+        cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
+        
         // Test String
-        let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+        let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact])
