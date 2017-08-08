@@ -99,9 +99,13 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         configureViews()
         populateCards()
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
         
-        
-
+        // Reset nav
+        self.resetNavigationBooleans()
     }
     
     // IBActions / Buttons pressed
@@ -137,6 +141,12 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     
     // Custom Methods
     
+    func resetNavigationBooleans() {
+        // ContactManager 
+        ContactManager.sharedManager.quickshareSMSSelected = false
+        ContactManager.sharedManager.quickshareEmailSelected = false
+    }
+    
     func configureViews(){
         
         // Configure cards
@@ -153,6 +163,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
         mediaButton6.image = UIImage(named: "social-blank")
         mediaButton7.image = UIImage(named: "social-blank")
+        
+        if ContactManager.sharedManager.quickshareSMSSelected {
+            // Set placeholder
+            self.emailTextField.placeholder = "Phone number"
+        }
         
     }
     
@@ -212,9 +227,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             
             // Pass form values into contact object 
             contact.name = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
-            contact.emails.append(["email": emailTextField.text!])
-            //contact.phoneNumbers.append(["phone": phoneTextField.text!])
             
+            // Set notes
             if notesTextField.text != nil{
                 contact.setNotes(note: notesTextField.text!)
             }
@@ -226,8 +240,25 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 self.uploadContactRecord()
             }
             
+            // Check for user intent
+            if ContactManager.sharedManager.quickshareSMSSelected {
+                // Set the number to contact
+                contact.phoneNumbers.append(["phone": emailTextField.text!])
+                // Show sms
+                self.showSMSCard()
+            }else{
+                // Set email
+                contact.emails.append(["email": emailTextField.text!])
+                // Show email 
+                self.showEmailCard()
+            }
+
+            
+            
+            
+            
             // Create Transaction 
-            self.createTransaction(type: "connection")
+            //self.createTransaction(type: "connection")
             
         }
     }
@@ -395,8 +426,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 composeVC.recipients = [contactPhone!]
             }
             
+            // Set card link from cardID
+            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
+            
             // Test String
-            let str = "Hi \(name), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+            let str = "Hi \(name), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
             
             // Set string as message body
             composeVC.body = str

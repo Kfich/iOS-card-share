@@ -2800,7 +2800,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Approve" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BDx-hM-mui">
-                                                            <rect key="frame" x="320" y="7" width="55" height="21"/>
+                                                            <rect key="frame" x="305" y="7" width="55" height="21"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="21" id="YZU-xK-dCH"/>
                                                             </constraints>
@@ -2809,7 +2809,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deny" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj5-Om-SW7">
-                                                            <rect key="frame" x="320" y="49" width="55" height="21"/>
+                                                            <rect key="frame" x="305" y="49" width="55" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <color key="textColor" red="1" green="0.38787269660000001" blue="0.32274025140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -2818,17 +2818,17 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="mXj-d9-oQi" firstAttribute="top" secondItem="GL4-cI-4gd" secondAttribute="top" id="5gD-4u-4W6"/>
-                                                        <constraint firstItem="Vj5-Om-SW7" firstAttribute="leading" secondItem="3e2-SF-ezA" secondAttribute="trailing" constant="5" id="BWb-v7-VW4"/>
+                                                        <constraint firstItem="Vj5-Om-SW7" firstAttribute="leading" secondItem="3e2-SF-ezA" secondAttribute="trailing" constant="-10" id="BWb-v7-VW4"/>
                                                         <constraint firstAttribute="bottom" secondItem="3e2-SF-ezA" secondAttribute="bottom" constant="3" id="Caa-cb-gXW"/>
                                                         <constraint firstItem="3e2-SF-ezA" firstAttribute="leading" secondItem="WJr-oi-AAa" secondAttribute="leading" id="FKU-ch-fLw"/>
-                                                        <constraint firstItem="BDx-hM-mui" firstAttribute="leading" secondItem="WJr-oi-AAa" secondAttribute="trailing" constant="43" id="GX2-fU-C2m"/>
+                                                        <constraint firstItem="BDx-hM-mui" firstAttribute="leading" secondItem="WJr-oi-AAa" secondAttribute="trailing" constant="28" id="GX2-fU-C2m"/>
                                                         <constraint firstItem="3e2-SF-ezA" firstAttribute="leading" secondItem="GL4-cI-4gd" secondAttribute="leading" constant="83" id="I22-ie-S1v"/>
                                                         <constraint firstItem="mXj-d9-oQi" firstAttribute="leading" secondItem="GL4-cI-4gd" secondAttribute="leading" id="JXF-6W-CNe"/>
                                                         <constraint firstItem="BDx-hM-mui" firstAttribute="trailing" secondItem="Vj5-Om-SW7" secondAttribute="trailing" id="QrH-Bz-gJc"/>
                                                         <constraint firstItem="WJr-oi-AAa" firstAttribute="top" secondItem="GL4-cI-4gd" secondAttribute="top" constant="6" id="RpM-C5-110"/>
                                                         <constraint firstItem="3e2-SF-ezA" firstAttribute="top" secondItem="WJr-oi-AAa" secondAttribute="bottom" constant="18" id="T4Q-iq-Gg7"/>
                                                         <constraint firstAttribute="bottom" secondItem="Vj5-Om-SW7" secondAttribute="bottom" constant="10" id="VNW-OJ-HjP"/>
-                                                        <constraint firstAttribute="trailing" secondItem="BDx-hM-mui" secondAttribute="trailing" id="WyW-am-4Ty"/>
+                                                        <constraint firstAttribute="trailing" secondItem="BDx-hM-mui" secondAttribute="trailing" constant="15" id="WyW-am-4Ty"/>
                                                         <constraint firstItem="Vj5-Om-SW7" firstAttribute="top" secondItem="BDx-hM-mui" secondAttribute="bottom" constant="21" id="Z81-0a-uqd"/>
                                                         <constraint firstItem="BDx-hM-mui" firstAttribute="top" secondItem="GL4-cI-4gd" secondAttribute="top" constant="7" id="b6y-PS-BRs"/>
                                                         <constraint firstItem="BDx-hM-mui" firstAttribute="leading" secondItem="Vj5-Om-SW7" secondAttribute="leading" id="iba-Od-wP1"/>
@@ -2899,7 +2899,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Approve" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Q1-U3-5zT">
-                                                                    <rect key="frame" x="320" y="4" width="55" height="21"/>
+                                                                    <rect key="frame" x="305" y="4" width="55" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="21" id="BqF-iV-RaB"/>
                                                                     </constraints>
@@ -2908,7 +2908,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deny" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZAr-FW-vLw">
-                                                                    <rect key="frame" x="320" y="46" width="55" height="21"/>
+                                                                    <rect key="frame" x="305" y="46" width="55" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <color key="textColor" red="1" green="0.38787269660000001" blue="0.32274025140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -2927,8 +2927,8 @@
                                                                 <constraint firstItem="Mhg-Pa-CUF" firstAttribute="top" secondItem="1fv-n2-nCj" secondAttribute="top" constant="6" id="cak-lq-UQN"/>
                                                                 <constraint firstItem="0ni-1k-Qh2" firstAttribute="leading" secondItem="1fv-n2-nCj" secondAttribute="leading" constant="83" id="dH2-2h-OvU"/>
                                                                 <constraint firstAttribute="bottom" secondItem="0ni-1k-Qh2" secondAttribute="bottom" constant="6" id="dcs-TE-1M3"/>
-                                                                <constraint firstAttribute="trailing" secondItem="4Q1-U3-5zT" secondAttribute="trailing" id="jLa-wB-6Sf"/>
-                                                                <constraint firstItem="ZAr-FW-vLw" firstAttribute="leading" secondItem="0ni-1k-Qh2" secondAttribute="trailing" constant="8" id="n33-Da-lR6"/>
+                                                                <constraint firstAttribute="trailing" secondItem="4Q1-U3-5zT" secondAttribute="trailing" constant="15" id="jLa-wB-6Sf"/>
+                                                                <constraint firstItem="ZAr-FW-vLw" firstAttribute="leading" secondItem="0ni-1k-Qh2" secondAttribute="trailing" constant="-7" id="n33-Da-lR6"/>
                                                                 <constraint firstItem="0ni-1k-Qh2" firstAttribute="leading" secondItem="Mhg-Pa-CUF" secondAttribute="leading" id="zVX-fO-kWw"/>
                                                             </constraints>
                                                         </view>

@@ -114,10 +114,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected transaction
-        //self.selectedTransaction = self.transactions[indexPath.row]
+        self.selectedTransaction = self.transactions[indexPath.row]
         
         // Get users in transaction
-        //self.fetchUsersForTransaction()
+        self.fetchUsersForTransaction()
         
         // Pass in segue
         //self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
@@ -659,6 +659,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.rejectButton.isHidden = true
             cell.rejectButton.isEnabled = false
             
+            cell.approveButton.text = "follow up"
+            cell.approveButton.isEnabled = false
+            
             // Change the label
             //cell.approveButton.setTitle("Follow up", for: .normal)
             
@@ -705,6 +708,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Hide and replace
             cell.connectionRejectButton.isHidden = true
             cell.connectionRejectButton.isEnabled = false
+            
+            cell.connectionApproveButton.text = "follow up"
+            cell.connectionApproveButton.isEnabled = false
             
             // Change the label
             //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
@@ -850,8 +856,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             composeVC.messageComposeDelegate = self
             
+            // Set card link from cardID
+            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+            
             // Configure message
-            let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n"
+            let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
             
             // Set message string
             composeVC.body = str
@@ -909,7 +918,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Create Message
         
-        let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.fullName) \n\n"
+        // Set card link from cardID
+        let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+        
+        let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.fullName) \n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact, emailRecipient])

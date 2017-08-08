@@ -35,6 +35,10 @@ class ContactManager{
     var userCreatedNewContact = false
     var userSelectedRecipient = false
     
+    // Quickshare
+    var quickshareSMSSelected = false
+    var quickshareEmailSelected = false
+    
     // Incognito toggle 
     var userIsIncognito = false 
     

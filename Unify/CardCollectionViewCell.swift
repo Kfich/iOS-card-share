@@ -67,11 +67,17 @@ class CardCollectionViewCell: UICollectionViewCell{
     @IBAction func showEmailCard(_ sender: Any) {
        // Post notification for radarPullupVC
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "EmailCardFromRadar"), object: self)
+        
+        // Set Manager bool 
+        ContactManager.sharedManager.quickshareEmailSelected = true
     }
     
     @IBAction func showEmailFromProfile(_ sender: Any) {
         // Post notification for radarPullupVC
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "EmailCardFromProfile"), object: self)
+        
+        // Set Manager bool
+        ContactManager.sharedManager.quickshareEmailSelected = true
     }
     
     
@@ -79,12 +85,18 @@ class CardCollectionViewCell: UICollectionViewCell{
     @IBAction func showSMSFromProfile(_ sender: Any) {
         // Post notification for radarPullupVC
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SMSCardFromProfile"), object: self)
+        
+        // Set Manager bool
+        ContactManager.sharedManager.quickshareSMSSelected = true
     }
     
     
     @IBAction func showSMSCard(_ sender: Any) {
         // Post notification for radarPullupVC
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SMSCardFromRadar"), object: self)
+        
+        // Set Manager bool
+        ContactManager.sharedManager.quickshareSMSSelected = true
     }
 
 }

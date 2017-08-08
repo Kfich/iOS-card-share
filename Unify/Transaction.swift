@@ -81,9 +81,9 @@ public class Transaction{
         
         print(recipientCard?.cardHolderName ?? "No name")
         
-        let approval = snapshot["approved"] as! String
+        let approval = snapshot["approved"] as! Bool
         
-        if approval == "0"{
+        if approval == false{
             approved = false
         }else{
             approved = true
