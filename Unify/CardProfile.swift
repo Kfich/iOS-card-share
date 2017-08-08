@@ -40,9 +40,9 @@ public class CardProfile{
     // Init with JSON Snapshot
     init(snapshot: NSDictionary) {
         
-        bio = snapshot["bio"] as? String
-        workInfo = snapshot["work_info"] as? String
-        title = snapshot["title"] as? String
+        bios = snapshot["bios"] as! [[String : String]]
+        workInformationList = snapshot["work_info"] as! [[String : String]]
+        titles = snapshot["titles"] as! [[String : String]]
         emails = snapshot["emails"] as! [[String : String]]
         phoneNumbers = snapshot["phone_numbers"] as! [[String : String]]
         socialLinks = snapshot["social_links"] as! [[String : String]]
@@ -69,9 +69,9 @@ public class CardProfile{
 
     init(fromDefaultsWithDictionary: NSDictionary) {
         
-        bio = fromDefaultsWithDictionary["bio"] as? String
-        workInfo = fromDefaultsWithDictionary["work_info"] as? String
-        title = fromDefaultsWithDictionary["title"] as? String
+        bios = fromDefaultsWithDictionary["bios"] as! [[String : String]]
+        workInformationList = fromDefaultsWithDictionary["work_info"] as! [[String : String]]
+        titles = fromDefaultsWithDictionary["titles"] as! [[String : String]]
         emails = fromDefaultsWithDictionary["emails"] as! [[String : String]]
         phoneNumbers = fromDefaultsWithDictionary["phone_numbers"] as! [[String : String]]
         socialLinks = fromDefaultsWithDictionary["social_links"] as! [[String : String]]
@@ -91,7 +91,7 @@ public class CardProfile{
         return [
             "bios": bios,
             "work_info": workInformationList,
-            "title": titles,
+            "titles": titles,
             "emails" : emails,
             "phone_numbers" : phoneNumbers,
             "social_links" : socialLinks,
@@ -105,9 +105,9 @@ public class CardProfile{
 
     func toAnyObjectWithImage() -> NSDictionary {
         return [
-            "bio": bios,
+            "bios": bios,
             "work_info": workInformationList,
-            "title": titles,
+            "titles": titles,
             "emails" : emails,
             "phone_numbers" : phoneNumbers,
             "social_links" : socialLinks,

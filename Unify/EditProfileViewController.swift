@@ -98,7 +98,7 @@ class EditProfileViewController: UIViewController {
         ContactManager.sharedManager.userSelectedEditCard = true
         
         // Execute call to send to server 
-        self.updateCurrentUser()
+        //self.updateCurrentUser()
         
     }
     

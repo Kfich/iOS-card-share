@@ -26,9 +26,9 @@ public class Transaction{
     //var sender : User = User()
     //var recipient : User = User()
     var senderCard : ContactCard = ContactCard()
-    var recipientCard : ContactCard = ContactCard()
+    var recipientCard : ContactCard? //= ContactCard()
     
-    var recipientList = [String]()
+    var recipientList : [String]?
     
     // Make a dict [string:any] due to timestamps
     var notes : [[String : String]]?
@@ -70,16 +70,16 @@ public class Transaction{
         senderCardId = snapshot["sender_card_id"] as! String
         type = snapshot["type"] as! String
         // Set recipient list
-        recipientList = snapshot["recipient_list"] as! [String]
+        recipientList = snapshot["recipient_list"] as? [String]
         //latitude = snapshot["latitude"] as! String
         //longitude = snapshot["latitude"] as! String
         
-        contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
+        //contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
         print("THE CONTACT DICT .. >> \(contactDictionary)")
         
-        recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
+        //recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
         
-        print(recipientCard.cardHolderName ?? "No name")
+        print(recipientCard?.cardHolderName ?? "No name")
         
         let approval = snapshot["approved"] as! String
         
@@ -211,7 +211,7 @@ public class Transaction{
     }
     
     func getRecipientCard()->ContactCard{
-        return recipientCard
+        return recipientCard!
     }
     func setRecipientCard(cardObject : ContactCard){
         recipientCard = cardObject
@@ -219,11 +219,11 @@ public class Transaction{
     
     // Phone Numbers
     func getRecipients()->[String]{
-        return recipientList
+        return recipientList!
     }
     
     func setRecipients(contactRecords : String){
-        recipientList.append(contactRecords)
+        //recipientList.append(contactRecords)
     }
 
     // Approval
@@ -272,7 +272,7 @@ public class Transaction{
         print("Long :  + \(longitude)")
         print("\nRecipient List :")
         print("\nRecipient Card :")
-        recipientCard.printCard()
+        recipientCard?.printCard()
         
         print(recipientList)
 

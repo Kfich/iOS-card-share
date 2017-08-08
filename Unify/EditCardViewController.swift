@@ -227,30 +227,23 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         card.printCard()
         //card.cardProfile.printProfle()
         
-        // Add card to manager object card suite
-        //ContactManager.sharedManager.currentUserCards.insert(card, at: 0)
-        
         // Overwrite card to current user object card suite
-    
+        
+        // Remove original from array
+        ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
+        
+        // Insert to manager card array
+        ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([self.card.toAnyObjectWithImage()], at: 0)
+        
+        // Set array to defualts
+        UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
         
         // Send to server
-        
-        
-        let parameters = ["data" : card.toAnyObject(), "uuid" : currentUser.userId] as [String : Any]
+        let parameters = ["data" : card.toAnyObject(), "uuid" : card.cardId] as [String : Any]
          print("\n\nTHE CARD TO ANY - PARAMS")
          print(parameters)
         
-        // Store current user cards to local device
-        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
-        //UDWrapper.setData("contact_cards", value: encodedData)
-        
-        
-        // Show progress hud
-        //KVNProgress.show(withStatus: "Saving your new card...")
-        
-        // Save card to DB
-        //let parameters = ["data": card.toAnyObject()]
-        
+        // Connection to DB
         Connection(configuration: nil).updateCardCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
                 print("Card Created Response ---> \(String(describing: response))")
@@ -259,11 +252,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 let dictionary : Dictionary = response as! [String : Any]
                 self.card.cardId = dictionary["uuid"] as? String
                 
-                // Insert to manager card array
-                ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([self.card.toAnyObjectWithImage()], at: 0)
+                // Overwrite original card
+                
                 
                 // Set array to defualts
-                UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+                //UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
                 
                 // Hide HUD
                 KVNProgress.dismiss()
@@ -274,6 +267,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 self.dismiss(animated: true, completion: {
                     // Send to database to update card with the new uuid
                     print("Send to db")
+                    self.postNotification()
                 })
                 
             } else {
@@ -732,6 +726,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // Custom Methods
+    
+    func postContactListRefresh() {
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: self)
+    }
     
     // Configuration
     func configureViews(){

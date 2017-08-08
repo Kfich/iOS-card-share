@@ -13,443 +13,611 @@ import UIKit
 import PopupDialog
 import CoreLocation
 import Skeleton
+import Contacts
 
 
-class ContactsTableViewController: UITableViewController, CLLocationManagerDelegate, UISearchBarDelegate, UISearchResultsUpdating, SearchProgressDelegate   {
+class ContactsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchBarDelegate, CustomSearchControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+    
+    // IBOutlets
+    // --------------------------------------
+    @IBOutlet weak var tblSearchResults: UITableView!
+    
     
     // Properties
-    // ----------------------------------------------
-
-
+    // --------------------------------------
+    var dataArray = [String]()
+    
+    var filteredArray = [String]()
+    
+    var shouldShowSearchResults = false
+    
     var searchController: UISearchController!
     
-    var searchProgressController: SearchProgressController!
+    var customSearchController: CustomSearchController!
     
-    var contactSearcher: Searcher!
-    var contactsHits: [JSONObject] = []
-    var originIsLocal: Bool = false
+    var index = 0
     
-    let placeholder = UIImage(named: "white")
-
+    var timer = Timer()
     
-    // IBOutlets / Buttons Pressed
-    // ----------------------------------------------
+    // Sorted contact list
+    var letters: [Character] = []
+    var contacts = [Character: [String]]()
     
     
-    // View Config
-    
-    fileprivate static let kRowHeight: CGFloat = 50
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        // Show and Configure Nav bar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationController?.navigationBar.barTintColor = UIColor.white
-        // Set color to nav bar
-        let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
-        self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
-    }
+    // Page setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // Do any additional setup after loading the view, typically from a nib.
         
-        title = "Contacts"
+        tblSearchResults.delegate = self
+        tblSearchResults.dataSource = self
         
+        //loadListOfCountries()
         
-        // Add observers
+        getContacts()
         
-        addObservers()
+        // Uncomment the following line to enable the default search controller.
+        // configureSearchController()
         
-        // Tableview settings
-        //tableView.isScrollEnabled = false
-        //tableView.separatorStyle = .none
+        // Comment out the next line to disable the customized search controller and search bar and use the default ones. Also, uncomment the above line.
+        configureCustomSearchController()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    // MARK: UITableView Delegate and Datasource functions
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return letters.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if shouldShowSearchResults {
+            return filteredArray.count
+        }
+        else {
+            return contacts[letters[section]]!.count
+        }
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return String(letters[section])
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
         
-        let nib = UINib(nibName: String(describing: SkeletonCell.self), bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: String(describing: SkeletonCell.self))
-        tableView.separatorStyle = .none
-        
-        /*
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)
-        
-        self.automaticallyAdjustsScrollViewInsets = false*/
- 
-        DispatchQueue.main.async {
-            //self.tableView.contentInset = UIEdgeInsets(top: 20, left: 10, bottom: 0, right: 10)
+        if shouldShowSearchResults {
+            cell.contactNameLabel?.text = filteredArray[indexPath.row]
+        }
+        else {
+            // Assign contact object
+            
+            //let contact
+            cell.contactNameLabel?.text = contacts[letters[indexPath.section]]?[indexPath.row]//dataArray[indexPath.row]
+            
         }
         
+        // Set image
+        cell.contactImageView.image = UIImage(named: "profile")
+        // Add tap gesture to follow up button
+        self.addGestureToImage(image: (cell.introImageView)!, index: indexPath.row)
         
-        // Algolia Search
-        contactSearcher = Searcher(index: AlgoliaManager.sharedInstance.contactsIndex, resultHandler: self.handleSearchResults)
-        contactSearcher.params.hitsPerPage = 15
-        contactSearcher.params.attributesToRetrieve = ["givenName", "image", "rating", "year"]
-        contactSearcher.params.attributesToHighlight = ["givenName"]
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 47.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        // Search controller
+        // Add label to the view
+        let lbl = UILabel(frame: CGRect(8, 3, 15, 15))
+        lbl.text = String(letters[section])
+        lbl.textAlignment = .left
+        
+        lbl.textColor = UIColor.white
+        lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(16))
+        containerView.addSubview(lbl)
+        
+        return containerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+    
+    // method to run when table view cell is tapped
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        /* contactListTableView.deselectRow(at: indexPath, animated: true)
+         
+         print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
+         // Assign selected contact
+         selectedContact = ContactManager.sharedManager.phoneContactList[indexPath.row]
+         // Pass in segue
+         self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row) */
+        
+        
+        if shouldShowSearchResults {
+            // Show results from filtered array
+            print("Index path", indexPath.row)
+            print(filteredArray[indexPath.row])
+        }else{
+            print("Index path for data array", indexPath.row)
+            print(dataArray[indexPath.row])
+        }
+        
+        // Search for contact by name in list
+        
+        
+    }
+    
+    
+    // MARK: Custom functions
+    
+    
+    func getContacts() {
+        let status = CNContactStore.authorizationStatus(for: .contacts)
+        if status == .denied || status == .restricted {
+            //presentSettingsActionSheet()
+            return
+        }
+        
+        // open it
+        
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts) { granted, error in
+            guard granted else {
+                DispatchQueue.main.async {
+                    //self.presentSettingsActionSheet()
+                }
+                return
+            }
+            
+            // get the contacts
+            
+            var contacts = [CNContact]()
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor])
+            // Sort users by last name
+            request.sortOrder = CNContactSortOrder.familyName
+            // Execute request
+            do {
+                try store.enumerateContacts(with: request) { contact, stop in
+                    contacts.append(contact)
+                }
+            } catch {
+                print(error)
+            }
+            
+            // do something with the contacts array (e.g. print the names)
+            
+            let formatter = CNContactFormatter()
+            formatter.style = .fullName
+            for contact in contacts {
+                //print(formatter.string(from: contact) ?? "No Name")
+                
+                
+                self.dataArray.append(formatter.string(from: contact) ?? "No Name")
+                
+                if contact.phoneNumbers.count > 0 {
+                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
+                }
+                if contact.emailAddresses.count > 0 {
+                    //print((contact.emailAddresses[0].value))
+                }
+                if contact.imageDataAvailable {
+                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
+                    //print("Has IMAGE")
+                }
+                // Previous apprend area
+                //self.phoneContactList.append(contact)
+                
+                // print(self.phoneContactList.count)
+                //print(contact)
+            }
+            
+            // Create contact objects
+            // self.contactObjectList = self.createContactRecords()
+            
+            // Set appeared to true
+            // self.contactListHasAppeared = true
+            
+            // Post refresh
+            // self.postContactListRefresh()
+            
+            //Set bool to indicate contacts have been synced
+            //UDWrapper.setBool("contacts_synced", value: true)
+            
+            // Upload Contacts
+            //self.uploadContactRecords()
+            
+            self.sortContacts()
+            
+            // Sync up with main queue
+            DispatchQueue.main.async {
+                
+                // Sort list
+                //self.sortContacts()
+                // Reload the tableview.
+                self.tblSearchResults.reloadData()
+            }
+            
+        }
+    }
+    
+    // Search Bar Configuration & Delegates
+    
+    func configureSearchController() {
+        // Initialize and perform a minimum configuration to the search controller.
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search here..."
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = NSLocalizedString("search_bar_placeholder", comment: "")
+        searchController.searchBar.sizeToFit()
         
-        // Add the search bar
-        tableView.tableHeaderView = self.searchController!.searchBar
-        definesPresentationContext = true
-        searchController!.searchBar.sizeToFit()
+        // Place the search bar view to the tableview headerview.
+        tblSearchResults.tableHeaderView = searchController.searchBar
+    }
+    
+    
+    func configureCustomSearchController() {
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: tblSearchResults.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Futura", size: 16.0)!, searchBarTextColor: UIColor.blue, searchBarTintColor: UIColor.white)
         
-        searchController!.searchBar.barStyle = UIBarStyle.default
-
-        // Configure search progress monitoring.
-        searchProgressController = SearchProgressController(searcher: contactSearcher)
-        //searchProgressController.delegate = self
+        customSearchController.customSearchBar.placeholder = "Search"
+        tblSearchResults.tableHeaderView = customSearchController.customSearchBar
         
-        
-        // First load
-        
-        let delayInSeconds = 1.0
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-            self.updateSearchResults(for: self.searchController)
-
+        customSearchController.customDelegate = self
+    }
+    
+    
+    // MARK: UISearchBarDelegate functions
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = true
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            tblSearchResults.reloadData()
         }
         
-        print("\n\n\n THIS IS THE CONTACT LIST COUNT\n\n")
-        print(contactsHits.count)
-        print(contactsHits)
-        print("\n\n\n THIS IS THE CONTACT LIST COUNT\n\n")
-
-        
-        
-    }
-    
-    // Cleanup
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+        searchController.searchBar.resignFirstResponder()
     }
     
     
-    
-    // MARK: - Search completion handlers
-    
-    private func handleSearchResults(results: SearchResults?, error: Error?) {
-        guard let results = results else { return }
-        if results.page == 0 {
-            contactsHits = results.hits
-        } else {
-            contactsHits.append(contentsOf: results.hits)
-        }
-        originIsLocal = results.content["origin"] as? String == "local"
-        self.tableView.reloadData()
-    }
-    
-
-    
-    
-    // MARK: - Table view data source
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        /*if contactsHits.count == 0
-        {
-            return Int(view.bounds.height/ContactsTableViewController.kRowHeight) + 1
-            
-        } else {
-            
-            return contactsHits.count
-         }*/
-        
-        return 1
-    }
-    
-
-    
-    
-    //MARK: - UITableViewDataSource
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
-        /*
-        if contactsHits.count == 0
-        {
-            return Int(view.bounds.height/ContactsTableViewController.kRowHeight) + 1
-
-        } else {
-            
-             return contactsHits.count
-        }*/
-        return 10
-        
-    }
- 
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return ContactsTableViewController.kRowHeight
-    }
- 
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        /*if contactsHits.count == 0
-        {
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SkeletonCell.self), for: indexPath) as! SkeletonCell
-            
-            //pre loader
-            cell.gradientLayers.forEach { gradientLayer in
-                
-                //rcell.backgroundColor = .clear
-                
-                /*let baseColor = cell.titlePlaceholderView.backgroundColor!
-                gradientLayer.colors = [baseColor.cgColor,
-                                        baseColor.brightened(by: 0.93).cgColor,
-                                        baseColor.cgColor]*/
-            }
-            
-            return cell
-            
-        } else {*/
-            
-            //real contact cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! ContactCell
-            
-            cell.backgroundColor = .clear
-            
-            // Load more?
-            if indexPath.row + 5 >= contactsHits.count {
-                contactSearcher.loadMore()
-            }
-            
-            // Configure the cell...
-            //let contact = ContactRecord(json: contactsHits[indexPath.row])
-            
-            //cell.titleLabel.text = contact.givenName
-            
-            // Temp config for testing
-           
-            cell.posterImageView.image = UIImage(named: "throwback.png")
-            cell.bio.text = "Kevin Dot"
-            //cell.titleLabel.text = "This is the BIO Label"
-            //cell.email.text = "kev@crane.ai"
-            //cell.phone.text = "+1(347)-234-7890"
-        
-        
-        
-            // Add media buttons
-            configureMediaForButtonOnCell(cell: cell)
-        
-            
-            // Round out images
-            configureViews(cell: cell)
-            
-            
-            
-            /*
-            cell.textLabel?.text = contact.givenName
-            
-            cell.detailTextLabel?.text = contact.year != nil ? "\(contact.year!)" : nil
-            cell.imageView?.cancelImageDownloadTask()
-            if let url = contact.imageUrl {
-                cell.imageView?.setImageWith(url, placeholderImage: placeholder)
-            }
-            else {
-                cell.imageView?.image = nil
-            }
-            cell.backgroundColor = originIsLocal ? AppDelegate.colorForLocalOrigin : UIColor.white
-            */
-            
-            return cell
-        //}
-    
-    }
-    
-    // Headers for table sections
-    
-    /*override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 1
-    }*/
-    
-    /*
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 2))
-        containerView.backgroundColor = UIColor.clear
-        return containerView
-    }*/
-    
-    //MARK: - UITableViewDelegate
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        /*if contactsHits.count == 0
-        {
-            let skeletonCell = cell as! SkeletonCell
-            skeletonCell.slide(to: .right)
-            
-        } else {*/
-            
-            //real contact cell
-            //let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath)
-            /*UIGraphicsBeginImageContext(self.view.frame.size)
-            UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
-            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-            UIGraphicsEndImageContext()
-            self.view.backgroundColor = UIColor(patternImage: image)*/
-            
-            
-            
-           /*
-            cell.contentView.backgroundColor = UIColor.clear
-            
-            let whiteRoundedView : UIView = UIView(frame: CGRect(5, 10, self.view.frame.size.width - 10, ContactsTableViewController.kRowHeight - 10))
-            
-            whiteRoundedView.layer.backgroundColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [1.0, 1.0, 1.0, 1.0])
-            whiteRoundedView.layer.masksToBounds = false
-            //whiteRoundedView.layer.cornerRadius = 2.0
-            // whiteRoundedView.layer.shadowOffset = CGSize(-1, 1)
-            // whiteRoundedView.layer.shadowOpacity = 0.2
-            
-            cell.contentView.addSubview(whiteRoundedView)
-            cell.contentView.sendSubview(toBack: whiteRoundedView)*/
-            
-        //}
-        
-    }
-    
-    
-    
-    
-    
-    // MARK: - Search
+    // MARK: UISearchResultsUpdating delegate function
     
     func updateSearchResults(for searchController: UISearchController) {
-        contactSearcher.params.query = searchController.searchBar.text
-        contactSearcher.search()
-    }
-    
-    // MARK: - KVO
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-    }
-    
-    // MARK: - Activity indicator
-    
-    // MARK: - SearchProgressDelegate
-    
-    func searchDidStart(_ searchProgressController: SearchProgressController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func searchDidStop(_ searchProgressController: SearchProgressController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-    }
-
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        ContactManager.sharedManager.userArrivedFromContactList = true
-
-        if ContactManager.sharedManager.userArrivedFromIntro{
-            // Perform information transfer
-            // -> Give contact record to the manager
-            
-            
-            // Navigate appropriately
-            
-            dismiss(animated: true, completion: nil)
-            ContactManager.sharedManager.userArrivedFromIntro = false
-        }else{
-            
-            // Show contact profile and set arrival to false
-            self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
-            ContactManager.sharedManager.userArrivedFromContactList = false
-
+        guard let searchString = searchController.searchBar.text else {
+            return
         }
         
+        // Filter the data array and get only those countries that match the search text.
+        filteredArray = dataArray.filter({ (country) -> Bool in
+            let countryText:NSString = country as NSString
+            
+            return (countryText.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
         
+        // Reload the tableview.
+        tblSearchResults.reloadData()
     }
+    
+    
+    // MARK: CustomSearchControllerDelegate functions
+    
+    func didStartSearching() {
+        shouldShowSearchResults = true
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func didTapOnSearchButton() {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            tblSearchResults.reloadData()
+        }
+    }
+    
+    
+    func didTapOnCancelButton() {
+        shouldShowSearchResults = false
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func didChangeSearchText(_ searchText: String) {
+        // Filter the data array and get only those countries that match the search text.
+        filteredArray = dataArray.filter({ (country) -> Bool in
+            let countryText: NSString = country as NSString
+            
+            return (countryText.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
+        
+        // Reload the tableview.
+        tblSearchResults.reloadData()
+    }
+    
     
     // Custom Methods
     
-    func configureViews(cell: ContactCell){
-        // Add radius config & border color
-        
-        // Add radius config & border color
-        /*cell.cardWrapperView.layer.cornerRadius = 12.0
-        cell.cardWrapperView.clipsToBounds = true
-        cell.cardWrapperView.layer.borderWidth = 1.5
-        cell.cardWrapperView.layer.borderColor = UIColor.white.cgColor*/
-        
-        // Config tool bar 
-        /*cell.mediaButtonToolBar.backgroundColor = UIColor.white
-        // Set shadow on the container view
-        cell.mediaButtonToolBar.layer.shadowColor = UIColor.black.cgColor
-        cell.mediaButtonToolBar.layer.shadowOpacity = 1.5
-        cell.mediaButtonToolBar.layer.shadowOffset = CGSize.zero
-        cell.mediaButtonToolBar.layer.shadowRadius = 2*/
-        
-      
-    }
     
-    func configureMediaForButtonOnCell(cell: ContactCell) {
+    func sortContacts() {
+        // Test for sorting contacts by last name into sections
         
-        /*let button = UIButton(type: .system)
-        button.setImage(UIImage(named:"icn-social-facebook.png"), for: .normal)
-        button.sizeToFit()
-        let item = UIBarButtonItem(customView: button)
+        //let data = self.dataArray // Example data, use your phonebook data here.
         
-        //cell.mediaButton1.customView = item.customView
+        // Build letters array:
         
-        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
-        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
-        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
-        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
-        cell.mediaButton6.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton7.image = UIImage(named: "icn-social-facebook.png")*/
-    }
-    
-    func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(ContactsTableViewController.showIntroViewController), name: NSNotification.Name(rawValue: "ContactIntroSelected"), object: nil)
+        //letters: [Character]
         
-    }
-    
-    func showIntroViewController(){
+        letters = dataArray.map { (name) -> Character in
+            print(name[name.startIndex])
+            return name[name.startIndex]
+        }
         
-        // Set manager bool to true to signal nav patterns according to user path
-        ContactManager.sharedManager.userArrivedFromContactList = true
+        letters = letters.sorted()
+        // Print letters array
+        print("\n\nLETTERS >>>> \(letters)")
         
-        // Initialize VC
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "IntroVC")
-        self.present(controller, animated: true, completion: nil)
-        
-    }
-
-    
-    // Navigation
-
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        letters = letters.reduce([], { (list, name) -> [Character] in
+            if !list.contains(name) {
+                // Test to see if letters added
+                print("\n\nAdded >>>> \(list + [name])")
+                return list + [name]
+            }
+            return list
+        })
         
         
-        // Prepare info to pass on segue
+        // Build contacts array:
         
-        
-        if segue.identifier == "showContactProfile"{
+        // Init sorted contacts array
+        //var contacts = [Character: [String]]()
+        // Iterate over contact list
+        for entry in dataArray {
             
-            /*let nextScene =  segue.destination as! ContactProfileViewController
+            if contacts[entry[entry.startIndex]] == nil {
+                // Set index if doesn't exist
+                contacts[entry[entry.startIndex]] = [String]()
+            }
             
-            nextScene.active_card_unify_uuid = "\(sender!)" as String?
-            
-            print(">Passed Contact Card ID")
-            print(sender)*/
+            // Add entry to section
+            contacts[entry[entry.startIndex]]!.append(entry)
             
         }
+        
+        // Sort list
+        for (letter, list) in contacts {
+            contacts[letter] = list.sorted()
+            // Test output
+            print(contacts[letter])
+        }
     }
+    
+    func addGestureToImage(image: UIImageView, index: Int) {
+        // Init tap gesture
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showIntroWithContact(sender:)))
+        image.isUserInteractionEnabled = true
+        // Add gesture to image
+        image.addGestureRecognizer(tapGestureRecognizer)
+        // Set image index
+        image.tag = index
+    }
+    
+    func showIntroWithContact(sender: UITapGestureRecognizer){
+        // Set selected contact on manager using tag
+        ContactManager.sharedManager.contactToIntro = ContactManager.sharedManager.phoneContactList[(sender.view?.tag)!]
+        
+        // Set navigation toggle on manager to indicate intent
+        ContactManager.sharedManager.userArrivedFromContactList = true
+        ContactManager.sharedManager.userArrivedFromIntro = true
+        
+        // Notification for intro screen
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+        // Set selected tab
+        
+        
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            // Set selected tab
+            self.tabBarController?.selectedIndex = 1
+        }
+        
+    }
+    
+    func uploadContactRecords(){
+        // Call function from manager
+        //ContactManager.sharedManager.uploadContactRecords()
+        
+        timer = Timer.scheduledTimer(timeInterval: 0.2 , target: self, selector: #selector(ContactListViewController.uploadRecord), userInfo: nil, repeats: true)
+        
+        //  Start timer
+        timer.fire()
+        
+    }
+    
+    func uploadRecord(){
+        
+        print("hello World")
+        // Assign contact
+        let contact = ContactManager.sharedManager.contactObjectList[self.index]
+        
+        // Create dictionary
+        let parameters = ["data" : contact.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
+        print(parameters)
+        
+        // Send to server
+        Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                // Call successful
+                print("Transaction Created Response ---> \(String(describing: response))")
+                
+                
+            } else {
+                // Error occured
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                
+                // Show user popup of error message
+                
+                
+            }
+            // Hide indicator
+            
+            
+        }
+        
+        // Check if we're at the end of the list
+        if self.index < ContactManager.sharedManager.contactObjectList.count{
+            // Increment index
+            self.index = self.index + 1
+            
+        }else{
+            // Turn off timer to end execution
+            self.timer.invalidate()
+            
+            //Set bool to indicate contacts have been synced
+            UDWrapper.setBool("contacts_synced", value: true)
+        }
+        
+        
+    }
+    
+    
+    // Empty State Delegate Methods
+    
+    // Settings
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+        
+        // All arrays are empty
+        /*if checkForEmptyData() == true {
+         return true
+         }else{
+         return false
+         }*/
+        return false
+    }
+    
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        // Lock scroll
+        return false
+    }
+    
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Configure string
+        
+        let emptyString = "No Profile Info Found"
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Config Message for user
+        
+        let emptyString = ""
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+        
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
+        // Config button for data set
+        
+        let emptyString = "Tap to Sync Contacts"
+        
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        let attributes = [ NSForegroundColorAttributeName: blue ]
+        
+        let attrString = NSAttributedString(string: emptyString, attributes: attributes)
+        
+        return attrString
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        // Set to height of header bar
+        return -64
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap view: UIView) {
+        // Configure action for tap
+        print("The View Was tapped")
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap button: UIButton) {
+        // Configure action for button tap
+        print("The Button Was tapped")
+        
+        // Sync contact list
+        ContactManager.sharedManager.getContacts()
+    }
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "showContactProfile"{
+            // Find destination
+            let destination = segue.destination as! ContactProfileViewController
+            // Assign selected contact object
+            //destination.selectedContact = self.selectedContact
+            
+            // Test
+            print("Contact Passed in Seggy")
+        }
+        
+        
+    }
+    
+    
 }
 
+/*
+ extension UISearchBar {
+ func changeSearchBarColor(color: UIColor) {
+ UIGraphicsBeginImageContext(self.frame.size)
+ color.setFill()
+ UIBezierPath(rect: self.frame).fill()
+ let bgImage = UIGraphicsGetImageFromCurrentImageContext()!
+ UIGraphicsEndImageContext()
+ 
+ self.setSearchFieldBackgroundImage(bgImage, for: .normal)
+ }
+ }
+ */
 

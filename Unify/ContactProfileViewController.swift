@@ -725,8 +725,14 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     // Custom Methods
     
     func createTransaction(type: String) {
-        // Set Type
-        self.transaction.type = type
+        
+        // Set type & Transaction data
+        transaction.type = type
+        transaction.setTransactionDate()
+        transaction.senderId = ContactManager.sharedManager.currentUser.userId
+        transaction.type = "connection"
+        transaction.scope = "transaction"
+        transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
         
         // Show progress hud
         KVNProgress.show(withStatus: "Making the connection...")
@@ -742,8 +748,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 print("Card Created Response ---> \(response)")
                 
                 // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                /*let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Hide HUD
                 KVNProgress.dismiss()
@@ -902,13 +908,51 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     
     // MARK: MFMailComposeViewControllerDelegate Method
+    
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("User cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            self.createTransaction(type: "connection")
+            // Dimiss vc
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+        
+        
         controller.dismiss(animated: true, completion: nil)
     }
     
     // Message Composer Delegate
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("Cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            // Create transaction
+            self.createTransaction(type: "connection")
+            // Dismiss VC
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+
+        
         // Make checks here for
         controller.dismiss(animated: true) {
             print("Message composer dismissed")

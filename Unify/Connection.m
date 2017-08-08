@@ -58,7 +58,7 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kCreateCard];
 }
 
-- (NSURLSessionDataTask*)getCardsCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
+- (NSURLSessionDataTask*)getCardsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetCard];
 }
 

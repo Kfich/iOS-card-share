@@ -23,6 +23,12 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
     
     // This contact card is really a transaction object
     var card = ContactCard()
+    var transaction = Transaction()
+    var lat : Double = 0.0
+    var long : Double = 0.0
+    var address : String = ""
+    var selectedUserIds = [String]()
+    
     
     
     var currentUser = User()
@@ -373,12 +379,48 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
     // MARK: MFMailComposeViewControllerDelegate Method
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("User cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            self.createTransaction(type: "connection")
+            // Dimiss vc
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+
+        
         controller.dismiss(animated: true, completion: nil)
     }
     
     // Message Composer Delegate
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("User cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            self.createTransaction(type: "connection")
+            // Dimiss vc
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+
+        
         // Make checks here for
         controller.dismiss(animated: true) {
             print("Message composer dismissed")
@@ -388,9 +430,72 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
     
     
     
-    
     // Custom Methods
     // -------------------------------------------
+    
+    func createTransaction(type: String) {
+        // Set type & Transaction data
+        transaction.type = type
+        transaction.setTransactionDate()
+        transaction.senderId = ContactManager.sharedManager.currentUser.userId
+        transaction.type = "connection"
+        transaction.scope = "transaction"
+        transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+        
+        transaction.latitude = self.lat
+        transaction.longitude = self.long
+        transaction.recipientList = selectedUserIds
+        transaction.location = self.address
+        // Attach card id
+        
+        
+        // Show progress hud
+        
+        let conf = KVNProgressConfiguration.default()
+        conf?.isFullScreen = true
+        conf?.statusColor = UIColor.white
+        conf?.successColor = UIColor.white
+        conf?.circleSize = 170
+        conf?.lineWidth = 10
+        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
+        conf?.circleStrokeBackgroundColor = UIColor.white
+        conf?.circleStrokeForegroundColor = UIColor.white
+        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+        KVNProgress.setConfiguration(conf)
+        
+        KVNProgress.show(withStatus: "Sending your card...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        
+        // Send to server
+        
+        Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                /*let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+                // Dismiss VC
+                self.dismiss(animated: true, completion: nil)
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection request. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
     
     // Message Composer Functions
     

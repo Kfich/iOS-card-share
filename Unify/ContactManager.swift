@@ -33,6 +33,7 @@ class ContactManager{
     var userDidCreateCard = false
     var userSelectedEditCard = false
     var userCreatedNewContact = false
+    var userSelectedRecipient = false
     
     // Incognito toggle 
     var userIsIncognito = false 
@@ -109,9 +110,44 @@ class ContactManager{
                 print("Card Removed .. ")
                 print("Current User Cards \(currentUserCardsDictionaryArray.count)")
                 print("Current User Cards Dictionaries \(currentUserCards.count)")
+                // Exit loop
+                break
             }
             
             // increment index 
+            index = index + 1
+        }
+        print("Current User Cards \(currentUserCardsDictionaryArray.count)")
+        print("Current User Cards Dictionaries \(currentUserCards.count)")
+    }
+    
+    // Card Handling
+    func saveCardToArray(cardIdString : String, currentCard: ContactCard) {
+        //  Iterate over cards
+        var index = 0
+        
+        for card in 0..<currentUserCards.count {
+            // Find id match
+            let card = currentUserCards[index]
+            
+            if card.cardId == cardIdString {
+                
+                print(index)
+                card.printCard()
+                // Remove index
+                //currentUserCards.remove(at: index)
+                //currentUserCardsDictionaryArray.remove(at: index)
+                
+                //currentUserCards[index] = currentCard
+               // currentUserCardsDictionaryArray[index] = [currentCard.toAnyObjectWithImage()]
+                
+                print("Card Overwritten .. ")
+                print("Current User Cards \(currentUserCardsDictionaryArray.count)")
+                print("Current User Cards Dictionaries \(currentUserCards.count)")
+                break
+            }
+            
+            // increment index
             index = index + 1
         }
         print("Current User Cards \(currentUserCardsDictionaryArray.count)")

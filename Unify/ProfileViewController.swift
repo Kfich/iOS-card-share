@@ -355,12 +355,13 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.workInformation = [String]()
         
         // Parse bio info
-         if currentUser.userProfile.bios.count > 0{
+        
+        if currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
             for bio in currentUser.userProfile.bios{
                 bios.append((bio["bio"])!)
+                print(bio["bio"])
             }
-            
         }
         
         // Parse work info
@@ -375,6 +376,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         if currentUser.userProfile.titles.count > 0{
             for info in currentUser.userProfile.titles{
                 titles.append((info["title"])!)
+                print(info["title"])
             }
         }
          

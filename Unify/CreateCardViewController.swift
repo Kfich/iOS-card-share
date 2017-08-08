@@ -67,6 +67,20 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBOutlet var addImageButton: UIButton!
     @IBOutlet var addCardNameButton: UIButton!
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Set current user
+        currentUser = ContactManager.sharedManager.currentUser
+        
+        // Set image 
+        // If user has default image, set as container view
+        if currentUser.profileImages.count > 0{
+            profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+        }
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -93,10 +107,6 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.websites = [String]()
         self.workInformation = [String]()
         
-        // If user has default image, set as container view
-        if currentUser.profileImages.count > 0{
-            profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
-        }
         
         // Set name as default value
         if currentUser.fullName != ""{
@@ -296,7 +306,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             print("Selected image")
             
             // Change button text
-            self.addImageButton.titleLabel?.text = "Change Image"
+            self.addImageButton.titleLabel?.text = "Change"
             
             // Set image to view
             self.profileImageView.image = image

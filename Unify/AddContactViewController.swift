@@ -33,6 +33,8 @@ class AddContactViewController: UIViewController {
     var notes = [String]()
     var tags = [String]()
     
+    var uploadContactSelected = false
+    
     // IBOutlets
     // ----------------------------------
     
@@ -95,9 +97,9 @@ class AddContactViewController: UIViewController {
         // Drop the keyboard
         self.view.endEditing(true)
         
-        // Execute call to set contact 
-        self.setContact()
+        ContactManager.sharedManager.userCreatedNewContact = true
         
+        // Dimiss vc
     }
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {
@@ -120,6 +122,10 @@ class AddContactViewController: UIViewController {
         
         // Add observers for notifications
         addObservers()
+        
+        // Set image
+        let image = UIImage(named: "profile-placeholder")
+        self.profileImageView.image = image
         
     }
     
@@ -193,7 +199,7 @@ class AddContactViewController: UIViewController {
                 print("Contact Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
+                let dictionary : NSArray = response as! NSArray
                 print(dictionary)
                 
                 // Hide HUD

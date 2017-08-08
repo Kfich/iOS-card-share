@@ -85,6 +85,9 @@ class CreateAccountViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
         
+        // Set user object 
+        self.newUser = ContactManager.sharedManager.currentUser
+        
     }
     
     
@@ -273,10 +276,13 @@ class CreateAccountViewController: UIViewController {
         
         // Print to test
         newUser.printUser()
+            
+        // Store user to device
+        //UDWrapper.setDictionary("user", value: self.newUser.toAnyObjectWithImage())
         
         // Create first card here
         createFirstCard()
-    
+            
         // Replaced with pinVerification Logics 
             
         // Pass segue
@@ -288,10 +294,11 @@ class CreateAccountViewController: UIViewController {
     
     func createFirstCard() {
         // Create the card
-        let card = ContactManager.sharedManager.selectedCard
+        ///let card = ContactManager.sharedManager.selectedCard
         
         // Add card ownerId
         card.ownerId = newUser.userId
+        card.cardProfile.setPhoneRecords(phoneRecords: ["phone": newUser.userProfile.phoneNumbers[0]["phone"]!])
         
         // Populate card 
         self.populateFirstCard()
@@ -327,16 +334,8 @@ class CreateAccountViewController: UIViewController {
                 // Hide HUD
                 KVNProgress.dismiss()
                 
-                
-                 // Show homepage
-                 DispatchQueue.main.async {
-                    // Update UI
-                    // Show Home Tab
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-                    TabBarViewController
-                    self.view.window?.rootViewController = homeViewController
-                 }
+                // Update user
+                self.updateCurrentUser()
                 
                 
                 
@@ -396,6 +395,53 @@ class CreateAccountViewController: UIViewController {
         ContactManager.sharedManager.selectedCard = card
         
     }
+    
+    func updateCurrentUser() {
+        // Configure to send to server
+        
+        
+        // Send to server
+        let parameters = ["data" : newUser.toAnyObject(), "uuid" : newUser.userId] as [String : Any]
+        print("\n\nUPDATE USER - PARAMS")
+        print(parameters)
+        
+        // Connect to server
+        Connection(configuration: nil).updateUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("User Updated Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print(dictionary)
+                
+                
+                // Store user to device
+                UDWrapper.setDictionary("user", value: self.newUser.toAnyObjectWithImage())
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+                // Show homepage
+                DispatchQueue.main.async {
+                    // Update UI
+                    // Show Home Tab
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                    TabBarViewController
+                    self.view.window?.rootViewController = homeViewController
+                }
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+
     
     // Status bar
     override var preferredStatusBarStyle: UIStatusBarStyle {

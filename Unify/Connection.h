@@ -16,7 +16,7 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 
 // Cards
 - (NSURLSessionDataTask*)createCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
-- (NSURLSessionDataTask*)getCardsCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)getCardsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)updateCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)deleteCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 

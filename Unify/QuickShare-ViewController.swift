@@ -278,8 +278,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 print("Card Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                /*let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Hide HUD
                 KVNProgress.dismiss()
@@ -330,6 +330,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             if error == nil {
                 // Call successful
                 print("Transaction Created Response ---> \(String(describing: response))")
+                
+                
                 
                 // Hide HUD
                 KVNProgress.dismiss()
@@ -454,11 +456,53 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     // Message Composer Delegate
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        
+        if result == .cancelled {
+            // User cancelled
+            //self.dismiss(animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+            
+        }else if result == .sent{
+            // User sent
+            self.createTransaction(type: "connection")
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+        
         // Make checks here for
         controller.dismiss(animated: true) {
             print("Message composer dismissed")
         }
     }
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("User cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            self.createTransaction(type: "connection")
+            // Dimiss vc
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+
 
     
     

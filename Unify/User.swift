@@ -97,7 +97,7 @@ public class User{
         userPhoneVerified = snapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
         
         // Create card profile
-        userProfile = CardProfile(snapshot: snapshot["profile"] as! NSDictionary) 
+        userProfile = CardProfile(snapshot: snapshot["profile"] as! NSDictionary)
         
         
         // To get full username

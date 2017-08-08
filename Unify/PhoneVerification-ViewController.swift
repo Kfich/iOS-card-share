@@ -273,11 +273,12 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 // Assign uuid to user object
                 self.currentUser.userId = dictionary["uuid"] as! String
                 
+                
                 // Check if current user bool set 
-                let check = dictionary["isUser"] as! Int
+                let check = dictionary["isUser"] as! Bool
                 
                 // Set bool with result
-                if check == 0{
+                if check == false{
                     // False
                     self.isCurrentUser = false
                 }else{
@@ -293,6 +294,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                     self.currentUser.printUser()
                 }
                 
+                // Set user to manager object
+                ContactManager.sharedManager.currentUser = self.currentUser
                                 
                 // Show success
                 KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")

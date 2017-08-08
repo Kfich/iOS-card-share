@@ -8,9 +8,11 @@
 
 import UIKit
 import CoreLocation
+import Contacts
+import MessageUI
 
 
-class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate{
+class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate  {
     
     // Properties
     // --------------------------
@@ -29,9 +31,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var updateLocation_tick = 5
     let locationManager = CLLocationManager()
 
+    var cellReuseIdentifier = "ContactListCell"
     
     // Radar 
     var radarStatus: Bool = false
+    let formatter = CNContactFormatter()
     
     
     // IBOutlets
@@ -52,7 +56,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Do any additional setup after loading the view.
         
         // Init and configure segment controller
-        segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: tableView.frame.width - 20, height: 30))
+        segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: self.view.frame.width - 20, height: 30))
         // Set tint
         segmentedControl.tintColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
@@ -104,28 +108,86 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     @IBAction func shareWithContact(_ sender: Any) {
         
         // Create the transaction and share
-        self.createTransaction(type: "connection", uuid: currentUser.userId)
+        //self.createTransaction(type: "connection", uuid: currentUser.userId)
+        // Check if both contacts selected
+        
+        
+        if ContactManager.sharedManager.userSelectedRecipient {
+            
+        }
+        // CNContact Objects
+        let contact = ContactManager.sharedManager.contactToIntro
+        let recipient = ContactManager.sharedManager.recipientToIntro
+        
+        // Check if they both have email
+        
+        if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+            
+            let contactEmail = contact.emailAddresses[0].value as String
+            let recipientEmail = recipient.emailAddresses[0].value as String
+            
+            
+            // Launch Email client
+            showEmailCard()
+            
+        }else if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+            
+            let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+            let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+            
+            // Launch text client
+            showSMSCard()
+            
+        }else{
+            // No mutual way to connect
+            // Pick default based on what the contact object has populated
+            
+            // ***** Handle this off case tomorrow ****
+            print("No Mutual Info")
+        }
+        
+        
+        // Else check if they both have phones
+        
+        // If no match, chose a defualt method and send
+        
+        // Create Transaction and send
         
     }
     
     
     // Tableview delegate methods
-    
+    // number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return radarContactList.count
         
-        return 5 // your number of cell here
+        return ContactManager.sharedManager.phoneContactList.count //contactList.count
     }
     
+    // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // your cell coding
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
+        // create a new cell if needed or reuse an old one
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ContactListCell!
+        // Create var with current contact in array
+        let contact = ContactManager.sharedManager.phoneContactList[indexPath.row]
         
-        cell.contactNameLabel.text = "Peter Jenkins"
-        cell.contactImageView.image = UIImage(named: "contact")
+        // Set name formatted
+        cell?.contactNameLabel?.text = formatter.string(from: contact) ?? "No Name"
         
-        return cell
+        
+        // If image data avilable, set image
+        if contact.imageDataAvailable {
+            print("Has IMAGE")
+            let image = UIImage(data: contact.imageData!)
+            // Set image for contact
+            cell?.contactImageView?.image = image
+        }else{
+            cell?.contactImageView.image = UIImage(named: "profile")
+        }
+        
+        // Add tap gesture to follow up button
+        
+        return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -150,10 +212,16 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             selectedCell?.accessoryType = .checkmark
             
             // Append to list
-            self.selectedContactList.append(radarContactList[indexPath.row])
+            //self.selectedContactList.append(radarContactList[indexPath.row])
             
             // Append id to selectedList
-            self.selectedUserIds.append(radarContactList[indexPath.row].userId)
+           // self.selectedUserIds.append(radarContactList[indexPath.row].userId)
+            
+            // Set recipient
+            ContactManager.sharedManager.recipientToIntro = ContactManager.sharedManager.phoneContactList[indexPath.row]
+            
+            // Toggle BOOL 
+            ContactManager.sharedManager.userSelectedRecipient = true
         }
         
         
@@ -283,14 +351,157 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         self.centerMap(locValue)
         
     }
+    // Message Composer Functions
+    
+    func showEmailCard() {
+        
+        print("EMAIL CARD SELECTED")
+        
+        // Send post notif
+        // Create instance of controller
+        let mailComposeViewController = configuredMailComposeViewController()
+        
+        // Check if deviceCanSendMail
+        if MFMailComposeViewController.canSendMail() {
+            
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+        
+    }
+    
+    func showSMSCard() {
+        // Set Selected Card
+        
+        //selectedCardIndex = cardCollectionView.inde
+        
+        
+        print("SMS CARD SELECTED")
+        // Send post notif
+        
+        let composeVC = MFMessageComposeViewController()
+        if(MFMessageComposeViewController .canSendText()){
+            
+            composeVC.messageComposeDelegate = self
+            
+            // 6468251231
+            
+            // Check for nil vals
+            
+            var name = ""
+            var recipientName = ""
+            var phone = ""
+            var email = ""
+            //var title = ""
+            
+            
+            // CNContact Objects
+            let contact = ContactManager.sharedManager.contactToIntro
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            
+            // Check if they both have email
+            name = formatter.string(from: contact) ?? "No Name"
+            recipientName = formatter.string(from: recipient) ?? ""
+            
+            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                
+                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                // Set contact phone number
+                phone = contactPhone!
+                
+                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                
+                // Launch text client
+                composeVC.recipients = [contactPhone!, recipientPhone!]
+            }
+            
+            if contact.emailAddresses.count > 0 {
+                email = (contact.emailAddresses[0].value as String)
+            }
+            // Set card link from cardID
+            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+            
+            // Configure message
+            let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            
+            composeVC.body = str
+            
+            // Present the view controller modally.
+            self.present(composeVC, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
+    
+    // Email Composer Delegate Methods
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        
+        // Create Instance of controller
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        // Check for nil vals
+        
+        var name = ""
+        var recipientName = ""
+        var phone = ""
+        var emailContact = ""
+        var emailRecipient = ""
+        //var title = ""
+        
+        
+        // CNContact Objects
+        let contact = ContactManager.sharedManager.contactToIntro
+        let recipient = ContactManager.sharedManager.recipientToIntro
+        
+        // Check if they both have email
+        name = formatter.string(from: contact) ?? "No Name"
+        recipientName = formatter.string(from: recipient) ?? "No Name"
+        
+        if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+            
+            let contactEmail = contact.emailAddresses[0].value as String
+            let recipientEmail = recipient.emailAddresses[0].value as String
+            
+            // Set variable
+            emailContact = contactEmail
+            emailRecipient = recipientEmail
+            
+        }
+        
+        if contact.phoneNumbers.count > 0 {
+            phone = (contact.emailAddresses[0].value as String)
+        }
+        
+        // Create Message
+        // Set card link from cardID
+        let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+        
+        let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        
+        // Create Message
+        mailComposerVC.setToRecipients([emailContact, emailRecipient])
+        mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")
+        mailComposerVC.setMessageBody(str, isHTML: false)
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
     
 
     // Custom Methods
     
-    func createTransaction(type: String, uuid: String) {
+    func createTransaction(type: String) {
         // Set type & Transaction data 
         transaction.type = type
-        transaction.recipientList = selectedUserIds
+        //transaction.recipientList = selectedUserIds
         transaction.setTransactionDate()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
         transaction.type = "connection"
@@ -329,8 +540,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 print("Card Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                /*let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Insert to manager card array
                 //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
@@ -354,7 +565,57 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
+    // MARK: MFMailComposeViewControllerDelegate Method
     
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("User cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            self.createTransaction(type: "connection")
+            // Dimiss vc
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    // Message Composer Delegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("Cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            // Create transaction
+            self.createTransaction(type: "connection")
+            // Dismiss VC
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+        
+        
+        // Make checks here for
+        controller.dismiss(animated: true) {
+            print("Message composer dismissed")
+        }
+    }
     
     /*
     // MARK: - Navigation

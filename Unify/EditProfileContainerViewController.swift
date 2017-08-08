@@ -579,15 +579,14 @@ class EditProfileContainerViewController: FormViewController {
         UDWrapper.setArray("socialLinks", value: socialLinks as NSArray)
         UDWrapper.setArray("organizations", value: organizations as NSArray)*/
         
-        
+        // Set current user
         ContactManager.sharedManager.currentUser = self.currentUser
-        
-        
         
         // Test to print profile
         ContactManager.sharedManager.currentUser.userProfile.printProfle()
         
-        //self.updateCurrentUser()
+        // Update user
+        self.updateCurrentUser()
         
         // Store user to device
         UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())

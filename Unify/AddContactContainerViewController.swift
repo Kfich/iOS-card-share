@@ -328,13 +328,15 @@ class AddContactContainerViewController: FormViewController {
     }
     
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
         
             
             // Assign all the items in each list to the contact profile on manager
             // Parse table section vals
         
+        if ContactManager.sharedManager.userCreatedNewContact {
+            
         
             
             // Titles Section
@@ -424,6 +426,9 @@ class AddContactContainerViewController: FormViewController {
                 }
             }
             
+            // Add origin 
+            self.contact.origin = "unify"
+            
             // Set contact to shared manager
             ContactManager.sharedManager.newContact = self.contact
             
@@ -432,7 +437,11 @@ class AddContactContainerViewController: FormViewController {
             ContactManager.sharedManager.newContact.printContact()
             
             // Post Alert
-            //self.postNotification()
+            self.postNotification()
+            
+        }else{
+            print("They cancelled")
+        }
         
     }
     

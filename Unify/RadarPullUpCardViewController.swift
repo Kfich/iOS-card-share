@@ -15,6 +15,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     // Properties
     // ---------------------------------------
     var selectedUserCard = ContactCard()
+    var currentUser = User()
     var selectedCardIndex = 0
     var transaction = Transaction()
     
@@ -89,7 +90,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }*/
         
         // Clear Cards array 
-        ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        //ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
         
         if let cards = UDWrapper.getArray("contact_cards"){
             // Assign array to contact manager object
@@ -218,6 +219,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         bgImage.contentMode = .scaleToFill
         self.cardCollectionView.backgroundView = bgImage
         
+        // Clear card arrays 
+        ContactManager.sharedManager.currentUserCards.removeAll()
+        ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        
+        // Get cards again 
+        self.parseForCards()
+        
         // Refresh table data
         cardCollectionView.reloadData()
     }
@@ -229,6 +237,40 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "CreateCardVC")
         self.present(controller, animated: true, completion: nil)
+        
+    }
+    
+    func parseForCards() {
+        
+        // Parese defaults for stored cards 
+        
+        if let cards = UDWrapper.getArray("contact_cards"){
+            // Assign array to contact manager object
+            
+            ContactManager.sharedManager.currentUserCardsDictionaryArray = cards as! [[NSDictionary]]
+            // Reload table data
+            for card in ContactManager.sharedManager.currentUserCardsDictionaryArray {
+                let contactCard = ContactCard(withSnapshotFromDefaults: card[0])
+                //let profile = CardProfile(snapshot: card[0]["card_profile"])
+                
+                //print(profile)
+                print("PROFILE PRINTING")
+                ContactManager.sharedManager.currentUserCards.append(contactCard)
+                contactCard.printCard()
+            }
+            
+            // Reload tableview data
+            cardCollectionView.reloadData()
+            // Set Selected card
+            if ContactManager.sharedManager.currentUserCards.count > 0 {
+                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
+            }
+            
+            print("User has cards!")
+            
+        }else{
+            print("User has no cards")
+        }
         
     }
     
@@ -249,8 +291,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 print("Card Created Response ---> \(response)")
                 
                 // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+               /* let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Insert to manager card array
                 //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
@@ -267,6 +309,50 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Hide indicator
             KVNProgress.dismiss()
         }
+    }
+    
+    func fetchUserCards() {
+        // Set current user 
+        self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Fetch cards from server
+        let parameters = ["uuid" : currentUser.userId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        // Store current user cards to local device
+        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
+        //UDWrapper.setData("contact_cards", value: encodedData)
+        
+        
+        // Show progress hud
+        //KVNProgress.show(withStatus: "Saving your new card...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).getCardsCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSArray = response as! NSArray
+                print("\n\nCard List")
+                print(dictionary)
+                
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
     }
     
     
@@ -311,7 +397,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         //cell.backgroundColor = UIColor.clear
         
         
-        if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
+       /* if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
             
             // Add card to whatever the count is
             ContactManager.sharedManager.currentUserCards.append(ContactCard())
@@ -331,7 +417,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             containerView.addSubview(imageView)
             
             return cell
-        }else{
+        }else{*/
             
             // Find current card index
             let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
@@ -369,7 +455,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             return cell
             
-        }
+        //}
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Set index
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -428,6 +519,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         return UIEdgeInsets.zero
     }
+    
+    /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let thisWidth = CGFloat(self.view.frame.width)
+        return CGSize(width: thisWidth, height: 240)
+    }*/
     
     
     

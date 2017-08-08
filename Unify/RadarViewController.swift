@@ -130,6 +130,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // See if current user pass
         ContactManager.sharedManager.currentUser.printUser()
         
+        // Set current user 
+        self.currentUser = ContactManager.sharedManager.currentUser
+        
         // Test
         //testImage()
         
@@ -173,6 +176,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // For notifications 
         self.addObservers()
+        
+        // Get profile info
+        //self.fetchCurrentUser()
+        
+        // Fetch cards
+        //self.fetchUserCards()
 
   
     }
@@ -188,6 +197,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // End radar
         //self.endRadar()
         //pulseMe(status: "hide")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        
     }
     
     
@@ -293,9 +308,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         }
         
         // Set selected ids to trans and values
-        // Set temp id for transaction
-        transaction.transactionId = transaction.randomString(length: 15)
-        transaction.recipientList = selectedUserIds
+        // Set temp id for transaction        
+        //transaction.recipientList = selectedUserIds
         transaction.setTransactionDate()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
         transaction.type = "connection"
@@ -314,6 +328,91 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
         
         Countly.sharedInstance().recordEvent("shared contacts from radar")
+        
+    }
+    
+    // Custom Methods
+    
+    func fetchUserCards() {
+        // Fetch cards from server 
+        let parameters = ["uuid" : currentUser.userId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        // Store current user cards to local device
+        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
+        //UDWrapper.setData("contact_cards", value: encodedData)
+        
+        
+        // Show progress hud
+        //KVNProgress.show(withStatus: "Saving your new card...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).getCardsCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSArray = response as! NSArray
+                print("\n\nCard List")
+                print(dictionary)
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+
+    }
+    
+    func fetchCurrentUser() {
+        // Fetch cards from server
+        let parameters = ["uuid" : currentUser.userId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Fetching profile...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).getUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Get User Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print("\n\nCard List")
+                //print(dictionary)
+                
+                let user = User(snapshot: dictionary as NSDictionary)
+                print("PRINTING USER")
+                user.printUser()
+                
+                // Fetch cards 
+                self.fetchUserCards()
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
         
     }
     
@@ -566,11 +665,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(String(describing: response))")
+                print("Transaction Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                /*let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Insert to manager card array
                 //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
