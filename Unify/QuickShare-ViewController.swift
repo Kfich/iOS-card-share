@@ -235,11 +235,6 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             
             // Execute send actions
             
-            if  syncToContactsSelected {
-                // Upload the contact record
-                self.uploadContactRecord()
-            }
-            
             // Check for user intent
             if ContactManager.sharedManager.quickshareSMSSelected {
                 // Set the number to contact
@@ -270,7 +265,6 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         transaction.type = type
         transaction.setTransactionDate()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
-        transaction.type = "connection"
         transaction.scope = "transaction"
         transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
         
@@ -362,6 +356,18 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 // Call successful
                 print("Transaction Created Response ---> \(String(describing: response))")
                 
+                // Parse array for 
+                let array = response as! NSArray
+                print("Array List >> \(array)")
+                
+                // Set recipient list to transaction 
+                self.transaction.recipientList = array as! [String]
+                // Test
+                print("Transaction List Count >> \(self.transaction.recipientList.count)")
+                print("Transaction List >> \(self.transaction.recipientList)")
+                
+                // Create transaction
+                self.createTransaction(type: "quick_share")
                 
                 
                 // Hide HUD
@@ -494,11 +500,14 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         
         if result == .cancelled {
             // User cancelled
-            //self.dismiss(animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+            print("User cancelled")
             
         }else if result == .sent{
-            // User sent
-            self.createTransaction(type: "connection")
+            
+            // Upload the contact record
+            self.uploadContactRecord()
+            
+
             
         }else{
             // There was an error
@@ -521,10 +530,10 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             print("User cancelled")
             
         }else if result == .sent{
-            // User sent
-            self.createTransaction(type: "connection")
-            // Dimiss vc
-            self.dismiss(animated: true, completion: nil)
+            
+            // Upload the contact record
+            self.uploadContactRecord()
+            
             
         }else{
             // There was an error

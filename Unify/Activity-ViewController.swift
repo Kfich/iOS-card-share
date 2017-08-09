@@ -113,11 +113,17 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Set selected transaction
-        self.selectedTransaction = self.transactions[indexPath.row]
-        
-        // Get users in transaction
-        self.fetchUsersForTransaction()
+        if self.transactions[indexPath.row].approved {
+            // Set selected and follow up
+            // Set selected transaction
+            self.selectedTransaction = self.transactions[indexPath.row]
+            
+            // Get users in transaction
+            self.fetchUsersForTransaction()
+            
+        }else{
+            alertMessageOk(title: "", message: "This transaction was rejected")
+        }
         
         // Pass in segue
         //self.performSegue(withIdentifier: "showFollowupSegue", sender: self)
@@ -194,17 +200,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Init transaction
             let trans = transactions[indexPath.row]
              
-             if trans.type == "connection" {
-                // Configure Cell
-                cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
-                // Execute func
-                configureViewsForConnection(cell: cell , index: indexPath.row)
-                
-                // Add tap gesture to cell labels
-                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
-                self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
-             
-             }else if trans.type == "intro"{
+             if trans.type == "introduction"{
              
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
@@ -214,7 +210,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Add tap gesture to cell labels
                 self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
                 self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
-             }
+             
+             }else {
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForConnection(cell: cell , index: indexPath.row)
+                
+                // Add tap gesture to cell labels
+                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
+                
+        }
 
         if segmentedControl.selectedSegmentIndex == 0 {
             // norhing
@@ -647,7 +654,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let image = UIImage(named: "contact")
         cell.profileImage.image = image
         // Set description text
-        cell.descriptionLabel.text = "You introduced \(trans.recipientList?[0]) to \(trans.recipientList?[1])"
+        cell.descriptionLabel.text = "You introduced \(trans.recipientList[0]) to \(trans.recipientList[1])"
         
         // Set location
         cell.locationLabel.text = trans.location
@@ -659,7 +666,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.rejectButton.isHidden = true
             cell.rejectButton.isEnabled = false
             
-            cell.approveButton.text = "follow up"
+            cell.approveButton.text = "Follow up"
             cell.approveButton.isEnabled = false
             
             // Change the label
@@ -667,8 +674,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }else{
             // Show
-            cell.rejectButton.isHidden = false
-            cell.rejectButton.isEnabled = true
+            cell.approveButton.isHidden = true
+            cell.approveButton.isEnabled = false
+            
+            cell.rejectButton.text = "Rejected"
+            cell.rejectButton.isEnabled = false
         }
         
         // Add tag to view
@@ -717,8 +727,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }else{
             // Show
-            //cell.connectionRejectButton.isHidden = false
-            //cell.connectionRejectButton.isEnabled = true
+            cell.connectionApproveButton.isHidden = true
+            cell.connectionApproveButton.isEnabled = false
+            
+            // Hide approve
+            cell.connectionRejectButton.text = "Rejected"
+            cell.connectionRejectButton.isEnabled = false
+            
         }
         
         // Add tag to view

@@ -28,7 +28,7 @@ public class Transaction{
     var senderCard : ContactCard = ContactCard()
     var recipientCard : ContactCard? //= ContactCard()
     
-    var recipientList : [String]?
+    var recipientList = [String]()
     
     // Make a dict [string:any] due to timestamps
     var notes : [[String : String]]?
@@ -70,7 +70,7 @@ public class Transaction{
         senderCardId = snapshot["sender_card_id"] as! String
         type = snapshot["type"] as! String
         // Set recipient list
-        recipientList = snapshot["recipient_list"] as? [String]
+        recipientList = snapshot["recipient_list"] as! [String]
         //latitude = snapshot["latitude"] as! String
         //longitude = snapshot["latitude"] as! String
         
@@ -219,7 +219,7 @@ public class Transaction{
     
     // Phone Numbers
     func getRecipients()->[String]{
-        return recipientList!
+        return recipientList
     }
     
     func setRecipients(contactRecords : String){

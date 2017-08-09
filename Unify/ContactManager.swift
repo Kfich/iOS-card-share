@@ -29,11 +29,13 @@ class ContactManager{
     var userArrivedFromContactList = false
     var userArrivedFromRadar = false
     var userArrivedFromIntro = false
+    var userArrivedFromSocial = false
     var userArrivedFromRecipients = false
     var userDidCreateCard = false
     var userSelectedEditCard = false
     var userCreatedNewContact = false
     var userSelectedRecipient = false
+    
     
     // Quickshare
     var quickshareSMSSelected = false

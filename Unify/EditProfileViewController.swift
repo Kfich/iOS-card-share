@@ -10,7 +10,7 @@ import UIKit
 import Eureka
 import MBPhotoPicker
 
-class EditProfileViewController: UIViewController {
+class EditProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // Properties
     // ----------------------------------
@@ -32,6 +32,11 @@ class EditProfileViewController: UIViewController {
     var notes = [String]()
     var tags = [String]()
     
+    // Store image icons
+    var socialLinkBadges = [[String : Any]]()
+    var links = [String]()
+    var socialBadges = [UIImage]()
+    
     // IBOutlets
     // ----------------------------------
     
@@ -45,6 +50,9 @@ class EditProfileViewController: UIViewController {
     @IBOutlet var emailTextField: UITextField!
     
     @IBOutlet var doneButton: UIButton!
+    
+    // Table view to hold custom rows
+    @IBOutlet var collectionTableView: UITableView!
     
     
     // IBActions
@@ -127,6 +135,15 @@ class EditProfileViewController: UIViewController {
         // Configure done button in nav bar 
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneEditingProfile))
         
+        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pintrest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
+        
+        // Create list for parsing values
+        self.initializeBadgeList()
+        
+        
+        // For notifications 
+        self.addObservers()
+        
     }
 
     
@@ -134,15 +151,133 @@ class EditProfileViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // 
+        return 2
+    }
+    
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        
+        return cell
+    }
+    
+     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        guard let tableViewCell = cell as? CollectionTableViewCell else { return }
+        
+        tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
+        //tableViewCell.collectionViewOffset = storedOffsets[indexPath.row] ?? 0
+    }
+    
+     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        guard cell is CollectionTableViewCell else { return }
+        
+        //storedOffsets[indexPath.row] = tableViewCell.collectionViewOffset
+    }
+    
+    
     
     // Custom Methods
     // ----------------------------------
+    
+    func addObservers() {
+        // Call to refresh table
+        NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.showSocialMediaSelection), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.parseForSocialIcons), name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: nil)
+        
+        
+    }
+    
+    func parseForSocialIcons() {
+        
+        
+        print("PARSING FOR PROFILES")
+        
+        // Assign currentuser
+        self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if currentUser.userProfile.socialLinks.count > 0{
+            for link in currentUser.userProfile.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test 
+                print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    print("exists")
+                    print("exists")
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                }
+            }
+        }
+    }
+    
+    
+    func showSocialMediaSelection() {
+        // Init ViewController for social
+        self.performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        
+    }
     
     func doneEditingProfile() {
         // Bring a manager here to handle setting the inputs back and forth
         
         print("Done editing")
     }
+    
+    func initializeBadgeList() {
+        // Image config
+        let img1 = UIImage(named: "icn-social-facebook.png")
+        let img2 = UIImage(named: "icn-social-facebook.png")
+        let img3 = UIImage(named: "icn-social-facebook.png")
+        let img4 = UIImage(named: "icn-social-facebook.png")
+        let img5 = UIImage(named: "icn-social-facebook.png")
+        let img6 = UIImage(named: "icn-social-facebook.png")
+        let img7 = UIImage(named: "icn-social-facebook.png")
+        let img8 = UIImage(named: "icn-social-facebook.png")
+        let img9 = UIImage(named: "icn-social-facebook.png")
+        let img10 = UIImage(named: "icn-social-facebook.png")
+        
+        // Hash images
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["snapchat" : img4!], ["linkedin" : img5!], ["pintrest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]
+        
+    
+       // let fb : NSDictionary = ["facebook" : img1!]
+       // self.socialLinkBadges.append([fb])
+        
+        
+    }
+    
+    
+    
     
     func updateCurrentUser() {
         // Configure to send to server 
@@ -203,4 +338,93 @@ class EditProfileViewController: UIViewController {
      }
      */
     
+}
+
+extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if self.socialBadges.count != 0 {
+            // Return the count 
+            return self.socialBadges.count
+        }else{
+            return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        
+        //cell.backgroundColor = model[collectionView.tag][indexPath.item]
+        //cell.backgroundColor = UIColor.blue
+        
+        if self.socialBadges.count == 0 {
+            // Set default cell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            
+            // Set the cell
+            //icn-plus-blue
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let image = UIImage(named: "icn-plus-blue")
+            
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            collectionView.addSubview(cell)
+            
+        }else{
+            
+            configureViews(cell: cell)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
+    
+    func configureViews(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 23.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+        
+        
+        // Add radius config & border color
+        /*cell.mediaImageView.layer.cornerRadius = 12.0
+         cell.mediaImageView.clipsToBounds = true
+         cell.mediaImageView.layer.borderWidth = 0.5
+         cell.mediaImageView.layer.borderColor = UIColor.clear.cgColor
+         
+         // Set shadow on the container view
+         cell.layer.shadowColor = UIColor.black.cgColor
+         cell.layer.shadowOpacity = 1.5
+         cell.layer.shadowOffset = CGSize.zero
+         cell.layer.shadowRadius = 2*/
+    }
+
 }

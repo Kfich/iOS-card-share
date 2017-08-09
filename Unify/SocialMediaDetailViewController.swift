@@ -40,8 +40,9 @@ class SocialMediaDetailViewController: UIViewController {
     // -------------------------------------
     
     @IBAction func doneEditing(_ sender: Any) {
-        // Check for nils 
-        if mediaTextField.text == nil {
+        
+        // Check for nils
+        if mediaTextField.text == ""{
             
             // Show Alert
             
@@ -67,21 +68,22 @@ class SocialMediaDetailViewController: UIViewController {
             // Assign value to profile
             currentUser.userProfile.setSocialLinks(socialRecords: ["link" : mediaTextField.text!])
             
+            // Reassign object to manager
+            ContactManager.sharedManager.currentUser = self.currentUser
+            
             currentUser.printUser()
             
             // Update user 
             //self.updateCurrentUser()
         }
         
+        // Post notif
+        self.postNotification()
+        
         // Dismiss VC
         dismiss(animated: true, completion: nil)
+        //self.navigationController?.popViewController(animated: true)
         
-        func postNotification() {
-            
-            // Notification for radar screen
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Media Selected"), object: self)
-            
-        }
     }
     
     @IBAction func cancel(_ sender: Any) {
@@ -91,6 +93,15 @@ class SocialMediaDetailViewController: UIViewController {
     
     
     // Custom methods 
+    
+    func postNotification() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Media Selected"), object: self)
+        
+    }
+
+    
     func updateCurrentUser() {
         // Configure to send to server
         

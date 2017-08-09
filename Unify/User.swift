@@ -266,6 +266,7 @@ public class User{
             "userPhoneVerified": userPhoneVerified,
             "userPhoneForVerification": userPhoneForVerification,
             "profile" : userProfile.toAnyObject(),
+            "isIncognito" : userIsIncognito,
             "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""]
             
         ]
@@ -285,6 +286,7 @@ public class User{
             "userPhoneVerified": userPhoneVerified,
             "userPhoneForVerification": userPhoneForVerification,
             "profile" : userProfile.toAnyObject(),
+            "isIncognito" : userIsIncognito,
             "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""]
 
       
@@ -404,7 +406,7 @@ public class User{
         //print(phoneNumbers)
         // Test image data
         print("Image Data -->")
-        print(profileImages)
+        //print(profileImages)
         
         print("Verification Data -->")
         print("userPhoneVerified", userPhoneVerified )

@@ -297,9 +297,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         let synced = UDWrapper.getBool("contacts_synced")
         
-        
         // Reload contact list
         DispatchQueue.main.async {
+            // Dismiss
+            KVNProgress.dismiss()
             
             // Check if contacts already synced
             if synced{
@@ -471,9 +472,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         
     }
-    
-    
-    
     
 }
 

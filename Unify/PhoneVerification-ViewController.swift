@@ -287,9 +287,21 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 }
                 // Check if user needs to be set
                 if self.isCurrentUser {
+                    
                     // Init user object
-                    let user = User(snapshot: dictionary["user"] as! NSDictionary)
-                    self.currentUser = user
+                    if let user = UDWrapper.getDictionary("user"){
+                        // Init &  Set to manager
+                        self.currentUser =  User(withDefaultsSnapshot:user)
+                        // Set to manager
+                        ContactManager.sharedManager.currentUser = self.currentUser
+                    
+                    }
+                    // Set status to true
+                    self.currentUser.setVerificationPhoneStatus(status: true)
+                    
+                    // Store user to device
+                    UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                    
                     // Print to test
                     self.currentUser.printUser()
                 }

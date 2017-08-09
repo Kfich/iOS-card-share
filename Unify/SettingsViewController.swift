@@ -227,7 +227,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             self.currentUser.printIncognito()
             
             // Upload photos & update profile
-            let dictionary = self.prepareImageForUpload()
+            let dictionary = self.prepareImageForUpload() // image id is set here
             
             // Send it
             self.uploadImage(imageDictionary: dictionary)
@@ -514,6 +514,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func logout() {
         // Set bool for auth to false
         self.currentUser.setVerificationPhoneStatus(status: false)
+        
+        // Clear manager
+        ContactManager.sharedManager.currentUserCards.removeAll()
+        ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        //ContactManager.sharedManager.currentUser = User()
         
         // Store user to device
         UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())

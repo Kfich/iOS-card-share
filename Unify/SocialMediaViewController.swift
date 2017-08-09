@@ -29,7 +29,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     let img8 = UIImage(named: "icn-social-facebook.png")
     let img9 = UIImage(named: "icn-social-facebook.png")
     let img10 = UIImage(named: "icn-social-facebook.png")
-    let img11 = UIImage(named: "icn-social-facebook.png")
+
     
     
     // IBOutlets
@@ -43,7 +43,11 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         // Do any additional setup after loading the view.
         
+        // Assign user 
+        self.currentUser = ContactManager.sharedManager.currentUser
+        self.currentUser.printUser()
         
+        // Assign delegates
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
         
@@ -56,9 +60,12 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         mediaCollectionView.reloadData()
         //galleryCollectionView.reloadData()
         
-        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!, img11!]
+        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!]
         
-        links = ["https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/", "https://www.facebook.com/",]
+        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pintrest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
+        
+        // For notifcations 
+        self.addObservers()
         
     }
     
@@ -127,6 +134,19 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         // Show HUD
         KVNProgress.showSuccess(withStatus: "Media link added successfully")
         
+        // Post refresh notification
+        self.postSocialRefreshNotification()
+        
+        // Dismiss vc
+        self.navigationController?.popViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
+        
+        
+    }
+    
+    func postSocialRefreshNotification() {
+        // Notification to reload views
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: self)
     }
     
     func configureViews(cell: MediaThumbnailCell){
