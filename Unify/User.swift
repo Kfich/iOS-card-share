@@ -21,7 +21,7 @@ public class User{
     //var emails = [[String : String]]()
     //var phoneNumbers = [[String : String]]()
     
-    var incognitoData = IncognitoData()
+    //var incognitoData = IncognitoData()
     
     // Bools to check user state
     var userPhoneVerified: Bool = false
@@ -44,26 +44,61 @@ public class User{
     
     // Card Profiles
     var userProfile = CardProfile()
+    // Incognito
+    var publicProfile : IncognitoData?
     
     
     // Struct to carry incognito data
-    struct IncognitoData {
+    class IncognitoData {
         // Properties
         // --------------------
-        var name: String
-        var image: UIImage
+        var name: String = ""
+        var image: UIImage = UIImage()
+        var imageId: String = ""
+        
 
         // Init
         // --------------------
         init() {
             self.name = ""
             self.image = UIImage()
+            self.imageId = ""
         }
         
         init(name: String, image: UIImage) {
             self.name = name
             self.image = image
         }
+        
+        init(snapshot: NSDictionary) {
+            
+            name = snapshot["name"] as! String
+            imageId = snapshot["image_id"] as! String
+        }
+        
+        func setImageId() {
+            // Set random string
+            // Generate id string for image
+            let idString = User().randomString(length: 20)
+            
+            // Set id string to user object for image
+            imageId = idString
+        }
+        
+        func toAnyObject() -> NSDictionary {
+            return [
+                "name" : name,
+                "image_id" : imageId
+            ]
+        }
+        
+        // Test
+        func printIncognitoData() {
+            // Testing
+            print("Name : \(name)")
+            print("ImageID : \(imageId)")
+        }
+        
     }
     
     // Init
@@ -156,6 +191,13 @@ public class User{
         userPhoneForVerification = withRadarSnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
         userPhoneVerified = withRadarSnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
         
+        // For public profile
+        publicProfile = IncognitoData(snapshot: withRadarSnapshot["public_profile"] as! NSDictionary)
+        
+        // Check for incognito
+        userIsIncognito = withRadarSnapshot["isIncognito"] as! Bool
+        
+        
         // To get full username
         fullName = getName()
         // Testing to see if populated
@@ -199,6 +241,11 @@ public class User{
 
         }
        
+        // For public profile
+        //publicProfile = IncognitoData(snapshot: withRadarSnapshot["public_profile"] as! NSDictionary)
+        
+        // Check for incognito
+        //userIsIncognito = withRadarSnapshot["isIncognito"] as! Bool
         
         
     }
@@ -218,7 +265,8 @@ public class User{
             "profile_image_id": profileImageId,
             "userPhoneVerified": userPhoneVerified,
             "userPhoneForVerification": userPhoneForVerification,
-            "profile" : userProfile.toAnyObject()
+            "profile" : userProfile.toAnyObject(),
+            "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""]
             
         ]
     }
@@ -236,7 +284,9 @@ public class User{
             "profile_image": profileImages,
             "userPhoneVerified": userPhoneVerified,
             "userPhoneForVerification": userPhoneForVerification,
-            "profile" : userProfile.toAnyObject()
+            "profile" : userProfile.toAnyObject(),
+            "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""]
+
       
             
         ]
@@ -363,12 +413,15 @@ public class User{
         print("")
         userProfile.printProfle()
         
+        print("Incognito")
+        self.printIncognito()
+        
     }
     
     func printIncognito() {
         print("")
-        print("Incognito Name: \(incognitoData.name)")
-        print("Incognito Image: \(incognitoData.image)")
+        print("Incognito Name: \(publicProfile?.name)")
+        print("Incognito Image: \(publicProfile?.image)")
     }
     
     

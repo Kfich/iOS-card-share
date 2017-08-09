@@ -8,6 +8,7 @@
 
 import UIKit
 import MBPhotoPicker
+import Alamofire
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -210,16 +211,27 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Add buttons to alert
         alert.addButton("On") {
             print("Keep On")
-             // Toggle the isIncognito on
+            
+            // Toggle the isIncognito on
             self.currentUser.userIsIncognito = true
             ContactManager.sharedManager.userIsIncognito = true
             
+            // Init incognito
+            self.currentUser.publicProfile = User.IncognitoData()
+            
             // Set incognito data
-            self.currentUser.incognitoData.image = self.selectedImage
-            self.currentUser.incognitoData.name = self.selectedName
+            self.currentUser.publicProfile?.image = self.selectedImage
+            self.currentUser.publicProfile?.name = self.selectedName
             
             // Test to see if working
             self.currentUser.printIncognito()
+            
+            // Upload photos & update profile
+            let dictionary = self.prepareImageForUpload()
+            
+            // Send it
+            self.uploadImage(imageDictionary: dictionary)
+            
         }
         
         alert.addButton("Off") {
@@ -242,6 +254,113 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Show Alert
         alert.showInfo("You Are Incognito", subTitle: "", closeButtonTitle: "Close")
+    }
+    
+    func prepareImageForUpload() -> NSDictionary {
+        // Prepare image for upload
+        
+        let imageData = UIImageJPEGRepresentation(self.selectedImage, 0.5)
+        print(imageData!)
+        
+        // Generate id string for image
+        self.currentUser.publicProfile?.setImageId()
+        
+        // Assign asset name and type
+        let fname = self.currentUser.publicProfile?.imageId
+        let mimetype = "image/png"
+        
+        // Create image dictionary
+        let imageDict = ["image_id": self.currentUser.publicProfile?.imageId, "image_data": imageData!, "file_name": fname!, "type": mimetype] as [String : Any]
+        
+        return imageDict as NSDictionary
+    }
+    
+    func uploadImage(imageDictionary: NSDictionary) {
+        // Link to endpoint and send 
+        // Create URL For Test
+        let testURL = ImageURLS().uploadToDevelopmentURL
+        
+        // Parse dictionary
+        let imageData = imageDictionary["image_data"] as! Data
+        let fname = imageDictionary["file_name"] as! String
+        
+        // Show progress HUD
+        KVNProgress.show(withStatus: "Generating profile..")
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+             }*/
+            
+            // Currently Set to point to Prod Server
+        }, to:testURL)
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n success...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                    // update profile
+                    self.updateCurrentUser()
+                   
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
+    }
+    
+    func updateCurrentUser() {
+        // Configure to send to server
+        
+        // Send to server
+        let parameters = ["data" : currentUser.toAnyObject(), "uuid" : currentUser.userId] as [String : Any]
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        
+        // Connect to server
+        Connection(configuration: nil).updateUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print(dictionary)
+                
+                
+                // Store user to device
+                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                
+                // Hide HUD
+                KVNProgress.showSuccess()
+                
+                // Upload the image
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
     }
     
     // Alert Controller to Add CardName

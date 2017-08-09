@@ -557,19 +557,6 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         var image = UIImage(named: "radar-avatar")
         var imageView = UIImageView(image: image!)
         
-        //let imageView = UIImageView()
-        
-        //imageView.frame = CGRect(x: 100 + (10*direction), y: 280 - (10 * distance), width: 30, height: 30)
-        
-        //imageView.backgroundColor = .black
-        
-        
-        /*// Create image
-         var image = UIImage()
-         // Create imageView and set image
-         let imageView = UIImageView()
-         
-         image = UIImage(named: "radar-avatar")!*/
         
         // Init imageURLS
         let urls = ImageURLS()
@@ -579,25 +566,37 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Create URL For Test
         let testURL = urls.getFromDevelopmentURL
+        let id = user.publicProfile?.imageId
         
-        
-        // Fetch user image reference
-        if user.profileImageId != ""{
-            // Grab image ref using alamo
-            
-            // ** Currently Set to Test URL
-            let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+        if user.userIsIncognito == true {
+            // Show incognito data
+            let url = URL(string: "\(testURL)\(id ?? "").jpg")!
             let placeholderImage = UIImage(named: "user")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)
             
-            // For now
-            //image = UIImage(named: "radar-avatar")!
-            
         }else{
-            // Set image to default image
-            image = UIImage(named: "user")!
+            
+            // Fetch user image reference
+            if user.profileImageId != ""{
+                // Grab image ref using alamo
+                
+                // ** Currently Set to Test URL
+                let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+                let placeholderImage = UIImage(named: "user")!
+                // Set image
+                imageView.setImageWith(url, placeholderImage: placeholderImage)
+                
+                // For now
+                //image = UIImage(named: "radar-avatar")!
+                
+            }else{
+                // Set image to default image
+                image = UIImage(named: "user")!
+            }
+            
         }
+        
         
         //let imageView = UIImageView()
         //imageView.frame = CGRect(x: 50, y: 80, width: 60, height: 60)
