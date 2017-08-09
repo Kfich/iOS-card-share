@@ -99,10 +99,14 @@ class AddContactViewController: UIViewController {
         
         ContactManager.sharedManager.userCreatedNewContact = true
         
-        // Dimiss vc
+        // Dismiss view
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {
+        // Set manager to false
+        ContactManager.sharedManager.userCreatedNewContact = false
+        
         // Dismiss view
         dismiss(animated: true, completion: nil)
         

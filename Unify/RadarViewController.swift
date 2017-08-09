@@ -112,14 +112,16 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     @IBOutlet var radarLogoImage: UIImageView!
     
     
+    // Container for Radar list
+    @IBOutlet var radarListContainer: UIView!
+    
+    
     
     // View Setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-      
         // Do any additional setup after loading the view.
         
         // Setup views
@@ -182,6 +184,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Fetch cards
         //self.fetchUserCards()
+        
+        // Hide container 
+        self.radarListContainer.isHidden = true
 
   
     }
@@ -201,6 +206,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        // Hide container
+        if radarUsers.count > 7 && radarStatus == true {
+            // Show list
+            self.radarListContainer.isHidden = false
+            
+            // Post notification
+            self.postUpdateLocationNotification()
+        }else{
+            // Hide
+            self.radarListContainer.isHidden = true
+        }
         
         
     }
@@ -246,7 +263,17 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             */
             self.locationManager.startUpdatingLocation()
             
+            // Record event
             Countly.sharedInstance().recordEvent("turned radar on")
+            
+            
+            // Post update notifcation for listVC
+            if self.radarListContainer.isHidden == false {
+                // Let listVC know to update location
+                self.postUpdateLocationNotification()
+            }
+            
+            
             // Configure Label text and set image
             //self.radarOnLabel.isHidden = true
             //  self.radarOffLabel.text = "radar off"
@@ -271,6 +298,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.removePlottedPeople(self.pulseView)
             self.radarUsers.removeAll()
             
+            // Post notification for list VC
+            self.postEndRadarNotification()
+            
+            // Record event
             Countly.sharedInstance().recordEvent("turned radar off")
             
         }
@@ -294,44 +325,73 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Test uuid
         print("\n\nCurrent User ID >>> \(currentUser.userId)")
         
-        // Dyamically set selected card here
-        
-        // Iterate through selected card list
-        for contact in selectedUserList {
-            // Check if isSelected
-            if contact.isSelected{
-                // Init user from list
-                let user = radarUsers[contact.index]
-                // Set id to recipient list
-                selectedUserIds.append(user.userId)
+        if self.radarListContainer.isHidden {
+            // Send from the radar
+            
+            // Dyamically set selected card here
+            
+            // Iterate through selected card list
+            for contact in selectedUserList {
+                // Check if isSelected
+                if contact.isSelected{
+                    // Init user from list
+                    let user = radarUsers[contact.index]
+                    // Set id to recipient list
+                    selectedUserIds.append(user.userId)
+                }
             }
+            
+            // Set selected ids to trans and values
+            // Set temp id for transaction
+            //transaction.recipientList = selectedUserIds
+            transaction.setTransactionDate()
+            transaction.senderId = ContactManager.sharedManager.currentUser.userId
+            transaction.type = "connection"
+            transaction.scope = "transaction"
+            transaction.latitude = self.lat
+            transaction.longitude = self.long
+            transaction.location = self.address
+            // Attach card id
+            transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+            
+            
+            // Print tranny
+            transaction.printTransaction()
+            
+            // Call create transaction function
+            createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
+            
+            Countly.sharedInstance().recordEvent("shared contacts from radar")
+            
+        }else{
+            // Post notification for radar list to handle the sending
+            self.postSendCardNotification()
         }
-        
-        // Set selected ids to trans and values
-        // Set temp id for transaction        
-        //transaction.recipientList = selectedUserIds
-        transaction.setTransactionDate()
-        transaction.senderId = ContactManager.sharedManager.currentUser.userId
-        transaction.type = "connection"
-        transaction.scope = "transaction"
-        transaction.latitude = self.lat
-        transaction.longitude = self.long
-        transaction.location = self.address
-        // Attach card id
-        transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
-        
-        
-        // Print tranny
-        transaction.printTransaction()
-        
-        // Call create transaction function
-        createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
-        
-        Countly.sharedInstance().recordEvent("shared contacts from radar")
         
     }
     
     // Custom Methods
+    
+    // Notifications
+    func postSendCardNotification() {
+        
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SendCardsFromRadarList"), object: self)
+    }
+    
+    func postUpdateLocationNotification() {
+        
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateLocation"), object: self)
+    }
+    
+    func postEndRadarNotification() {
+        
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "EndRadar"), object: self)
+    }
+    
+
     
     func fetchUserCards() {
         // Fetch cards from server 
@@ -1020,13 +1080,22 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             let distance = Int(random: -5..<10)
                             let direction = Int(random: -5..<10)*/
                             
-                            // plot person on map
-                            // The tag is used to tag images to identify their index in the array
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
+                            
+                            // Check if user count is at 7 
+                            if self.radarContacts.count >= 7{
+                                // Show container
+                                self.radarListContainer.isHidden = false
+                            }else{
+                                // Radar showing so plot people
+                                // plot person on map
+                                // The tag is used to tag images to identify their index in the array
+                                self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                                print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
+                            }
                             
                             // Update counter
                             self.counter = self.counter + 1
+                            
                         }
                         
                         

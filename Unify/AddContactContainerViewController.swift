@@ -436,6 +436,7 @@ class AddContactContainerViewController: FormViewController {
             // Test to print profile
             ContactManager.sharedManager.newContact.printContact()
             
+            
             // Post Alert
             self.postNotification()
             

@@ -15,10 +15,10 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     var currentUser = User()
     var transaction = Transaction()
     var radarContactList = [User]()
-    var selectedUserIds = [String]()
     var selectedContactList = [User]()
     var segmentedControl = UISegmentedControl()
     var selectedCells = [NSIndexPath]()
+    var counter = 0
     
     // Location
     var lat : Double = 0.0
@@ -30,6 +30,21 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // Radar
     var radarStatus: Bool = false
+    
+    // Struct to check if user selected for radar
+    struct Check {
+        var index: Int
+        var isSelected: Bool // selection state
+        
+        init(arrayIndex: Int, selected: Bool) {
+            index = arrayIndex
+            isSelected = selected
+        }
+    }
+    
+    // List of checks to mark selected index
+    var selectedUserList = [Check]()
+    var selectedUserIds = [String]()
 
     
     // IBOutlets
@@ -41,6 +56,9 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        // Listen for notifications 
+        self.addObservers()
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,13 +72,43 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return radarContactList.count
         
-        return 5 // your number of cell here
+        return self.radarContactList.count // your number of cell here
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // your cell coding
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
+        
+        // Set checkmark
+        cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
+        
+        // Fetch user image reference
+        /*
+         // Set user
+         let user = radarContactList[indexPath.row]
+         
+         // Find image
+         if user.profileImageId != ""{
+            // Grab image ref using alamo
+            
+            // ** Currently Set to Test URL
+            let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+            let placeholderImage = UIImage(named: "contact")!
+            // Set image
+            cell.contactImageView.setImageWith(url, placeholderImage: placeholderImage)
+            
+            // For now
+            //image = UIImage(named: "radar-avatar")!
+            
+        }else{
+            // Set image to default image
+            cell.contactImageView.image = UIImage(named: "contact")!
+        }*/
+        
+        // Set Name
+        // cell.contactNameLabel.text = user.getName()
+        
         
         cell.contactNameLabel.text = "Peter Jenkins"
         cell.contactImageView.image = UIImage(named: "contact")
@@ -70,6 +118,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // cell selected code here
+        tableView.deselectRow(at: indexPath, animated: true)
         
         // Set Checkmark
         let selectedCell = tableView.cellForRow(at: indexPath)
@@ -83,17 +132,20 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             selectedCells = selectedCells.filter {$0 as IndexPath != indexPath}
             
             // Remove from list
-            selectedContactList.remove(at: indexPath.row)
+            //selectedContactList.remove(at: indexPath.row)
+            print("User removed")
             
         } else {
             
             selectedCell?.accessoryType = .checkmark
             
             // Append to list
-            self.selectedContactList.append(radarContactList[indexPath.row])
+            //self.selectedContactList.append(radarContactList[indexPath.row])
             
             // Append id to selectedList
-            self.selectedUserIds.append(radarContactList[indexPath.row].userId)
+            //self.selectedUserIds.append(radarContactList[indexPath.row].userId)
+            
+            print("User Added")
         }
         
         
@@ -102,6 +154,9 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Location Managment
     
     func updateLocation(){
+        
+        // Toggle status
+        self.radarStatus = true
         
         // Update location tick
         updateLocation_tick = updateLocation_tick + 1
@@ -132,6 +187,9 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     print("data length", dictionary.count)
                     
+                    // Set counter to 0
+                    self.counter = 0
+                    
                     
                     for item in dictionary {
                         
@@ -142,12 +200,20 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                         // Init user objects from array
                         let user = User(withRadarSnapshot: userDict!)
                         
+                        // Create selected index
+                        //let selectedIndex = Check(arrayIndex: self.counter, selected: false)
+                        // Set Selected index
+                        //self.selectedUserList.append(selectedIndex)
+                        
                         // Test user
                         user.printUser()
                         
                         // Append users to radarContacts array
                         self.radarContactList.append(user)
                         print("Radar List Count >>>> \(self.radarContactList.count)")
+                        
+                        // Update counter
+                        self.counter = self.counter + 1
                         
                     }
                     
@@ -167,6 +233,33 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         print("Updating location")
         
+        
+    }
+    
+    func endRadar() {
+        // Toggle status
+        self.radarStatus = true
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        
+        // Create User Objects
+        Connection(configuration: nil).endRadarCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                 print("\n\nEnding Radar - Response: \n\n>>>>>> \(response)\n\n")
+                
+                
+            } else {
+                print("End Radar Error", error ?? "Error")
+                // Show user popup of error message
+                // print("\n\nConnection - Radar Error: \n\n>>>>>>>> \(error)\n\n")
+                //KVNProgress.show(withStatus: "There was an issue with your pin. Please try again.")
+            }
+            
+        })
         
     }
     
@@ -225,6 +318,49 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     // Custom Methods
+    
+    // For notifications
+    func addObservers() {
+        
+        // Sending card notif
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarListViewController.sendCardSelected), name: NSNotification.Name(rawValue: "SendCardsFromRadarList"), object: nil)
+        
+        // Update location 
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarListViewController.updateLocation), name: NSNotification.Name(rawValue: "UpdateLocation"), object: nil)
+        
+        // Update location
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarListViewController.endRadar), name: NSNotification.Name(rawValue: "EndRadar"), object: nil)
+        
+    }
+    
+    func sendCardSelected() {
+        
+        // Test uuid
+        print("\n\nCurrent User ID >>> \(currentUser.userId)")
+        
+        // Dyamically set selected card here
+        
+        // Iterate through selected card list
+        for contact in selectedUserList {
+            // Check if isSelected
+            if contact.isSelected{
+                // Init user from list
+                let user = radarContactList[contact.index]
+                // Set id to recipient list
+                selectedUserIds.append(user.userId)
+            }
+        }
+        
+        // Print tranny
+        transaction.printTransaction()
+        
+        // Call create transaction function
+        createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
+        
+        Countly.sharedInstance().recordEvent("shared contacts from radar")
+        
+    }
+
     
     func createTransaction(type: String, uuid: String) {
         // Set type & Transaction data

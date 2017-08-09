@@ -520,11 +520,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         return UIEdgeInsets.zero
     }
     
-    /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let thisWidth = CGFloat(self.view.frame.width)
         return CGSize(width: thisWidth, height: 240)
-    }*/
+    }
     
     
     
