@@ -17,6 +17,7 @@ public class Transaction{
     var transactionId : String = ""
     var date : String = ""
     var type : String = ""
+    var senderName : String = ""
     
     // Lat and Long for location
     var latitude = Double()
@@ -48,6 +49,7 @@ public class Transaction{
     
     // Approval
     var approved = false
+    var rejected = false
     
     
     // Init
@@ -74,20 +76,29 @@ public class Transaction{
         //latitude = snapshot["latitude"] as! String
         //longitude = snapshot["latitude"] as! String
         
-        //contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
+        contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
         print("THE CONTACT DICT .. >> \(contactDictionary)")
         
-        //recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
+        recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
         
         print(recipientCard?.cardHolderName ?? "No name")
         
-        let approval = snapshot["approved"] as! Bool
+        let approval = snapshot["approved"] as! String ?? "0"
+        let reject = snapshot["rejected"] as! String ?? "0"
         
-        if approval == false{
+        if approval == "0"{
             approved = false
         }else{
             approved = true
         }
+        
+        if reject == "0"{
+            rejected = false
+        }else{
+            rejected = true
+        }
+        
+        senderName = snapshot["sender_name"] as! String
         
         // Testing to see if populated
         printTransaction()
@@ -99,6 +110,7 @@ public class Transaction{
     func toAnyObject() -> NSDictionary {
         return [
             "unify_uuid": transactionId,
+            "sender_name" : senderName,
             "date": date,
             "location": location,
             "sender_id": senderId,
@@ -107,6 +119,7 @@ public class Transaction{
             "latitude" : latitude,
             "longitude" : longitude,
             "recipient_list": recipientList,
+            "rejected" : rejected,
             "approved" : approved
             
         ]
@@ -123,6 +136,14 @@ public class Transaction{
     
     func setScope(value : String){
         scope = value
+    }
+    
+    // Sender Name
+    func getSenderName()->String{
+        return senderName
+    }
+    func setSenderName(value : String){
+        senderName = value
     }
     
     
@@ -235,6 +256,15 @@ public class Transaction{
         approved = status
     }
     
+    // Rejection
+    func getRejectionStatus() -> Bool{
+        return rejected
+    }
+    
+    func setRejectionStatus(status : Bool){
+        rejected = status
+    }
+    
     
     
     // Custom Methods
@@ -262,6 +292,7 @@ public class Transaction{
     
     func printTransaction(){
         print("\n")
+        print("Sender Name :" + senderName)
         print("TransId :" + transactionId)
         print("Type : " + type)
         print("Date :" + date)

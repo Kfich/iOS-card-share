@@ -195,7 +195,15 @@ public class User{
         publicProfile = IncognitoData(snapshot: withRadarSnapshot["public_profile"] as! NSDictionary)
         
         // Check for incognito
-        userIsIncognito = withRadarSnapshot["isIncognito"] as! Bool
+        let incog = withRadarSnapshot["isIncognito"] as! String
+        
+        if incog == "0" {
+            // Toggle 
+            userIsIncognito = false
+        }else{
+            // True
+            userIsIncognito = true
+        }
         
         
         // To get full username

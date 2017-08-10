@@ -437,6 +437,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
         // Set type & Transaction data
         transaction.type = type
         transaction.setTransactionDate()
+        transaction.senderName = ContactManager.sharedManager.currentUser.getName()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
         transaction.type = "connection"
         transaction.scope = "transaction"

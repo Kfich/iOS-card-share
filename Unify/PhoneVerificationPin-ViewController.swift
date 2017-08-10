@@ -216,7 +216,7 @@ class PhoneVerificationPinViewController: UIViewController {
                 // If here, that means we matched
         
                 // Show indicator
-                KVNProgress.showSuccess(withStatus: "Profile Creation Complete. Welcome to Unify.")
+                KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
 
                 
                 self.currentUser.setVerificationPhoneStatus(status: true)

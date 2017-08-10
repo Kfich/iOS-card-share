@@ -503,6 +503,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         transaction.type = type
         //transaction.recipientList = selectedUserIds
         transaction.setTransactionDate()
+        transaction.senderName = ContactManager.sharedManager.currentUser.getName()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
         transaction.type = "connection"
         transaction.scope = "transaction"

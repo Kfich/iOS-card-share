@@ -264,6 +264,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         // Set type & Transaction data
         transaction.type = type
         transaction.setTransactionDate()
+        transaction.senderName = ContactManager.sharedManager.currentUser.getName()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
         transaction.scope = "transaction"
         transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!

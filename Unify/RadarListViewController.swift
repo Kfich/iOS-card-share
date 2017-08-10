@@ -27,6 +27,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     var updateLocation_tick = 5
     let locationManager = CLLocationManager()
     
+    let testURL = ImageURLS().getFromDevelopmentURL
     
     // Radar
     var radarStatus: Bool = false
@@ -52,8 +53,8 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet var tableView: UITableView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
 
         // Do any additional setup after loading the view.
         
@@ -84,7 +85,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
         
         // Fetch user image reference
-        /*
+        
          // Set user
          let user = radarContactList[indexPath.row]
          
@@ -104,14 +105,14 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         }else{
             // Set image to default image
             cell.contactImageView.image = UIImage(named: "contact")!
-        }*/
+        }
         
         // Set Name
-        // cell.contactNameLabel.text = user.getName()
+         cell.contactNameLabel.text = user.getName()
         
         
-        cell.contactNameLabel.text = "Peter Jenkins"
-        cell.contactImageView.image = UIImage(named: "contact")
+        //cell.contactNameLabel.text = "Peter Jenkins"
+        //cell.contactImageView.image = UIImage(named: "contact")
         
         return cell
     }
@@ -134,18 +135,40 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             // Remove from list
             //selectedContactList.remove(at: indexPath.row)
             print("User removed")
+            print("Selected Count >> \(selectedContactList.count)")
+            
+            if selectedContactList.count == 0{
+                // Hide send button
+                self.postHideSendCard()
+            }
+            
+            if selectedUserList[indexPath.row].isSelected == true {
+                // Set to true
+                selectedUserList[indexPath.row].isSelected = false
+            }
+
             
         } else {
             
             selectedCell?.accessoryType = .checkmark
             
-            // Append to list
-            //self.selectedContactList.append(radarContactList[indexPath.row])
+            if selectedUserList[indexPath.row].isSelected != true {
+                // Set to true
+                selectedUserList[indexPath.row].isSelected = true
+            }
+            
+                // Append to list
+                //self.selectedContactList.append(radarContactList[indexPath.row])
+            
+            print("User Added")
+            print("Selected Count >> \(selectedContactList.count)")
+            
+            // Show send card
+            self.postShowSendCard()
             
             // Append id to selectedList
             //self.selectedUserIds.append(radarContactList[indexPath.row].userId)
-            
-            print("User Added")
+
         }
         
         
@@ -154,6 +177,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Location Managment
     
     func updateLocation(){
+        //print("UPDATING LOCATION FROM THE LIST")
         
         // Toggle status
         self.radarStatus = true
@@ -171,6 +195,12 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             // Reset Ticker
             updateLocation_tick = 0
             
+            // Set lat and long from manager
+            self.lat = ContactManager.sharedManager.userLat
+            self.long = ContactManager.sharedManager.userLong
+            self.address = ContactManager.sharedManager.userAddress
+            
+            print("List View Lat >> \(self.lat) , Long >> \(self.long)")
             
             // Hit endpoint for updates on users nearby
             let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
@@ -181,7 +211,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             Connection(configuration: nil).startRadarCall(parameters, completionBlock: { response, error in
                 if error == nil {
                     
-                    //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                    print("\n\nRadar List Response: \n\n>>>>>> \(response)\n\n")
                     
                     let dictionary : NSArray = response as! NSArray
                     
@@ -201,9 +231,10 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                         let user = User(withRadarSnapshot: userDict!)
                         
                         // Create selected index
-                        //let selectedIndex = Check(arrayIndex: self.counter, selected: false)
+                        let selectedIndex = Check(arrayIndex: self.counter, selected: false)
+                        
                         // Set Selected index
-                        //self.selectedUserList.append(selectedIndex)
+                        self.selectedUserList.append(selectedIndex)
                         
                         // Test user
                         user.printUser()
@@ -333,6 +364,21 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     
+    
+    func postShowSendCard() {
+        
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ShowSendCard"), object: self)
+        
+    }
+    
+    func postHideSendCard() {
+        
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "HideSendCard"), object: self)
+        
+    }
+    
     func sendCardSelected() {
         
         // Test uuid
@@ -343,7 +389,10 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         // Iterate through selected card list
         for contact in selectedUserList {
             // Check if isSelected
+            print("Selected: \(contact.isSelected) Index: \(contact.index)")
             if contact.isSelected{
+                print("Printing contact : >> \(radarContactList[contact.index])")
+                print("Index for Selected Contact : >> \(radarContactList[contact.index].getName())")
                 // Init user from list
                 let user = radarContactList[contact.index]
                 // Set id to recipient list
@@ -365,6 +414,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     func createTransaction(type: String, uuid: String) {
         // Set type & Transaction data
         transaction.type = type
+        transaction.senderName = ContactManager.sharedManager.currentUser.getName()
         transaction.recipientList = selectedUserIds
         transaction.setTransactionDate()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
@@ -404,8 +454,8 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                 print("Card Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                /*let dictionary : Dictionary = response as! [String : Any]
+                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Insert to manager card array
                 //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)

@@ -35,6 +35,7 @@ class ContactManager{
     var userSelectedEditCard = false
     var userCreatedNewContact = false
     var userSelectedRecipient = false
+    var userSentCardFromRadarList = false
     
     
     // Quickshare
@@ -80,6 +81,11 @@ class ContactManager{
     // Indexing the contact records for upload
     var index = 0
     var timer = Timer()
+    
+    // User radar position 
+    var userLat : Double = 0.0
+    var userLong : Double = 0.0
+    var userAddress : String = ""
     
     // Initialize class
     init() {

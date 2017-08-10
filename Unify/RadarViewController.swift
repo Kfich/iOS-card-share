@@ -142,6 +142,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.radarLogoImage.tag = 5100
         self.addNewCardButton.tag = 5101
         self.sendCardButton.tag = 5102
+        self.radarListContainer.tag = 5103
         
         //add halo to pulseview as sublayer only once when view loads to prevent dups
         
@@ -207,6 +208,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        /*
         // Hide container
         if radarUsers.count > 7 && radarStatus == true {
             // Show list
@@ -218,7 +220,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             // Hide
             self.radarListContainer.isHidden = true
         }
-        
+        */
         
     }
     
@@ -271,6 +273,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             if self.radarListContainer.isHidden == false {
                 // Let listVC know to update location
                 self.postUpdateLocationNotification()
+                
             }
             
             
@@ -297,6 +300,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             //remove people from radar
             self.removePlottedPeople(self.pulseView)
             self.radarUsers.removeAll()
+            
+            // Hide card button
+            self.sendCardButton.isHidden = true
             
             // Post notification for list VC
             self.postEndRadarNotification()
@@ -343,8 +349,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             // Set selected ids to trans and values
             // Set temp id for transaction
-            //transaction.recipientList = selectedUserIds
+            transaction.recipientList = selectedUserIds
             transaction.setTransactionDate()
+            transaction.senderName = ContactManager.sharedManager.currentUser.getName()
             transaction.senderId = ContactManager.sharedManager.currentUser.userId
             transaction.type = "connection"
             transaction.scope = "transaction"
@@ -480,6 +487,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(RadarViewController.toggleRadar), name: NSNotification.Name(rawValue: "TurnOnRadar"), object: nil)
         
+        // Toggle send card button
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarViewController.showSendCard), name: NSNotification.Name(rawValue: "ShowSendCard"), object: nil)
+        
+        // Toggle send card button
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarViewController.hideSendCard), name: NSNotification.Name(rawValue: "HideSendCard"), object: nil)
+        
     }
     
     func toggleRadar() {
@@ -504,6 +517,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.radarButtonSelected(self)
     }
     
+    func showSendCard() {
+        // Toggle button on
+        self.sendCardButton.isHidden = false
+    }
+    
+    func hideSendCard() {
+        // Toggle button on
+        self.sendCardButton.isHidden = true
+    }
     
     
     // Pull up Delegate Protocols
@@ -740,6 +762,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 self.removePlottedPeople(self.pulseView)
                 self.radarUsers.removeAll()
                 self.radarStatus = true
+                
+                // Hide card button
+                self.sendCardButton.isHidden = true
                 
                 
             } else {
@@ -1046,10 +1071,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             // Clear radar list
                             self.removePlottedPeople(self.pulseView)
                             self.radarUsers.removeAll()
+                            // Hide card button
+                            self.sendCardButton.isHidden = true
                         }
                         
                        
-
+                        
                         for item in dictionary {
                             
                             //print(item)
@@ -1081,16 +1108,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             
                             // Check if user count is at 7 
-                            if self.radarContacts.count >= 7{
-                                // Show container
-                                self.radarListContainer.isHidden = false
-                            }else{
-                                // Radar showing so plot people
-                                // plot person on map
-                                // The tag is used to tag images to identify their index in the array
-                                self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                                print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
-                            }
+                            // Radar showing so plot people
+                            // plot person on map
+                            // The tag is used to tag images to identify their index in the array
+                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                            print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
+                        
                             
                             // Update counter
                             self.counter = self.counter + 1
@@ -1098,11 +1121,30 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                         }
                         
                         
-                        // Here you set the id for the user and resubmit the object
-                        // Perfom seggy to next vc
-                        
-                        //KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
-                        
+                        // Test if user count over 7
+                        if self.radarContacts.count > 7{
+                            // Set lat & long for user
+                            ContactManager.sharedManager.userLat = self.lat
+                            ContactManager.sharedManager.userLong = self.long
+                            ContactManager.sharedManager.userAddress = self.address
+                            
+                            // Remove people
+                            self.removePlottedPeople(self.pulseView)
+                            // Post notif
+                            self.postUpdateLocationNotification()
+                            // Show container
+                            self.radarListContainer.isHidden = false
+                            // Hide pulse view 
+                            //self.pulseView.isHidden = true
+                            // End radar pulsing
+                            self.stopPulseAnimation()
+                            //self.endRadar()
+                            
+                        }else{
+                            // Test
+                            print("The count was less then 7")
+
+                        }
                         
                     } else {
                         print(error)

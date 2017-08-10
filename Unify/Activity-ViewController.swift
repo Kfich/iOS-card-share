@@ -595,6 +595,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func createTransaction(type: String) {
         // Set type & Transaction data
         selectedTransaction.type = type
+        selectedTransaction.senderName = ContactManager.sharedManager.currentUser.getName()
         selectedTransaction.setTransactionDate()
         selectedTransaction.senderId = ContactManager.sharedManager.currentUser.userId
         selectedTransaction.type = "connection"
@@ -672,13 +673,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Change the label
             //cell.approveButton.setTitle("Follow up", for: .normal)
             
-        }else{
+        }else if trans.rejected{
             // Show
             cell.approveButton.isHidden = true
             cell.approveButton.isEnabled = false
             
             cell.rejectButton.text = "Rejected"
             cell.rejectButton.isEnabled = false
+        }else{
+            print("In Between state, waiting for approval")
         }
         
         // Add tag to view
@@ -693,16 +696,24 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
         // Set transaction values for cell
         let trans = transactions[index]
+        // Temp string
+        var name : String = ""
         
-        // Assign user objects
-        //let user1 = selectedUsers[0]
-        let name = trans.recipientCard?.cardHolderName
+        // Check if user sent card
+        if trans.senderId == self.currentUser.userId {
+            // Set card name to self
+            name = self.currentUser.getName()
+        }else{
+            // Set to recipient
+            name = (trans.recipientCard?.cardHolderName)!
+        }
+        
         
         // See if image ref available
         let image = UIImage(named: "contact")
         cell.connectionOwnerProfileImage.image = image
         // Set description text
-        cell.connectionDescriptionLabel.text = "You connected with \(trans.recipientCard?.cardHolderName!)"
+        cell.connectionDescriptionLabel.text = "You connected with \(String(describing: name))"
         
         print("recipientCard", trans.recipientCard )
         
@@ -725,7 +736,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Change the label
             //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
             
-        }else{
+        }else if trans.rejected{
             // Show
             cell.connectionApproveButton.isHidden = true
             cell.connectionApproveButton.isEnabled = false
@@ -734,6 +745,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.connectionRejectButton.text = "Rejected"
             cell.connectionRejectButton.isEnabled = false
             
+        }else{
+            print("Waiting for confirmation")
         }
         
         // Add tag to view
