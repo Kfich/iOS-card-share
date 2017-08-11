@@ -344,6 +344,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                     let user = radarUsers[contact.index]
                     // Set id to recipient list
                     selectedUserIds.append(user.userId)
+                    // Add recipient names 
+                    self.transaction.recipientNames?.append(user.getName())
                 }
             }
             
@@ -576,7 +578,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let user = radarUsers[tag]
         
         // Reverted code
-        var image = UIImage(named: "radar-avatar")
+        var image = UIImage(named: "user")
         var imageView = UIImageView(image: image!)
         
         
@@ -640,8 +642,18 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(0, 60, 60, 15))
+        
+        
         // Set name to label
-        lbl.text = user.getName()
+        if user.userIsIncognito == true {
+            // Set to incognito name 
+            lbl.text = user.publicProfile?.name
+        }else{
+            // Set to realname 
+            lbl.text = user.getName()
+        }
+        
+        
         lbl.textAlignment = .center
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: ".SFUIText-Medium", size: CGFloat(10))

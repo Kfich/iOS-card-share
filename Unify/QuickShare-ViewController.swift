@@ -89,20 +89,28 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        // Reset nav
+        //self.resetNavigationBooleans()
+        
         // Set contact card
         selectedCard = ContactManager.sharedManager.selectedCard
         
         // Set current user
         currentUser = ContactManager.sharedManager.currentUser
         
-        // View setup 
+        // View setup
         configureViews()
         populateCards()
-        
+
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
         
         // Reset nav
         self.resetNavigationBooleans()
@@ -268,6 +276,12 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
         transaction.scope = "transaction"
         transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+        transaction.recipientNames = [String]()
+        transaction.recipientNames?.append(contact.name)
+        print("APPENDING NAME \(self.contact.name)")
+        
+        print("Printing Transaction")
+        transaction.printTransaction()
         
         /*transaction.latitude = self.lat
         transaction.longitude = self.long
@@ -437,7 +451,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
             
             // Test String
-            let str = "Hi \(name), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            let str = "Hi \(name), I'd like to connect with you. Here's my information: \(String(describing: currentUser.getName()))\nBest, \n\(currentUser.fullName) \n\n\(cardLink)"
             
             // Set string as message body
             composeVC.body = str
@@ -478,7 +492,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
         
         // Test String
-        let str = "Hi \(contactName), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "Hi \(contactName), I'd like to connect with you. Here's my information \n\(String(describing: currentUser.getName()))\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact])

@@ -595,7 +595,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         // Switch case to find right section
         switch indexPath.section {
         case 0:
-            card.cardProfile.bio = bios[indexPath.row]
+            //card.cardProfile.bio = bios[indexPath.row]
             
             if self.selectedBios.contains(bios[indexPath.row]) {
                 // Print Already selected
@@ -611,7 +611,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
         case 1:
-            card.cardProfile.workInfo = workInformation[indexPath.row]
+            //card.cardProfile.workInfo = workInformation[indexPath.row]
             
             if self.selectedWorkInformation.contains(workInformation[indexPath.row]) {
                 // Already in list
@@ -625,7 +625,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
         case 2:
-            card.cardProfile.title = titles[indexPath.row]
+            //card.cardProfile.title = titles[indexPath.row]
             
             // Check if already selected
             if self.selectedTitles.contains(titles[indexPath.row]) {
@@ -636,9 +636,10 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }else{
                 // Add to list
                 card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
+                
+                // Assign label value
+                self.titleLabel.text = titles[indexPath.row]
             }
-            // Assign label value
-            self.titleLabel.text = titles[indexPath.row]
             
         case 3:
             // Check if in array already
@@ -652,11 +653,17 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 // Append to list
                 card.cardProfile.emails.append(["email" : emails[indexPath.row]])
                 print(card.cardProfile.emails as Any)
+                
+                // Assign label value
+                if emails.count != 0{
+                    self.emailLabel.text = emails[indexPath.row]
+                }
             }
-            // Assign label value
-            self.emailLabel.text = emails[indexPath.row]
+            
+            //self.emailLabel.text = emails[indexPath.row]
             
         case 4:
+            
             // Check if in array
             if self.selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
                 // Already in list
@@ -668,9 +675,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
                 // Print for testing
                 print(card.cardProfile.phoneNumbers as Any)
+                
+                // Assign label value
+                self.numberLabel.text = phoneNumbers[indexPath.row]
             }
-            // Assign label value
-            self.numberLabel.text = phoneNumbers[indexPath.row]
+            
             
         case 5:
             // Check if in array 

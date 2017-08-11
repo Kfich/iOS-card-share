@@ -135,7 +135,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Configure done button in nav bar 
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneEditingProfile))
         
-        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pintrest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
+        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pinterest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
         
         // Create list for parsing values
         self.initializeBadgeList()
@@ -143,6 +143,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         // For notifications 
         self.addObservers()
+        
+        let image = UIImage(named: "icn-plus-blue")
+        self.socialBadges.append(image!)
         
     }
 
@@ -223,21 +226,36 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 print("Item >> \(item.first?.key)")
                 // temp string
                 let str = item.first?.key
-                print("String >> \(str)")
+                //print("String >> \(str)")
                 // Check if key in link
                 if link.lowercased().range(of:str!) != nil {
                     print("exists")
-                    print("exists")
-                    print("exists")
-                    print("exists")
                     
+                    if !socialBadges.contains(item.first?.value as! UIImage) {
+                        print("NOT IN LIST")
+                        // Append link to list
+                        self.socialBadges.append(item.first?.value as! UIImage)
+                    }else{
+                        print("ALREADY IN LIST")
+                    }
                     // Append link to list
-                    self.socialBadges.append(item.first?.value as! UIImage)
+                    //self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
                     
                     
                 }
             }
+            // Reload table
+            self.collectionTableView.reloadData()
         }
+        
+        
     }
     
     
@@ -256,18 +274,18 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     func initializeBadgeList() {
         // Image config
         let img1 = UIImage(named: "icn-social-facebook.png")
-        let img2 = UIImage(named: "icn-social-facebook.png")
-        let img3 = UIImage(named: "icn-social-facebook.png")
-        let img4 = UIImage(named: "icn-social-facebook.png")
-        let img5 = UIImage(named: "icn-social-facebook.png")
-        let img6 = UIImage(named: "icn-social-facebook.png")
+        let img2 = UIImage(named: "icn-social-twitter.png")
+        let img3 = UIImage(named: "icn-social-instagram.png")
+        let img4 = UIImage(named: "icn-social-harvard.png")
+        let img5 = UIImage(named: "icn-social-pinterest.png")
+        let img6 = UIImage(named: "icn-social-pinterest.png")
         let img7 = UIImage(named: "icn-social-facebook.png")
         let img8 = UIImage(named: "icn-social-facebook.png")
         let img9 = UIImage(named: "icn-social-facebook.png")
         let img10 = UIImage(named: "icn-social-facebook.png")
         
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["snapchat" : img4!], ["linkedin" : img5!], ["pintrest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
         
     
        // let fb : NSDictionary = ["facebook" : img1!]
@@ -328,15 +346,36 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "showSocialMediaOptions" {
+            // Set destination 
+            /*let nextVC = segue.destination as! SocialMediaViewController
+            // Image config
+            let img1 = UIImage(named: "icn-social-facebook.png")
+            let img2 = UIImage(named: "icn-social-twitter.png")
+            let img3 = UIImage(named: "icn-social-instagram.png")
+            let img4 = UIImage(named: "icn-social-facebook.png")
+            let img5 = UIImage(named: "icn-social-facebook.png")
+            let img6 = UIImage(named: "icn-social-pinterest.png")
+            let img7 = UIImage(named: "icn-social-facebook.png")
+            let img8 = UIImage(named: "icn-social-facebook.png")
+            let img9 = UIImage(named: "icn-social-facebook.png")
+            let img10 = UIImage(named: "icn-social-facebook.png")
+            
+            let thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!]
+            
+            // Set the image
+            nextVC.thumbnailImageList = thumbnailImageList*/
+        }
      }
-     */
+    
     
 }
 
@@ -356,7 +395,42 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
         //cell.backgroundColor = model[collectionView.tag][indexPath.item]
         //cell.backgroundColor = UIColor.blue
         
-        if self.socialBadges.count == 0 {
+        /*if self.socialBadges.count == 0 {
+            // Set default cell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            
+            // Set the cell
+            //icn-plus-blue
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let image = UIImage(named: "icn-plus-blue")
+            
+            // Set image
+            imageView.image = image
+            
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            collectionView.addSubview(cell)
+            
+        }else{*/
+        
+            
+            configureViews(cell: cell)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+       // }
+        
+        
+        /*if indexPath.row == indexPath.las{
             // Set default cell
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             
@@ -372,28 +446,14 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
             // Add subview
             cell.contentView.addSubview(imageView)
             collectionView.addSubview(cell)
-            
-        }else{
-            
-            configureViews(cell: cell)
-            
-            // Configure corner radius
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-            let image = self.socialBadges[indexPath.row]
-            
-            // Set image
-            imageView.image = image
-            
-            // Add subview
-            cell.contentView.addSubview(imageView)
-        }
+        }*/
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
@@ -426,5 +486,22 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
          cell.layer.shadowOffset = CGSize.zero
          cell.layer.shadowRadius = 2*/
     }
+    
+    func reloadCollectionData() {
+        // Reload
+        
+        
+        
+    }
+    
+    
+    
+    
+    
 
 }
+
+
+
+
+

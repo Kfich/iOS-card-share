@@ -676,6 +676,8 @@
 		FB3738301EDDD69A0074200F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				FBA1F5161F38FA1300CDCB76 /* CustomSearchBar.swift */,
+				FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */,
 				FB37382C1EDDD59D0074200F /* BusinessCardView.swift */,
 				FB3738331EDDD6CD0074200F /* BusinessCardView.xib */,
 				FB3738351EDDDE0F0074200F /* ContactCardView.swift */,
@@ -729,8 +731,6 @@
 				FBF871311EE71F0100243CE2 /* ContactCard.swift */,
 				FBE807481F0566F300A05292 /* CardProfile.swift */,
 				FB019AA11F28EE7C00908A67 /* Contact.swift */,
-				FBA1F5161F38FA1300CDCB76 /* CustomSearchBar.swift */,
-				FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */,
 			);
 			name = Class_Files;
 			sourceTree = "<group>";
@@ -773,7 +773,7 @@
 				TargetAttributes = {
 					1CAE5B7F1E913A06006EFF40 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L8E3N3XE58;
+						DevelopmentTeam = WLFGCQXG8T;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1161,7 +1161,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L8E3N3XE58;
+				DEVELOPMENT_TEAM = WLFGCQXG8T;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1169,7 +1169,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";
@@ -1188,7 +1188,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L8E3N3XE58;
+				DEVELOPMENT_TEAM = WLFGCQXG8T;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1196,7 +1196,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";

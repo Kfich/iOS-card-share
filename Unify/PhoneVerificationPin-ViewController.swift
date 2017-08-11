@@ -134,7 +134,10 @@ class PhoneVerificationPinViewController: UIViewController {
     // -----------------------------------
     @IBAction func verify_tap(_ sender: Any) {
         
-        //self.verifyBtn.isHidden = true
+        // May be a mistake, test it tho
+        self.verifyBtn.isHidden = true
+        
+        // Also test
         self.verifyBtn.isEnabled = false
         
         

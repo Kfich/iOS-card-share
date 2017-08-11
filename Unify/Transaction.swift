@@ -18,6 +18,7 @@ public class Transaction{
     var date : String = ""
     var type : String = ""
     var senderName : String = ""
+    var recipientNames : [String]?
     
     // Lat and Long for location
     var latitude = Double()
@@ -45,7 +46,7 @@ public class Transaction{
     var senderCardId : String = ""
     var recipientCardId : String = ""
 
-    var contactDictionary = NSDictionary()
+    var contactDictionary : NSDictionary?
     
     // Approval
     var approved = false
@@ -58,6 +59,7 @@ public class Transaction{
     
         // Set date
         setTransactionDate()
+        recipientNames = []
     
     }
     
@@ -76,12 +78,15 @@ public class Transaction{
         //latitude = snapshot["latitude"] as! String
         //longitude = snapshot["latitude"] as! String
         
-        contactDictionary = (snapshot["recipientCard"] as? NSDictionary)!
-        print("THE CONTACT DICT .. >> \(contactDictionary)")
-        
-        recipientCard = ContactCard.init(withSnapshotLite: contactDictionary)
-        
-        print(recipientCard?.cardHolderName ?? "No name")
+        if type == "connection" {
+            // Add contact card info
+            contactDictionary = snapshot["recipientCard"] as? NSDictionary
+            print("THE CONTACT DICT .. >> \(contactDictionary)")
+            
+            recipientCard = ContactCard.init(withSnapshotLite: contactDictionary ?? NSDictionary())
+            
+            print(recipientCard?.cardHolderName ?? "No name")
+        }
         
         let approval = snapshot["approved"] as! String ?? "0"
         let reject = snapshot["rejected"] as! String ?? "0"
@@ -99,6 +104,7 @@ public class Transaction{
         }
         
         senderName = snapshot["sender_name"] as! String
+        recipientNames = snapshot["recipient_names"] as? [String]
         
         // Testing to see if populated
         printTransaction()
@@ -120,6 +126,7 @@ public class Transaction{
             "longitude" : longitude,
             "recipient_list": recipientList,
             "rejected" : rejected,
+            "recipient_names" : recipientNames,
             "approved" : approved
             
         ]
@@ -247,6 +254,16 @@ public class Transaction{
         //recipientList.append(contactRecords)
     }
 
+    // Recipient Names
+    func getRecipientNames()->[String]{
+        return recipientList
+    }
+    
+    func setRecipientName(contactRecords : String){
+        recipientNames?.append(contactRecords)
+    }
+
+    
     // Approval
     func getApprovalStatus() -> Bool{
         return approved
@@ -293,6 +310,8 @@ public class Transaction{
     func printTransaction(){
         print("\n")
         print("Sender Name :" + senderName)
+        print("Recipient Names: ")
+        print(recipientNames ?? "No Recipient Names")
         print("TransId :" + transactionId)
         print("Type : " + type)
         print("Date :" + date)

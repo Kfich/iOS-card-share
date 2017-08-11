@@ -20,11 +20,11 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     
     // Test data config
     let img1 = UIImage(named: "icn-social-facebook.png")
-    let img2 = UIImage(named: "icn-social-facebook.png")
-    let img3 = UIImage(named: "icn-social-facebook.png")
-    let img4 = UIImage(named: "icn-social-facebook.png")
-    let img5 = UIImage(named: "icn-social-facebook.png")
-    let img6 = UIImage(named: "icn-social-facebook.png")
+    let img2 = UIImage(named: "icn-social-twitter.png")
+    let img3 = UIImage(named: "icn-social-instagram.png")
+    let img4 = UIImage(named: "icn-social-harvard.png")
+    let img5 = UIImage(named: "icn-social-pinterest.png")
+    let img6 = UIImage(named: "icn-social-pinterest.png")
     let img7 = UIImage(named: "icn-social-facebook.png")
     let img8 = UIImage(named: "icn-social-facebook.png")
     let img9 = UIImage(named: "icn-social-facebook.png")
@@ -51,7 +51,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
         
-                mediaCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        mediaCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         // galleryCollectionView.register(ProjectThumbnailViewCell.self, forCellWithReuseIdentifier: "GalleryThumbnailCell")
         
@@ -60,13 +60,23 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         mediaCollectionView.reloadData()
         //galleryCollectionView.reloadData()
         
-        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!]
+        //thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!]
         
-        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pintrest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
+        //links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pinterest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
+        
+        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.hardvard.edu/", "https://www.pinterest.com/"]
         
         // For notifcations 
         self.addObservers()
         
+        mediaCollectionView.reloadData()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!]/*, img6!, img7!, img8!, img9!, img10!]*/
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,7 +96,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     // UICollectionViewDataSource & Delegate Protocol
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
+        print(thumbnailImageList.count)
         return thumbnailImageList.count
     }
     
@@ -98,14 +108,14 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         ///let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ThumbnailCell", for: indexPath)
         
-        cell.contentView.backgroundColor = UIColor.red
+        cell.contentView.backgroundColor = UIColor.clear
         
         // Set image from array of images
-        //cell.mediaImageView.image = thumbnailImageList[indexPath.row]
+        //cell.mediaImageView.image =  UIImage(named: "icn-social-facebook.png")//thumbnailImageList[indexPath.row]
         
         
         // configure the cells
-        configureViews(cell: cell)
+        configureViews(cell: cell, index: indexPath.row)
         
         return cell
     }
@@ -149,19 +159,26 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: self)
     }
     
-    func configureViews(cell: MediaThumbnailCell){
+    func configureViews(cell: MediaThumbnailCell, index: Int){
         // Add radius config & border color
         
         cell.contentView.layer.cornerRadius = 75.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
         cell.layer.shadowOpacity = 1.0
         cell.layer.shadowOffset = CGSize.zero
         cell.layer.shadowRadius = 0.5
+        
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 0, y: 0 , width: 150, height: 150)
+        //let image = thumbnailImageList[]
+        imageView.image = thumbnailImageList[index]
+        cell.contentView.addSubview(imageView)
+        
         
         // Add radius config & border color
          /*cell.mediaImageView.layer.cornerRadius = 12.0

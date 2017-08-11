@@ -273,7 +273,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 // Assign uuid to user object
                 self.currentUser.userId = dictionary["uuid"] as! String
                 
-                
                 // Check if current user bool set 
                 let check = dictionary["isUser"] as! Bool
                 
@@ -285,8 +284,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                     // True
                     self.isCurrentUser = true
                 }
+                
                 // Check if user needs to be set
-                if self.isCurrentUser {
+                if self.isCurrentUser && UDWrapper.getDictionary("user") != nil {
                     
                     // Init user object
                     if let user = UDWrapper.getDictionary("user"){
@@ -304,6 +304,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                     
                     // Print to test
                     self.currentUser.printUser()
+                }else{
+                    // Send to create account
+                    
                 }
                 
                 // Set user to manager object

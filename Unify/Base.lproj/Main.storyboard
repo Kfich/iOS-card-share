@@ -246,7 +246,7 @@
                                                                 </constraints>
                                                                 <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="20"/>
-                                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardType="emailAddress"/>
+                                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -1432,7 +1432,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wjn-yz-P6Z">
-                                <rect key="frame" x="0.0" y="303" width="375" height="364"/>
+                                <rect key="frame" x="0.0" y="381" width="375" height="286"/>
                                 <connections>
                                     <segue destination="U5F-hJ-a8T" kind="embed" id="toO-dQ-Lgl"/>
                                 </connections>
@@ -1480,10 +1480,10 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="75" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="uAH-ha-KFH">
-                                <rect key="frame" x="0.0" y="230" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="230" width="375" height="150"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="75" id="yKP-nU-Qbp"/>
+                                    <constraint firstAttribute="height" constant="150" id="yKP-nU-Qbp"/>
                                 </constraints>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
@@ -1556,7 +1556,7 @@
                             <constraint firstAttribute="trailing" secondItem="uAH-ha-KFH" secondAttribute="trailing" id="VVf-03-9C9"/>
                             <constraint firstItem="tdX-og-lp8" firstAttribute="top" secondItem="3g5-yL-olm" secondAttribute="top" constant="2" id="Vhg-ji-Qd4"/>
                             <constraint firstItem="Wjn-yz-P6Z" firstAttribute="trailing" secondItem="FcK-mL-LNb" secondAttribute="trailing" id="bPN-VX-bKI"/>
-                            <constraint firstItem="Wjn-yz-P6Z" firstAttribute="top" secondItem="uAH-ha-KFH" secondAttribute="bottom" constant="-2" id="cuE-f2-mXU"/>
+                            <constraint firstItem="Wjn-yz-P6Z" firstAttribute="top" secondItem="uAH-ha-KFH" secondAttribute="bottom" constant="1" id="cuE-f2-mXU"/>
                             <constraint firstItem="Wjn-yz-P6Z" firstAttribute="leading" secondItem="FcK-mL-LNb" secondAttribute="leading" id="exU-WL-c4H"/>
                             <constraint firstItem="uAH-ha-KFH" firstAttribute="leading" secondItem="3g5-yL-olm" secondAttribute="leading" id="iLV-Fa-Q6e"/>
                             <constraint firstAttribute="trailing" secondItem="FcK-mL-LNb" secondAttribute="trailing" id="qMU-wP-K28"/>
@@ -6928,7 +6928,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIN-fc-1lp">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qIN-fc-1lp">
                                 <rect key="frame" x="8" y="0.0" width="367" height="280"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qqA-jn-dvt">
@@ -9246,7 +9246,7 @@
                                     <constraint firstItem="Khy-R3-ag1" firstAttribute="centerX" secondItem="8FT-b0-lLF" secondAttribute="centerX" id="tzx-ee-yqD"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Visit: www.gounify.com" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mJQ-yl-9D4">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Visit: www.gounify.com" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mJQ-yl-9D4">
                                 <rect key="frame" x="0.0" y="73" width="375" height="545"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="0.0" green="0.3803921569" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -10084,7 +10084,7 @@
                         <viewControllerLayoutGuide type="bottom" id="8ww-ph-oJm"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="t6P-aY-1pT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="364"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="286"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -10249,6 +10249,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="cPv-Jr-ON4"/>
-        <segue reference="yAj-N5-fTc"/>
+        <segue reference="DUc-wk-wjY"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -113,7 +113,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if self.transactions[indexPath.row].approved {
+        if self.transactions[indexPath.row].rejected != true{
             // Set selected and follow up
             // Set selected transaction
             self.selectedTransaction = self.transactions[indexPath.row]
@@ -701,11 +701,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Check if user sent card
         if trans.senderId == self.currentUser.userId {
-            // Set card name to self
-            name = self.currentUser.getName()
+            // Set card name to recipient
+            if trans.type != "quick_share" {
+                // Add recipient card name
+                name = (trans.recipientCard?.cardHolderName)!
+            }else{
+                // Add from recipient names 
+                name = trans.recipientNames?[0] ?? "No name"
+            }
+            
         }else{
             // Set to recipient
-            name = (trans.recipientCard?.cardHolderName)!
+            name = trans.senderName
         }
         
         
@@ -724,30 +731,45 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.connectionLocationLabel.text = trans.location
         
         
-        // Hide buttons if already approved
-        if trans.approved {
+        if trans.senderId == self.currentUser.userId {
+            
             // Hide and replace
             cell.connectionRejectButton.isHidden = true
             cell.connectionRejectButton.isEnabled = false
-            
-            cell.connectionApproveButton.text = "follow up"
-            cell.connectionApproveButton.isEnabled = false
-            
-            // Change the label
-            //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
-            
-        }else if trans.rejected{
-            // Show
+        
             cell.connectionApproveButton.isHidden = true
             cell.connectionApproveButton.isEnabled = false
-            
-            // Hide approve
-            cell.connectionRejectButton.text = "Rejected"
-            cell.connectionRejectButton.isEnabled = false
-            
+        
         }else{
-            print("Waiting for confirmation")
+            
+            // Hide buttons if already approved
+            if trans.approved {
+                // Hide and replace
+                cell.connectionRejectButton.isHidden = true
+                cell.connectionRejectButton.isEnabled = false
+                
+                cell.connectionApproveButton.text = "follow up"
+                cell.connectionApproveButton.isEnabled = false
+                
+                // Change the label
+                //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
+                
+            }else if trans.rejected{
+                // Show
+                cell.connectionApproveButton.isHidden = true
+                cell.connectionApproveButton.isEnabled = false
+                
+                // Hide approve
+                cell.connectionRejectButton.text = "Rejected"
+                cell.connectionRejectButton.isEnabled = false
+                
+            }else{
+                print("Waiting for confirmation")
+            }
+
+            
         }
+        
         
         // Add tag to view
         //cell.connectionCardWrapperView.tag = index

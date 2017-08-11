@@ -383,6 +383,8 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Test uuid
         print("\n\nCurrent User ID >>> \(currentUser.userId)")
+        // Init name list
+        self.transaction.recipientNames = [String]()
         
         // Dyamically set selected card here
         
@@ -397,6 +399,10 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                 let user = radarContactList[contact.index]
                 // Set id to recipient list
                 selectedUserIds.append(user.userId)
+                
+                // Add recipient names to transaction 
+                self.transaction.recipientNames?.append(user.getName())
+                
             }
         }
         
