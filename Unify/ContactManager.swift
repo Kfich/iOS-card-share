@@ -78,6 +78,9 @@ class ContactManager{
     // Object for adding contacts 
     var newContact = Contact()
     
+    // For temp storage of social links 
+    var tempSocialLinks = [[String:String]]()
+    
     // Indexing the contact records for upload
     var index = 0
     var timer = Timer()

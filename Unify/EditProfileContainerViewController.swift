@@ -36,12 +36,17 @@ class EditProfileContainerViewController: FormViewController {
     // IBOutlets
     // ----------------------------------
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         // Add observer for refresh
         self.addObservers()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         // Set current user
-        currentUser = ContactManager.sharedManager.currentUser
+        //currentUser = ContactManager.sharedManager.currentUser
         
         /*
         emails = ["example@gmail.com", "test@aol.com", "sample@gmail.com" ]
@@ -63,69 +68,8 @@ class EditProfileContainerViewController: FormViewController {
        
         }else{
          
-            // Parse bio info
-            
-            if currentUser.userProfile.bios.count > 0{
-                // Iterate throught array and append available content
-                for bio in currentUser.userProfile.bios{
-                    bios.append(bio["bio"] as! String)
-                }
-            }
-            // Parse work info
-            if currentUser.userProfile.workInformationList.count > 0{
-                for info in currentUser.userProfile.workInformationList{
-                    workInformation.append(info["work"]!)
-                }
-            }
-            // Parse work info
-            if currentUser.userProfile.titles.count > 0{
-                for info in currentUser.userProfile.titles{
-                    titles.append((info["title"])!)
-                }
-            }
-            
-            // Parse phone numbers
-            if currentUser.userProfile.phoneNumbers.count > 0{
-                for number in currentUser.userProfile.phoneNumbers{
-                    phoneNumbers.append(number["phone"]!)
-                }
-            }
-            // Parse emails
-            if currentUser.userProfile.emails.count > 0{
-                for email in currentUser.userProfile.emails{
-                    emails.append(email["email"]!)
-                }
-            }
-            // Parse websites
-            if currentUser.userProfile.websites.count > 0{
-                for site in currentUser.userProfile.websites{
-                    websites.append(site["website"]!)
-                }
-            }
-            // Parse organizations
-            if currentUser.userProfile.organizations.count > 0{
-                for org in currentUser.userProfile.organizations{
-                    organizations.append(org["organization"]!)
-                }
-            }
-            // Parse Tags
-            if currentUser.userProfile.tags.count > 0{
-                for hashtag in currentUser.userProfile.tags{
-                    tags.append(hashtag["tag"]!)
-                }
-            }
-            // Parse notes
-            if currentUser.userProfile.notes.count > 0{
-                for note in currentUser.userProfile.notes{
-                    notes.append(note["note"]!)
-                }
-            }
-            // Parse socials links
-            if currentUser.userProfile.socialLinks.count > 0{
-                for link in currentUser.userProfile.socialLinks{
-                    socialLinks.append(link["link"]!)
-                }
-            }
+            // Parse profile info
+            self.parseProfileData()
             
             
             
@@ -381,145 +325,6 @@ class EditProfileContainerViewController: FormViewController {
 
     }
     
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-        
-    if ContactManager.sharedManager.userSelectedEditCard{
-            
-        
-        // Clear the arrays 
-        self.removeAllFromArrays()
-        
-        // Assign all the items in each list to the contact profile on manager
-        // Parse table section vals
-        
-        // Bios Section
-        let bioValues = form.sectionBy(tag: "Bio Section")
-        for val in bioValues! {
-            
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String {
-                // Append to user profile
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.setBioRecords(emailRecords: ["bio": str])
-                    bios.append(str)
-                }
-            }
-        }
-        
-        // Titles Section
-        let titleValues = form.sectionBy(tag: "Title Section")
-        for val in titleValues! {
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.titles.append(["title" : str])
-                    titles.append(str)
-                }
-            }
-        }
-        
-        // Phone Number section
-        let phoneValues = form.sectionBy(tag: "Phone Section")
-        for val in phoneValues! {
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
-                    phoneNumbers.append(str)
-                }
-            }
-        }
-        
-        // Email Section
-        let emailValues = form.sectionBy(tag: "Email Section")
-        for val in emailValues! {
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.emails.append(["email" : str])
-                    emails.append(str)
-                }
-            }
-        }
-        
-        // Work Info Section
-        let workValues = form.sectionBy(tag: "Work Section")
-        for val in workValues! {
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.workInformationList.append(["work" :str])
-                    workInformation.append(str)
-                }
-            }
-        }
-        
-        // Website Section
-        let websiteValues = form.sectionBy(tag: "Website Section")
-        for val in websiteValues! {
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
-                }
-            }
-        }
-        
-        // Social Media Section
-        let mediaValues = form.sectionBy(tag: "Media Section")
-        for val in mediaValues! {
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.setSocialLinks(socialRecords: ["link": str])
-                    socialLinks.append(str)
-                }
-            }
-        }
-        
-        // Organization section
-        let organizationValues = form.sectionBy(tag: "Organization Section")
-        for val in organizationValues! {
-            print(val.baseValue ?? "")
-            if let str = "\(val.baseValue ?? "")" as? String{
-                if str != "nil" && str != "" {
-                    currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
-                    organizations.append(str)
-                }
-            }
-        }
-        
-        // Set the array values as the profile
-        
-        /*UDWrapper.setArray("bios", value: bios as NSArray)
-        UDWrapper.setArray("titles", value: titles as NSArray)
-        UDWrapper.setArray("workInfo", value: workInformation as NSArray)
-        UDWrapper.setArray("phoneNumbers", value: phoneNumbers as NSArray)
-        UDWrapper.setArray("emails", value: emails as NSArray)
-        UDWrapper.setArray("websites", value: websites as NSArray)
-        UDWrapper.setArray("socialLinks", value: socialLinks as NSArray)
-        UDWrapper.setArray("organizations", value: organizations as NSArray)*/
-        
-        // Set current user
-        ContactManager.sharedManager.currentUser = self.currentUser
-        
-        // Test to print profile
-        ContactManager.sharedManager.currentUser.userProfile.printProfle()
-        
-        // Update user
-        self.updateCurrentUser()
-        
-        // Store user to device
-        UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
-        
-        self.postNotification()
-    }else{
-        print("They chose to cancel")
-        }
-    }
-    
     // Custom methods
     
     // Notifications
@@ -529,105 +334,273 @@ class EditProfileContainerViewController: FormViewController {
         // Notification for radar screen
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshProfile"), object: self)
         
+        //UpdateCurrentUserProfile
+        
     }
+    
+    func postNotificationForUpdate() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateCurrentUserProfile"), object: self)
+        
+        //UpdateCurrentUserProfile
+        
+    }
+    
     
     func addObservers() {
         // Refresh table
-        NotificationCenter.default.addObserver(self, selector: #selector(EditProfileContainerViewController.sayHello), name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(EditProfileContainerViewController.clearForm), name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(EditProfileContainerViewController.parseEditedProfile), name: NSNotification.Name(rawValue: "ParseProfileForEdit"), object: nil)
         
         
     }
-    func sayHello() {
-        // Testing 
-        print("Hello!")
-        print("Hello!")
-        print("Hello!")
-        print("Hello!")
+    func clearForm() {
+        print("Form Clearing")
         
         // Remove all section of form
         form.removeAll()
+    }
+    
+    func parseEditedProfile() {
+        // Parse form
+        print("Hello!")
+        
+        // Clear manager arrays 
+        self.clearCurrentUserArrays()
+        
+        if ContactManager.sharedManager.userSelectedEditCard{
+            
+            
+            // Clear the arrays
+            self.removeAllFromArrays()
+            
+            // Assign all the items in each list to the contact profile on manager
+            // Parse table section vals
+            
+            // Bios Section
+            let bioValues = form.sectionBy(tag: "Bio Section")
+            for val in bioValues! {
+                
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String {
+                    // Append to user profile
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setBioRecords(emailRecords: ["bio": str])
+                        bios.append(str)
+                    }
+                }
+            }
+            
+            // Titles Section
+            let titleValues = form.sectionBy(tag: "Title Section")
+            for val in titleValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.titles.append(["title" : str])
+                        titles.append(str)
+                    }
+                }
+            }
+            
+            // Phone Number section
+            let phoneValues = form.sectionBy(tag: "Phone Section")
+            for val in phoneValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
+                        phoneNumbers.append(str)
+                    }
+                }
+            }
+            
+            // Email Section
+            let emailValues = form.sectionBy(tag: "Email Section")
+            for val in emailValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.emails.append(["email" : str])
+                        emails.append(str)
+                    }
+                }
+            }
+            
+            // Work Info Section
+            let workValues = form.sectionBy(tag: "Work Section")
+            for val in workValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.workInformationList.append(["work" :str])
+                        workInformation.append(str)
+                    }
+                }
+            }
+            
+            // Website Section
+            let websiteValues = form.sectionBy(tag: "Website Section")
+            for val in websiteValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
+                    }
+                }
+            }
+            
+            // Social Media Section
+            let mediaValues = form.sectionBy(tag: "Media Section")
+            for val in mediaValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setSocialLinks(socialRecords: ["link": str])
+                        socialLinks.append(str)
+                        
+                        //print("Social links not needed here anymore")
+                    }
+                }
+            }
+            
+            // Organization section
+            let organizationValues = form.sectionBy(tag: "Organization Section")
+            for val in organizationValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
+                        organizations.append(str)
+                    }
+                }
+            }
+            
+            // Set current user
+            //ContactManager.sharedManager.currentUser = self.currentUser
+            
+            // Test to print profile
+            print("PRINTING FROM CONTAINER CURRENT USER")
+            ContactManager.sharedManager.currentUser.printUser()
+            
+            // Post notification
+            self.postNotificationForUpdate()
+            
+            // Store user to device
+            //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+            
+            //self.postNotification()
+        }else{
+            print("They chose to cancel")
+        }
+
     }
     
     func parseProfileData()  {
         // Clear arrays
         self.removeAllFromArrays()
         
-        if currentUser.userProfile.bios.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
-            for bio in currentUser.userProfile.bios{
+            for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
                 bios.append(bio["bio"]!)
             }
         }
         // Parse work info
-        if currentUser.userProfile.workInformationList.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
             for info in currentUser.userProfile.workInformationList{
                 workInformation.append(info["work"]!)
             }
         }
         // Parse work info
-        if currentUser.userProfile.titles.count > 0{
-            for info in currentUser.userProfile.titles{
+        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
                 titles.append((info["title"])!)
             }
         }
         
         // Parse phone numbers
-        if currentUser.userProfile.phoneNumbers.count > 0{
-            for number in currentUser.userProfile.phoneNumbers{
+        if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
+            for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 phoneNumbers.append(number["phone"]!)
             }
         }
         // Parse emails
-        if currentUser.userProfile.emails.count > 0{
-            for email in currentUser.userProfile.emails{
+        if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
+            for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
             }
         }
         // Parse websites
-        if currentUser.userProfile.websites.count > 0{
-            for site in currentUser.userProfile.websites{
+        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
                 websites.append(site["website"]!)
             }
         }
         // Parse organizations
-        if currentUser.userProfile.organizations.count > 0{
-            for org in currentUser.userProfile.organizations{
+        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
                 organizations.append(org["organization"]!)
             }
         }
         // Parse Tags
-        if currentUser.userProfile.tags.count > 0{
-            for hashtag in currentUser.userProfile.tags{
+        if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
+            for hashtag in ContactManager.sharedManager.currentUser.userProfile.tags{
                 tags.append(hashtag["tag"]!)
             }
         }
         // Parse notes
-        if currentUser.userProfile.notes.count > 0{
-            for note in currentUser.userProfile.notes{
+        if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
+            for note in ContactManager.sharedManager.currentUser.userProfile.notes{
                 notes.append(note["note"]!)
             }
         }
         // Parse socials links
-        if currentUser.userProfile.socialLinks.count > 0{
-            for link in currentUser.userProfile.socialLinks{
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
                 socialLinks.append(link["link"]!)
             }
         }
-        
         // Reload Table
-        
+    }
+    
+    func clearCurrentUserArrays() {
+        // Clear all profile info to prepare for override
+         ContactManager.sharedManager.currentUser.userProfile.bios.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.titles.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.emails.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.websites.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()
     }
     
     func removeAllFromArrays() {
-        // Clear all profile info to prepare for override 
-        currentUser.userProfile.bios.removeAll()
-        currentUser.userProfile.titles.removeAll()
-        currentUser.userProfile.emails.removeAll()
-        currentUser.userProfile.phoneNumbers.removeAll()
-        currentUser.userProfile.websites.removeAll()
-        currentUser.userProfile.organizations.removeAll()
-        currentUser.userProfile.socialLinks.removeAll()
-        currentUser.userProfile.workInformationList.removeAll()
+        // Clear all profile info to prepare for override
+        /*ContactManager.sharedManager.currentUser.userProfile.bios.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.titles.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.emails.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.websites.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()*/
+        
+        // Clear all profile info to prepare for override
+        bios.removeAll()
+        titles.removeAll()
+        emails.removeAll()
+        phoneNumbers.removeAll()
+        websites.removeAll()
+        organizations.removeAll()
+        socialLinks.removeAll()
+        workInformation.removeAll()
+        
+        
+        
     }
     
     
@@ -679,8 +652,12 @@ class EditProfileContainerViewController: FormViewController {
             KVNProgress.dismiss()
         }
     }
-
     
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        
+    }
     
 }

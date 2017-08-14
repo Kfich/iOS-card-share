@@ -55,6 +55,7 @@ class CardCollectionViewCell: UICollectionViewCell{
     // View that holds card name and send buttons 
     @IBOutlet var cardHeaderView: UIView!
     
+    @IBOutlet weak var collectionView: UICollectionView!
     
     
     // Init 

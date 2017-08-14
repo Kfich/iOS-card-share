@@ -45,7 +45,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         // Assign user 
         self.currentUser = ContactManager.sharedManager.currentUser
-        self.currentUser.printUser()
+        //self.currentUser.printUser()
         
         // Assign delegates
         mediaCollectionView.delegate = self
@@ -64,7 +64,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         //links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pinterest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
         
-        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.hardvard.edu/", "https://www.pinterest.com/"]
+        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.harvard.edu/", "https://www.pinterest.com/"]
         
         // For notifcations 
         self.addObservers()

@@ -66,12 +66,17 @@ class SocialMediaDetailViewController: UIViewController {
         }else{
             // No error 
             // Assign value to profile
-            currentUser.userProfile.setSocialLinks(socialRecords: ["link" : mediaTextField.text!])
+            ContactManager.sharedManager.currentUser.userProfile.setSocialLinks(socialRecords: ["link" : mediaTextField.text!])
+            
+            // Assign link to temp list until done selected
+            //ContactManager.sharedManager.tempSocialLinks.append(["link" : mediaTextField.text!])
+            //print("Temp links")
+            //print(ContactManager.sharedManager.tempSocialLinks)
             
             // Reassign object to manager
-            ContactManager.sharedManager.currentUser = self.currentUser
+            //ContactManager.sharedManager.//.currentUser = self.currentUser
             
-            currentUser.printUser()
+           // currentUser.printUser()
             
             // Update user 
             //self.updateCurrentUser()

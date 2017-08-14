@@ -226,7 +226,7 @@ public class User{
         scope = withDefaultsSnapshot["scope"] as? String ?? ""
         profileImages = (withDefaultsSnapshot["profile_image"] as? [[String : Any]])!
         
-        //profileImageId = withDefaultsSnapshot["profile_image_id"] as? String ?? ""
+        profileImageId = withDefaultsSnapshot["profile_image_id"] as? String ?? ""
         
         userPhoneForVerification = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
         userPhoneVerified = withDefaultsSnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
@@ -293,6 +293,7 @@ public class User{
             "profile_image": profileImages,
             "userPhoneVerified": userPhoneVerified,
             "userPhoneForVerification": userPhoneForVerification,
+            "profile_image_id": profileImageId,
             "profile" : userProfile.toAnyObject(),
             "isIncognito" : userIsIncognito,
             "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""]

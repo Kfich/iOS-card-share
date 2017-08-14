@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate{
+class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource{
 
     // Properties
     // ===================================
@@ -26,6 +26,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    
+    // Store image icons
+    var socialLinkBadges = [[String : Any]]()
+    var links = [String]()
+    var socialBadges = [UIImage]()
     
     // Bools to check if array contents empty
     var arraysPopulated = false
@@ -60,6 +65,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     @IBOutlet var viewCardsButton: UIButton!
     
+    // Badge carosel
+    @IBOutlet var socialBadgeCollectionView: UICollectionView!
 
     // Page Setup
     
@@ -127,6 +134,15 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // View to remove separators
         profileInfoTableView.tableFooterView = UIView()
         
+        // Create badge list 
+        self.initializeBadgeList()
+        
+        // Parse for social data 
+        self.parseForSocialIcons()
+        
+        
+        self.socialBadgeCollectionView.reloadData()
+        
         profileInfoTableView.reloadData()
         
     }
@@ -150,6 +166,61 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     // IBActions / Buttons Pressed
     // --------------------------------------
+    
+    
+    // Collection view Delegate && Data source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+       /* if self.socialBadges.count != 0 {
+            // Return the count
+            return self.socialBadges.count
+        }else{
+            return 1
+        }*/
+        return self.socialBadges.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        
+        //cell.contentView.backgroundColor = UIColor.red
+        self.configureBadges(cell: cell)
+        
+        // Configure corner radius
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let image = self.socialBadges[indexPath.row]
+        
+        // Set image
+        imageView.image = image
+        
+        // Add subview
+        cell.contentView.addSubview(imageView)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
+    
+    func configureBadges(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 20.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
+    
     
     
     
@@ -342,6 +413,103 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
     }
     
+    func initializeBadgeList() {
+        // Image config
+        let img1 = UIImage(named: "icn-social-facebook.png")
+        let img2 = UIImage(named: "icn-social-twitter.png")
+        let img3 = UIImage(named: "icn-social-instagram.png")
+        let img4 = UIImage(named: "icn-social-harvard.png")
+        let img5 = UIImage(named: "icn-social-pinterest.png")
+        let img6 = UIImage(named: "icn-social-pinterest.png")
+        let img7 = UIImage(named: "icn-social-facebook.png")
+        let img8 = UIImage(named: "icn-social-facebook.png")
+        let img9 = UIImage(named: "icn-social-facebook.png")
+        let img10 = UIImage(named: "icn-social-facebook.png")
+        
+        // Hash images
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
+        
+        
+        // let fb : NSDictionary = ["facebook" : img1!]
+        // self.socialLinkBadges.append([fb])
+        
+        
+    }
+    
+    func parseForSocialIcons() {
+        
+        
+        print("PARSING FOR PROFILES")
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+            for link in currentUser.userProfile.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test
+                //print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
+                     print("NOT IN LIST")
+                     // Append link to list
+                     self.socialBadges.append(item.first?.value as! UIImage)
+                     }else{
+                     print("ALREADY IN LIST")
+                     }*/
+                    // Append link to list
+                    //self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
+                    
+                    
+                }
+            }
+            
+            
+            // Reload table
+            self.socialBadgeCollectionView.reloadData()
+        }
+        
+        // Add image to the end of list
+        //let image = UIImage(named: "icn-plus-blue")
+        //self.socialBadges.append(image!)
+        
+        // Reload table
+        self.socialBadgeCollectionView.reloadData()
+        
+    }
+
+    
     func parseDataFromProfile() {
         
         // Reset arrays
@@ -355,6 +523,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.workInformation = [String]()
         
         // Parse bio info
+        currentUser = ContactManager.sharedManager.currentUser
         
         if currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
@@ -437,6 +606,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
          }
         // Refresh table
         profileInfoTableView.reloadData()
+        
+        print("PRINTING CURRENT USER")
+        currentUser.printUser()
 
     }
 
@@ -579,11 +751,12 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         }
         
         if currentUser.userProfile.titles.count > 0{
-            emailLabel.text = currentUser.userProfile.titles[0]["title"]
+            titleLabel.text = currentUser.userProfile.titles[0]["title"]
         }
         
         //titleLabel.text = "Founder & CEO, CleanSwipe"
         
+        /*
         // Assign media buttons
         mediaButton1.image = UIImage(named: "social-blank")
         mediaButton2.image = UIImage(named: "social-blank")
@@ -591,7 +764,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         mediaButton4.image = UIImage(named: "social-blank")
         mediaButton5.image = UIImage(named: "social-blank")
         mediaButton6.image = UIImage(named: "social-blank")
-        mediaButton7.image = UIImage(named: "social-blank")
+        mediaButton7.image = UIImage(named: "social-blank")*/
     }
     
     // Empty State Delegate Methods

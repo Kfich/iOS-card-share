@@ -105,6 +105,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Set Manager intent switch to true 
         ContactManager.sharedManager.userSelectedEditCard = true
         
+        // Post notification 
+        self.postNotification()
+        
+        //print("Printing from the edit page")
         // Execute call to send to server 
         //self.updateCurrentUser()
         
@@ -112,6 +116,22 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {
         
+        // Reassign to the OG user object
+        if let user = UDWrapper.getDictionary("user"){
+            // Assign current user to manager object
+            //
+            
+            print("USER DICTIONARY")
+            print(user)
+            
+            print("User has profile!")
+            ContactManager.sharedManager.currentUser = User(withDefaultsSnapshot:user)
+            
+            print("CURRENT USER from edit profile cancel action ")
+            ContactManager.sharedManager.currentUser.printUser()
+        }
+        
+        // Dismiss VC
         navigationController?.popViewController(animated: true)
         
     }
@@ -144,9 +164,11 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // For notifications 
         self.addObservers()
         
-        let image = UIImage(named: "icn-plus-blue")
-        self.socialBadges.append(image!)
+        //let image = UIImage(named: "icn-plus-blue")
+        //self.socialBadges.append(image!)
         
+        // Get social icons 
+        self.parseForSocialIcons()
     }
 
     
@@ -192,11 +214,35 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     func addObservers() {
         // Call to refresh table
-        NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.showSocialMediaSelection), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.showSocialMediaSelection), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.parseForSocialIcons), name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: nil)
         
+        // Update user
+        NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.uploadEditedUser), name: NSNotification.Name(rawValue: "UpdateCurrentUserProfile"), object: nil)
+        
+    }
+    
+    
+    func uploadEditedUser() {
+        
+        print("Kevyyy")
+        // update
+       self.updateCurrentUser()
+    }
+    
+    func postNotification() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ParseProfileForEdit"), object: self)
+        
+    }
+    
+    func postNotificationForRefresh() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshProfile"), object: self)
         
     }
     
@@ -206,10 +252,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         print("PARSING FOR PROFILES")
         
         // Assign currentuser
-        self.currentUser = ContactManager.sharedManager.currentUser
+        //self.currentUser = ContactManager.sharedManager.currentUser
         
         // Parse socials links
-        if currentUser.userProfile.socialLinks.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
             for link in currentUser.userProfile.socialLinks{
                 socialLinks.append(link["link"]!)
                 // Test
@@ -217,13 +263,17 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
         
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        // Add plus icon to list
+        
         // Iterate over links[]
         for link in self.socialLinks {
             // Check if link is a key
             print("Link >> \(link)")
             for item in self.socialLinkBadges {
                 // Test 
-                print("Item >> \(item.first?.key)")
+                //print("Item >> \(item.first?.key)")
                 // temp string
                 let str = item.first?.key
                 //print("String >> \(str)")
@@ -231,13 +281,16 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 if link.lowercased().range(of:str!) != nil {
                     print("exists")
                     
-                    if !socialBadges.contains(item.first?.value as! UIImage) {
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
                         print("NOT IN LIST")
                         // Append link to list
                         self.socialBadges.append(item.first?.value as! UIImage)
                     }else{
                         print("ALREADY IN LIST")
-                    }
+                    }*/
                     // Append link to list
                     //self.socialBadges.append(item.first?.value as! UIImage)
                     
@@ -251,10 +304,18 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
                     
                 }
             }
+            
+            
             // Reload table
             self.collectionTableView.reloadData()
         }
         
+        // Add image to the end of list
+        let image = UIImage(named: "icn-plus-blue")
+        self.socialBadges.append(image!)
+        
+        // Reload table
+        self.collectionTableView.reloadData()
         
     }
     
@@ -300,26 +361,24 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     func updateCurrentUser() {
         // Configure to send to server 
         
+        // Assign current user object
         
         // Send to server
-        let parameters = ["data" : currentUser.toAnyObject(), "uuid" : currentUser.userId] as [String : Any]
-        print("\n\nTHE CARD TO ANY - PARAMS")
+        let parameters = ["data" : ContactManager.sharedManager.currentUser.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
+        print("\n\nThe user update")
         print(parameters)
-        
-        // Store current user cards to local device
-        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
-        //UDWrapper.setData("contact_cards", value: encodedData)
         
         
         // Show progress hud
-        //KVNProgress.show(withStatus: "Saving your new card...")
+        KVNProgress.show(withStatus: "Updating profile...")
         
         // Save card to DB
         //let parameters = ["data": card.toAnyObject()]
         
+        
         Connection(configuration: nil).updateUserCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(String(describing: response))")
+                print("User updated Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
@@ -329,8 +388,11 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 // Store user to device
                 UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
                 
+                // Refresh profile
+                self.postNotificationForRefresh()
+                
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "Profile updated successfully!")
                 
                 // Nav out the view
                 self.navigationController?.popViewController(animated: true)
@@ -344,6 +406,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
             // Hide indicator
             KVNProgress.dismiss()
         }
+        
     }
     
     
@@ -453,7 +516,7 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
