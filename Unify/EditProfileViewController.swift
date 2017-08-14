@@ -249,22 +249,23 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     func parseForSocialIcons() {
         
         
-        print("PARSING FOR PROFILES")
+        print("PARSING for icons from edit profile vc")
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        self.socialLinks.removeAll()
         
         // Assign currentuser
         //self.currentUser = ContactManager.sharedManager.currentUser
         
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-            for link in currentUser.userProfile.socialLinks{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
                 socialLinks.append(link["link"]!)
                 // Test
                 print("Count >> \(socialLinks.count)")
             }
         }
         
-        // Remove all items from badges
-        self.socialBadges.removeAll()
         // Add plus icon to list
         
         // Iterate over links[]

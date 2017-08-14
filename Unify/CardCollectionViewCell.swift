@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class CardCollectionViewCell: UICollectionViewCell{
+class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDataSource{
     
     // Properties
     // ----------------------------------
@@ -62,6 +62,9 @@ class CardCollectionViewCell: UICollectionViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     
@@ -100,4 +103,58 @@ class CardCollectionViewCell: UICollectionViewCell{
         ContactManager.sharedManager.quickshareSMSSelected = true
     }
 
+    
+    // Collection view Delegate && Data source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        /* if self.socialBadges.count != 0 {
+         // Return the count
+         return self.socialBadges.count
+         }else{
+         return 1
+         }*/
+        return ContactManager.sharedManager.socialBadges.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardBadgeCell", for: indexPath)
+        
+        //cell.contentView.backgroundColor = UIColor.red
+        self.configureBadges(cell: cell)
+        
+        // Configure corner radius
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let image = ContactManager.sharedManager.socialBadges[indexPath.row]
+        
+        // Set image
+        imageView.image = image
+        
+        // Add subview
+        cell.contentView.addSubview(imageView)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
+    
+    func configureBadges(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 20.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
+    
 }

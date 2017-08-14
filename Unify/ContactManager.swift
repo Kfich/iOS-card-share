@@ -81,6 +81,13 @@ class ContactManager{
     // For temp storage of social links 
     var tempSocialLinks = [[String:String]]()
     
+    // Store image icons
+    var socialLinkBadges = [[String : Any]]()
+    var links = [String]()
+    var socialBadges = [UIImage]()
+    var socialLinks = [String]()
+    var selectedSocialMediaLink : String = ""
+    
     // Indexing the contact records for upload
     var index = 0
     var timer = Timer()
@@ -102,6 +109,106 @@ class ContactManager{
         userArrivedFromIntro = false
         userArrivedFromRadar = false
         userArrivedFromContactList = false
+        
+    }
+    
+    func initializeBadgeList() {
+        // Image config
+        let img1 = UIImage(named: "icn-social-facebook.png")
+        let img2 = UIImage(named: "icn-social-twitter.png")
+        let img3 = UIImage(named: "icn-social-instagram.png")
+        let img4 = UIImage(named: "icn-social-harvard.png")
+        let img5 = UIImage(named: "icn-social-pinterest.png")
+        let img6 = UIImage(named: "icn-social-pinterest.png")
+        let img7 = UIImage(named: "icn-social-facebook.png")
+        let img8 = UIImage(named: "icn-social-facebook.png")
+        let img9 = UIImage(named: "icn-social-facebook.png")
+        let img10 = UIImage(named: "icn-social-facebook.png")
+        
+        // Hash images
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
+        
+        
+        // let fb : NSDictionary = ["facebook" : img1!]
+        // self.socialLinkBadges.append([fb])
+        
+        
+    }
+    
+
+    
+    func parseForSocialIcons() {
+        
+        // Create badge list 
+        self.initializeBadgeList()
+        
+        print("PARSING FOR PROFILES")
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test
+                //print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
+                     print("NOT IN LIST")
+                     // Append link to list
+                     self.socialBadges.append(item.first?.value as! UIImage)
+                     }else{
+                     print("ALREADY IN LIST")
+                     }*/
+                    // Append link to list
+                    //self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
+                    
+                    
+                }
+            }
+            
+            
+            // Reload table
+            //self.socialBadgeCollectionView.reloadData()
+        }
+        
+        // Add image to the end of list
+        //let image = UIImage(named: "icn-plus-blue")
+        //self.socialBadges.append(image!)
+        
+        // Reload table
+        //self.socialBadgeCollectionView.reloadData()
         
     }
     

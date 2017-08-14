@@ -92,6 +92,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Clear Cards array 
         //ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
         
+        // Parse for social links before fetching cards 
+        ContactManager.sharedManager.parseForSocialIcons()
+        
+        
         if let cards = UDWrapper.getArray("contact_cards"){
             // Assign array to contact manager object
 
@@ -687,14 +691,14 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
         
-        // Assign media buttons
+       /* // Assign media buttons
         cell.mediaButton1.image = UIImage(named: "social-blank")
         cell.mediaButton2.image = UIImage(named: "social-blank")
         cell.mediaButton3.image = UIImage(named: "social-blank")
         cell.mediaButton4.image = UIImage(named: "social-blank")
         cell.mediaButton5.image = UIImage(named: "social-blank")
         cell.mediaButton6.image = UIImage(named: "social-blank")
-        cell.mediaButton7.image = UIImage(named: "social-blank")
+        cell.mediaButton7.image = UIImage(named: "social-blank")*/
         
     }
     

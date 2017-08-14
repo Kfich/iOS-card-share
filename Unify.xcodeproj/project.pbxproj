@@ -132,6 +132,7 @@
 		FBF8712D1EE71B0800243CE2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712C1EE71B0800243CE2 /* User.swift */; };
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
+		FBF933EF1F42406700FF80EF /* SocialMediaWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF933EE1F42406700FF80EF /* SocialMediaWebViewController.swift */; };
 		FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE041F17FC0200AF3A08 /* RadarContactSelectionViewController.swift */; };
 		FBFDFE0A1F1D04D800AF3A08 /* Eureka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBB1D661F1C6C43009698D9 /* Eureka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -350,6 +351,7 @@
 		FBF8712C1EE71B0800243CE2 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBF8712F1EE71B3D00243CE2 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		FBF871311EE71F0100243CE2 /* ContactCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
+		FBF933EE1F42406700FF80EF /* SocialMediaWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaWebViewController.swift; sourceTree = "<group>"; };
 		FBFDFE041F17FC0200AF3A08 /* RadarContactSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarContactSelectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -450,6 +452,7 @@
 				FBE8074B1F06C06C00A05292 /* Networking */,
 				FB37381C1EDDBC080074200F /* Auth */,
 				FBE8075B1F06D61200A05292 /* Cards */,
+				FBF933EC1F42403A00FF80EF /* Quickshare */,
 				FB3738221EDDBD640074200F /* Manager */,
 				1CB31CAC1E94336500A0C4A5 /* Algolia */,
 				FB3738301EDDD69A0074200F /* CustomViews */,
@@ -557,7 +560,6 @@
 			children = (
 				1CB31C9A1E9407B000A0C4A5 /* Intro-ViewController.swift */,
 				1CB31C9C1E94087100A0C4A5 /* SelectRecipient-ViewController.swift */,
-				1CB31CA61E94273E00A0C4A5 /* QuickShare-ViewController.swift */,
 				FB199CFA1F2A560000FFFCC1 /* RecipientOptionsViewController.swift */,
 			);
 			name = Intro;
@@ -733,6 +735,15 @@
 				FB019AA11F28EE7C00908A67 /* Contact.swift */,
 			);
 			name = Class_Files;
+			sourceTree = "<group>";
+		};
+		FBF933EC1F42403A00FF80EF /* Quickshare */ = {
+			isa = PBXGroup;
+			children = (
+				1CB31CA61E94273E00A0C4A5 /* QuickShare-ViewController.swift */,
+				FBF933EE1F42406700FF80EF /* SocialMediaWebViewController.swift */,
+			);
+			name = Quickshare;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1016,6 +1027,7 @@
 				FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */,
 				FBA1F5191F38FA5400CDCB76 /* CustomSearchController.swift in Sources */,
 				FB199CF81F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m in Sources */,
+				FBF933EF1F42406700FF80EF /* SocialMediaWebViewController.swift in Sources */,
 				FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */,
 				FB2F42881F1526CB00E3D6B5 /* UIColor+KVNContrast.m in Sources */,
 				1CB31CA31E940B4200A0C4A5 /* TabBar-ViewController.swift in Sources */,

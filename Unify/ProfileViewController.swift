@@ -13,7 +13,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // Properties
     // ===================================
     
-    var currentUser = User()
+    //var currentUser = User()
     
     // Parsed profile arrays
     var bios = [String]()
@@ -89,7 +89,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         currentUser.scope = "user"*/
 
         // Assign current user from manager
-        currentUser = ContactManager.sharedManager.currentUser
+        //currentUser = ContactManager.sharedManager.currentUser
         
         
         // View Config
@@ -117,6 +117,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
         
+        // Create badge list
+        self.initializeBadgeList()
         // Assign profile values
         self.parseDataFromProfile()
         
@@ -134,11 +136,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // View to remove separators
         profileInfoTableView.tableFooterView = UIView()
         
-        // Create badge list 
-        self.initializeBadgeList()
-        
         // Parse for social data 
-        self.parseForSocialIcons()
+        //self.parseForSocialIcons()
         
         
         self.socialBadgeCollectionView.reloadData()
@@ -155,7 +154,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
      override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        currentUser = ContactManager.sharedManager.currentUser
+        //currentUser = ContactManager.sharedManager.currentUser
         
         
         // Assign profile values
@@ -439,14 +438,14 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     func parseForSocialIcons() {
         
         
-        print("PARSING FOR PROFILES")
+        print("Looking for social icons on profile view")
         
         // Assign currentuser
         //self.currentUser = ContactManager.sharedManager.currentUser
         
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-            for link in currentUser.userProfile.socialLinks{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
                 socialLinks.append(link["link"]!)
                 // Test
                 print("Count >> \(socialLinks.count)")
@@ -523,11 +522,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.workInformation = [String]()
         
         // Parse bio info
-        currentUser = ContactManager.sharedManager.currentUser
+        //currentUser = ContactManager.sharedManager.currentUser
         
-        if currentUser.userProfile.bios.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
-            for bio in currentUser.userProfile.bios{
+            for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
                 bios.append((bio["bio"])!)
                 print(bio["bio"])
             }
@@ -535,51 +534,51 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         // Parse work info
         
-        if currentUser.userProfile.workInformationList.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
             // Iterate and parse
-            for info in currentUser.userProfile.workInformationList{
+            for info in ContactManager.sharedManager.currentUser.userProfile.workInformationList{
                 workInformation.append((info["work"])!)
             }
         }
         // Parse work info
-        if currentUser.userProfile.titles.count > 0{
-            for info in currentUser.userProfile.titles{
+        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
                 titles.append((info["title"])!)
                 print(info["title"])
             }
         }
          
-         if currentUser.userProfile.phoneNumbers.count > 0{
-            for number in currentUser.userProfile.phoneNumbers{
+         if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
+            for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 phoneNumbers.append((number["phone"])!)
             }
          
         }
         // Parse emails
         
-        if currentUser.userProfile.emails.count > 0{
-            for email in currentUser.userProfile.emails{
+        if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
+            for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
             }
         }
         
         // Parse websites
-        if currentUser.userProfile.websites.count > 0{
-            for site in currentUser.userProfile.websites{
+        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
                 websites.append(site["website"]!)
             }
          
         }
          // Parse organizations
-        if currentUser.userProfile.organizations.count > 0{
-            for org in currentUser.userProfile.organizations{
+        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
                 organizations.append(org["organization"]!)
             }
         }
          // Parse Tags
-        if currentUser.userProfile.tags.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
             
-            for hashtag in currentUser.userProfile.tags{
+            for hashtag in ContactManager.sharedManager.currentUser.userProfile.tags{
          
                 tags.append(hashtag["tag"]!)
         
@@ -587,28 +586,34 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
          }
         
         // Parse notes
-         if currentUser.userProfile.notes.count > 0{
+         if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
          
-            for note in currentUser.userProfile.notes{
+            for note in ContactManager.sharedManager.currentUser.userProfile.notes{
          
             notes.append(note["note"]!)
          
             }
          }
          // Parse socials links
-         if currentUser.userProfile.socialLinks.count > 0{
+         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
          
-            for link in currentUser.userProfile.socialLinks{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
          
-                socialLinks.append(link["link"]!)
+               // socialLinks.append(link["link"]!)
+                print("ParseProfileData function executing")
          
             }
          }
+        
+        // Parse out social icons
+        self.parseForSocialIcons()
+        
         // Refresh table
         profileInfoTableView.reloadData()
+        socialBadgeCollectionView.reloadData()
         
-        print("PRINTING CURRENT USER")
-        currentUser.printUser()
+        print("PRINTING USER from profile view")
+        ContactManager.sharedManager.currentUser.printUser()
 
     }
 
@@ -732,6 +737,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     }
     
     func populateCards(){
+        
+        var currentUser = ContactManager.sharedManager.currentUser
         
         // Senders card
         // Assign current user from manager

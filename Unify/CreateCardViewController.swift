@@ -11,7 +11,7 @@ import UIKit
 import MBPhotoPicker
 
 
-class CreateCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class CreateCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     // Properties
     // ----------------------------
@@ -36,12 +36,19 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     // Photo picker variable
     var photoPicker = MBPhotoPicker()
     
+    // Store image icons
+    var socialLinkBadges = [[String : Any]]()
+    var links = [String]()
+    var socialBadges = [UIImage]()
+    
     
     // IBOutlets
     // ----------------------------
     @IBOutlet var cardOptionsTableView: UITableView!
 
     @IBOutlet var profileCardWrapperView: UIView!
+    
+    @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
     
     // Labels
@@ -173,113 +180,20 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Parse socials links
         if currentUser.userProfile.socialLinks.count > 0{
             for link in currentUser.userProfile.socialLinks{
-                socialLinks.append(link["link"]!)
+                print("Parsing from the create card VC viewwillappear")
+                //socialLinks.append(link["link"]!)
             }
         }
         
-        // Assign profile image val
-        
-        /*if let biosArray = UDWrapper.getArray("bios"){
-            
-            // Reload table data
-            for value in biosArray {
-                self.bios.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        
-        if let titlesArray = UDWrapper.getArray("titles"){
-            
-            // Reload table data
-            for value in titlesArray {
-                self.titles.append(value as! String)
-            }
-        }else{
-            print("User has no titles")
-        }
-        if let workArray = UDWrapper.getArray("workInfo"){
-            
-            // Reload table data
-            for value in workArray {
-                self.workInformation.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let phonesArray = UDWrapper.getArray("phoneNumbers"){
-            
-            // Reload table data
-            for value in phonesArray {
-                self.phoneNumbers.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let emailsArray = UDWrapper.getArray("emails"){
-            
-            // Reload table data
-            for value in emailsArray {
-                self.emails.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let socialArray = UDWrapper.getArray("socialLinks"){
-            
-            // Reload table data
-            for value in socialArray {
-                self.socialLinks.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let orgsArray = UDWrapper.getArray("organizations"){
-            
-            // Reload table data
-            for value in orgsArray {
-                self.organizations.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }
-        if let webArray = UDWrapper.getArray("websites"){
-            
-            // Reload table data
-            for value in webArray {
-                self.websites.append(value as! String)
-            }
-            
-        }else{
-            print("User has no cards")
-        }*/
+        // Parse for social icons
+        parseForSocialIcons()
 
         // View config
         configureViews()
         
         // Photo picker config 
         configurePhotoPicker()
-        
-        // Do any additional setup after loading the view.
-        
-        
-        // Parse the users profile for info 
-        /*
-        emails = ["example@gmail.com", "test@aol.com", "sample@gmail.com" ]
-        phoneNumbers = ["1234567890", "6463597308", "3036558888"]
-        socialLinks = ["facebook-link", "snapchat-link", "insta-link"]
-        organizations = ["crane.ai", "Example Inc", "Sample LLC", "Boys and Girls Club"]
-        bios = ["Created a company for doing blank for example usecase", "Full Stack Engineer at Crane.ai", "College Professor at the University of Application Building"]
-        websites = ["example.co", "sample.ai", "excuse.me"]
-        titles = ["Entrepreneur", "Salesman", "Full Stack Engineer"]
-        workInformation = ["Job 1", "Job 2", "Example Job", "Sample Job"]
-        */
+       
         
     }
 
@@ -466,6 +380,58 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.dismiss(animated: true, completion: nil)
     }
     
+    // Collection view Delegate && Data source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        /* if self.socialBadges.count != 0 {
+         // Return the count
+         return self.socialBadges.count
+         }else{
+         return 1
+         }*/
+        return self.socialBadges.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        
+        //cell.contentView.backgroundColor = UIColor.red
+        self.configureBadges(cell: cell)
+        
+        // Configure corner radius
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let image = self.socialBadges[indexPath.row]
+        
+        // Set image
+        imageView.image = image
+        
+        // Add subview
+        cell.contentView.addSubview(imageView)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
+    
+    func configureBadges(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 20.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
     
     // MARK: - Table view data source
     
@@ -689,6 +655,106 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     // Custom Methods
+    
+    func initializeBadgeList() {
+        // Image config
+        let img1 = UIImage(named: "icn-social-facebook.png")
+        let img2 = UIImage(named: "icn-social-twitter.png")
+        let img3 = UIImage(named: "icn-social-instagram.png")
+        let img4 = UIImage(named: "icn-social-harvard.png")
+        let img5 = UIImage(named: "icn-social-pinterest.png")
+        let img6 = UIImage(named: "icn-social-pinterest.png")
+        let img7 = UIImage(named: "icn-social-facebook.png")
+        let img8 = UIImage(named: "icn-social-facebook.png")
+        let img9 = UIImage(named: "icn-social-facebook.png")
+        let img10 = UIImage(named: "icn-social-facebook.png")
+        
+        // Hash images
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
+        
+        
+        // let fb : NSDictionary = ["facebook" : img1!]
+        // self.socialLinkBadges.append([fb])
+        
+        
+    }
+    
+    func parseForSocialIcons() {
+        
+        // Init badges 
+        self.initializeBadgeList()
+        
+        print("Looking for social icons on profile view")
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test
+                //print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
+                     print("NOT IN LIST")
+                     // Append link to list
+                     self.socialBadges.append(item.first?.value as! UIImage)
+                     }else{
+                     print("ALREADY IN LIST")
+                     }*/
+                    // Append link to list
+                    //self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
+                    
+                    
+                }
+            }
+            
+            
+            // Reload table
+            self.socialBadgeCollectionView.reloadData()
+        }
+        
+        // Add image to the end of list
+        //let image = UIImage(named: "icn-plus-blue")
+        //self.socialBadges.append(image!)
+        
+        // Reload table
+        self.socialBadgeCollectionView.reloadData()
+        
+    }
+    
+    
     func populateViewsForEdit() {
         
         // Set card vals to table
@@ -706,13 +772,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.profileCardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
         // Assign media buttons
-        mediaButton1.image = UIImage(named: "social-blank")
+        /*mediaButton1.image = UIImage(named: "social-blank")
         mediaButton2.image = UIImage(named: "social-blank")
         mediaButton3.image = UIImage(named: "social-blank")
         mediaButton4.image = UIImage(named: "social-blank")
         mediaButton5.image = UIImage(named: "social-blank")
         mediaButton6.image = UIImage(named: "social-blank")
-        mediaButton7.image = UIImage(named: "social-blank")
+        mediaButton7.image = UIImage(named: "social-blank")*/
         
     }
 

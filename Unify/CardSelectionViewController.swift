@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
+class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     // Properties
     // --------------------------------------------
@@ -30,6 +30,12 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    
+    // Store image icons
+    var socialLinkBadges = [[String : Any]]()
+    var links = [String]()
+    var socialBadges = [UIImage]()
+
 
     
     // IBOutlets
@@ -59,6 +65,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     @IBOutlet var emailButton: UIBarButtonItem!
     @IBOutlet var callButton: UIBarButtonItem!
     
+    
+    @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
     
     
@@ -235,9 +243,13 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         }
         if selectedCard.cardProfile.socialLinks.count > 0{
             for link in selectedCard.cardProfile.socialLinks{
-                notes.append(link["link"]! )
+               // notes.append(link["link"]! )
+                print("Card selection parsing on will appear")
             }
         }
+        
+        // Look for social badges 
+        self.parseForSocialIcons()
         
         // Reload table data 
         profileInfoTableView.reloadData()
@@ -251,6 +263,59 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Dispose of any resources that can be recreated.
     }
     
+    
+    // Collection view Delegate && Data source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        /* if self.socialBadges.count != 0 {
+         // Return the count
+         return self.socialBadges.count
+         }else{
+         return 1
+         }*/
+        return self.socialBadges.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        
+        //cell.contentView.backgroundColor = UIColor.red
+        self.configureBadges(cell: cell)
+        
+        // Configure corner radius
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let image = self.socialBadges[indexPath.row]
+        
+        // Set image
+        imageView.image = image
+        
+        // Add subview
+        cell.contentView.addSubview(imageView)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
+    
+    func configureBadges(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 20.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
 
     
     // MARK: - Table view data source
@@ -525,6 +590,109 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     // Custom Methods
     // -------------------------------------------
     
+    func initializeBadgeList() {
+        // Image config
+        let img1 = UIImage(named: "icn-social-facebook.png")
+        let img2 = UIImage(named: "icn-social-twitter.png")
+        let img3 = UIImage(named: "icn-social-instagram.png")
+        let img4 = UIImage(named: "icn-social-harvard.png")
+        let img5 = UIImage(named: "icn-social-pinterest.png")
+        let img6 = UIImage(named: "icn-social-pinterest.png")
+        let img7 = UIImage(named: "icn-social-facebook.png")
+        let img8 = UIImage(named: "icn-social-facebook.png")
+        let img9 = UIImage(named: "icn-social-facebook.png")
+        let img10 = UIImage(named: "icn-social-facebook.png")
+        
+        // Hash images
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
+        
+        
+        // let fb : NSDictionary = ["facebook" : img1!]
+        // self.socialLinkBadges.append([fb])
+        
+        
+    }
+
+    
+    
+    func parseForSocialIcons() {
+        
+        // Create list containing link info 
+        self.initializeBadgeList()
+        
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        self.socialLinks.removeAll()
+        
+        print("Looking for social icons on card selection view")
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if selectedCard.cardProfile.socialLinks.count > 0{
+            for link in selectedCard.cardProfile.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test
+                //print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
+                     print("NOT IN LIST")
+                     // Append link to list
+                     self.socialBadges.append(item.first?.value as! UIImage)
+                     }else{
+                     print("ALREADY IN LIST")
+                     }*/
+                    // Append link to list
+                    //self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
+                    
+                    
+                }
+            }
+            
+            
+            // Reload table
+            self.socialBadgeCollectionView.reloadData()
+        }
+        
+        // Add image to the end of list
+        //let image = UIImage(named: "icn-plus-blue")
+        //self.socialBadges.append(image!)
+        
+        // Reload table
+        self.socialBadgeCollectionView.reloadData()
+        
+    }
+
+    
     func createTransaction(type: String) {
         // Set type & Transaction data
         transaction.type = type
@@ -631,7 +799,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         // Toolbar button config
         
-        outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
+        /*outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
         
         outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 13)!], for: UIControlState.normal)
         
@@ -648,7 +816,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         emailButton.image = UIImage(named: "")
         emailButton.isEnabled = false
         outreachCallButton.isEnabled = false
-        outreachCallButton.title = ""
+        outreachCallButton.title = ""*/
         
     }
 

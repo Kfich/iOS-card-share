@@ -9,7 +9,7 @@
 import UIKit
 import MBPhotoPicker
 
-class EditCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class EditCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     // Properties
     // ----------------------------
@@ -40,6 +40,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var selectedSocialLinks = [String]()
     var selectedNotes = [String]()
     var selectedTags = [String]()
+    
+    // Store image icons
+    var socialLinkBadges = [[String : Any]]()
+    var links = [String]()
+    var socialBadges = [UIImage]()
     
     
     var isSimulator = false
@@ -78,6 +83,10 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet var addImageButton: UIButton!
     @IBOutlet var addCardNameButton: UIButton!
+    
+    // Badge carosel
+    @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -345,6 +354,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
+    
     // Photo Picker Delegate Methods
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
@@ -360,6 +370,59 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.dismiss(animated: true, completion: nil)
     }
     
+    // Collection view Delegate && Data source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        /* if self.socialBadges.count != 0 {
+         // Return the count
+         return self.socialBadges.count
+         }else{
+         return 1
+         }*/
+        return self.socialBadges.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        
+        //cell.contentView.backgroundColor = UIColor.red
+        self.configureBadges(cell: cell)
+        
+        // Configure corner radius
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let image = self.socialBadges[indexPath.row]
+        
+        // Set image
+        imageView.image = image
+        
+        // Add subview
+        cell.contentView.addSubview(imageView)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+    }
+    
+    func configureBadges(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 20.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
+
     
     // MARK: - Table view data source
     
@@ -751,13 +814,13 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.profileCardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
         // Assign media buttons
-        mediaButton1.image = UIImage(named: "social-blank")
+        /*mediaButton1.image = UIImage(named: "social-blank")
         mediaButton2.image = UIImage(named: "social-blank")
         mediaButton3.image = UIImage(named: "social-blank")
         mediaButton4.image = UIImage(named: "social-blank")
         mediaButton5.image = UIImage(named: "social-blank")
         mediaButton6.image = UIImage(named: "social-blank")
-        mediaButton7.image = UIImage(named: "social-blank")
+        mediaButton7.image = UIImage(named: "social-blank")*/
         
     }
     
@@ -859,9 +922,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.workInformation = [String]()
         
         // Parse bio info
-        if currentUser.userProfile.bios.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
             // Iterate throught array and append available content
-            for bio in currentUser.userProfile.bios{
+            for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
                 bios.append((bio["bio"])!)
             }
             
@@ -869,50 +932,50 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Parse work info
         
-        if currentUser.userProfile.workInformationList.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
             
-            for info in currentUser.userProfile.workInformationList{
+            for info in ContactManager.sharedManager.currentUser.userProfile.workInformationList{
                 workInformation.append((info["work"])!)
             }
         }
         // Parse work info
-        if currentUser.userProfile.titles.count > 0{
-            for info in currentUser.userProfile.titles{
+        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
                 titles.append((info["title"])!)
             }
         }
         
-        if currentUser.userProfile.phoneNumbers.count > 0{
-            for number in currentUser.userProfile.phoneNumbers{
+        if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
+            for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 phoneNumbers.append((number["phone"])!)
             }
             
         }
         // Parse emails
         
-        if currentUser.userProfile.emails.count > 0{
-            for email in currentUser.userProfile.emails{
+        if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
+            for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
             }
         }
         
         // Parse websites
-        if currentUser.userProfile.websites.count > 0{
-            for site in currentUser.userProfile.websites{
+        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
                 websites.append(site["website"]!)
             }
             
         }
         // Parse organizations
-        if currentUser.userProfile.organizations.count > 0{
-            for org in currentUser.userProfile.organizations{
+        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
                 organizations.append(org["organization"]!)
             }
         }
         // Parse Tags
-        if currentUser.userProfile.tags.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
             
-            for hashtag in currentUser.userProfile.tags{
+            for hashtag in ContactManager.sharedManager.currentUser.userProfile.tags{
                 
                 tags.append(hashtag["tag"]!)
                 
@@ -920,23 +983,27 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         // Parse notes
-        if currentUser.userProfile.notes.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
             
-            for note in currentUser.userProfile.notes{
+            for note in ContactManager.sharedManager.currentUser.userProfile.notes{
                 
                 notes.append(note["note"]!)
                 
             }
         }
         // Parse socials links
-        if currentUser.userProfile.socialLinks.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
             
-            for link in currentUser.userProfile.socialLinks{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
                 
-                socialLinks.append(link["link"]!)
-                
+                //socialLinks.append(link["link"]!)
+                print("Executing parse call from edit card")
             }
         }
+        
+        // Parse for social badges 
+        self.parseForSocialIcons()
+        
         // Refresh table
         cardOptionsTableView.reloadData()
         
@@ -993,6 +1060,108 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Custom Methods
     // -------------------------------------------
+    
+    func initializeBadgeList() {
+        // Image config
+        let img1 = UIImage(named: "icn-social-facebook.png")
+        let img2 = UIImage(named: "icn-social-twitter.png")
+        let img3 = UIImage(named: "icn-social-instagram.png")
+        let img4 = UIImage(named: "icn-social-harvard.png")
+        let img5 = UIImage(named: "icn-social-pinterest.png")
+        let img6 = UIImage(named: "icn-social-pinterest.png")
+        let img7 = UIImage(named: "icn-social-facebook.png")
+        let img8 = UIImage(named: "icn-social-facebook.png")
+        let img9 = UIImage(named: "icn-social-facebook.png")
+        let img10 = UIImage(named: "icn-social-facebook.png")
+        
+        // Hash images
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
+        
+        
+        // let fb : NSDictionary = ["facebook" : img1!]
+        // self.socialLinkBadges.append([fb])
+        
+        
+    }
+    
+    
+    
+    func parseForSocialIcons() {
+        
+        // Create list containing link info
+        self.initializeBadgeList()
+        
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        self.socialLinks.removeAll()
+        
+        print("Looking for social icons on card selection view")
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if card.cardProfile.socialLinks.count > 0{
+            for link in card.cardProfile.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test
+                //print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
+                     print("NOT IN LIST")
+                     // Append link to list
+                     self.socialBadges.append(item.first?.value as! UIImage)
+                     }else{
+                     print("ALREADY IN LIST")
+                     }*/
+                    // Append link to list
+                    //self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
+                    
+                    
+                }
+            }
+            
+            
+            // Reload table
+            self.socialBadgeCollectionView.reloadData()
+        }
+        
+        // Add image to the end of list
+        //let image = UIImage(named: "icn-plus-blue")
+        //self.socialBadges.append(image!)
+        
+        // Reload table
+        self.socialBadgeCollectionView.reloadData()
+        
+    }
     
     func populateCards(){
         // Senders card config
