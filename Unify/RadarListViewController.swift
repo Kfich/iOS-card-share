@@ -28,6 +28,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
     let locationManager = CLLocationManager()
     
     let testURL = ImageURLS().getFromDevelopmentURL
+    let prodURL = ImageURLS().getFromStagingURL
     
     // Radar
     var radarStatus: Bool = false
@@ -95,6 +96,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             
             // ** Currently Set to Test URL
             let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+            //let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
             let placeholderImage = UIImage(named: "contact")!
             // Set image
             cell.contactImageView.setImageWith(url, placeholderImage: placeholderImage)

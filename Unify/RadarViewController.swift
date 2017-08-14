@@ -1141,15 +1141,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             ContactManager.sharedManager.userAddress = self.address
                             
                             // Remove people
-                            self.removePlottedPeople(self.pulseView)
+                            //self.removePlottedPeople(self.pulseView)
                             // Post notif
-                            self.postUpdateLocationNotification()
+                            //self.postUpdateLocationNotification()
                             // Show container
-                            self.radarListContainer.isHidden = false
+                            //self.radarListContainer.isHidden = false
                             // Hide pulse view 
                             //self.pulseView.isHidden = true
                             // End radar pulsing
-                            self.stopPulseAnimation()
+                            //self.stopPulseAnimation()
                             //self.endRadar()
                             
                         }else{

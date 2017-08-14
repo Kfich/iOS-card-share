@@ -585,11 +585,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         //titleLabel.text = "Founder & CEO, CleanSwipe"
         
         // Assign media buttons
-        mediaButton1.image = UIImage(named: "icn-social-twitter.png")
-        mediaButton2.image = UIImage(named: "icn-social-facebook.png")
-        mediaButton3.image = UIImage(named: "icn-social-harvard.png")
-        mediaButton4.image = UIImage(named: "icn-social-instagram.png")
-        mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        mediaButton1.image = UIImage(named: "social-blank")
+        mediaButton2.image = UIImage(named: "social-blank")
+        mediaButton3.image = UIImage(named: "social-blank")
+        mediaButton4.image = UIImage(named: "social-blank")
+        mediaButton5.image = UIImage(named: "social-blank")
         mediaButton6.image = UIImage(named: "social-blank")
         mediaButton7.image = UIImage(named: "social-blank")
     }

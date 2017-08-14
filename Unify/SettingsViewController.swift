@@ -279,6 +279,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Link to endpoint and send 
         // Create URL For Test
         let testURL = ImageURLS().uploadToDevelopmentURL
+        //let prodURL = ImageURLS().uploadToDevelopmentURL
         
         // Parse dictionary
         let imageData = imageDictionary["image_data"] as! Data

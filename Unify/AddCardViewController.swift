@@ -450,11 +450,11 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
         // Assign media buttons
-        cell.mediaButton1.image = UIImage(named: "icn-social-twitter.png")
-        cell.mediaButton2.image = UIImage(named: "icn-social-facebook.png")
-        cell.mediaButton3.image = UIImage(named: "icn-social-harvard.png")
-        cell.mediaButton4.image = UIImage(named: "icn-social-instagram.png")
-        cell.mediaButton5.image = UIImage(named: "icn-social-pinterest.png")
+        cell.mediaButton1.image = UIImage(named: "social-blank")
+        cell.mediaButton2.image = UIImage(named: "social-blank")
+        cell.mediaButton3.image = UIImage(named: "social-blank")
+        cell.mediaButton4.image = UIImage(named: "social-blank")
+        cell.mediaButton5.image = UIImage(named: "social-blank")
         cell.mediaButton6.image = UIImage(named: "social-blank")
         cell.mediaButton7.image = UIImage(named: "social-blank")
 

@@ -1432,7 +1432,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wjn-yz-P6Z">
-                                <rect key="frame" x="0.0" y="381" width="375" height="286"/>
+                                <rect key="frame" x="0.0" y="306" width="375" height="361"/>
                                 <connections>
                                     <segue destination="U5F-hJ-a8T" kind="embed" id="toO-dQ-Lgl"/>
                                 </connections>
@@ -1480,10 +1480,10 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="75" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="uAH-ha-KFH">
-                                <rect key="frame" x="0.0" y="230" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="230" width="375" height="75"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="yKP-nU-Qbp"/>
+                                    <constraint firstAttribute="height" constant="75" id="yKP-nU-Qbp"/>
                                 </constraints>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
@@ -1495,7 +1495,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wdQ-m0-RGO">
-                                                    <rect key="frame" x="0.0" y="19.5" width="375" height="55.5"/>
+                                                    <rect key="frame" x="0.0" y="18.5" width="375" height="56.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ae4-lD-QyB">
                                                         <size key="itemSize" width="45" height="45"/>
@@ -1505,7 +1505,7 @@
                                                     </collectionViewFlowLayout>
                                                     <cells>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="SHc-fZ-Cq7">
-                                                            <rect key="frame" x="10" y="5.5" width="45" height="45"/>
+                                                            <rect key="frame" x="10" y="6" width="45" height="45"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                 <rect key="frame" x="0.0" y="0.0" width="45" height="45"/>
@@ -1515,11 +1515,11 @@
                                                     </cells>
                                                 </collectionView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SOCIAL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEv-nu-RRY">
-                                                    <rect key="frame" x="23" y="3" width="58" height="15.5"/>
+                                                    <rect key="frame" x="23" y="3" width="58" height="14.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="58" id="L9W-71-jkN"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-UltraLightP2" family="San Francisco Display" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-UltraLightP2" family="San Francisco Display" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -10084,7 +10084,7 @@
                         <viewControllerLayoutGuide type="bottom" id="8ww-ph-oJm"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="t6P-aY-1pT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="286"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="361"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
