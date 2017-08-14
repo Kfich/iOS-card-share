@@ -144,7 +144,6 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
     }
     
-    
     @IBAction func calendarSelected(_ sender: Any) {
         
         // Configure calendar
@@ -219,11 +218,15 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        /* if self.socialBadges.count != 0 {
+         /*if self.socialBadges.count != 0 {
          // Return the count
-         return self.socialBadges.count
+            return self.socialBadges.count
          }else{
-         return 1
+            
+           /* let img = UIImage(named: "social-blank")
+            self.socialBadges.append(img!)*/
+            
+            return 1
          }*/
         return self.socialBadges.count
     }

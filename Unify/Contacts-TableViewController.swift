@@ -27,6 +27,7 @@ class ContactsTableViewController: UIViewController, UITableViewDelegate, UITabl
     // --------------------------------------
     var dataArray = [String]()
     
+    
     var filteredArray = [String]()
     
     var shouldShowSearchResults = false
@@ -42,6 +43,16 @@ class ContactsTableViewController: UIViewController, UITableViewDelegate, UITabl
     // Sorted contact list
     var letters: [Character] = []
     var contacts = [Character: [String]]()
+    
+    var contactObjectTable = [[String: Any]]()
+    var contactNamesHashTable = [String: CNContact]()
+    
+    
+    var tuples = [(String, String)]()
+    var contactTuples = [(String, CNContact)]()
+    
+    var selectedContact = CNContact()
+    
     
     
     // Page setup
@@ -153,18 +164,57 @@ class ContactsTableViewController: UIViewController, UITableViewDelegate, UITabl
          // Pass in segue
          self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row) */
         
+        var selectedId = ""
         
         if shouldShowSearchResults {
             // Show results from filtered array
-            print("Index path", indexPath.row)
+            print("Index path", indexPath)
             print(filteredArray[indexPath.row])
+            
+            // Search for contact by name in list
+            for item in self.tuples {
+                if item.1 == filteredArray[indexPath.row] {
+                    // This is the selected item
+                    print("Selected Item: >> \(item)")
+                    // Set Id
+                    selectedId = item.0
+                }
+                
+                
+            }
+
+            
         }else{
-            print("Index path for data array", indexPath.row)
-            print(dataArray[indexPath.row])
+            //print("Index path for data array", indexPath)
+            //print(dataArray[indexPath.row])
+            
+            // Search for contact by name in list
+            for item in self.tuples {
+                if item.1 == contacts[letters[indexPath.section]]?[indexPath.row] {
+                    // This is the selected item
+                    print("Selected Item: >> \(item)")
+                    // Set Id
+                    selectedId = item.0
+                }
+                
+                
+            }
+
+            //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
         }
         
-        // Search for contact by name in list
-        
+        // Set contact from list
+        for item in contactTuples{
+            if item.0 == selectedId {
+                // Set contact object 
+                self.selectedContact = item.1
+                
+                // Print to test
+                print(self.selectedContact.givenName)
+                // Call segue
+                
+            }
+        }
         
     }
     
@@ -212,8 +262,33 @@ class ContactsTableViewController: UIViewController, UITableViewDelegate, UITabl
             for contact in contacts {
                 //print(formatter.string(from: contact) ?? "No Name")
                 
+                // Generate ID String
+                let str = self.randomString(length: 10)
+                // Assign id to object
+                let contactTuple = (str, formatter.string(from: contact) ?? "No Name")
+                let objectTuple = (str, contact)
                 
-                self.dataArray.append(formatter.string(from: contact) ?? "No Name")
+                // Create tuples and append to list
+                self.tuples.append(contactTuple)
+                print("Tuple >> \(contactTuple)")
+                self.contactTuples.append(objectTuple)
+                print("Object Tuple >> \(objectTuple)")
+                
+                let dataArrayObject = ["id" : str, "name": formatter.string(from: contact) ?? "No Name"]
+                self.contactObjectTable.append(dataArrayObject)
+                
+                //print("The ContactDictionary")
+                //print(contactDictionary)
+                
+                //print("The data array object")
+                //print(dataArrayObject)
+                
+                
+                
+                //dataArray
+                
+                //self.dataArray.append(formatter.string(from: contact) ?? "No Name")
+                
                 
                 if contact.phoneNumbers.count > 0 {
                     //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
@@ -367,6 +442,23 @@ class ContactsTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     // Custom Methods
     
+    // Generate random string for transaction id
+    func randomString(length: Int) -> String {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        
+        return randomString
+    }
+
     
     func sortContacts() {
         // Test for sorting contacts by last name into sections
@@ -376,6 +468,10 @@ class ContactsTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Build letters array:
         
         //letters: [Character]
+        // Init data array
+        dataArray = self.tuples.map { $0.1 }
+
+        
         
         letters = dataArray.map { (name) -> Character in
             print(name[name.startIndex])
@@ -400,6 +496,10 @@ class ContactsTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         // Init sorted contacts array
         //var contacts = [Character: [String]]()
+        
+        
+        
+        
         // Iterate over contact list
         for entry in dataArray {
             

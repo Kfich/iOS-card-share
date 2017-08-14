@@ -31,6 +31,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     var socialLinkBadges = [[String : Any]]()
     var links = [String]()
     var socialBadges = [UIImage]()
+    var selectedBadgeIndex : Int = 0
     
     // Bools to check if array contents empty
     var arraysPopulated = false
@@ -199,7 +200,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        // Set selected index 
+        self.selectedBadgeIndex = indexPath.row
+        
+        // Show WebVC
+        self.launchMediaWebView()
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
@@ -410,6 +415,16 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.parseDataFromProfile), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
         
         
+    }
+    
+    func launchMediaWebView() {
+        // Config the social link webVC
+        ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
+        self.present(controller, animated: true, completion: nil)
     }
     
     func initializeBadgeList() {

@@ -76,8 +76,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         segmentedControl.tintColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         segmentedControl.insertSegment(withTitle: "All", at: 0, animated: false)
-        segmentedControl.insertSegment(withTitle: "Introductions", at: 1, animated: false)
-        segmentedControl.insertSegment(withTitle: "Connections", at: 2, animated: false)
+        segmentedControl.insertSegment(withTitle: "Connections", at: 1, animated: false)
+        segmentedControl.insertSegment(withTitle: "Introductions", at: 2, animated: false)
         // Init index
         segmentedControl.selectedSegmentIndex = 0
         
