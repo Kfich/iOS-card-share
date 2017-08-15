@@ -788,7 +788,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     func configurePhotoPicker() {
         //Initial setup
         photoPicker.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
-        photoPicker.alertTitle = "Select Profile Image"
+        photoPicker.alertTitle = "Select Card Image"
         photoPicker.alertMessage = ""
         photoPicker.resizeImage = CGSize(width: 150, height: 150)
         photoPicker.allowDestructive = false

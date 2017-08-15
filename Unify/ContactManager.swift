@@ -37,6 +37,9 @@ class ContactManager{
     var userSelectedRecipient = false
     var userSentCardFromRadarList = false
     
+    // Settings toggle
+    var hideBadgesSelected = false
+    var hideCardsSelected = true
     
     // Quickshare
     var quickshareSMSSelected = false

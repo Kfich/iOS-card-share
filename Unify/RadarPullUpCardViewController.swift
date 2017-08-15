@@ -112,9 +112,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 
                 let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: contactCard)
                 ContactManager.sharedManager.cardBagdeLists["\(contactCard.cardId!)"] = list
-                //print(ContactManager.sharedManager.cardBagdeLists["\(contactCard.cardId)"])
+                
             }
             
+            // Add dummy card to array for 'Add Card' Cell
+            let addCardView = ContactCard()
+            // Append to current user 
+            ContactManager.sharedManager.currentUserCards.append(contactCard)
             // Reload tableview data
             cardCollectionView.reloadData()
             // Set Selected card

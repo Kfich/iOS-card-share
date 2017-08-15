@@ -118,6 +118,7 @@
 		FB767D491F4359180065F46E /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D481F4359180065F46E /* CalendarListViewController.swift */; };
 		FB767D4B1F43600A0065F46E /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D4A1F43600A0065F46E /* EventManager.swift */; };
 		FB767D4D1F436EC60065F46E /* Appointment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D4C1F436EC60065F46E /* Appointment.swift */; };
+		FB767D4F1F437BE90065F46E /* HideProfileDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D4E1F437BE90065F46E /* HideProfileDataViewController.swift */; };
 		FB90A8AD1F265E9900E67B1E /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */; };
 		FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */; };
 		FB90A8B11F278F6400E67B1E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */; };
@@ -359,6 +360,7 @@
 		FB767D481F4359180065F46E /* CalendarListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		FB767D4A1F43600A0065F46E /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
 		FB767D4C1F436EC60065F46E /* Appointment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appointment.swift; sourceTree = "<group>"; };
+		FB767D4E1F437BE90065F46E /* HideProfileDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HideProfileDataViewController.swift; sourceTree = "<group>"; };
 		FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
 		FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardRecipientListViewController.swift; sourceTree = "<group>"; };
 		FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -775,6 +777,7 @@
 				FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */,
 				FB90A8B51F27941600E67B1E /* ContactUsViewController.swift */,
 				FB90A8BB1F27AC1600E67B1E /* PrivacyViewController.swift */,
+				FB767D4E1F437BE90065F46E /* HideProfileDataViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1029,6 +1032,7 @@
 				FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */,
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
 				1C3104101E94B7FC00F4D70D /* FollowUp-ViewController.swift in Sources */,
+				FB767D4F1F437BE90065F46E /* HideProfileDataViewController.swift in Sources */,
 				FB767D341F429DD40065F46E /* RSKInternalUtility.m in Sources */,
 				1CB31CB21E94358200A0C4A5 /* Helpers.swift in Sources */,
 				FB767D491F4359180065F46E /* CalendarListViewController.swift in Sources */,

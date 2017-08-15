@@ -175,6 +175,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Get social icons 
         self.parseForSocialIcons()
+        
+        // Configure picker
+        self.configurePhotoPicker()
     }
 
     
@@ -432,6 +435,26 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         print("Done editing")
     }
+    
+    func configurePhotoPicker() {
+        //Initial setup
+        photo.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
+        photo.alertTitle = "Select Profile Image"
+        photo.alertMessage = ""
+        photo.resizeImage = CGSize(width: 150, height: 150)
+        photo.allowDestructive = false
+        photo.allowEditing = false
+        // Set front facing camera
+        photo.cameraDevice = .front
+        photo.cameraFlashMode = .auto
+        
+        photo.actionTitleLibrary = "Photo Library"
+        photo.actionTitleLastPhoto = "Last Photo"
+        photo.actionTitleTakePhoto = "Take Photo"
+        photo.actionTitleCancel = "Cancel"
+        photo.actionTitleOther = "Import From..."
+    }
+
     
     func initializeBadgeList() {
         // Image config

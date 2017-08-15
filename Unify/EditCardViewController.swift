@@ -276,7 +276,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 self.dismiss(animated: true, completion: {
                     // Send to database to update card with the new uuid
                     print("Send to db")
-                    self.postNotification()
                 })
                 
             } else {
@@ -924,7 +923,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     func configurePhotoPicker() {
         //Initial setup
         photoPicker.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
-        photoPicker.alertTitle = "Select Profile Image"
+        photoPicker.alertTitle = "Select Card Image"
         photoPicker.alertMessage = ""
         photoPicker.resizeImage = CGSize(width: 150, height: 150)
         photoPicker.allowDestructive = false

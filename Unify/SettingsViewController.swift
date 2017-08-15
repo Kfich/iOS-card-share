@@ -609,7 +609,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5 // your number of cell here
+        return 7 // your number of cell here
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -630,13 +630,21 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             
         }else if indexPath.row == 2 {
             // Show contact us cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "ContactUsCell", for: indexPath) as! SettingsViewCell
+            cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
             
         }else if indexPath.row == 3{
             // Show privacy cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "PrivacyCell", for: indexPath) as! SettingsViewCell
+            cell = tableView.dequeueReusableCell(withIdentifier: "HideBadgesCell", for: indexPath) as! SettingsViewCell
             
         }else if indexPath.row == 4{
+            // Show privacy cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "ContactUsCell", for: indexPath) as! SettingsViewCell
+            
+        }else if indexPath.row == 5{
+            // Show privacy cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "PrivacyCell", for: indexPath) as! SettingsViewCell
+            
+        }else if indexPath.row == 6{
             // Show logout cell
             cell = tableView.dequeueReusableCell(withIdentifier: "LogoutCell", for: indexPath) as! SettingsViewCell
         }
@@ -651,14 +659,24 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         //Change the selected background view of the cell.
         settingsTableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath.row == 2 {
+        if indexPath.row == 2  {
+            // Set nav status
+            ContactManager.sharedManager.hideCardsSelected = true
+            // Show contact us segue
+            performSegue(withIdentifier: "showCardToggleVC", sender: self)
+        }else if indexPath.row == 3{
+            // Set nav status
+            ContactManager.sharedManager.hideBadgesSelected = true
+            // Show contact us segue
+            performSegue(withIdentifier: "showCardToggleVC", sender: self)
+        }else if indexPath.row == 4 {
             // Show contact us segue
             performSegue(withIdentifier: "showContactUs", sender: self)
-        }else if indexPath.row == 3{
+        }else if indexPath.row == 5{
             // Show privacy webview
             showPrivacy()
             
-        }else if indexPath.row == 4{
+        }else if indexPath.row == 6{
             // Log user out
             self.showLogoutAlert()
         }

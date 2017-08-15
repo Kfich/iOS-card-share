@@ -26,8 +26,12 @@ public class ContactCard: NSObject, NSCoding{
     var ownerId = ""
     
     // Card Profile Object containing all associated info
-    
     var cardProfile : CardProfile = CardProfile()
+    
+    
+    // Bool for settings toggle
+    var isHidden = false
+    var hidden = "0"
     
     
     // Init
