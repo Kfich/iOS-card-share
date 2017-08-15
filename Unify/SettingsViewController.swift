@@ -10,7 +10,7 @@ import UIKit
 import MBPhotoPicker
 import Alamofire
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RSKImageCropViewControllerDelegate{
     
     // Properties 
     // ------------------------------
@@ -435,7 +435,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Set image view to sender view 
             sender.view?.addSubview(selectedImageView)
             
-            // Set as temp image
+            // ************ YOU LEFT OFF HERE >> SHOW CROPPER AND RECONFIG IMAGE THING *********
+            
+            // Show Cropper
+            //self.showCropper(withImage: image!)
+            
+            
             
         }
         
@@ -471,6 +476,70 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         return imageView
     }
+    
+    // Image Cropper Delegates
+    
+    func showCropper(withImage: UIImage) {
+        // Show image cropper
+        let cropper = RSKImageCropViewController()
+        // Set Cropper Image
+        cropper.originalImage = withImage
+        // Set mode
+        cropper.cropMode = RSKImageCropMode.circle
+        // Set Delegate
+        cropper.delegate = self
+        
+        self.present(cropper, animated: true, completion: nil)
+    }
+    
+    /*
+     func imageCropViewControllerCustomMaskRect(_ controller: RSKImageCropViewController) -> CGRect {
+     // Configure custom rect
+     var size = CGSize()
+     // Set size
+     size.height = 150
+     size.width = 150
+     
+     // Config view size
+     let viewWidth = self.view.frame.width
+     let viewHeight = self.view.frame.height
+     
+     // Make rect
+     let rect = CGRect(x: (viewWidth - size.width) * 0.5, y: (viewHeight - size.height) * 0.5, width: size.width, height: size.height)
+     
+     return rect
+     
+     }*/
+    
+    func imageCropViewControllerDidCancelCrop(_ controller: RSKImageCropViewController) {
+        // Drop vc
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
+        
+        // Set image to view
+        self.selectedImage = croppedImage
+        
+        // Test
+        print("Cropped Image >> \n\(croppedImage)")
+        
+        //self.profileImageContainerView.addSubview(self.configureSelectedImageView(selectedImage: croppedImage))
+        // Dismiss vc
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func imageCropViewController(_ controller: RSKImageCropViewController, willCropImage originalImage: UIImage) {
+        
+        // Set image to view
+        //self.profileImageContainerView.image = originalImage
+        
+        // Test
+        print("Selected Image >> \n\(originalImage)")
+    }
+    
+
     
     func configurePhotoPicker() {
         //Initial setup

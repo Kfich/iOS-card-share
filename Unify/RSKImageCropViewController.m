@@ -787,8 +787,8 @@ static const CGFloat kLayoutImageScrollViewAnimationDuration = 0.25;
             
             CGSize maskSize = CGSizeMake(diameter, diameter);
             
-            self.maskRect = CGRectMake((viewWidth - maskSize.width) * 0.75f,
-                                       (viewHeight - maskSize.height) * 0.75f,
+            self.maskRect = CGRectMake((viewWidth - maskSize.width) * 0.5f,
+                                       (viewHeight - maskSize.height) * 0.5f,
                                        maskSize.width,
                                        maskSize.height);
             break;

@@ -14,7 +14,7 @@ import Contacts
 import MBPhotoPicker
 import Alamofire
 
-class CreateAccountViewController: UIViewController {
+class CreateAccountViewController: UIViewController, RSKImageCropViewControllerDelegate {
     
     // Properties
     // -----------------------------------------------
@@ -48,6 +48,8 @@ class CreateAccountViewController: UIViewController {
     @IBOutlet weak var profileImageContainerView: UIImageView!
     
     @IBOutlet var cardWrapperView: UIView!
+    
+    
     
     
     // View Prep
@@ -88,6 +90,9 @@ class CreateAccountViewController: UIViewController {
         // Set user object 
         self.newUser = ContactManager.sharedManager.currentUser
         
+        // Configure imageview 
+        self.profileImageContainerView = self.configureSelectedImageView(selectedImage: UIImage(named: "user")!)
+        
     }
     
     
@@ -115,12 +120,11 @@ class CreateAccountViewController: UIViewController {
             // Change button text
             self.addProfilePictureBtn.titleLabel?.text = "Change"
             
-            // Set image to view
-            self.profileImageContainerView.image = image
             
             // Previous location for image assignment to user object
             
-            
+            // Show cropper view 
+            self.showCropper(withImage: image!)
             
             
             
@@ -588,6 +592,89 @@ class CreateAccountViewController: UIViewController {
         photo.actionTitleOther = "Import From..."
         
     }
+    
+    // Image Cropper Delegates
+    
+    func showCropper(withImage: UIImage) {
+        // Show image cropper
+        let cropper = RSKImageCropViewController()
+        // Set Cropper Image
+        cropper.originalImage = withImage
+        // Set mode
+        cropper.cropMode = RSKImageCropMode.circle
+        // Set Delegate
+        cropper.delegate = self
+        
+        self.present(cropper, animated: true, completion: nil)
+    }
+    
+    /*
+     func imageCropViewControllerCustomMaskRect(_ controller: RSKImageCropViewController) -> CGRect {
+     // Configure custom rect
+     var size = CGSize()
+     // Set size
+     size.height = 150
+     size.width = 150
+     
+     // Config view size
+     let viewWidth = self.view.frame.width
+     let viewHeight = self.view.frame.height
+     
+     // Make rect
+     let rect = CGRect(x: (viewWidth - size.width) * 0.5, y: (viewHeight - size.height) * 0.5, width: size.width, height: size.height)
+     
+     return rect
+     
+     }*/
+    
+    func imageCropViewControllerDidCancelCrop(_ controller: RSKImageCropViewController) {
+        // Drop vc
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
+        
+        // Set image to view
+        //self.profileImageContainerView.image = croppedImage
+        
+        // Test
+        print("Cropped Image >> \n\(croppedImage)")
+        
+        self.profileImageContainerView.addSubview(self.configureSelectedImageView(selectedImage: croppedImage))
+        // Dismiss vc
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func imageCropViewController(_ controller: RSKImageCropViewController, willCropImage originalImage: UIImage) {
+        
+        // Set image to view
+        //self.profileImageContainerView.image = originalImage
+        
+        // Test
+        print("Selected Image >> \n\(originalImage)")
+    }
+    
+    func configureSelectedImageView(selectedImage: UIImage) -> UIImageView{
+        // Config imageview
+        
+        // Set image to imageview
+        let imageView = UIImageView(image: selectedImage)
+        
+        // Configure borders
+        imageView.layer.borderColor = UIColor.blue.cgColor
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
+        // Changed the image rendering size
+        imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)
+        
+        return imageView
+    }
+
+    
+    
     
     func generateBoundaryString() -> String {
         return "Boundary-\(NSUUID().uuidString)"
