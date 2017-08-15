@@ -11,7 +11,7 @@ import Foundation
 class Appointment{
     
     // Properties 
-    
+    var name : String = ""
     var appointmentId : String = ""
     var senderId : String = ""
     var senderName : String = ""
@@ -36,6 +36,7 @@ class Appointment{
     // Init with JSON Snapshot
     init(snapshot: NSDictionary) {
         
+        name = snapshot["name"] as! String
         appointmentId = snapshot["appointmentId"] as! String
         senderId = snapshot["senderId"] as! String
         senderName = snapshot["sender_name"] as! String
@@ -57,6 +58,7 @@ class Appointment{
     // Exporting the object
     func toAnyObject() -> NSDictionary {
         return [
+            "name" : name,
             "appointmentId" : appointmentId,
             "senderId": senderId,
             "sender_name" : senderName,

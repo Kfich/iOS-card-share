@@ -15,6 +15,8 @@ class AddEventViewController: UIViewController {
 
     var calendar: EKCalendar!
     var delegate: EventAddedDelegate?
+    var appointment = Appointment()
+    var selectedContact = Contact()
 
     // IBOutlets
     // ---------------------------
@@ -60,8 +62,6 @@ class AddEventViewController: UIViewController {
                 try eventStore.save(newEvent, span: .thisEvent, commit: true)
                 // Delegate Callback func
                 delegate?.eventDidAdd()
-                // Dismiss VC
-                self.dismiss(animated: true, completion: nil)
                 
             } catch {
                 
@@ -76,7 +76,66 @@ class AddEventViewController: UIViewController {
         }
      }
     
+    // MARK: Event Added Delegate
+    func eventDidAdd() {
+        //self.loadEvents()
+        
+        // Test output
+        print("Event added")
+        
+        // Upload appointment
+        self.createAppointment()
+    }
+    
     // Custom Methods
+    
+    func createAppointment() {
+        // Configure appointment
+        appointment.name = self.eventNameTextField.text ?? "Unify Appointment"
+        appointment.start = self.eventStartDatePicker.date.toString()
+        appointment.end = self.eventEndDatePicker.date.toString()
+        appointment.notes = "Invitation to follow up"
+        appointment.createdAt = Date().toString()
+        appointment.senderName = ContactManager.sharedManager.currentUser.getName()
+        appointment.recipientName = self.selectedContact.name
+        appointment.recipientPhone = self.selectedContact.phoneNumbers[0]["phone"] ?? ""
+        appointment.recipientEmail = self.selectedContact.emails[0]["email"] ?? ""
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Sending your invite...")
+        
+        // Save card to DB
+        let parameters = ["data": self.appointment.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).uploadEventCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Appointment Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                // Test print
+                print("Returned Dictionary >> \(dictionary)")
+                
+                // Show success
+                KVNProgress.showSuccess(withStatus: "Invite sent!")
+                
+                // Dismiss VC
+                self.dismiss(animated: true, completion: nil)
+                
+            } else {
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
     
     func initialDatePickerValue() -> Date {
         let calendarUnitFlags: NSCalendar.Unit = [.year, .month, .day, .hour, .minute, .second]
