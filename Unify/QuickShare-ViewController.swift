@@ -335,6 +335,9 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         self.cardWrapperView.layer.borderWidth = 1.5
         self.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
+        // Config image
+        self.configureSelectedImageView(imageView: self.profileImageView)
+        
         // Assign media buttons
         /*mediaButton1.image = UIImage(named: "social-blank")
         mediaButton2.image = UIImage(named: "social-blank")
@@ -350,6 +353,18 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         }
         
     }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
+    }
+    
+    
     
     func populateCards(){
         // Senders card config

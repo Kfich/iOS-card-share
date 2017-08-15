@@ -85,6 +85,8 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         // Set checkmark
         cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
         
+        // Config imageview 
+        self.configureSelectedImageView(imageView: cell.contactImageView)
         // Fetch user image reference
         
          // Set user
@@ -363,6 +365,16 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Update location
         NotificationCenter.default.addObserver(self, selector: #selector(RadarListViewController.endRadar), name: NSNotification.Name(rawValue: "EndRadar"), object: nil)
+        
+    }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 23    // Create container for image and name
         
     }
     

@@ -921,16 +921,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    func configureSelectedImageView(imageView: UIImageView) {
-        // Config imageview
-        
-        // Configure borders
-        imageView.layer.borderWidth = 1.5
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
-        
-    }
-    
     func configurePhotoPicker() {
         //Initial setup
         photoPicker.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
