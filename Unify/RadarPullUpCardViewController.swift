@@ -118,7 +118,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Add dummy card to array for 'Add Card' Cell
             let addCardView = ContactCard()
             // Append to current user 
-            ContactManager.sharedManager.currentUserCards.append(contactCard)
+            ContactManager.sharedManager.currentUserCards.append(addCardView)
             // Reload tableview data
             cardCollectionView.reloadData()
             // Set Selected card
@@ -406,21 +406,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
     
-            
+        
+        
             // Find current card index
             let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
         
             // Get badge list 
             cell.badgeList = self.parseCardForBagdes(card: currentCard)
-        
-            // Set image from badge list
-            //let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            //let image = cell.badgeList[indexPath.row]
-        
-            // Set image for badge
-            //imageView.image = image
-            //print("ADDING SUBVIEW TO TABLE")
-            //cell.collectionView.addSubview(imageView)
         
             // Populate text field data
             
@@ -445,11 +437,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 cell.cardName.text = currentCard.cardName
             }
             
-            
-            // Config social link buttons
-            // Do that here
-            
-            
             // Configure the card view
             configureViews(cell: cell)
             
@@ -467,9 +454,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         self.pageControl.currentPage = indexPath.row
         
-        if ContactManager.sharedManager.currentUserCards.count == 0{
+        if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
             
-            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
+            /*let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
             containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
             
             // Create section header buttons
@@ -479,8 +466,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
             
             // Add subviews
-            containerView.addSubview(imageView)
+            containerView.addSubview(imageView)*/
             
+            let containerView = self.createAddNewCell(cell: cell)
             cell.addSubview(containerView)
         }
         
@@ -532,8 +520,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
-        
-        
         
         if ContactManager.sharedManager.currentUserCards.count == 0{
             
@@ -620,9 +606,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         return list
     }
     
-    func createAddNewCell() -> UIView{
+    func createAddNewCell(cell: UICollectionViewCell) -> UIView{
         
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cardCollectionView.frame.width + 5, height: cardCollectionView.frame.height + 5))
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
         containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         //containerView.layer.borderColor = UIColor.clear as? CGColor
         
@@ -630,7 +616,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let imageName = "add-card"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 0, y: 0, width: cardCollectionView.frame.width, height: cardCollectionView.frame.height)
+        imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
         
         // Add gesture action
         

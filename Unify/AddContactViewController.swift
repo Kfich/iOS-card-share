@@ -136,6 +136,9 @@ class AddContactViewController: UIViewController {
         // Config imageview
         self.configureSelectedImageView(imageView: self.profileImageView)
         
+        // Config picker
+        self.configurePhotoPicker()
+        
     }
     
     
@@ -153,7 +156,7 @@ class AddContactViewController: UIViewController {
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 20    // Create container for image and name
+        imageView.layer.cornerRadius = 35    // Create container for image and name
         
     }
     

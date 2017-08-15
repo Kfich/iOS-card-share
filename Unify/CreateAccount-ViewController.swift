@@ -91,7 +91,10 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         self.newUser = ContactManager.sharedManager.currentUser
         
         // Configure imageview 
-        self.profileImageContainerView = self.configureSelectedImageView(selectedImage: UIImage(named: "user")!)
+        //self.profileImageContainerView = self.configureSelectedImageView(selectedImage: UIImage(named: "user")!)
+        
+        self.configureSelectedImageView(imageView: self.profileImageContainerView)
+        
         
     }
     
@@ -124,11 +127,9 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
             // Previous location for image assignment to user object
             
             // Show cropper view 
-            self.showCropper(withImage: image!)
+            //self.showCropper(withImage: image!)
             
-            
-            
-            //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
+            self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
 
         }
     
@@ -640,7 +641,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         // Test
         print("Cropped Image >> \n\(croppedImage)")
         
-        self.profileImageContainerView.addSubview(self.configureSelectedImageView(selectedImage: croppedImage))
+        //self.profileImageContainerView.addSubview(self.configureSelectedImageView(selectedImage: croppedImage))
         // Dismiss vc
         dismiss(animated: true, completion: nil)
         
@@ -655,6 +656,8 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         print("Selected Image >> \n\(originalImage)")
     }
     
+    
+    /*
     func configureSelectedImageView(selectedImage: UIImage) -> UIImageView{
         // Config imageview
         
@@ -671,6 +674,16 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)
         
         return imageView
+    }*/
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 60    // Create container for image and name
+        
     }
 
     

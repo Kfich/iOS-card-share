@@ -107,29 +107,6 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
         //cell.backgroundColor = UIColor.clear
-        
-        
-        if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
-            
-            // Add card to whatever the count is
-            ContactManager.sharedManager.currentUserCards.append(ContactCard())
-            
-            collectionView.cellForItem(at: indexPath)?.backgroundView = createAddNewCell()
-            
-            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-            containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-            
-            // Create section header buttons
-            let imageName = "add-card"
-            let image = UIImage(named: imageName)
-            let imageView = UIImageView(image: image!)
-            imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
-            
-            // Add subviews
-            containerView.addSubview(imageView)
-            
-            return cell
-        }else{
             
             // Find current card index
             let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
@@ -161,33 +138,36 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             // Config social link buttons
             // Do that here
             
+            // Get badge list
+            cell.badgeList = self.parseCardForBagdes(card: currentCard)
             
             // Configure the card view
             configureViews(cell: cell)
             
             return cell
             
-        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         self.contactPageControl.currentPage = indexPath.row
         
-        if ContactManager.sharedManager.currentUserCards.count == 0{
+        if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
             
-            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-            containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+            /*let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
+             containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+             
+             // Create section header buttons
+             let imageName = "add-card"
+             let image = UIImage(named: imageName)
+             let imageView = UIImageView(image: image!)
+             imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
+             
+             // Add subviews
+             containerView.addSubview(imageView)*/
             
-            // Create section header buttons
-            let imageName = "add-card"
-            let image = UIImage(named: imageName)
-            let imageView = UIImageView(image: image!)
-            imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
-            
-            // Add subviews
-            containerView.addSubview(imageView)
-            
+            let containerView = self.createAddNewCell(cell: cell)
             cell.addSubview(containerView)
         }
         
@@ -397,9 +377,9 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         //collectionView.backgroundView = messageLabel;
     }
     
-    func createAddNewCell() -> UIView{
+    func createAddNewCell(cell: UICollectionViewCell) -> UIView{
         
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.collectionView.frame.width + 5, height: self.collectionView.frame.height + 5))
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
         containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         //containerView.layer.borderColor = UIColor.clear as? CGColor
         
@@ -407,7 +387,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         let imageName = "add-card"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 0, y: 0, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+        imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
         
         // Add gesture action
         
@@ -421,6 +401,15 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         containerView.addSubview(imageView)
         
         return containerView
+    }
+    
+    // Parse for incons in card profile
+    func parseCardForBagdes(card: ContactCard) -> [UIImage] {
+        // Execute from manager
+        let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: card)
+        print("The Badge List >> \(list)")
+        
+        return list
     }
     
     // Shows add card vc

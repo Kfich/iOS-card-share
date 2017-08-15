@@ -224,6 +224,13 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                     // Set counter to 0
                     self.counter = 0
                     
+                    if  dictionary.count >= 0
+                    {
+                        
+                        // Clear Lists
+                        self.radarContactList.removeAll()
+                    }
+                    
                     
                     for item in dictionary {
                         
