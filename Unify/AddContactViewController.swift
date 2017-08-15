@@ -131,7 +131,11 @@ class AddContactViewController: UIViewController {
         
         // Set image
         let image = UIImage(named: "profile-placeholder")
-        self.profileImageView = self.configureSelectedImageView(selectedImage: image!)
+        self.profileImageView.image = image
+        
+        // Config imageview
+        self.configureSelectedImageView(imageView: self.profileImageView)
+        
     }
     
     
@@ -143,22 +147,14 @@ class AddContactViewController: UIViewController {
     // Custom Methods
     // ----------------------------------
     
-    func configureSelectedImageView(selectedImage: UIImage) -> UIImageView{
+    func configureSelectedImageView(imageView: UIImageView) {
         // Config imageview
         
-        // Set image to imageview
-        let imageView = UIImageView(image: selectedImage)
-        
         // Configure borders
-        imageView.layer.borderColor = UIColor.blue.cgColor
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 20    // Create container for image and name
         
-        // Changed the image rendering size
-        imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)
-        
-        return imageView
     }
     
     func doneEditingProfile() {

@@ -13,7 +13,8 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
     
     // Properties
     // ----------------------------------
-    
+    var selectedCard = ContactCard()
+    var badgeList = [UIImage]()
     
     // IBOutlets
     // ----------------------------------
@@ -65,6 +66,7 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
     }
     
     
@@ -112,18 +114,20 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
          }else{
          return 1
          }*/
-        return ContactManager.sharedManager.socialBadges.count
+        return badgeList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardBadgeCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardBadgeCell", for: indexPath)
         
         //cell.contentView.backgroundColor = UIColor.red
         self.configureBadges(cell: cell)
         
+        //let badgeList = ContactManager.sharedManager.parseContactCardForSocialIcons(card: ContactManager.sharedManager.currentUserCards[indexPath.row])
+        
         // Configure corner radius
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = ContactManager.sharedManager.socialBadges[indexPath.row]
+        let image = badgeList[indexPath.row]
         
         // Set image
         imageView.image = image

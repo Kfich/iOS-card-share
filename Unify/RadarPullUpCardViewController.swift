@@ -108,7 +108,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 //print(profile)
                 print("PROFILE PRINTING")
                 ContactManager.sharedManager.currentUserCards.append(contactCard)
-                contactCard.printCard()
+                //contactCard.printCard()
+                
+                let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: contactCard)
+                ContactManager.sharedManager.cardBagdeLists["\(contactCard.cardId!)"] = list
+                //print(ContactManager.sharedManager.cardBagdeLists["\(contactCard.cardId)"])
             }
             
             // Reload tableview data
@@ -397,35 +401,23 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
-        
-        //cell.backgroundColor = UIColor.clear
-        
-        
-       /* if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
-            
-            // Add card to whatever the count is
-            ContactManager.sharedManager.currentUserCards.append(ContactCard())
-            
-            collectionView.cellForItem(at: indexPath)?.backgroundView = createAddNewCell()
-            
-            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-            containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-            
-            // Create section header buttons
-            let imageName = "add-card"
-            let image = UIImage(named: imageName)
-            let imageView = UIImageView(image: image!)
-            imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
-            
-            // Add subviews
-            containerView.addSubview(imageView)
-            
-            return cell
-        }else{*/
+    
             
             // Find current card index
             let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
-            
+        
+            // Get badge list 
+            cell.badgeList = self.parseCardForBagdes(card: currentCard)
+        
+            // Set image from badge list
+            //let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            //let image = cell.badgeList[indexPath.row]
+        
+            // Set image for badge
+            //imageView.image = image
+            //print("ADDING SUBVIEW TO TABLE")
+            //cell.collectionView.addSubview(imageView)
+        
             // Populate text field data
             
             if currentCard.cardHolderName != nil {
@@ -616,6 +608,14 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Custom Methods
     
+    func parseCardForBagdes(card: ContactCard) -> [UIImage] {
+        // Execute from manager
+        let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: card)
+        print("The Badge List >> \(list)")
+        
+        return list
+    }
+    
     func createAddNewCell() -> UIView{
         
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cardCollectionView.frame.width + 5, height: cardCollectionView.frame.height + 5))
@@ -711,7 +711,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 61    // Create container for image and name
         
     }
     

@@ -87,6 +87,7 @@ class ContactManager{
     var socialBadges = [UIImage]()
     var socialLinks = [String]()
     var selectedSocialMediaLink : String = ""
+    var cardBagdeLists = [String : [UIImage]]()
     
     // Indexing the contact records for upload
     var index = 0
@@ -132,6 +133,62 @@ class ContactManager{
         // let fb : NSDictionary = ["facebook" : img1!]
         // self.socialLinkBadges.append([fb])
         
+        
+    }
+    
+    func parseContactCardForSocialIcons(card: ContactCard) -> [UIImage] {
+        
+        // Init list of images to be returned
+        var finalBadgeList = [UIImage]()
+        var socialLinksArray = [String]()
+        
+        // Create badge list
+        self.initializeBadgeList()
+        
+        print("PARSING FOR PROFILES")
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if card.cardProfile.socialLinks.count > 0{
+            for link in card.cardProfile.socialLinks{
+                socialLinksArray.append(link["link"]!)
+                // Test
+                print("Social Links Count >> \(socialLinksArray.count)")
+            }
+        }
+        
+        // Remove all items from badges
+        finalBadgeList.removeAll()
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in socialLinksArray {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    finalBadgeList.append(item.first?.value as! UIImage)
+                    
+                    // Test output
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(finalBadgeList.count)
+                    
+                    
+                }
+            }
+            
+        }
+        return finalBadgeList
         
     }
     

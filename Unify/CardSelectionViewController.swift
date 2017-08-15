@@ -787,7 +787,9 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 67
+        // Changed the image rendering size
+        //imageView.frame = CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y , width: 125, height: 125)
         
     }
     
