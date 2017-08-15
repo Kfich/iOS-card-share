@@ -847,6 +847,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         self.cardWrapperView.layer.borderWidth = 2.0
         self.cardWrapperView.layer.borderColor = UIColor.white.cgColor
         
+        // Imageview 
+        self.configureSelectedImageView(imageView: self.contactImageView)
+        
+        // Config table
         self.profileInfoTableView.layer.cornerRadius = 12.0
         self.profileInfoTableView.clipsToBounds = true
         self.profileInfoTableView.layer.borderWidth = 2.0
@@ -884,6 +888,18 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         callButton.image = UIImage(named: "btn-call-blue")
         calendarButton.image = UIImage(named: "btn-calendar-blue")
     }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
+    }
+
+    
     
     func addDropShadow(scale: Bool = true) {
         

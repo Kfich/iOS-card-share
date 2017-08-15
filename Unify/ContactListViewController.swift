@@ -116,8 +116,12 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
         }
         
+        // Configure imageviews
+        let imageView = self.configureSelectedImageView(selectedImage: UIImage(named: "user")!)
+        cell.contactImageView.addSubview(imageView)
+        
         // Set image
-        cell.contactImageView.image = UIImage(named: "profile")
+        //cell.contactImageView.image = UIImage(named: "profile")
         // Add tap gesture to follow up button
         self.addGestureToImage(image: (cell.introImageView)!, index: indexPath.row)
         
@@ -224,6 +228,23 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: Custom functions
     
+    func configureSelectedImageView(selectedImage: UIImage) -> UIImageView{
+        // Config imageview
+        
+        // Set image to imageview
+        let imageView = UIImageView(image: selectedImage)
+        
+        // Configure borders
+        imageView.layer.borderColor = UIColor.blue.cgColor
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 20    // Create container for image and name
+        
+        // Changed the image rendering size
+        imageView.frame = CGRect(x: 10, y: 0 , width: 40, height: 40)
+        
+        return imageView
+    }
     
     func getContacts() {
         let status = CNContactStore.authorizationStatus(for: .contacts)

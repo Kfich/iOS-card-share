@@ -684,6 +684,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Make card wrapper full cell size
         //cell.backgroundColor = UIColor.white
         
+        // Config imageview
+        self.configureSelectedImageView(imageView: cell.cardImage)
+        
         // Round edges at top of card cells
         cell.cardHeaderView.layer.cornerRadius = 8.0
         cell.cardHeaderView.clipsToBounds = true
@@ -699,6 +702,16 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.mediaButton5.image = UIImage(named: "social-blank")
         cell.mediaButton6.image = UIImage(named: "social-blank")
         cell.mediaButton7.image = UIImage(named: "social-blank")*/
+        
+    }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
         
     }
     

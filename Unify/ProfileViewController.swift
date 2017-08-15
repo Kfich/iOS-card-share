@@ -744,11 +744,24 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.profileCardWrapperView.layer.borderWidth = 2.0
         self.profileCardWrapperView.layer.borderColor = UIColor.white.cgColor
         
+        // Config imageview
+        self.configureSelectedImageView(imageView: self.profileImageView)
+        
         self.profileInfoTableView.layer.cornerRadius = 12.0
         self.profileInfoTableView.clipsToBounds = true
         self.profileInfoTableView.layer.borderWidth = 0.5
         self.profileInfoTableView.layer.borderColor = UIColor.white.cgColor
 
+    }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
     }
     
     func populateCards(){

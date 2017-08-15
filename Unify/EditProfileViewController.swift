@@ -147,6 +147,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Assign current user
         currentUser = ContactManager.sharedManager.currentUser
         
+        // Config imageview
+        self.configureSelectedImageView(imageView: profileImageView)
+        
         // Check for image, set to imageview
         if currentUser.profileImages.count > 0{
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
@@ -212,6 +215,16 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     // When user selects from photoPicker, config image and set to sender view
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
+    }
+    
     func configureSelectedImageView(selectedImage: UIImage) -> UIImageView{
         // Config imageview
         
@@ -308,6 +321,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.uploadEditedUser), name: NSNotification.Name(rawValue: "UpdateCurrentUserProfile"), object: nil)
         
     }
+    
+    
     
     
     func uploadEditedUser() {
@@ -614,6 +629,7 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
         cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor

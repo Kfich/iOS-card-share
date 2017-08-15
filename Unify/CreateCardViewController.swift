@@ -771,6 +771,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.profileCardWrapperView.layer.borderWidth = 1.5
         self.profileCardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
+        // Config image
+        self.configureSelectedImageView(imageView: self.profileImageView)
+        
         // Assign media buttons
         /*mediaButton1.image = UIImage(named: "social-blank")
         mediaButton2.image = UIImage(named: "social-blank")
@@ -799,6 +802,16 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         photoPicker.actionTitleTakePhoto = "Take Photo"
         photoPicker.actionTitleCancel = "Cancel"
         photoPicker.actionTitleOther = "Import From..."
+    }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
     }
     
 

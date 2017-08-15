@@ -69,6 +69,11 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             // Reset Manager value to false 
             ContactManager.sharedManager.userArrivedFromContactList = false
         }
+        
+        // Configure imageviews
+        self.configureSelectedImageView(imageView: contactImageView)
+        self.configureSelectedImageView(imageView: recipientImageView)
+        
     }
     
     override func viewDidLoad() {
@@ -404,6 +409,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             // Set image for contact
             contactImageView.image = image
          }else{
+            
          // Set to placeholder image
             contactImageView.image = UIImage(named: "profile")
          }
@@ -436,6 +442,24 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         self.addRecipientLabel.text = name
         
     }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Set image to imageview
+        //let imageView = UIImageView()
+        
+        // Configure borders
+        imageView.layer.borderColor = UIColor.blue.cgColor
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
+        // Changed the image rendering size
+        //imageView.frame = CGRect(x: 10, y: 0 , width: 40, height: 40)
+        
+    }
+
     
     // MARK: MFMailComposeViewControllerDelegate Method
     

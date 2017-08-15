@@ -353,6 +353,16 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
+    }
+    
     // RSKImageCropperDelegate Methods
     
     // When user selects from photoPicker, config image and set to sender view
@@ -897,6 +907,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.profileCardWrapperView.layer.borderWidth = 1.5
         self.profileCardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
+        // Config imageview
+        self.configureSelectedImageView(imageView: self.profileImageView)
+        
         // Assign media buttons
         /*mediaButton1.image = UIImage(named: "social-blank")
         mediaButton2.image = UIImage(named: "social-blank")
@@ -905,6 +918,16 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         mediaButton5.image = UIImage(named: "social-blank")
         mediaButton6.image = UIImage(named: "social-blank")
         mediaButton7.image = UIImage(named: "social-blank")*/
+        
+    }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
         
     }
     

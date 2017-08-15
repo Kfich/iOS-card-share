@@ -781,6 +781,16 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Here, parse data to populate tableview
     }
     
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 59    // Create container for image and name
+        
+    }
+    
     func configureViews(){
         // Round out the vards here
         // Configure cards
@@ -788,6 +798,9 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.cardWrapperView.clipsToBounds = true
         self.cardWrapperView.layer.borderWidth = 2.0
         self.cardWrapperView.layer.borderColor = UIColor.white.cgColor
+        
+        // Config imageview 
+        self.configureSelectedImageView(imageView: self.contactImageView)
         
         self.profileInfoTableView.layer.cornerRadius = 12.0
         self.profileInfoTableView.clipsToBounds = true
