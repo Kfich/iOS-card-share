@@ -1,24 +1,31 @@
 //
 //  AddEventViewController.swift
-//  EventTracker
+//  Unify
 //
-//  Created by Andrew Bancroft on 5/18/16.
-//  Copyright © 2016 Andrew Bancroft. All rights reserved.
+//  Created by Kevin Fich on 8/15/17.
+//  Copyright © 2017 Kevin Fich. All rights reserved.
 //
 
 import UIKit
 import EventKit
 
 class AddEventViewController: UIViewController {
+    // Properties
+    // ---------------------------
 
     var calendar: EKCalendar!
+    var delegate: EventAddedDelegate?
 
+    // IBOutlets
+    // ---------------------------
+    
     @IBOutlet weak var eventNameTextField: UITextField!
     @IBOutlet weak var eventStartDatePicker: UIDatePicker!
     @IBOutlet weak var eventEndDatePicker: UIDatePicker!
     
-    var delegate: EventAddedDelegate?
     
+    
+    // Page Setup
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -26,17 +33,6 @@ class AddEventViewController: UIViewController {
         self.eventEndDatePicker.setDate(initialDatePickerValue(), animated: false)
     }
     
-    func initialDatePickerValue() -> Date {
-        let calendarUnitFlags: NSCalendar.Unit = [.year, .month, .day, .hour, .minute, .second]
-        
-        var dateComponents = (Calendar.current as NSCalendar).components(calendarUnitFlags, from: Date())
-        
-        dateComponents.hour = 0
-        dateComponents.minute = 0
-        dateComponents.second = 0
-        
-        return Calendar.current.date(from: dateComponents)!
-    }
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
@@ -49,8 +45,10 @@ class AddEventViewController: UIViewController {
         // Use Event Store to create a new calendar instance
         if let calendarForEvent = eventStore.calendar(withIdentifier: self.calendar.calendarIdentifier)
         {
+            // Init new event
             let newEvent = EKEvent(eventStore: eventStore)
             
+            // Configure new event
             newEvent.calendar = calendarForEvent
             newEvent.title = self.eventNameTextField.text ?? "Some Event Name"
             newEvent.startDate = self.eventStartDatePicker.date
@@ -58,17 +56,37 @@ class AddEventViewController: UIViewController {
             
             // Save the event using the Event Store instance
             do {
+                // Store the event
                 try eventStore.save(newEvent, span: .thisEvent, commit: true)
+                // Delegate Callback func
                 delegate?.eventDidAdd()
-                
+                // Dismiss VC
                 self.dismiss(animated: true, completion: nil)
+                
             } catch {
+                
+                // Init error alert
                 let alert = UIAlertController(title: "Event could not save", message: (error as NSError).localizedDescription, preferredStyle: .alert)
                 let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 alert.addAction(OKAction)
                 
+                // Show error
                 self.present(alert, animated: true, completion: nil)
             }
         }
      }
+    
+    // Custom Methods
+    
+    func initialDatePickerValue() -> Date {
+        let calendarUnitFlags: NSCalendar.Unit = [.year, .month, .day, .hour, .minute, .second]
+        
+        var dateComponents = (Calendar.current as NSCalendar).components(calendarUnitFlags, from: Date())
+        
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        dateComponents.second = 0
+        
+        return Calendar.current.date(from: dateComponents)!
+    }
 }

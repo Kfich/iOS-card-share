@@ -31,6 +31,7 @@ public class Contact{
     // Initializers
     init(){}
     
+    
     // Exporting the object
     func toAnyObject() -> NSDictionary {
         return [

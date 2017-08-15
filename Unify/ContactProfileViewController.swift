@@ -149,7 +149,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         // Configure calendar
         //UIApplication.shared.openURL(NSURL(string: "calshow://")! as URL)
         
-        performSegue(withIdentifier: "showCalendarList", sender: self)
+        performSegue(withIdentifier: "showCreateAppointment", sender: self)
     }
     
     

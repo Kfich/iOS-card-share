@@ -49,6 +49,11 @@
 
 // Contacts
 #define kUploadContact        kServerURL(kAppwsServerURL, @"contacts/add")
+#define kGetContacts          kServerURL(kAppwsServerURL, @"contacts/get")
+
+// Events
+#define kUploadEvent          kServerURL(kAppwsServerURL, @"events/create")
+#define kGetEvents            kServerURL(kAppwsServerURL, @"events/get")
 
 
 #endif

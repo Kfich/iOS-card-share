@@ -49,7 +49,11 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 
 // Contacts
 - (NSURLSessionDataTask*)uploadContactCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)getContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
+// Events
+- (NSURLSessionDataTask*)uploadEventCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)getEventsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
 
 @end

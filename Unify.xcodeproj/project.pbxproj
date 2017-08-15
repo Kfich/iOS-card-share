@@ -117,6 +117,7 @@
 		FB767D471F4358750065F46E /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D401F4358750065F46E /* UIViewExtensions.swift */; };
 		FB767D491F4359180065F46E /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D481F4359180065F46E /* CalendarListViewController.swift */; };
 		FB767D4B1F43600A0065F46E /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D4A1F43600A0065F46E /* EventManager.swift */; };
+		FB767D4D1F436EC60065F46E /* Appointment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB767D4C1F436EC60065F46E /* Appointment.swift */; };
 		FB90A8AD1F265E9900E67B1E /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */; };
 		FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */; };
 		FB90A8B11F278F6400E67B1E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */; };
@@ -357,6 +358,7 @@
 		FB767D401F4358750065F46E /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		FB767D481F4359180065F46E /* CalendarListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		FB767D4A1F43600A0065F46E /* EventManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
+		FB767D4C1F436EC60065F46E /* Appointment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appointment.swift; sourceTree = "<group>"; };
 		FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
 		FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardRecipientListViewController.swift; sourceTree = "<group>"; };
 		FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -812,6 +814,7 @@
 				FBF871311EE71F0100243CE2 /* ContactCard.swift */,
 				FBE807481F0566F300A05292 /* CardProfile.swift */,
 				FB019AA11F28EE7C00908A67 /* Contact.swift */,
+				FB767D4C1F436EC60065F46E /* Appointment.swift */,
 			);
 			name = Class_Files;
 			sourceTree = "<group>";
@@ -1022,6 +1025,7 @@
 				FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */,
 				1C151D331F1DBE73004B23CE /* CountlyDeviceInfo.m in Sources */,
 				1C3104141E959DB700F4D70D /* ProfileHeaderCell.swift in Sources */,
+				FB767D4D1F436EC60065F46E /* Appointment.swift in Sources */,
 				FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */,
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
 				1C3104101E94B7FC00F4D70D /* FollowUp-ViewController.swift in Sources */,

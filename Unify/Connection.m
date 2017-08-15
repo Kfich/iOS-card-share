@@ -129,7 +129,17 @@
 - (NSURLSessionDataTask*)uploadContactCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUploadContact];
 }
+- (NSURLSessionDataTask*)getContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetContacts];
+}
 
+// Events
+- (NSURLSessionDataTask*)uploadEventCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kUploadEvent];
+}
+- (NSURLSessionDataTask*)getEventsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetEvents];
+}
 
 
 #pragma mark - Response Handling
