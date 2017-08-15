@@ -11,3 +11,4 @@
 #import "UIScrollView+EmptyDataSet.h"
 #import "UIScrollView+EmptyDataSet.m"
 #import "Countly.h"
+#import "RSKImageCropper.h"

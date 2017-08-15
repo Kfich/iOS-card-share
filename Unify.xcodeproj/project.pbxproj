@@ -100,6 +100,14 @@
 		FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738331EDDD6CD0074200F /* BusinessCardView.xib */; };
 		FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738351EDDDE0F0074200F /* ContactCardView.swift */; };
 		FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738371EDDDE240074200F /* ContactCardView.xib */; };
+		FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */; };
+		FB767D311F429DD40065F46E /* RSKImageCropperStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB767D221F429DD40065F46E /* RSKImageCropperStrings.bundle */; };
+		FB767D321F429DD40065F46E /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D241F429DD40065F46E /* RSKImageCropViewController.m */; };
+		FB767D331F429DD40065F46E /* RSKImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D271F429DD40065F46E /* RSKImageScrollView.m */; };
+		FB767D341F429DD40065F46E /* RSKInternalUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D291F429DD40065F46E /* RSKInternalUtility.m */; };
+		FB767D351F429DD40065F46E /* RSKTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D2B1F429DD40065F46E /* RSKTouchView.m */; };
+		FB767D361F429DD40065F46E /* UIApplication+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D2D1F429DD40065F46E /* UIApplication+RSKImageCropper.m */; };
+		FB767D371F429DD40065F46E /* UIImage+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D2F1F429DD40065F46E /* UIImage+RSKImageCropper.m */; };
 		FB90A8AD1F265E9900E67B1E /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */; };
 		FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */; };
 		FB90A8B11F278F6400E67B1E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */; };
@@ -313,6 +321,24 @@
 		FB3738331EDDD6CD0074200F /* BusinessCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessCardView.xib; sourceTree = "<group>"; };
 		FB3738351EDDDE0F0074200F /* ContactCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCardView.swift; sourceTree = "<group>"; };
 		FB3738371EDDDE240074200F /* ContactCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCardView.xib; sourceTree = "<group>"; };
+		FB767D1E1F429DD40065F46E /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
+		FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
+		FB767D201F429DD40065F46E /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
+		FB767D211F429DD40065F46E /* RSKImageCropper.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = RSKImageCropper.modulemap; sourceTree = "<group>"; };
+		FB767D221F429DD40065F46E /* RSKImageCropperStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RSKImageCropperStrings.bundle; sourceTree = "<group>"; };
+		FB767D231F429DD40065F46E /* RSKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropViewController.h; sourceTree = "<group>"; };
+		FB767D241F429DD40065F46E /* RSKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageCropViewController.m; sourceTree = "<group>"; };
+		FB767D251F429DD40065F46E /* RSKImageCropViewController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSKImageCropViewController+Protected.h"; sourceTree = "<group>"; };
+		FB767D261F429DD40065F46E /* RSKImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageScrollView.h; sourceTree = "<group>"; };
+		FB767D271F429DD40065F46E /* RSKImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageScrollView.m; sourceTree = "<group>"; };
+		FB767D281F429DD40065F46E /* RSKInternalUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKInternalUtility.h; sourceTree = "<group>"; };
+		FB767D291F429DD40065F46E /* RSKInternalUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKInternalUtility.m; sourceTree = "<group>"; };
+		FB767D2A1F429DD40065F46E /* RSKTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKTouchView.h; sourceTree = "<group>"; };
+		FB767D2B1F429DD40065F46E /* RSKTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKTouchView.m; sourceTree = "<group>"; };
+		FB767D2C1F429DD40065F46E /* UIApplication+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+RSKImageCropper.h"; sourceTree = "<group>"; };
+		FB767D2D1F429DD40065F46E /* UIApplication+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+RSKImageCropper.m"; sourceTree = "<group>"; };
+		FB767D2E1F429DD40065F46E /* UIImage+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RSKImageCropper.h"; sourceTree = "<group>"; };
+		FB767D2F1F429DD40065F46E /* UIImage+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RSKImageCropper.m"; sourceTree = "<group>"; };
 		FB90A8AC1F265E9900E67B1E /* EditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
 		FB90A8AE1F265F0600E67B1E /* CardRecipientListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardRecipientListViewController.swift; sourceTree = "<group>"; };
 		FB90A8B01F278F6400E67B1E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -636,6 +662,24 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FB767D1E1F429DD40065F46E /* CGGeometry+RSKImageCropper.h */,
+				FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */,
+				FB767D201F429DD40065F46E /* RSKImageCropper.h */,
+				FB767D211F429DD40065F46E /* RSKImageCropper.modulemap */,
+				FB767D221F429DD40065F46E /* RSKImageCropperStrings.bundle */,
+				FB767D231F429DD40065F46E /* RSKImageCropViewController.h */,
+				FB767D241F429DD40065F46E /* RSKImageCropViewController.m */,
+				FB767D251F429DD40065F46E /* RSKImageCropViewController+Protected.h */,
+				FB767D261F429DD40065F46E /* RSKImageScrollView.h */,
+				FB767D271F429DD40065F46E /* RSKImageScrollView.m */,
+				FB767D281F429DD40065F46E /* RSKInternalUtility.h */,
+				FB767D291F429DD40065F46E /* RSKInternalUtility.m */,
+				FB767D2A1F429DD40065F46E /* RSKTouchView.h */,
+				FB767D2B1F429DD40065F46E /* RSKTouchView.m */,
+				FB767D2C1F429DD40065F46E /* UIApplication+RSKImageCropper.h */,
+				FB767D2D1F429DD40065F46E /* UIApplication+RSKImageCropper.m */,
+				FB767D2E1F429DD40065F46E /* UIImage+RSKImageCropper.h */,
+				FB767D2F1F429DD40065F46E /* UIImage+RSKImageCropper.m */,
 				FB199CF61F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.h */,
 				FB199CF71F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m */,
 				FB90A8B71F279C1800E67B1E /* SCLAlertView.swift */,
@@ -847,6 +891,7 @@
 				1CAE5B8E1E913A06006EFF40 /* LaunchScreen.storyboard in Resources */,
 				FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */,
 				1CAE5B8B1E913A06006EFF40 /* Assets.xcassets in Resources */,
+				FB767D311F429DD40065F46E /* RSKImageCropperStrings.bundle in Resources */,
 				FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */,
 				1C31041C1E95BA9200F4D70D /* GoogleService-Info.plist in Resources */,
 				1C151D2B1F1DBE73004B23CE /* Countly.podspec in Resources */,
@@ -944,6 +989,7 @@
 				FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */,
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
 				1C3104101E94B7FC00F4D70D /* FollowUp-ViewController.swift in Sources */,
+				FB767D341F429DD40065F46E /* RSKInternalUtility.m in Sources */,
 				1CB31CB21E94358200A0C4A5 /* Helpers.swift in Sources */,
 				FBE807551F06C07C00A05292 /* NSData+PKCS12.m in Sources */,
 				FB90A8B41F27929700E67B1E /* SettingsViewCell.swift in Sources */,
@@ -953,6 +999,7 @@
 				FBE807531F06C07C00A05292 /* Connection.m in Sources */,
 				1C151D311F1DBE73004B23CE /* CountlyConnectionManager.m in Sources */,
 				FBE8075D1F06DBBE00A05292 /* CardOptionsViewCell.swift in Sources */,
+				FB767D351F429DD40065F46E /* RSKTouchView.m in Sources */,
 				FB019A9F1F28E7B500908A67 /* ImageURLS.swift in Sources */,
 				FB90A8B11F278F6400E67B1E /* SettingsViewController.swift in Sources */,
 				1C151D2D1F1DBE73004B23CE /* CountlyAPM.m in Sources */,
@@ -966,6 +1013,7 @@
 				1C151D391F1DBE73004B23CE /* CountlyUserDetails.m in Sources */,
 				1C3104161E95A87900F4D70D /* ProfileContactCell.swift in Sources */,
 				1C3104121E9536D100F4D70D /* SingleActivity-ViewController.swift in Sources */,
+				FB767D371F429DD40065F46E /* UIImage+RSKImageCropper.m in Sources */,
 				FBF8712D1EE71B0800243CE2 /* User.swift in Sources */,
 				1CB31CAB1E942C1C00A0C4A5 /* SkeletonCell.swift in Sources */,
 				1CB31CA11E940A0B00A0C4A5 /* Profile-TableViewController.swift in Sources */,
@@ -989,10 +1037,12 @@
 				FB37382D1EDDD59D0074200F /* BusinessCardView.swift in Sources */,
 				1CB31C971E93CB8D00A0C4A5 /* CardCollectionViewCellNew.swift in Sources */,
 				FB90A8BA1F279C1800E67B1E /* SCLExtensions.swift in Sources */,
+				FB767D321F429DD40065F46E /* RSKImageCropViewController.m in Sources */,
 				FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */,
 				1CB31CB41E94358200A0C4A5 /* ContactCell.swift in Sources */,
 				FB199CFB1F2A560000FFFCC1 /* RecipientOptionsViewController.swift in Sources */,
 				FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */,
+				FB767D331F429DD40065F46E /* RSKImageScrollView.m in Sources */,
 				FB199CFD1F324F6D00FFFCC1 /* RadarListViewController.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
 				1C151D3A1F1DBE73004B23CE /* CountlyViewTracking.m in Sources */,
@@ -1016,6 +1066,7 @@
 				FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */,
 				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
+				FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */,
 				1C151D2F1F1DBE73004B23CE /* CountlyCommon.m in Sources */,
 				1C151D2C1F1DBE73004B23CE /* Countly_OpenUDID.m in Sources */,
 				FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */,
@@ -1024,6 +1075,7 @@
 				FB90A8BC1F27AC1600E67B1E /* PrivacyViewController.swift in Sources */,
 				FB199D031F339A0F00FFFCC1 /* SocialMediaViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
+				FB767D361F429DD40065F46E /* UIApplication+RSKImageCropper.m in Sources */,
 				FBFDFE051F17FC0200AF3A08 /* RadarContactSelectionViewController.swift in Sources */,
 				FBA1F5191F38FA5400CDCB76 /* CustomSearchController.swift in Sources */,
 				FB199CF81F2A317200FFFCC1 /* UIScrollView+EmptyDataSet.m in Sources */,
