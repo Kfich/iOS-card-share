@@ -43,6 +43,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>To create profile pictures which are displayed on your business cards in the app</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>We need access to your calendar in order to help you connect with other Unify users and make appointments.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Import Users</string>
 	<key>NSLocationAlwaysUsageDescription</key>
