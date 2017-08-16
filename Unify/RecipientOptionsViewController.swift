@@ -24,6 +24,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var segmentedControl = UISegmentedControl()
     var selectedCells = [NSIndexPath]()
     
+    // Contact Object 
+    var contact = Contact()
+    
     // Location 
     var lat : Double = 0.0
     var long : Double = 0.0
@@ -511,11 +514,12 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
 
     // Custom Methods
     
-    /*func validateForm() {
+    
+    func validateForm() {
         
         // Here, configure form validation
         
-        if (firstNameTextField.text == nil || lastNameTextField.text == nil || emailTextField.text == nil) {
+        if (firstNameLabel.text == nil || lastNameLabel.text == nil || emailLabel.text == nil && phoneLabel.text == nil) {
             
             // form invalid
             let message = "Please enter valid contact information"
@@ -537,37 +541,39 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }else{
             
             // Pass form values into contact object
-            contact.name = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
+            contact.name = "\(firstNameLabel.text!) \(lastNameLabel.text!)"
             
             // Set notes
-            if notesTextField.text != nil{
-                contact.setNotes(note: notesTextField.text!)
+            if notesLabel.text != nil{
+                contact.setNotes(note: notesLabel.text!)
             }
             
             // Execute send actions
             
+            // ***** Figure out how the user navigation/intent here *** //
+            // The check may be if one is nil, then check for the other 
+            // Phones and emails
+            
             // Check for user intent
             if ContactManager.sharedManager.quickshareSMSSelected {
                 // Set the number to contact
-                contact.phoneNumbers.append(["phone": emailTextField.text!])
+                contact.phoneNumbers.append(["phone": emailLabel.text!])
                 // Show sms
                 self.showSMSCard()
             }else{
                 // Set email
-                contact.emails.append(["email": emailTextField.text!])
+                contact.emails.append(["email": emailLabel.text!])
                 // Show email
                 self.showEmailCard()
             }
-            
-            
-            
-            
             
             // Create Transaction
             //self.createTransaction(type: "connection")
             
         }
-    }*/
+    }
+    
+    
 
     
     func toggleViews(sender: UISegmentedControl) {
