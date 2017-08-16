@@ -123,6 +123,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBAction func shareWithContact(_ sender: Any) {
         
+        
+        self.validateForm()
+        
+        /*
         // Create the transaction and share
         //self.createTransaction(type: "connection", uuid: currentUser.userId)
         // Check if both contacts selected
@@ -167,7 +171,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // If no match, chose a defualt method and send
         
-        // Create Transaction and send
+        // Create Transaction and send*/
         
     }
     
