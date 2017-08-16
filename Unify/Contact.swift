@@ -21,6 +21,7 @@ public class Contact{
     var socialLinks = [[String : String]]()
     var websites = [[String : String]]()
     var notes = [[String : String]]()
+    var tags = [[String : String]]()
     
     var origin : String = ""
     
@@ -41,6 +42,7 @@ public class Contact{
             "phone_numbers" : phoneNumbers,
             "social_links" : socialLinks,
             "notes" : notes,
+            "tags" : tags,
             "websites" : websites,
             "organizations" : organizations,
             "origin" : origin,
@@ -48,6 +50,27 @@ public class Contact{
         ]
     }
 
+    // Init with JSON Snapshot
+    init(snapshot: NSDictionary) {
+       /*
+        name = snapshot["name"] as! String
+        workInformationList = snapshot["work_info"] as! [[String : String]]
+        titles = snapshot["titles"] as! [[String : String]]
+        emails = snapshot["emails"] as! [[String : String]]
+        phoneNumbers = snapshot["phone_numbers"] as! [[String : String]]
+        socialLinks = snapshot["social_links"] as! [[String : String]]
+        tags = snapshot["tags"] as! [[String : String]]
+        notes = snapshot["notes"] as! [[String : String]]
+        websites = snapshot["websites"] as! [[String : String]]
+        organizations = snapshot["organizations"] as! [[String : String]]
+        imageIds = snapshot["image_ids"] as! [[String : Any]]
+        //images = snapshot["images"] as! [[String : Any]]*/
+        
+        
+        // Testing to see if populated
+        
+    }
+    
     
     // Getters : Setters
     
@@ -116,7 +139,16 @@ public class Contact{
     func setNotes(note : String){
         notes.append(["note" : note])
     }
+
+    // Notes
+    func getTags()->[[String : String]]{
+        return tags
+    }
     
+    func setTags(tag : String){
+        tags.append(["tag" : tag])
+    }
+
     // Websites
     func getWebsites()->[[String : String]]{
         return websites
@@ -174,22 +206,25 @@ public class Contact{
         print("Emails : ")
         print(emails)
         print("Phones : ")
-        print(phoneNumbers as Any)
+        print(phoneNumbers)
         print("Social Links : ")
-        print(socialLinks as Any)
+        print(socialLinks)
         print("Notes : ")
-        print(notes as Any)
+        print(notes)
+        print("Tags : ")
+        print(tags)
+        
         print("Websites : ")
-        print(websites as Any)
+        print(websites)
         print("Organizations : ")
-        print(organizations as Any)
+        print(organizations)
         print("Image ID: ")
         print(imageId)
         print("Origin :")
         print(origin)
         print("--------------------")
         print("Images : ")
-        print(imageDictionary as Any)
+        print(imageDictionary)
         
     }
 

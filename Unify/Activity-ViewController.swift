@@ -651,6 +651,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let name1 = "Frank Smith"
         let name2 = "Fred Jackson"
         
+        // Config imageview
+        self.configureSelectedImageView(imageView: cell.profileImage)
+        
         // See if image ref available
         let image = UIImage(named: "contact")
         cell.profileImage.image = image
@@ -715,6 +718,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             name = trans.senderName
         }
         
+        // Configure image 
+        self.configureSelectedImageView(imageView: cell.connectionOwnerProfileImage)
         
         // See if image ref available
         let image = UIImage(named: "contact")
@@ -777,6 +782,16 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Make rejection tag index + 1 to identify the users action intent
         //cell.connectionRejectButton.tag = index
         
+        
+    }
+    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 27    // Create container for image and name
         
     }
 

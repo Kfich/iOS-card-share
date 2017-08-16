@@ -1156,10 +1156,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             // End radar first to clear instances of yourself
             //self.endRadar()
-            
-            
-            
-                
+
                 // Hit endpoint for updates on users nearby
                 let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId, "location": ["latitude": self.lat, "longitude": self.long]] as [String : Any]
                 
@@ -1241,7 +1238,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             ContactManager.sharedManager.userAddress = self.address
                             
                             // Remove people
-                            self.removePlottedPeople(self.pulseView)
+                            /*self.removePlottedPeople(self.pulseView)
                             // Post notif
                             self.postUpdateLocationNotification()
                             // Show container
@@ -1249,7 +1246,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             // Hide pulse view
                             self.pulseView.isHidden = true
                             // End radar pulsing
-                            self.stopPulseAnimation()
+                            self.stopPulseAnimation()*/
                             
                             
                         }else{

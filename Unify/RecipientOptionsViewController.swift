@@ -24,6 +24,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var segmentedControl = UISegmentedControl()
     var selectedCells = [NSIndexPath]()
     
+    // If contact created from form
+    var selectedContactPhone : String = ""
+    var selectedEmail : String = ""
+    
     // Contact Object 
     var contact = Contact()
     
@@ -56,6 +60,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBOutlet var tagsLabel: UITextField!
     @IBOutlet var notesLabel: UITextField!
+
     
 
     // Page setup 
@@ -122,6 +127,45 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     
     @IBAction func shareWithContact(_ sender: Any) {
+        
+        // Check if contact list is in view
+        if self.tableView.isHidden{
+            //Check if form valid
+            let isValidForm = self.validateForm()
+            
+            if isValidForm {
+                // Configure and create transaction
+                
+            }
+            
+        }else{
+            
+        }
+        
+        
+        // if presented, set contact to selection
+        
+        // Parse for details
+        
+        // Show vc according to values in account
+        
+        
+        // else
+        
+        // Validate form for values
+        
+        // Parse form to create contact object
+        
+        // Upload contact
+        
+        // Check if save to conatcts switch active to set bool on object
+        
+        
+        
+        
+        // Create transaction
+        
+        
         
         
         self.validateForm()
@@ -404,51 +448,15 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         if(MFMessageComposeViewController .canSendText()){
             
             composeVC.messageComposeDelegate = self
+        
             
-            // 6468251231
-            
-            // Check for nil vals
-            
-            var name = ""
-            var recipientName = ""
-            var phone = ""
-            var email = ""
-            //var title = ""
-            
-            
-            // CNContact Objects
-            let contact = ContactManager.sharedManager.contactToIntro
-            let recipient = ContactManager.sharedManager.recipientToIntro
-            
-            // Check if they both have email
-            name = formatter.string(from: contact) ?? "No Name"
-            recipientName = formatter.string(from: recipient) ?? ""
-            
-            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+            // Check intent
+            if self.tableView.isHidden == false{
                 
-                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-                // Set contact phone number
-                phone = contactPhone!
                 
-                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
                 
-                // Launch text client
-                composeVC.recipients = [contactPhone!, recipientPhone!]
             }
             
-            if contact.emailAddresses.count > 0 {
-                email = (contact.emailAddresses[0].value as String)
-            }
-            // Set card link from cardID
-            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
-            
-            // Configure message
-            let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
-            
-            composeVC.body = str
-            
-            // Present the view controller modally.
-            self.present(composeVC, animated: true, completion: nil)
             
         }
         
@@ -519,11 +527,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     // Custom Methods
     
     
-    func validateForm() {
-        
+    func validateForm() -> Bool {
+
         // Here, configure form validation
         
-        if (firstNameLabel.text == nil || lastNameLabel.text == nil || emailLabel.text == nil && phoneLabel.text == nil) {
+        if ((firstNameLabel.text == nil || lastNameLabel.text == nil) || (emailLabel.text == nil && phoneLabel.text == nil)) {
             
             // form invalid
             let message = "Please enter valid contact information"
@@ -542,6 +550,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             alertView.addAction(cancel)
             self.present(alertView, animated: true, completion: nil)
             
+            // Form not valid
+            return false
+            
         }else{
             
             // Pass form values into contact object
@@ -552,27 +563,68 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 contact.setNotes(note: notesLabel.text!)
             }
             
-            // Execute send actions
-            
-            // ***** Figure out how the user navigation/intent here *** //
-            // The check may be if one is nil, then check for the other 
-            // Phones and emails
-            
-            // Check for user intent
-            if ContactManager.sharedManager.quickshareSMSSelected {
-                // Set the number to contact
-                contact.phoneNumbers.append(["phone": emailLabel.text!])
-                // Show sms
-                self.showSMSCard()
-            }else{
-                // Set email
-                contact.emails.append(["email": emailLabel.text!])
-                // Show email
-                self.showEmailCard()
+            // Set notes
+            if tagsLabel.text != nil{
+                // Add tag to object
+                contact.setTags(tag: tagsLabel.text!)
+                
             }
             
-            // Create Transaction
-            //self.createTransaction(type: "connection")
+            // Check for phone
+            if phoneLabel.text != nil {
+                // Set the number to contact
+                contact.phoneNumbers.append(["phone": emailLabel.text!])
+            }
+            // Check for email
+            if emailLabel.text != nil{
+                // Set email
+                contact.emails.append(["email": emailLabel.text!])
+            }
+            
+            // Check for match in contact info
+            let introContact = ContactManager.sharedManager.contactToIntro
+            
+            if introContact.emailAddresses.count > 0 && contact.emails.count > 0 {
+                
+                //
+                self.selectedEmail = introContact.emailAddresses[0].value as String
+                
+                //let recipientEmail = recipient.emailAddresses[0].value as String
+ 
+                
+                // Launch Email client
+                showEmailCard()
+                
+            }else if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
+                // Set selected phone
+                self.selectedContactPhone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                
+                // Launch text client
+                showSMSCard()
+                
+            }else{
+                // Users don't have things in common
+                // form invalid
+                let message = "The two people have no contact info in common"
+                let title = "Unable to Connect"
+                
+                // Configure alertview
+                let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
+                    
+                    // Dismiss alert
+                    self.dismiss(animated: true, completion: nil)
+                    
+                })
+                
+                // Add action to alert
+                alertView.addAction(cancel)
+                self.present(alertView, animated: true, completion: nil)
+            
+            }
+            
+            // Form valid
+            return true
             
         }
     }
@@ -606,21 +658,250 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
+    func uploadFormContactRecord(){
+        
+        // Check user intent
+        /*if self.tableView.isHidden == false{
+            // Use introContact from manager
+            /*let temp = ContactManager.sharedManager.recipientToIntro
+            
+            self.contact = self.createContactRecord(contact: temp)*/
+            
+            // Parse contact
+        }else{
+            // User filled out form
+            
+            
+        }*/
+        
+        // Assign contact
+        let contact = self.contact
+        
+        // Show progress hud
+        
+        let conf = KVNProgressConfiguration.default()
+        conf?.isFullScreen = true
+        conf?.statusColor = UIColor.white
+        conf?.successColor = UIColor.white
+        conf?.circleSize = 170
+        conf?.lineWidth = 10
+        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
+        conf?.circleStrokeBackgroundColor = UIColor.white
+        conf?.circleStrokeForegroundColor = UIColor.white
+        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+        KVNProgress.setConfiguration(conf!)
+        
+        // Set text to HUD
+        KVNProgress.show(withStatus: "Saving to your contacts...")
+        
+        
+        // Create dictionary
+        let parameters = ["data" : contact.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
+        print(parameters)
+        
+        // Send to server
+        Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                // Call successful
+                print("Transaction Created Response ---> \(String(describing: response))")
+                
+                // Parse array for
+                let array = response as! NSArray
+                print("Array List >> \(array)")
+                
+                // Set recipient list to transaction
+                self.transaction.recipientList = array as! [String]
+                // Test
+                print("Transaction List Count >> \(self.transaction.recipientList.count)")
+                print("Transaction List >> \(self.transaction.recipientList)")
+                
+                // Create transaction
+                self.createTransaction(type: "introduction")
+                
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                // Error occured
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection request. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
+    
+    func createContactRecord(contact: CNContact) -> Contact {
+        // Create CNContact
+        //let contact = CNContact()
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        
+            
+            // Init temp contact object
+            let contactObject = Contact()
+            
+            // Set name
+            contactObject.name = formatter.string(from: contact) ?? "No Name"
+            
+            // Check for count
+            if contact.phoneNumbers.count > 0 {
+                // Iterate over items
+                for number in contact.phoneNumbers{
+                    // print to test
+                    print("Number: \((number.value.value(forKey: "digits" )!))")
+                    
+                    // Init the number
+                    let digits = number.value.value(forKey: "digits") as! String
+                    
+                    // Append to object
+                    contactObject.setPhoneRecords(phoneRecord: digits)
+                }
+                
+            }
+            if contact.emailAddresses.count > 0 {
+                // Iterate over array and pull value
+                for address in contact.emailAddresses {
+                    // Print to test
+                    print("Email : \(address.value)")
+                    
+                    // Append to object
+                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                }
+            }
+            if contact.imageDataAvailable {
+                // Print to test
+                print("Has IMAGE Data")
+                
+                // Create ID and add to dictionary
+                // Image data png
+                let imageData = contact.imageData!
+                print(imageData)
+                
+                // Assign asset name and type
+                let idString = contactObject.randomString(length: 20)
+                
+                // Name image with id string
+                let fname = idString
+                let mimetype = "image/png"
+                
+                // Create image dictionary
+                let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+                
+                // Upload image to amazon?
+                
+                
+                // Append to object
+                contactObject.setContactImageId(id: idString)
+                contactObject.imageDictionary = imageDict
+                
+            }
+            if contact.urlAddresses.count > 0{
+                // Iterate over items
+                for address in contact.urlAddresses {
+                    // Print to test
+                    print("Website : \(address.value as String)")
+                    
+                    // Append to object
+                    contactObject.setWebsites(websiteRecord: address.value as String)
+                }
+                
+            }
+            if contact.socialProfiles.count > 0{
+                // Iterate over items
+                for profile in contact.socialProfiles {
+                    // Print to test
+                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                    
+                    // Create temp link
+                    let link = profile.value.value(forKey: "urlString")  as! String
+                    
+                    // Append to object
+                    contactObject.setSocialLinks(socialLink: link)
+                }
+                
+            }
+            
+            if contact.jobTitle != "" {
+                //Print to test
+                print("Job Title: \(contact.jobTitle)")
+                
+                // Append to object
+                contactObject.setTitleRecords(title: contact.jobTitle)
+            }
+            if contact.organizationName != "" {
+                //print to test
+                print("Organization : \(contact.organizationName)")
+                
+                // Append to object
+                contactObject.setOrganizations(organization: contact.organizationName)
+            }
+            if contact.note != "" {
+                //print to test
+                print(contact.note)
+                
+                // Append to object
+                contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            // Test object
+            print("Contact >> \n\(contactObject.toAnyObject()))")
+        
+        
+        return contactObject
+    }
+
+    
     
     func createTransaction(type: String) {
-        // Set type & Transaction data 
+        // Configure trans for CNContact
+        // Set type & Transaction data
         transaction.type = type
         //transaction.recipientList = selectedUserIds
         transaction.setTransactionDate()
         transaction.senderName = ContactManager.sharedManager.currentUser.getName()
         transaction.senderId = ContactManager.sharedManager.currentUser.userId
-        transaction.type = "connection"
+        transaction.type = "introduction"
         transaction.scope = "transaction"
-        transaction.latitude = self.lat
-        transaction.longitude = self.long
-        transaction.location = self.address
         // Attach card id
         transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+        
+        
+        if self.tableView.isHidden == false {
+            
+            // Set names
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            let introContact = ContactManager.sharedManager.contactToIntro
+            
+            let recipientName = formatter.string(from: recipient) ?? "No Name"
+            let contactName = formatter.string(from: introContact) ?? "No Name"
+            // Init list
+            transaction.recipientNames = [String]()
+            transaction.recipientNames?.append(recipientName)
+            transaction.recipientNames?.append(contactName)
+            
+            
+        }else{
+            
+            // Set names
+            let introContact = ContactManager.sharedManager.contactToIntro
+            let contactName = formatter.string(from: introContact) ?? "No Name"
+            
+            // Set recipient names
+            transaction.recipientNames = [String]()
+            transaction.recipientNames?.append(self.contact.name)
+            transaction.recipientNames?.append(contactName)
+
+        }
         
         
         // Show progress hud
@@ -647,31 +928,22 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(String(describing: response))")
+                print("Transaction Created Response ---> \(String(describing: response))")
                 
-                // Set card uuid with response from network
-                /*let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
-                
-                // Insert to manager card array
-                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
-                
-                // Hide HUD
-                //KVNProgress.dismiss()
+
+                // Show success indicator
                 KVNProgress.showSuccess(withStatus: "You are now connected!")
                 
                 
-                
             } else {
-                print("Card Created Error Response ---> \(String(describing: error))")
+                print("Transaction Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
                 KVNProgress.showError(withStatus: "There was an error. Please try again.")
                 
             }
             
-            
             // Clear List of recipients
-            self.radarContactList.removeAll()
+            //self.radarContactList.removeAll()
         }
     }
     
@@ -685,9 +957,16 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
         }else if result == .sent{
             // User sent
-            self.createTransaction(type: "connection")
-            // Dimiss vc
-            self.dismiss(animated: true, completion: nil)
+            
+            if self.tableView.isHidden {
+                // User filled out form
+                self.uploadFormContactRecord()
+            }else{
+                // Chose from list
+                self.createTransaction(type: "introduction")
+                // Dimiss vc
+                self.dismiss(animated: true, completion: nil)
+            }
             
         }else{
             // There was an error
@@ -708,9 +987,16 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             print("Cancelled")
             
         }else if result == .sent{
-            // User sent
-            // Create transaction
-            self.createTransaction(type: "connection")
+            // User sent message
+            
+            if self.tableView.isHidden {
+                // User filled out form
+                self.uploadFormContactRecord()
+            }else{
+                
+                // Create transaction
+                self.createTransaction(type: "introduction")
+            }
             // Dismiss VC
             self.dismiss(animated: true, completion: nil)
             
