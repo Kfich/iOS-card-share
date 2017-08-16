@@ -680,9 +680,9 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1.0
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 60    // Create container for image and name
+        imageView.layer.cornerRadius = 60// Create container for image and name
         
     }
 

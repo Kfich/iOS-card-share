@@ -224,7 +224,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 45    // Create container for image and name
         
     }
     

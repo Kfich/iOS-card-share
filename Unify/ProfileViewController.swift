@@ -403,6 +403,108 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 45.0
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        // Add label to the view
+        var lbl = UILabel(frame: CGRect(8, 3, 100, 15))
+        lbl.textAlignment = .left
+        
+        lbl.textColor = UIColor.white
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(11))
+        
+        switch section {
+        case 0:
+            if bios.count != 0 {
+                lbl.text = "Bios"
+                // Create container
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+        case 1:
+            if workInformation.count != 0 {
+                lbl.text = "Work"
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+                
+        case 2:
+            if titles.count != 0 {
+                lbl.text = "Titles"
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+        case 3:
+            if emails.count != 0 {
+                lbl.text = "Emails"
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+            
+        case 4:
+            if phoneNumbers.count != 0 {
+                lbl.text = "Phone Numbers"
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+            
+        case 5:
+            if socialLinks.count != 0 {
+                lbl.text = "Social Media"
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+            
+        case 6:
+            if websites.count != 0 {
+                lbl.text = "Websites"
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+            
+        case 7:
+            if organizations.count != 0 {
+                lbl.text = "Organizations"
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                // Add label to view
+                containerView.addSubview(lbl)
+                return containerView
+            }
+            
+        default:
+            lbl.text = ""
+            let containerView = UIView()
+            return containerView
+        }
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
 
     
     
@@ -760,7 +862,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 67    // Create container for image and name
+        imageView.layer.cornerRadius = 45    // Create container for image and name
         
     }
     

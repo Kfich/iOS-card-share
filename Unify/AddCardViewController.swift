@@ -432,6 +432,9 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.cardWrapperView.layer.borderWidth = 1.5
         cell.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
+        // Image config
+        self.configureSelectedImageView(imageView: cell.cardImage)
+        
         // Round edges at top of card cells
         cell.cardHeaderView.layer.cornerRadius = 8.0
         cell.cardHeaderView.clipsToBounds = true
@@ -455,6 +458,17 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
          cell.mediaButtonToolBar.layer.shadowOffset = CGSize.zero
          cell.mediaButtonToolBar.layer.shadowRadius = 2*/
         
+        
+    }
+    
+    // When user selects from photoPicker, config image and set to sender view
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 45    // Create container for image and name
         
     }
 

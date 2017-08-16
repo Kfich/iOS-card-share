@@ -148,6 +148,7 @@
 		FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807561F06D12C00A05292 /* CreateProfileViewController.swift */; };
 		FBE8075A1F06D36200A05292 /* CreateCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807591F06D36200A05292 /* CreateCardViewController.swift */; };
 		FBE8075D1F06DBBE00A05292 /* CardOptionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8075C1F06DBBE00A05292 /* CardOptionsViewCell.swift */; };
+		FBF2EFB31F44E18200DDF9B4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB21F44E18200DDF9B4 /* Settings.swift */; };
 		FBF8712D1EE71B0800243CE2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712C1EE71B0800243CE2 /* User.swift */; };
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
@@ -396,6 +397,7 @@
 		FBE807561F06D12C00A05292 /* CreateProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileViewController.swift; sourceTree = "<group>"; };
 		FBE807591F06D36200A05292 /* CreateCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCardViewController.swift; sourceTree = "<group>"; };
 		FBE8075C1F06DBBE00A05292 /* CardOptionsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardOptionsViewCell.swift; sourceTree = "<group>"; };
+		FBF2EFB21F44E18200DDF9B4 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		FBF8712C1EE71B0800243CE2 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBF8712F1EE71B3D00243CE2 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		FBF871311EE71F0100243CE2 /* ContactCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
@@ -818,6 +820,7 @@
 				FBE807481F0566F300A05292 /* CardProfile.swift */,
 				FB019AA11F28EE7C00908A67 /* Contact.swift */,
 				FB767D4C1F436EC60065F46E /* Appointment.swift */,
+				FBF2EFB21F44E18200DDF9B4 /* Settings.swift */,
 			);
 			name = Class_Files;
 			sourceTree = "<group>";
@@ -869,7 +872,7 @@
 				TargetAttributes = {
 					1CAE5B7F1E913A06006EFF40 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = WLFGCQXG8T;
+						DevelopmentTeam = L8E3N3XE58;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1104,6 +1107,7 @@
 				FB1A34131EE1BC88003B5A73 /* RadarContainerViewController.swift in Sources */,
 				1C151D351F1DBE73004B23CE /* CountlyNotificationService.m in Sources */,
 				1C151D361F1DBE73004B23CE /* CountlyPersistency.m in Sources */,
+				FBF2EFB31F44E18200DDF9B4 /* Settings.swift in Sources */,
 				FB90A8B91F279C1800E67B1E /* SCLAlertView.swift in Sources */,
 				FB2F42891F1526CB00E3D6B5 /* UIImage+KVNEmpty.m in Sources */,
 				1CB31C951E93C6A700A0C4A5 /* CardCollectionViewCell.swift in Sources */,
@@ -1277,7 +1281,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = WLFGCQXG8T;
+				DEVELOPMENT_TEAM = L8E3N3XE58;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1285,7 +1289,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";
@@ -1304,7 +1308,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = WLFGCQXG8T;
+				DEVELOPMENT_TEAM = L8E3N3XE58;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1312,7 +1316,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";

@@ -8,6 +8,7 @@
 
 import UIKit
 import MBPhotoPicker
+import Contacts
 
 
 class AddContactViewController: UIViewController {
@@ -99,6 +100,8 @@ class AddContactViewController: UIViewController {
         
         ContactManager.sharedManager.userCreatedNewContact = true
         
+        
+        
         // Dismiss view
         dismiss(animated: true, completion: nil)
     }
@@ -176,33 +179,38 @@ class AddContactViewController: UIViewController {
     
     func setContact() {
         // Set contact from manager
-        self.contact = ContactManager.sharedManager.newContact
+        //self.contact = ContactManager.sharedManager.newContact
         
         // Parse vals
         if let first = firstNameTextField.text {
             // Assign to contact
-            contact.first = first
+            ContactManager.sharedManager.newContact.first = first
         }else{
             print("No first")
         }
         // Parse vals
         if let last = lastNameTextField.text {
             // Assign to contact
-            contact.last = last
+            ContactManager.sharedManager.newContact.last = last
         }else{
             print("No last")
         }
         
         // Set contact full name
-        contact.name = "\(contact.first) \(contact.last)"
+        ContactManager.sharedManager.newContact.name = "\(ContactManager.sharedManager.newContact.first) \(ContactManager.sharedManager.newContact.last)"
         
         // Set ContactManager Nav bool
         ContactManager.sharedManager.userCreatedNewContact = true
+        
+        // Store contact to list
+        self.syncContact()
         
         // Upload record
         self.uploadContactRecord()
     }
 
+    
+    
     
     func configurePhotoPicker() {
         //Initial setup
@@ -226,6 +234,9 @@ class AddContactViewController: UIViewController {
     // Send to server
     func uploadContactRecord() {
         
+        // Assign contact object
+        self.contact = ContactManager.sharedManager.newContact
+        
         // Show HUD
         KVNProgress.show(withStatus: "Saving new contact..")
         
@@ -233,6 +244,9 @@ class AddContactViewController: UIViewController {
         let parameters = ["data" : contact.toAnyObject(), "uuid": self.currentUser.userId] as [String : Any]
         print("\n\nContact Params")
         print(parameters)
+        
+        // Show HUD
+        KVNProgress.show(withStatus: "Uploading new contact..")
         
         // Establish connection
         Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
@@ -244,7 +258,10 @@ class AddContactViewController: UIViewController {
                 print(dictionary)
                 
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "Contact added successfully!")
+                
+                // Sync contact to list and sort
+                
                 
                 // Nav out the view
                 self.dismiss(animated: true, completion: nil)
@@ -260,7 +277,72 @@ class AddContactViewController: UIViewController {
         }
     }
     
-    /*
+    func syncContact() {
+        
+        // Init CNContact Object 
+        //let temp = CNContact()
+        //temp.emailAddresses.append(CNLabeledValue<NSString>)
+        let tempContact = ContactManager.sharedManager.newContact
+        
+        // Append to list of existing contacts
+        let store = CNContactStore()
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        contactToAdd.givenName = self.firstNameTextField.text ?? ""
+        contactToAdd.familyName = self.lastNameTextField.text ?? ""
+        
+        // Parse for mobile
+        let mobileNumber = CNPhoneNumber(stringValue: (tempContact.phoneNumbers[0]["phone"] ?? ""))
+        let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+        contactToAdd.phoneNumbers = [mobileValue]
+        
+        // Parse for emails
+        let email = CNLabeledValue(label: CNLabelWork, value: tempContact.emails[0]["email"] as! NSString ?? "")
+        contactToAdd.emailAddresses = [email]
+        
+        if let image = self.profileImageView.image {
+            contactToAdd.imageData = UIImagePNGRepresentation(image)
+        }
+        
+        if tempContact.titles.count > 0 {
+            // Add to contact
+            contactToAdd.jobTitle = tempContact.titles[0]["title"]!
+        }
+        if tempContact.organizations.count > 0 {
+            // Add to contact
+            contactToAdd.organizationName = tempContact.organizations[0]["organization"]!
+        }
+    
+        // Save contact to phone
+        let saveRequest = CNSaveRequest()
+        saveRequest.add(contactToAdd, toContainerWithIdentifier: nil)
+        
+        do {
+            try store.execute(saveRequest)
+        } catch {
+            print(error)
+        }
+    
+        // Init contact object
+        let newContact : CNContact = contactToAdd
+        
+        print("New Contact >> \(newContact)")
+        
+        // Append to contact list
+        ContactManager.sharedManager.phoneContactList.append(newContact)
+        
+        // Post notification for refresh
+        self.postRefreshNotification()
+
+    }
+    
+    func postRefreshNotification() {
+        // Notification for list refresh
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: self)
+    }
+    
+        /*
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation

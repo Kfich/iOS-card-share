@@ -450,6 +450,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         self.pageControl.currentPage = indexPath.row
@@ -701,7 +702,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 61    // Create container for image and name
+        imageView.layer.cornerRadius = 45// Create container for image and name
         
     }
     

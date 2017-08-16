@@ -77,8 +77,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ContactManager.sharedManager.currentUser = User(withDefaultsSnapshot:user)
             
             print("CURRENT USER FROM APP DELEGATE")
-            ContactManager.sharedManager.currentUser.printUser()
+            //ContactManager.sharedManager.currentUser.printUser()
             
+            /*
             var isPhoneVerified = ContactManager.sharedManager.currentUser.getVerificationStatus()
             
             if isPhoneVerified {
@@ -104,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 }
             }
-            
+            */
             
             
             

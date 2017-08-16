@@ -52,6 +52,9 @@ public class Transaction{
     var approved = false
     var rejected = false
     
+    // Date used for sorting on front end
+    var sortDate:Date?
+    
     
     // Init
     

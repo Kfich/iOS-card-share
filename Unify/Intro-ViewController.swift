@@ -381,8 +381,8 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         self.addContactLabel.text = "Add Contact"
         
         // Reset Images 
-        contactImageView.image = UIImage(named: "icn-user")
-        recipientImageView.image = UIImage(named: "icn-user")
+        contactImageView.image = UIImage(named: "intro-white")
+        recipientImageView.image = UIImage(named: "intro-white")
         
         // Reset Contact Managers
         ContactManager.sharedManager.contactToIntro = CNContact()
@@ -406,8 +406,12 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             print("Has IMAGE")
          // Create image var
             let image = UIImage(data: selected.imageData!)
+            
+            let view = self.resizeImageView(selectedImage: image!)
+            
+            
             // Set image for contact
-            contactImageView.image = image
+            contactImageView.image = view.image
          }else{
             
          // Set to placeholder image
@@ -450,15 +454,34 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         //let imageView = UIImageView()
         
         // Configure borders
-        imageView.layer.borderColor = UIColor.blue.cgColor
+        imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 65    // Create container for image and name
         
         // Changed the image rendering size
         //imageView.frame = CGRect(x: 10, y: 0 , width: 40, height: 40)
         
     }
+    
+    func resizeImageView(selectedImage: UIImage) -> UIImageView{
+        // Config imageview
+        
+        // Set image to imageview
+        let imageView = UIImageView(image: selectedImage)
+        
+        // Configure borders
+        imageView.layer.borderColor = UIColor.blue.cgColor
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 75    // Create container for image and name
+        
+        // Changed the image rendering size
+        imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)
+        
+        return imageView
+    }
+
 
     
     // MARK: MFMailComposeViewControllerDelegate Method

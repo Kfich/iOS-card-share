@@ -18,6 +18,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // ----------------------------------------
     var currentUser = User()
     var transactions = [Transaction]()
+    var transactionList =  [Transaction]()
+    var transactionListReversed = [Transaction]()
     
     // Individual lists for segments
     var connections = [Transaction]()
@@ -175,7 +177,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            return self.transactions.count
+            return self.transactionListReversed.count
         case 1:
             return self.connections.count
         case 2:
@@ -198,7 +200,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Set to all transactions list 
             
             // Init transaction
-            let trans = transactions[indexPath.row]
+        
+        
+        let trans = transactionListReversed[indexPath.row]
              
              if trans.type == "introduction"{
              
@@ -423,7 +427,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         Connection(configuration: nil).getTransactionsCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
                 
                 // Init dictionary to capture response
                 if let dictionary = response as? [String : Any] {
@@ -435,12 +439,17 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                         // Update counter
                         // Init user objects from array
                         let trans = Transaction(snapshot: item as! NSDictionary)
-                        trans.printTransaction()
+                        print("Transaction List")
+                        //trans.printTransaction()
                         
                         
                         // Append users to radarContacts array
                         self.transactions.append(trans)
                     }
+                    
+                    // Sort list
+                    self.sortTransactionList(list: self.transactions)
+                    
                     
                     // Update the table values
                     self.tableView.reloadData()
@@ -468,6 +477,37 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             KVNProgress.dismiss()
         })
     
+    }
+    
+    // For sorting transaction list
+    func sortTransactionList(list: [Transaction]) {
+        
+        for child in list {
+            
+            // Configure dates
+            
+            let strTime = child.date
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy HH:mm"
+            let s = formatter.date(from: strTime)
+            child.sortDate = s
+                
+            self.transactionList.append(child)
+        }
+        
+        
+        self.transactionList.sort(by: { $0.sortDate!.compare($1.sortDate! as Date) == ComparisonResult.orderedAscending })
+        
+        
+         for trans in self.transactionList{
+            print(trans.sortDate)
+         }
+        
+        //Reverse list and set
+        self.transactionListReversed = self.transactionList.reversed()
+        
+        // Update the table values
+        self.tableView.reloadData()
     }
     
     // Retrieve lists from all transactions
@@ -775,6 +815,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }
         
+        if trans.location == ""{
+            // Hide icon
+            
+        }
         
         // Add tag to view
         //cell.connectionCardWrapperView.tag = index
@@ -791,7 +835,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 27    // Create container for image and name
+        imageView.layer.cornerRadius = imageView.frame.width/2    // Create container for image and name
         
     }
 

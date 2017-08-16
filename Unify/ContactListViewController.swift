@@ -48,6 +48,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     var contactTuples = [(String, CNContact)]()
     
     var selectedContact = CNContact()
+    var contactObjectList = [Contact]()
+    
+    var phoneContacts = [CNContact]()
     
     
     
@@ -80,7 +83,12 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: UITableView Delegate and Datasource functions
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return letters.count
+        if shouldShowSearchResults {
+            return 1
+        }else{
+            // Index by letter 
+            return letters.count
+        }
     }
     
     
@@ -116,13 +124,16 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
         }
         
+        // Set cell image
+        cell.contactImageView.image = UIImage(named: "profile")
+        
         // Configure imageviews
         self.configureSelectedImageView(imageView: cell.contactImageView)
         
         // Set image
         //cell.contactImageView.image = UIImage(named: "profile")
         // Add tap gesture to follow up button
-        self.addGestureToImage(image: (cell.introImageView)!, index: indexPath.row)
+        self.addGestureToImage(image: (cell.introImageView)!, index: indexPath)
         
         return cell
     }
@@ -227,6 +238,28 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: Custom functions
     
+    // For sending notifications to the default center for other VC's that are listening
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTable), name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: nil)
+        
+    }
+    
+    func refreshTable() {
+        // Reload contacts
+        
+        // Reset all the arrays
+        letters.removeAll()
+        contacts.removeAll()
+        contactObjectTable.removeAll()
+        contactNamesHashTable.removeAll()
+        tuples.removeAll()
+        contactTuples.removeAll()
+        dataArray.removeAll()
+        
+        // Fetch contact list
+        getContacts()
+    }
+    
     func configureSelectedImageView(imageView: UIImageView) {
         // Config imageview
         
@@ -270,6 +303,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             } catch {
                 print(error)
             }
+            
+            // Set phone contact list
+            self.phoneContacts = contacts
             
             // do something with the contacts array (e.g. print the names)
             
@@ -323,8 +359,22 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 //print(contact)
             }
             
-            // Create contact objects
-            // self.contactObjectList = self.createContactRecords()
+            // Find out if contacts synced
+            let synced = UDWrapper.getBool("contacts_synced") 
+            
+            if  synced{
+                
+                //Set bool to indicate contacts have been synced
+                UDWrapper.setBool("contacts_synced", value: true)
+            
+            }else{
+                
+                // Create contact objects
+                self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
+                
+                // Upload Contacts
+                self.uploadContactRecords()
+            }
             
             // Set appeared to true
             // self.contactListHasAppeared = true
@@ -332,11 +382,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Post refresh
             // self.postContactListRefresh()
             
-            //Set bool to indicate contacts have been synced
-            //UDWrapper.setBool("contacts_synced", value: true)
-            
-            // Upload Contacts
-            //self.uploadContactRecords()
             
             self.sortContacts()
             
@@ -350,6 +395,136 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             }
             
         }
+    }
+    
+    func createContactRecords(phoneContactList: [CNContact]) -> [Contact] {
+        // Create array of contacts
+        var contactObjectList = [Contact]()
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        for contact in phoneContactList{
+            
+            // Init temp contact object
+            let contactObject = Contact()
+            
+            // Set name
+            contactObject.name = formatter.string(from: contact) ?? "No Name"
+            
+            // Check for count
+            if contact.phoneNumbers.count > 0 {
+                // Iterate over items
+                for number in contact.phoneNumbers{
+                    // print to test
+                    print("Number: \((number.value.value(forKey: "digits" )!))")
+                    
+                    // Init the number
+                    let digits = number.value.value(forKey: "digits") as! String
+                    
+                    // Append to object
+                    contactObject.setPhoneRecords(phoneRecord: digits)
+                }
+                
+            }
+            if contact.emailAddresses.count > 0 {
+                // Iterate over array and pull value
+                for address in contact.emailAddresses {
+                    // Print to test
+                    print("Email : \(address.value)")
+                    
+                    // Append to object
+                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                }
+            }
+            if contact.imageDataAvailable {
+                // Print to test
+                print("Has IMAGE Data")
+                
+                // Create ID and add to dictionary
+                // Image data png
+                let imageData = contact.imageData!
+                print(imageData)
+                
+                // Assign asset name and type
+                let idString = contactObject.randomString(length: 20)
+                
+                // Name image with id string
+                let fname = idString
+                let mimetype = "image/png"
+                
+                // Create image dictionary
+                let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+                
+                
+                // Append to object
+                contactObject.setContactImageId(id: idString)
+                contactObject.imageDictionary = imageDict
+                
+            }
+            if contact.urlAddresses.count > 0{
+                // Iterate over items
+                for address in contact.urlAddresses {
+                    // Print to test
+                    print("Website : \(address.value as String)")
+                    
+                    // Append to object
+                    contactObject.setWebsites(websiteRecord: address.value as String)
+                }
+                
+            }
+            if contact.socialProfiles.count > 0{
+                // Iterate over items
+                for profile in contact.socialProfiles {
+                    // Print to test
+                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                    
+                    // Create temp link
+                    let link = profile.value.value(forKey: "urlString")  as! String
+                    
+                    // Append to object
+                    contactObject.setSocialLinks(socialLink: link)
+                }
+                
+            }
+            
+            if contact.jobTitle != "" {
+                //Print to test
+                print("Job Title: \(contact.jobTitle)")
+                
+                // Append to object
+                contactObject.setTitleRecords(title: contact.jobTitle)
+            }
+            if contact.organizationName != "" {
+                //print to test
+                print("Organization : \(contact.organizationName)")
+                
+                // Append to object
+                contactObject.setOrganizations(organization: contact.organizationName)
+            }
+            if contact.note != "" {
+                //print to test
+                print(contact.note)
+                
+                // Append to object
+                contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            // Test object
+            print("Contact >> \n\(contactObject.toAnyObject()))")
+            
+            // Append object to contactObjectList
+            contactObjectList.append(contactObject)
+            
+            
+            // Print count
+            print("List Count ... \(contactObjectList.count)")
+        }
+        
+        return contactObjectList
     }
     
     // Search Bar Configuration & Delegates
@@ -537,34 +712,96 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    func addGestureToImage(image: UIImageView, index: Int) {
+    func addGestureToImage(image: UIImageView, index: IndexPath) {
         // Init tap gesture
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showIntroWithContact(sender:)))
         image.isUserInteractionEnabled = true
         // Add gesture to image
         image.addGestureRecognizer(tapGestureRecognizer)
         // Set image index
-        image.tag = index
+        image.tag = index.row
+        image.accessibilityIdentifier = String(index.section)
+        
     }
     
     func showIntroWithContact(sender: UITapGestureRecognizer){
-        // Set selected contact on manager using tag
-        ContactManager.sharedManager.contactToIntro = ContactManager.sharedManager.phoneContactList[(sender.view?.tag)!]
         
-        // Set navigation toggle on manager to indicate intent
-        ContactManager.sharedManager.userArrivedFromContactList = true
-        ContactManager.sharedManager.userArrivedFromIntro = true
+        let row = (sender.view?.tag)!
+        let section = Int((sender.view?.accessibilityIdentifier)!)
         
-        // Notification for intro screen
-        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
-        // Set selected tab
+        print("Section:", section)
+        print("Row :" , row)
         
         
-        // Sync up with main queue
-        DispatchQueue.main.async {
-            // Set selected tab
-            self.tabBarController?.selectedIndex = 1
+        var selectedId = ""
+        
+        if shouldShowSearchResults {
+            // Show results from filtered array
+            print(filteredArray[row])
+            
+            // Search for contact by name in list
+            for item in self.tuples {
+                if item.1 == filteredArray[row] {
+                    // This is the selected item
+                    print("Selected Item: >> \(item)")
+                    // Set Id
+                    selectedId = item.0
+                }
+                
+                
+            }
+            
+            
+        }else{
+            //print("Index path for data array", indexPath)
+            //print(dataArray[indexPath.row])
+            
+            // Search for contact by name in list
+            for item in self.tuples {
+                if item.1 == contacts[letters[section!]]?[row]{
+                    // This is the selected item
+                    print("Selected Item: >> \(item)")
+                    // Set Id
+                    selectedId = item.0
+                }
+                
+                
+            }
+            
+            // Set contact from list
+            for item in contactTuples{
+                if item.0 == selectedId {
+                    // Set contact object
+                    self.selectedContact = item.1
+                    
+                    // Print to test
+                    print(self.selectedContact.givenName)
+                    
+                    // Set contact to manager
+                    ContactManager.sharedManager.contactToIntro = selectedContact
+                    
+                    // Set navigation toggle on manager to indicate intent
+                    ContactManager.sharedManager.userArrivedFromContactList = true
+                    ContactManager.sharedManager.userArrivedFromIntro = true
+                    
+                    // Notification for intro screen
+                    //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)        // Set selected tab
+                    
+                    
+                    // Sync up with main queue
+                    DispatchQueue.main.async {
+                        // Set selected tab
+                        self.tabBarController?.selectedIndex = 1
+                    }
+                    
+                    
+                }
+            }
+
+            
+            //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
         }
+
         
     }
     
@@ -583,7 +820,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         print("hello World")
         // Assign contact
-        let contact = ContactManager.sharedManager.contactObjectList[self.index]
+        let contact = self.contactObjectList[self.index]
         
         // Create dictionary
         let parameters = ["data" : contact.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]

@@ -68,6 +68,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // Set currentUser
+        self.currentUser = ContactManager.sharedManager.currentUser
         
         // Init and configure segment controller
         segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: self.view.frame.width - 20, height: 30))
@@ -141,29 +143,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }else{
             
         }
-        
-        
-        // if presented, set contact to selection
-        
-        // Parse for details
-        
-        // Show vc according to values in account
-        
-        
-        // else
-        
-        // Validate form for values
-        
-        // Parse form to create contact object
-        
-        // Upload contact
-        
-        // Check if save to conatcts switch active to set bool on object
-        
-        
-        
-        
-        // Create transaction
+    
         
         
         
@@ -256,9 +236,19 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // cell selected code here
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // Set recipient
+        ContactManager.sharedManager.recipientToIntro = ContactManager.sharedManager.phoneContactList[indexPath.row]
+        
+        // Toggle BOOL
+        ContactManager.sharedManager.userSelectedRecipient = true
+        
+        // Trigger send action
+        self.shareWithContact(self)
         
         // Set Checkmark
-        let selectedCell = tableView.cellForRow(at: indexPath)
+        /*let selectedCell = tableView.cellForRow(at: indexPath)
         
         selectedCells.append(indexPath as NSIndexPath)
         
@@ -268,7 +258,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             selectedCells = selectedCells.filter {$0 as IndexPath != indexPath}
             
+            
             // Remove from list
+            
+            
+            
             selectedContactList.remove(at: indexPath.row)
             
         } else {
@@ -286,7 +280,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             // Toggle BOOL 
             ContactManager.sharedManager.userSelectedRecipient = true
-        }
+        }*/
         
         
     }
@@ -449,13 +443,48 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             composeVC.messageComposeDelegate = self
         
+            // Check for nil vals
             
-            // Check intent
-            if self.tableView.isHidden == false{
+            var name = ""
+            var recipientName = ""
+            var phone = ""
+            var email = ""
+            //var title = ""
+            
+            
+            // CNContact Objects
+            let contact = ContactManager.sharedManager.contactToIntro
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            
+            // Check if they both have email
+            name = formatter.string(from: contact) ?? "No Name"
+            recipientName = formatter.string(from: recipient) ?? ""
+            
+            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
                 
+                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                // Set contact phone number
+                phone = contactPhone!
                 
+                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
                 
+                // Launch text client
+                composeVC.recipients = [contactPhone!, recipientPhone!]
             }
+            
+            if contact.emailAddresses.count > 0 {
+                email = (contact.emailAddresses[0].value as String)
+            }
+            // Set card link from cardID
+            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+            
+            // Configure message
+            let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            
+            composeVC.body = str
+            
+            // Present the view controller modally.
+            self.present(composeVC, animated: true, completion: nil)
             
             
         }
@@ -498,6 +527,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             emailContact = contactEmail
             emailRecipient = recipientEmail
             
+            print("Emails :: \(emailContact) \(emailRecipient)")
+            
         }
         
         if contact.phoneNumbers.count > 0 {
@@ -531,7 +562,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
 
         // Here, configure form validation
         
-        if ((firstNameLabel.text == nil || lastNameLabel.text == nil) || (emailLabel.text == nil && phoneLabel.text == nil)) {
+        if (firstNameLabel.text == nil || lastNameLabel.text == nil || (emailLabel.text == nil && phoneLabel.text == nil)) {
             
             // form invalid
             let message = "Please enter valid contact information"

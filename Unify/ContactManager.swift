@@ -80,6 +80,7 @@ class ContactManager{
     
     // Object for adding contacts 
     var newContact = Contact()
+    var addedContact = CNContact()
     
     // For temp storage of social links 
     var tempSocialLinks = [[String:String]]()

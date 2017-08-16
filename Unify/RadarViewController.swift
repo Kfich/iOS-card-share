@@ -1070,7 +1070,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             if let placemarks = placemarks, let placemark = placemarks.first {
                 //print( placemark.compactAddress)
                 // Set placemark address
-                self.address = placemark.compactAddress!
+                //self.address = placemark.compactAddress!
+                self.address = placemark.addressDictionary?["Street"] as? String ?? ""
+                print("Street >> \(self.address)")
             }
         }
         

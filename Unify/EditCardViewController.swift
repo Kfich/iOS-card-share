@@ -358,7 +358,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         // Configure borders
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 45    // Create container for image and name
         
     }
     
@@ -372,7 +372,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         let imageView = UIImageView(image: selectedImage)
         
         // Configure borders
-        imageView.layer.borderColor = UIColor.red.cgColor
+        //imageView.layer.borderColor = UIColor.red.cgColor
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 59    // Create container for image and name

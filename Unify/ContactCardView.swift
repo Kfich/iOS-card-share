@@ -103,7 +103,7 @@ class ContactCardView: UIView {
         self.contactImageView.layer.cornerRadius = 10.0
         self.contactImageView.clipsToBounds = true
         self.contactImageView.layer.borderWidth = 1.0
-        self.contactImageView.layer.borderColor = UIColor.lightGray.cgColor
+        self.contactImageView.layer.borderColor = UIColor.white.cgColor
         
         // Add radius config & border color
         self.phoneIconImage.layer.cornerRadius = 10.0
