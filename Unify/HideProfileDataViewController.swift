@@ -68,7 +68,9 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
         
         // Set text
-        cell.textLabel?.text = currentUserCards[indexPath.row].cardName
+        //cell.textLabel?.text = currentUserCards[indexPath.row].cardName
+        // Set text
+        cell.badgeName.text = currentUserCards[indexPath.row].cardName
         
         return cell
     }

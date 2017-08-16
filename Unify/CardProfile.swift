@@ -60,7 +60,9 @@ public class CardProfile{
     
     init(withSnapshotLite: NSDictionary) {
         
-        emails = withSnapshotLite["emails"] as! [[String : String]]
+        let emails1 = withSnapshotLite["emails"] as! NSArray
+        print("\n\n\n\n\nTHIS IS THE ARRAY |N|N|N|N| \n\n\n\n")
+        print(emails1)
         phoneNumbers = withSnapshotLite["phone_numbers"] as! [[String : String]]
         
         // Testing to see if populated

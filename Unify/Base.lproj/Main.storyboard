@@ -3165,7 +3165,6 @@
                                                         <constraint firstItem="2ea-Cr-xlX" firstAttribute="leading" secondItem="YFk-2J-AkQ" secondAttribute="trailing" constant="28" id="hQq-Fd-pfB"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <connections>
                                                     <outlet property="badgeName" destination="YFk-2J-AkQ" id="Xyq-Ac-8nL"/>
                                                     <outlet property="badgeToggleSwitch" destination="2ea-Cr-xlX" id="NwR-Nx-JhG"/>
