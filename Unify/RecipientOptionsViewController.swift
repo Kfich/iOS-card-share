@@ -48,8 +48,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet var phoneLabel: UITextField!
     @IBOutlet var emailLabel: UITextField!
     
+    @IBOutlet var firstNameLabel: UITextField!
+    @IBOutlet var lastNameLabel: UITextField!
+    
+    @IBOutlet var tagsLabel: UITextField!
+    @IBOutlet var notesLabel: UITextField!
     
 
+    // Page setup 
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -72,6 +78,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Add segment control to navigation bar
         self.navigationBar.titleView = segmentedControl
+        
+        // Hide table
+        self.tableView.isHidden = true
 
     }
 
@@ -82,9 +91,6 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     // IBActions
     // --------------------------
-    
-    
-    
     
     @IBAction func radarSwitchSelected(_ sender: Any) {
         // Turn on location service
@@ -505,11 +511,70 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
 
     // Custom Methods
     
+    /*func validateForm() {
+        
+        // Here, configure form validation
+        
+        if (firstNameTextField.text == nil || lastNameTextField.text == nil || emailTextField.text == nil) {
+            
+            // form invalid
+            let message = "Please enter valid contact information"
+            let title = "There was an error"
+            
+            // Configure alertview
+            let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
+                
+                // Dismiss alert
+                self.dismiss(animated: true, completion: nil)
+                
+            })
+            
+            // Add action to alert
+            alertView.addAction(cancel)
+            self.present(alertView, animated: true, completion: nil)
+            
+        }else{
+            
+            // Pass form values into contact object
+            contact.name = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
+            
+            // Set notes
+            if notesTextField.text != nil{
+                contact.setNotes(note: notesTextField.text!)
+            }
+            
+            // Execute send actions
+            
+            // Check for user intent
+            if ContactManager.sharedManager.quickshareSMSSelected {
+                // Set the number to contact
+                contact.phoneNumbers.append(["phone": emailTextField.text!])
+                // Show sms
+                self.showSMSCard()
+            }else{
+                // Set email
+                contact.emails.append(["email": emailTextField.text!])
+                // Show email
+                self.showEmailCard()
+            }
+            
+            
+            
+            
+            
+            // Create Transaction
+            //self.createTransaction(type: "connection")
+            
+        }
+    }*/
+
+    
     func toggleViews(sender: UISegmentedControl) {
         
         print("Toggling views for selection")
         
-        switch sender.selectedSegmentIndex {
+        switch(sender.selectedSegmentIndex) {
         case 0:
             // Test
             print("Segment One")
