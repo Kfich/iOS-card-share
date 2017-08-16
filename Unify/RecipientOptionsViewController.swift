@@ -64,7 +64,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         segmentedControl.insertSegment(withTitle: "Contacts", at: 1, animated: false)
         
         
+        // Set segment
         segmentedControl.selectedSegmentIndex = 0
+        
+        // Add target action method
+        segmentedControl.addTarget(self, action: #selector(RecipientOptionsViewController.toggleViews(sender:)), for: .valueChanged)
         
         // Add segment control to navigation bar
         self.navigationBar.titleView = segmentedControl
@@ -78,6 +82,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     // IBActions
     // --------------------------
+    
+    
+    
     
     @IBAction func radarSwitchSelected(_ sender: Any) {
         // Turn on location service
@@ -497,6 +504,33 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
 
     // Custom Methods
+    
+    func toggleViews(sender: UISegmentedControl) {
+        
+        print("Toggling views for selection")
+        
+        switch sender.selectedSegmentIndex {
+        case 0:
+            // Test
+            print("Segment One")
+            // Hide view 
+            self.tableView.isHidden = true
+            
+        case 1:
+            // Test
+            print("Segment Two")
+            // Hide view
+            self.tableView.isHidden = false
+
+        default:
+            // Test
+            print("Segment One")
+            // Hide view
+            self.tableView.isHidden = true
+
+        }
+    }
+    
     
     func createTransaction(type: String) {
         // Set type & Transaction data 
