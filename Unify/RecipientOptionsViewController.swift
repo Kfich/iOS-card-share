@@ -51,6 +51,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var radarSwitch: UISwitch!
     
+    @IBOutlet var syncContactSwitch: UISwitch!
+    
     
     @IBOutlet var phoneLabel: UITextField!
     @IBOutlet var emailLabel: UITextField!
@@ -137,65 +139,50 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             if isValidForm {
                 // Configure and create transaction
-                
+                print("The form was valid, sms should launch")
+            }else{
+                // Error
+                print("There was an error validating form")
             }
             
         }else{
             
+            if ContactManager.sharedManager.userSelectedRecipient {
+                
+            }
+            // CNContact Objects
+            let contact = ContactManager.sharedManager.contactToIntro
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            
+            // Check if they both have email
+            
+            if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+                
+                let contactEmail = contact.emailAddresses[0].value as String
+                let recipientEmail = recipient.emailAddresses[0].value as String
+                
+                
+                // Launch Email client
+                showEmailCard()
+                
+            }else if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                
+                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                
+                // Launch text client
+                showSMSCard()
+                
+            }else{
+                // No mutual way to connect
+                // Pick default based on what the contact object has populated
+                
+                // ***** Handle this off case tomorrow ****
+                print("No Mutual Info")
+            }
+            
         }
     
-        
-        
-        
-        
-        self.validateForm()
-        
-        /*
-        // Create the transaction and share
-        //self.createTransaction(type: "connection", uuid: currentUser.userId)
-        // Check if both contacts selected
-        
-        
-        if ContactManager.sharedManager.userSelectedRecipient {
-            
-        }
-        // CNContact Objects
-        let contact = ContactManager.sharedManager.contactToIntro
-        let recipient = ContactManager.sharedManager.recipientToIntro
-        
-        // Check if they both have email
-        
-        if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
-            
-            let contactEmail = contact.emailAddresses[0].value as String
-            let recipientEmail = recipient.emailAddresses[0].value as String
-            
-            
-            // Launch Email client
-            showEmailCard()
-            
-        }else if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
-            
-            let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-            let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
-            
-            // Launch text client
-            showSMSCard()
-            
-        }else{
-            // No mutual way to connect
-            // Pick default based on what the contact object has populated
-            
-            // ***** Handle this off case tomorrow ****
-            print("No Mutual Info")
-        }
-        
-        
-        // Else check if they both have phones
-        
-        // If no match, chose a defualt method and send
-        
-        // Create Transaction and send*/
         
     }
     
@@ -891,7 +878,63 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         return contactObject
     }
 
-    
+    func syncContact() {
+        
+        // Init CNContact Object
+        //let temp = CNContact()
+        //temp.emailAddresses.append(CNLabeledValue<NSString>)
+        //let tempContact = ContactManager.sharedManager.newContact
+        
+        // Append to list of existing contacts
+        let store = CNContactStore()
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        contactToAdd.givenName = self.firstNameLabel.text ?? ""
+        contactToAdd.familyName = self.lastNameLabel.text ?? ""
+        
+        // Parse for mobile
+        let mobileNumber = CNPhoneNumber(stringValue: (self.contact.phoneNumbers[0]["phone"] ?? ""))
+        let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+        contactToAdd.phoneNumbers = [mobileValue]
+        
+        // Parse for emails
+        let email = CNLabeledValue(label: CNLabelWork, value: self.emailLabel.text as! NSString ?? "")
+        contactToAdd.emailAddresses = [email]
+        
+        // Set organizations
+        if self.contact.organizations.count > 0 {
+            // Add to contact
+            contactToAdd.organizationName = self.contact.organizations[0]["organization"]!
+        }
+        
+        // Set notes to contact
+        contactToAdd.note = self.notesLabel.text ?? ""
+        
+        // **** Make a scheme for adding tags to contact **** //
+        
+        // Save contact to phone
+        let saveRequest = CNSaveRequest()
+        saveRequest.add(contactToAdd, toContainerWithIdentifier: nil)
+        
+        do {
+            try store.execute(saveRequest)
+        } catch {
+            print(error)
+        }
+        
+        // Init contact object
+        let newContact : CNContact = contactToAdd
+        
+        print("New Contact >> \(newContact)")
+        
+        // Append to contact list
+        ContactManager.sharedManager.phoneContactList.append(newContact)
+        
+        // Post notification for refresh
+        //self.postRefreshNotification()
+        
+    }
     
     func createTransaction(type: String) {
         // Configure trans for CNContact
@@ -931,6 +974,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             transaction.recipientNames = [String]()
             transaction.recipientNames?.append(self.contact.name)
             transaction.recipientNames?.append(contactName)
+            
+            if self.syncContactSwitch.isOn == true {
+                // Upload sync contact record
+                self.syncContact()
+            }
 
         }
         

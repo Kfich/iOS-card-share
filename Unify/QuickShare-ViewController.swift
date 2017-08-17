@@ -453,6 +453,65 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         }
     }
     
+    func syncContact() {
+        
+        // Init CNContact Object
+        //let temp = CNContact()
+        //temp.emailAddresses.append(CNLabeledValue<NSString>)
+        //let tempContact = ContactManager.sharedManager.newContact
+        
+        // Append to list of existing contacts
+        let store = CNContactStore()
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        contactToAdd.givenName = self.contact.name 
+        //contactToAdd.familyName = self.lastNameLabel.text ?? ""
+        
+        // Parse for mobile
+        let mobileNumber = CNPhoneNumber(stringValue: (self.contact.phoneNumbers[0]["phone"] ?? ""))
+        let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+        contactToAdd.phoneNumbers = [mobileValue]
+        
+        // Parse for emails
+        let email = CNLabeledValue(label: CNLabelWork, value: self.emailLabel.text as? NSString ?? "")
+        contactToAdd.emailAddresses = [email]
+        
+        // Set organizations
+        if self.contact.organizations.count > 0 {
+            // Add to contact
+            contactToAdd.organizationName = self.contact.organizations[0]["organization"]!
+        }
+        
+        // Set notes to contact
+        contactToAdd.note = self.notesTextField.text ?? ""
+        
+        // **** Make a scheme for adding tags to contact **** //
+        
+        // Save contact to phone
+        let saveRequest = CNSaveRequest()
+        saveRequest.add(contactToAdd, toContainerWithIdentifier: nil)
+        
+        do {
+            try store.execute(saveRequest)
+        } catch {
+            print(error)
+        }
+        
+        // Init contact object
+        let newContact : CNContact = contactToAdd
+        
+        print("New Contact >> \(newContact)")
+        
+        // Append to contact list
+        ContactManager.sharedManager.phoneContactList.append(newContact)
+        
+        // Post notification for refresh
+        //self.postRefreshNotification()
+        
+    }
+    
+    
 
     
     func createTransaction(type: String) {
@@ -570,6 +629,16 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 
                 // Create transaction
                 self.createTransaction(type: "quick_share")
+                
+                // Check if user wants contacts syncing
+                if self.syncToContactsSwitch.isOn == true {
+                    // Set sync to true
+                   self.syncContact()
+                }else{
+                    // Set sync to false
+                    self.syncToContactsSelected = false
+                    print("Not synced")
+                }
                 
                 
                 // Hide HUD
