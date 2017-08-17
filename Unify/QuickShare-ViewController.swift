@@ -332,7 +332,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         // Configure cards
         self.cardWrapperView.layer.cornerRadius = 12.0
         self.cardWrapperView.clipsToBounds = true
-        self.cardWrapperView.layer.borderWidth = 1.5
+        self.cardWrapperView.layer.borderWidth = 1
         self.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
         // Config image
@@ -358,7 +358,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 59    // Create container for image and name
         

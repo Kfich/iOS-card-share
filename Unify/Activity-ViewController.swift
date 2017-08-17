@@ -833,7 +833,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = imageView.frame.width/2    // Create container for image and name
         

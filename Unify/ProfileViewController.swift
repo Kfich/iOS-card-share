@@ -404,7 +404,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         return 45.0
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    /*func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         // Add label to the view
@@ -504,7 +504,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
-    }
+    }*/
 
     
     
@@ -860,7 +860,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 45    // Create container for image and name
         

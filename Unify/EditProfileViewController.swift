@@ -222,7 +222,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 45    // Create container for image and name
         
@@ -236,7 +236,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Configure borders
         imageView.layer.borderColor = UIColor.red.cgColor
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 59    // Create container for image and name
         

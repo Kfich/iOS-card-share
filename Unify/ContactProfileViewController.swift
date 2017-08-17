@@ -895,7 +895,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 45    // Create container for image and name
         

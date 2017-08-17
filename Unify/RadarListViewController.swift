@@ -97,8 +97,8 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             // Grab image ref using alamo
             
             // ** Currently Set to Test URL
-            let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
-            //let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
+            //let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+            let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
             let placeholderImage = UIImage(named: "contact")!
             // Set image
             cell.contactImageView.setImageWith(url, placeholderImage: placeholderImage)
@@ -379,7 +379,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 23    // Create container for image and name
         

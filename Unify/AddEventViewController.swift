@@ -33,6 +33,8 @@ class AddEventViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.eventStartDatePicker.setDate(initialDatePickerValue(), animated: false)
         self.eventEndDatePicker.setDate(initialDatePickerValue(), animated: false)
+        
+        // Create calen
     }
     
     
@@ -42,7 +44,13 @@ class AddEventViewController: UIViewController {
     
     @IBAction func addEventButtonTapped(_ sender: UIBarButtonItem) {
         // Create an Event Store instance
-        let eventStore = EKEventStore();
+        
+        let appointment = ["data" : ["event_name" : self.eventNameTextField.text ?? "Some Event Name", "username": ContactManager.sharedManager.currentUser.getName(), "start": self.eventStartDatePicker.date.toString(), "end": self.eventEndDatePicker.date.toString()]]
+        
+        // Upload
+        self.uploadEvent(params: appointment as NSDictionary)
+        
+        /*let eventStore = EKEventStore();
         
         // Use Event Store to create a new calendar instance
         if let calendarForEvent = eventStore.calendar(withIdentifier: self.calendar.calendarIdentifier)
@@ -73,8 +81,39 @@ class AddEventViewController: UIViewController {
                 // Show error
                 self.present(alert, animated: true, completion: nil)
             }
-        }
+        }*/
      }
+    
+    func uploadEvent(params: NSDictionary){
+        
+        print("hello World")
+        
+        // Send to server
+        Connection(configuration: nil).uploadEventCall(params as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                // Call successful
+                print("Transaction Created Response ---> \(String(describing: response))")
+                
+                // Show success
+                KVNProgress.showSuccess(withStatus: "Appointment sent!")
+                
+                //Dimiss vc
+                self.dismiss(animated: true , completion: nil)
+                
+            } else {
+                // Error occured
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                KVNProgress.showError(withStatus: "There was a problem sending your invite. Please try again.")
+                // Show user popup of error message
+                
+                
+            }
+            // Hide indicator
+        }
+        
+        // Check if we're at the end of the list
+        
+    }
     
     // MARK: Event Added Delegate
     func eventDidAdd() {

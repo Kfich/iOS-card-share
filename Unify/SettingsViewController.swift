@@ -19,6 +19,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     var imagePicker = UIImagePickerController()
     var selectedImage = UIImage()
     var selectedName = ""
+    var synced = false
+    var hidden = false
     
     var alert = SCLAlertView()
     
@@ -46,6 +48,18 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Config picker 
         self.configurePhotoPicker()
+        
+        // Find out if contacts synced
+        let synced = UDWrapper.getBool("contacts_synced")
+        print(synced)
+        // Toggle bool
+        self.synced = synced
+        
+        // Find out if contacts synced
+        let incognito = UDWrapper.getBool("contacts_synced")
+        self.hidden = incognito
+        
+        
         
     }
 
@@ -232,6 +246,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Send it
             self.uploadImage(imageDictionary: dictionary)
             
+            // Set dictionary
+            UDWrapper.setBool("incognito", value: true)
+            
         }
         
         alert.addButton("Off") {
@@ -239,6 +256,13 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Toggle the isIncognito off
             self.currentUser.userIsIncognito = false
             ContactManager.sharedManager.userIsIncognito = false
+            
+            // Set dictionary
+            UDWrapper.setBool("incognito", value: false)
+            
+            // Toggle switch off 
+            self.postNotificationForUpdate()
+            
         }
         
         // Change background color for views
@@ -275,11 +299,20 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         return imageDict as NSDictionary
     }
     
+    func postNotificationForUpdate() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "IncognitoOff"), object: self)
+        
+        //UpdateCurrentUserProfile
+    }
+
+    
     func uploadImage(imageDictionary: NSDictionary) {
         // Link to endpoint and send 
         // Create URL For Test
-        let testURL = ImageURLS().uploadToDevelopmentURL
-        //let prodURL = ImageURLS().uploadToDevelopmentURL
+        //let testURL = ImageURLS().uploadToDevelopmentURL
+        let prodURL = ImageURLS().uploadToDevelopmentURL
         
         // Parse dictionary
         let imageData = imageDictionary["image_data"] as! Data
@@ -298,7 +331,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
              }*/
             
             // Currently Set to point to Prod Server
-        }, to:testURL)
+        }, to:prodURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):
@@ -622,11 +655,15 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         if indexPath.row == 0 {
             // Show incognito cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
+            let incognitoCell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
+            incognitoCell.incongnitoSwitch.isOn = self.hidden
             
         }else if indexPath.row == 1 {
             // Show incognito cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "SyncCell", for: indexPath) as! SettingsViewCell
+            let syncCell = tableView.dequeueReusableCell(withIdentifier: "SyncCell", for: indexPath) as! SettingsViewCell
+            
+            // Toggle based on sync status
+            syncCell.syncContactsSwitch.isOn = self.synced
             
         }else if indexPath.row == 2 {
             // Show contact us cell

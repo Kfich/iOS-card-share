@@ -33,6 +33,8 @@ class SettingsViewCell: UITableViewCell {
         
         // Check for status of switch
         //self.toggleSwitchOnInit()
+        
+        addObservers()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -181,7 +183,17 @@ class SettingsViewCell: UITableViewCell {
         
         
     }
+    
+    func addObservers() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewCell.toggleSwitch), name: NSNotification.Name(rawValue: "IncognitoOff"), object: nil)
+        
+    }
 
+    func toggleSwitch() {
+        // Toggle
+        self.incongnitoSwitch.isOn = false
+    }
     
     
 

@@ -6,10 +6,10 @@
 
 
 // Test Server
-#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
+//#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
 
 // Production Server
-//#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
+#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
 
 // User
 #define kCreateUser           kServerURL(kAppwsServerURL, @"user/create")
@@ -52,8 +52,8 @@
 #define kGetContacts          kServerURL(kAppwsServerURL, @"contacts/get")
 
 // Events
-#define kUploadEvent          kServerURL(kAppwsServerURL, @"events/create")
-#define kGetEvents            kServerURL(kAppwsServerURL, @"events/get")
+#define kUploadEvent          kServerURL(kAppwsServerURL, @"calendar/create")
+#define kGetEvents            kServerURL(kAppwsServerURL, @"calendar/get")
 
 
 #endif

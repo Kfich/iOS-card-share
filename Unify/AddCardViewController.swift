@@ -429,7 +429,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         // Add radius config & border color
         cell.cardWrapperView.layer.cornerRadius = 12.0
         //cell.cardWrapperView.clipsToBounds = true
-        cell.cardWrapperView.layer.borderWidth = 1.5
+        cell.cardWrapperView.layer.borderWidth = 1
         cell.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
         
         // Image config
@@ -438,7 +438,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         // Round edges at top of card cells
         cell.cardHeaderView.layer.cornerRadius = 8.0
         cell.cardHeaderView.clipsToBounds = true
-        cell.cardHeaderView.layer.borderWidth = 1.5
+        cell.cardHeaderView.layer.borderWidth = 1
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
         // Assign media buttons

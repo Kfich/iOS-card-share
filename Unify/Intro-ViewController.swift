@@ -455,7 +455,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Configure borders
         imageView.layer.borderColor = UIColor.clear.cgColor
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 65    // Create container for image and name
         
@@ -472,7 +472,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Configure borders
         imageView.layer.borderColor = UIColor.blue.cgColor
-        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 75    // Create container for image and name
         

@@ -132,6 +132,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Hide button
         sendCardButton.isHidden = true
         
+        // Config buttons for view
+        configureViews()
+        
         // See if current user pass
         ContactManager.sharedManager.currentUser.printUser()
         
@@ -143,7 +146,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Set tags to views to avoid deletion
         self.radarLogoImage.tag = 5100
-        self.addNewCardButton.tag = 5101
+        //self.addNewCardButton.tag = 5101
         self.sendCardButton.tag = 5102
         self.radarListContainer.tag = 5103
         
@@ -479,6 +482,16 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
     }
     
+    func configureViews() {
+        //self.sendCardButton.isHidden = false
+        // Config send button
+        self.sendCardButton.layer.cornerRadius = 10.0
+        self.sendCardButton.clipsToBounds = true
+        self.sendCardButton.layer.borderWidth = 1.0
+        self.sendCardButton.layer.borderColor = UIColor.lightGray.cgColor
+    }
+    
+    
     // Custom Methods
     
     // Notifications
@@ -686,15 +699,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let urls = ImageURLS()
         
         // Create URL For Prod
-        //let prodURL = urls.getFromStagingURL
+        let prodURL = urls.getFromStagingURL
         
         // Create URL For Test
-        let testURL = urls.getFromDevelopmentURL
+        //let testURL = urls.getFromDevelopmentURL
         let id = user.publicProfile?.imageId
         
         if user.userIsIncognito == true {
             // Show incognito data
-            let url = URL(string: "\(testURL)\(id ?? "").jpg")!
+            let url = URL(string: "\(prodURL)\(id ?? "").jpg")!
             let placeholderImage = UIImage(named: "user")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)
@@ -706,7 +719,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Grab image ref using alamo
                 
                 // ** Currently Set to Test URL
-                let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+                let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
                 let placeholderImage = UIImage(named: "user")!
                 // Set image
                 imageView.setImageWith(url, placeholderImage: placeholderImage)
