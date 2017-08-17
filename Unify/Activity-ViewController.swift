@@ -30,6 +30,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     var selectedTransaction = Transaction()
     var segmentedControl = UISegmentedControl()
     
+    var customSearchController: CustomSearchController!
+    
+    
+    
     @IBOutlet var navigationBar: UINavigationItem!
     // IBOutlets
     // ----------------------------------------
@@ -108,7 +112,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
         
         
+        // Search Bar 
+        configureCustomSearchController()
+        
     }
+    
     
     // TableView Delegate & Data Source
 
@@ -251,6 +259,98 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         return cell
     }
+    
+    // Search Config
+    
+    func configureCustomSearchController() {
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.tableView.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: UIColor.blue, searchBarTintColor: UIColor.white)
+        
+        customSearchController.customSearchBar.placeholder = "Search"
+        self.tableView.tableHeaderView = customSearchController.customSearchBar
+        
+        //customSearchController.customDelegate = self
+    }
+    
+    // MARK: UISearchBarDelegate functions
+    /*
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = true
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            tblSearchResults.reloadData()
+        }
+        
+        searchController.searchBar.resignFirstResponder()
+    }
+    
+    
+    // MARK: UISearchResultsUpdating delegate function
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchString = searchController.searchBar.text else {
+            return
+        }
+        
+        // Filter the data array and get only those countries that match the search text.
+        filteredArray = dataArray.filter({ (country) -> Bool in
+            let countryText:NSString = country as NSString
+            
+            return (countryText.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
+        
+        // Reload the tableview.
+        tblSearchResults.reloadData()
+    }
+    
+    
+    // MARK: CustomSearchControllerDelegate functions
+    
+    func didStartSearching() {
+        shouldShowSearchResults = true
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func didTapOnSearchButton() {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            tblSearchResults.reloadData()
+        }
+    }
+    
+    
+    func didTapOnCancelButton() {
+        shouldShowSearchResults = false
+        tblSearchResults.reloadData()
+    }
+    
+    
+    func didChangeSearchText(_ searchText: String) {
+        // Filter the data array and get only those countries that match the search text.
+        filteredArray = dataArray.filter({ (country) -> Bool in
+            let countryText: NSString = country as NSString
+            
+            return (countryText.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
+        
+        // Reload the tableview.
+        tblSearchResults.reloadData()
+    }
+    
+    */
+    
+    
     
     // Custom Methods
     

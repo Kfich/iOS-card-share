@@ -810,7 +810,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Configure borders
         imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 45    // Create container for image and name
         
     }
     
@@ -828,7 +828,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         //imageView.layer.borderColor = UIColor.red.cgColor
         imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 35    // Create container for image and name
+        imageView.layer.cornerRadius = 25    // Create container for image and name
         
         // Changed the image rendering size
         imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)

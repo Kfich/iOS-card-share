@@ -149,6 +149,9 @@
 		FBE8075A1F06D36200A05292 /* CreateCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807591F06D36200A05292 /* CreateCardViewController.swift */; };
 		FBE8075D1F06DBBE00A05292 /* CardOptionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8075C1F06DBBE00A05292 /* CardOptionsViewCell.swift */; };
 		FBF2EFB31F44E18200DDF9B4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB21F44E18200DDF9B4 /* Settings.swift */; };
+		FBF2EFB71F45453000DDF9B4 /* Fuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB41F45453000DDF9B4 /* Fuse.swift */; };
+		FBF2EFB81F45453000DDF9B4 /* FuseUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB51F45453000DDF9B4 /* FuseUtilities.swift */; };
+		FBF2EFB91F45453000DDF9B4 /* String+Fuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB61F45453000DDF9B4 /* String+Fuse.swift */; };
 		FBF8712D1EE71B0800243CE2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712C1EE71B0800243CE2 /* User.swift */; };
 		FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8712F1EE71B3D00243CE2 /* Transaction.swift */; };
 		FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF871311EE71F0100243CE2 /* ContactCard.swift */; };
@@ -398,6 +401,9 @@
 		FBE807591F06D36200A05292 /* CreateCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCardViewController.swift; sourceTree = "<group>"; };
 		FBE8075C1F06DBBE00A05292 /* CardOptionsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardOptionsViewCell.swift; sourceTree = "<group>"; };
 		FBF2EFB21F44E18200DDF9B4 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		FBF2EFB41F45453000DDF9B4 /* Fuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fuse.swift; sourceTree = "<group>"; };
+		FBF2EFB51F45453000DDF9B4 /* FuseUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuseUtilities.swift; sourceTree = "<group>"; };
+		FBF2EFB61F45453000DDF9B4 /* String+Fuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Fuse.swift"; sourceTree = "<group>"; };
 		FBF8712C1EE71B0800243CE2 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FBF8712F1EE71B3D00243CE2 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		FBF871311EE71F0100243CE2 /* ContactCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
@@ -688,6 +694,9 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FBF2EFB41F45453000DDF9B4 /* Fuse.swift */,
+				FBF2EFB51F45453000DDF9B4 /* FuseUtilities.swift */,
+				FBF2EFB61F45453000DDF9B4 /* String+Fuse.swift */,
 				FB767D1E1F429DD40065F46E /* CGGeometry+RSKImageCropper.h */,
 				FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */,
 				FB767D201F429DD40065F46E /* RSKImageCropper.h */,
@@ -1017,10 +1026,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBF2EFB81F45453000DDF9B4 /* FuseUtilities.swift in Sources */,
 				FB767D4B1F43600A0065F46E /* EventManager.swift in Sources */,
 				1CB31C8F1E93946D00A0C4A5 /* InstagramActivityIndicator.swift in Sources */,
 				1C151D371F1DBE73004B23CE /* CountlyPushNotifications.m in Sources */,
 				1CDD50A51E914CF40073B893 /* Home-TableViewController.swift in Sources */,
+				FBF2EFB71F45453000DDF9B4 /* Fuse.swift in Sources */,
 				FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */,
 				1C151D381F1DBE73004B23CE /* CountlyStarRating.m in Sources */,
 				1C31041A1E95B06600F4D70D /* EditProfileHeader.swift in Sources */,
@@ -1124,6 +1135,7 @@
 				FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */,
 				1C151D2F1F1DBE73004B23CE /* CountlyCommon.m in Sources */,
 				1C151D2C1F1DBE73004B23CE /* Countly_OpenUDID.m in Sources */,
+				FBF2EFB91F45453000DDF9B4 /* String+Fuse.swift in Sources */,
 				FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */,
 				FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,

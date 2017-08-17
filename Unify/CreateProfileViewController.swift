@@ -8,28 +8,125 @@
 
 import UIKit
 
-class CreateProfileViewController: UIViewController {
-
+class CreateProfileViewController: UITableViewController {
+    
+    // MARK: - Properties
+    var books = [String]()
+    var filteredBooks = [NSAttributedString]()
+    let fuse = Fuse()
+    
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    // MARK: - View Setup
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        // Setup the Scope Bar
+        tableView.tableHeaderView = searchController.searchBar
+        
+        books = [
+            "Angels & Demons",
+            "Old Man's War",
+            "The Lock Artist",
+            "HTML5",
+            "Right Ho Jeeves",
+            "The Code of the Wooster",
+            "Thank You Jeeves",
+            "The DaVinci Code",
+            "The Silmarillion",
+            "Syrup",
+            "The Lost Symbol",
+            "The Book of Lies",
+            "Lamb",
+            "Fool",
+            "Incompetence",
+            "Fat",
+            "Colony",
+            "Backwards, Red Dwarf",
+            "The Grand Design",
+            "The Book of Samson",
+            "The Preservationist",
+            "Fallen",
+            "Monster 1959"
+        ]
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
-    */
-
+    
+    // MARK: - Table View
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return filteredBooks.count
+        }
+        return books.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let item: NSAttributedString
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            item = filteredBooks[indexPath.row]
+        } else {
+            item = NSAttributedString(string: books[indexPath.row])
+        }
+        
+        cell.textLabel!.attributedText = item
+        
+        return cell
+    }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        let boldAttrs = [
+            NSFontAttributeName : UIFont.boldSystemFont(ofSize: 17),
+            NSForegroundColorAttributeName: UIColor.blue
+        ]
+        
+        let results = fuse.search(searchText, in: books)
+        
+        filteredBooks = results.map { (index, _, matchedRanges) in
+            let book = books[index]
+            
+            let attributedString = NSMutableAttributedString(string: book)
+            matchedRanges
+                .map(Range.init)
+                .map(NSRange.init)
+                .forEach {
+                    attributedString.addAttributes(boldAttrs, range: $0)
+            }
+            
+            return attributedString
+        }
+        
+        tableView.reloadData()
+    }
+    
 }
+
+extension CreateProfileViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        // TODO: can run this on a background queue, and then reload the tableview back on the main queue
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension CreateProfileViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
+
