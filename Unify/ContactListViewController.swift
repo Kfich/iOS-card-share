@@ -676,7 +676,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         letters = letters.reduce([], { (list, name) -> [Character] in
             if !list.contains(name) {
                 // Test to see if letters added
-                //print("\n\nAdded >>>> \(list + [name])")
+                print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
