@@ -12,7 +12,7 @@ import UIDropDown
 import MessageUI
 
 
-class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating{
     
     // Properties
     // ----------------------------------------
@@ -31,6 +31,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     var segmentedControl = UISegmentedControl()
     
     var customSearchController: CustomSearchController!
+    var searchController: UISearchController!
+    
+    var shouldShowSearchResults = false
     
     
     
@@ -183,7 +186,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        switch segmentedControl.selectedSegmentIndex {
+        /*switch segmentedControl.selectedSegmentIndex {
         case 0:
             return self.transactionListReversed.count
         case 1:
@@ -192,8 +195,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             return self.introductions.count
         default:
             return 0
-        }
+        }*/
 
+        if shouldShowSearchResults {
+            return 1
+        }else{
+            // Index by letter
+            return 5
+        }
         //return 5 //self.transactions.count
     }
     
@@ -203,7 +212,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         //var cell = UITableViewCell()
         
         var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
-        
+        /*
         // config cell
             // Set to all transactions list 
             
@@ -233,7 +242,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
                 self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
                 
-        }
+        }*/
 
         if segmentedControl.selectedSegmentIndex == 0 {
             // norhing
@@ -260,35 +269,85 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
+    // Tableview editing capabilities
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return tableView.isEditing ? UITableViewCellEditingStyle.none : UITableViewCellEditingStyle.delete
+    }
+    
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
+            self.tableView.isEditing = false
+            
+            print("This is the cell to delete")
+            
+            
+        })
+        
+        return [deleteRowAction]
+    }
+    
+    
+    
     // Search Config
     
+    /*func configureSearchController() {
+        // Initialize and perform a minimum configuration to the search controller.
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search here..."
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        
+        // Place the search bar view to the tableview headerview.
+        self.tableView.tableHeaderView = searchController.searchBar
+    }*/
+    
     func configureCustomSearchController() {
-        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.tableView.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: UIColor.blue, searchBarTintColor: UIColor.white)
+        
+        // Init blue color 
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.tableView.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
         
         customSearchController.customSearchBar.placeholder = "Search"
+        customSearchController.customSearchBar.tintColor = blue
+        // Hide cancel button
+        customSearchController.customSearchBar.showsCancelButton = false
         self.tableView.tableHeaderView = customSearchController.customSearchBar
         
-        //customSearchController.customDelegate = self
+        customSearchController.customDelegate = self
     }
     
     // MARK: UISearchBarDelegate functions
-    /*
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         shouldShowSearchResults = true
-        tblSearchResults.reloadData()
+        // Toggle cancel button
+        customSearchController.customSearchBar.showsCancelButton = true
+        self.tableView.reloadData()
     }
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowSearchResults = false
-        tblSearchResults.reloadData()
+        // Toggle cancel button
+        customSearchController.customSearchBar.showsCancelButton = false
+        self.tableView.reloadData()
     }
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
-            tblSearchResults.reloadData()
+            self.tableView.reloadData()
         }
         
         searchController.searchBar.resignFirstResponder()
@@ -303,14 +362,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         // Filter the data array and get only those countries that match the search text.
-        filteredArray = dataArray.filter({ (country) -> Bool in
+       /* filteredArray = dataArray.filter({ (country) -> Bool in
             let countryText:NSString = country as NSString
             
             return (countryText.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
+        })*/
         
         // Reload the tableview.
-        tblSearchResults.reloadData()
+        self.tableView.reloadData()
     }
     
     
@@ -318,37 +377,37 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func didStartSearching() {
         shouldShowSearchResults = true
-        tblSearchResults.reloadData()
+        self.tableView.reloadData()
     }
     
     
     func didTapOnSearchButton() {
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
-            tblSearchResults.reloadData()
+            self.tableView.reloadData()
         }
     }
     
     
     func didTapOnCancelButton() {
         shouldShowSearchResults = false
-        tblSearchResults.reloadData()
+        self.tableView.reloadData()
     }
     
     
     func didChangeSearchText(_ searchText: String) {
         // Filter the data array and get only those countries that match the search text.
-        filteredArray = dataArray.filter({ (country) -> Bool in
+        /*filteredArray = dataArray.filter({ (country) -> Bool in
             let countryText: NSString = country as NSString
             
             return (countryText.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
+        })*/
         
         // Reload the tableview.
-        tblSearchResults.reloadData()
+        self.tableView.reloadData()
     }
     
-    */
+    
     
     
     

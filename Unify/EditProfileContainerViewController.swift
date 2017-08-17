@@ -93,6 +93,7 @@ class EditProfileContainerViewController: FormViewController {
                             
                         }
                     }
+                    //$0.footer?.height = 100.0 as CGFloat
                     
                     // Iterate through array and set val
                     

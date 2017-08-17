@@ -407,13 +407,21 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
     
         
+        if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
+            
+            //let containerView = self.createAddNewCell(cell: cell)
+            //cell.addSubview(containerView)
         
+        
+        
+        }else{
+            
             // Find current card index
             let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
-        
-            // Get badge list 
+            
+            // Get badge list
             cell.badgeList = self.parseCardForBagdes(card: currentCard)
-        
+            
             // Populate text field data
             
             if currentCard.cardHolderName != nil {
@@ -439,10 +447,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             // Configure the card view
             configureViews(cell: cell)
-            
-            return cell
-            
-        //}
+
+        }
+
+        return cell
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -469,8 +477,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Add subviews
             containerView.addSubview(imageView)*/
             
-            let containerView = self.createAddNewCell(cell: cell)
-            cell.addSubview(containerView)
+            //let containerView = self.createAddNewCell(cell: cell)
+            //cell.addSubview(containerView)
         }
         
     }

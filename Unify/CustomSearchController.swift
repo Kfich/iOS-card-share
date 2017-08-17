@@ -64,7 +64,7 @@ class CustomSearchController: UISearchController, UISearchBarDelegate {
         customSearchBar.barTintColor = bgColor
         customSearchBar.tintColor = textColor
         customSearchBar.showsBookmarkButton = false
-        customSearchBar.showsCancelButton = true
+        customSearchBar.showsCancelButton = false
         
         customSearchBar.delegate = self
     }
@@ -73,6 +73,7 @@ class CustomSearchController: UISearchController, UISearchBarDelegate {
     // MARK: UISearchBarDelegate functions
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        customSearchBar.showsCancelButton = true
         customDelegate.didStartSearching()
     }
     
@@ -84,6 +85,7 @@ class CustomSearchController: UISearchController, UISearchBarDelegate {
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        customSearchBar.showsCancelButton = false
         customSearchBar.resignFirstResponder()
         customDelegate.didTapOnCancelButton()
     }

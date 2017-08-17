@@ -36,6 +36,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var socialLinkBadges = [[String : Any]]()
     var links = [String]()
     var socialBadges = [UIImage]()
+    var linkToDelete = ""
     
     // Selected image
     var selectedImage = UIImage()
@@ -178,6 +179,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Configure picker
         self.configurePhotoPicker()
+        
+        // Congif Name
+        self.firstNameTextField.text = currentUser.firstName
+        self.lastNameTextField.text = currentUser.lastName
     }
 
     
@@ -349,6 +354,16 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    func removeBadgeFromProfile(index: Int) {
+        
+        print("Initial list count \(ContactManager.sharedManager.currentUser.userProfile.socialLinks.count)")
+        // Remove item at index
+        ContactManager.sharedManager.currentUser.userProfile.socialLinks.remove(at: index)
+        print("Post delete list count \(ContactManager.sharedManager.currentUser.userProfile.socialLinks.count)")
+        // Reload table data
+        parseForSocialIcons()
+    }
+    
     func parseForSocialIcons() {
         
         
@@ -415,7 +430,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         }
         
         // Add image to the end of list
-        let image = UIImage(named: "icn-plus-blue")
+        let image = UIImage(named: "icn-plus-green")
         self.socialBadges.append(image!)
         
         // Reload table
@@ -484,6 +499,11 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     func updateCurrentUser() {
         // Configure to send to server 
+        if firstNameTextField.text != "" && lastNameTextField.text != "" {
+            // Fields not empty
+            ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
+            ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
+        }
         
         // Assign current user object
         
@@ -579,69 +599,48 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         
-        //cell.backgroundColor = model[collectionView.tag][indexPath.item]
-        //cell.backgroundColor = UIColor.blue
+        configureViews(cell: cell)
         
-        /*if self.socialBadges.count == 0 {
-            // Set default cell
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-            
-            // Set the cell
-            //icn-plus-blue
+        // Configure badge image
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+        let image = self.socialBadges[indexPath.row]
+        // Set image
+        imageView.image = image
+        
+        if indexPath.row !=  self.socialBadges.count - 1{
+            // Add delete icon
             // Configure corner radius
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-            let image = UIImage(named: "icn-plus-blue")
+            let deleteImageView = UIImageView(frame: CGRect(x: 25, y: 6, width: 20, height: 20))
+            let deleteIcon = UIImage(named: "icn-minus-red")
+            deleteImageView.image = deleteIcon
             
-            // Set image
-            imageView.image = image
+            imageView.addSubview(deleteImageView)
+            //deleteImageView.image = deleteIcon
             
-            
-            // Add subview
-            cell.contentView.addSubview(imageView)
-            collectionView.addSubview(cell)
-            
-        }else{*/
+        }else{
+           // Last index
+            print("Last index papa")
+        }
+
+        //cell.contentView.addSubview(deleteImageView)
         
-            
-            configureViews(cell: cell)
-            
-            // Configure corner radius
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-            let image = self.socialBadges[indexPath.row]
-            
-            // Set image
-            imageView.image = image
-            
-            // Add subview
-            cell.contentView.addSubview(imageView)
-       // }
-        
-        
-        /*if indexPath.row == indexPath.las{
-            // Set default cell
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-            
-            // Set the cell
-            //icn-plus-blue
-            // Configure corner radius
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-            let image = UIImage(named: "icn-plus-blue")
-            
-            // Set image
-            imageView.image = image
-            
-            // Add subview
-            cell.contentView.addSubview(imageView)
-            collectionView.addSubview(cell)
-        }*/
+        // Add subview
+        cell.contentView.addSubview(imageView)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        if indexPath.row !=  self.socialBadges.count - 1{
+            // Delete the card
+            self.removeBadgeFromProfile(index: indexPath.row)
+        }else{
+            // Add new badge
+            performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        }
         
+        // Remove icon from list
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
     

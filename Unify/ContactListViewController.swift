@@ -544,9 +544,14 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     func configureCustomSearchController() {
-        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: tblSearchResults.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: UIColor.blue, searchBarTintColor: UIColor.white)
+        
+        // Init blue color
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: tblSearchResults.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
         
         customSearchController.customSearchBar.placeholder = "Search"
+        customSearchController.customSearchBar.tintColor = blue
         tblSearchResults.tableHeaderView = customSearchController.customSearchBar
         
         customSearchController.customDelegate = self

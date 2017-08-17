@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarPullUpCardViewController.swift"
-            timestampString = "524599669.719193"
+            timestampString = "524673454.703147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "579"
-            endingLineNumber = "579"
+            startingLineNumber = "587"
+            endingLineNumber = "587"
             landmarkName = "pullUpViewController(_:minimumHeightForBottomViewController:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarPullUpCardViewController.swift"
-            timestampString = "524599669.719193"
+            timestampString = "524673454.703147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "696"
-            endingLineNumber = "696"
+            startingLineNumber = "704"
+            endingLineNumber = "704"
             landmarkName = "configureViews(cell:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,12 +314,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/EditProfileViewController.swift"
-            timestampString = "524521819.376879"
+            timestampString = "524680697.301942"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
+            startingLineNumber = "383"
+            endingLineNumber = "383"
             landmarkName = "parseForSocialIcons()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Unify/Activity-ViewController.swift"
+            timestampString = "524674472.841045"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
+            landmarkName = "tableView(_:editActionsForRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Unify/EditProfileViewController.swift"
+            timestampString = "524680393.523639"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "504"
+            endingLineNumber = "504"
+            landmarkName = "updateCurrentUser()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
