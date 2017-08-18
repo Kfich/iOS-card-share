@@ -25,6 +25,8 @@ class ActivityCardTableCell: UITableViewCell {
     @IBOutlet var recipientLabel: UILabel!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
+    @IBOutlet var locationIcon: UIImageView!
+    
     // Buttons
     @IBOutlet var approveButton: UILabel!
     @IBOutlet var rejectButton: UILabel!
@@ -46,6 +48,8 @@ class ActivityCardTableCell: UITableViewCell {
     
     @IBOutlet var connectionFollowupViewContainer:UIView!
     @IBOutlet var connectionFollowupButton: UIButton!
+    
+    @IBOutlet var connectionLocationIcon: UIImageView!
     
     // Buttons
     @IBOutlet var connectionApproveButton: UILabel!

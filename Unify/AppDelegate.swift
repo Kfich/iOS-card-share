@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 }
             }
-            
+ 
             
             
             
@@ -163,10 +163,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceTokendeviceToken: Data) {
         
-        // Convert token to string
-        //Map to Coutly for ID 
-        Countly.sharedInstance().askForNotificationPermission()
         
+    }
+    
+    // After registration
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let tokenChars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
+        var tokenString = ""
+        
+        for i in 0..<deviceToken.count {
+            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
+        }
+        
+        print("Device Token:", tokenString)
+        // Set device token string
+        ContactManager.sharedManager.deviceToken = tokenString
+        
+        // Convert token to string
+        //Map to Coutly for ID
+        Countly.sharedInstance().askForNotificationPermission()
+    }
+    
+    // Once Reveived
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        let aps = userInfo["aps"] as! [String: AnyObject]
+        print(aps)
+        
+         print("Push notification received: \(userInfo)")
     }
     
     
@@ -179,18 +203,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("APNs registration failed: \(error)")
         
     }
-    
-    
-    // Push notification received
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
-        
-        // Print notification payload data
-        
-        print("Push notification received: \(data)")
-        
-    }
-    
 
     
     

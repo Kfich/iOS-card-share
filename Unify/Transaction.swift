@@ -77,7 +77,16 @@ public class Transaction{
         senderCardId = snapshot["sender_card_id"] as! String
         type = snapshot["type"] as! String
         // Set recipient list
-        recipientList = snapshot["recipient_list"] as! [String]
+        
+        if let list = snapshot["recipient_list"] as? NSArray{
+            if list.count > 0{
+                recipientList = list as! [String]
+            }else{
+                print("List empty")
+            }
+
+        }
+        
         //latitude = snapshot["latitude"] as! String
         //longitude = snapshot["latitude"] as! String
         

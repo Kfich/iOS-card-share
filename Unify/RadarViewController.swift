@@ -141,6 +141,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Set current user 
         self.currentUser = ContactManager.sharedManager.currentUser
         
+        
         // Test
         //testImage()
         
@@ -194,6 +195,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Hide container 
         self.radarListContainer.isHidden = true
+        
+        self.fetchCurrentUser()
         
         // Test cropper
         //self.showCropper()
@@ -408,7 +411,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.sendCardButton.isHidden = true
             
             // Post notification for list VC
-            self.postEndRadarNotification()
+            //self.postEndRadarNotification()
             
             // Record event
             Countly.sharedInstance().recordEvent("turned radar off")
@@ -542,7 +545,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 print("\n\nCard List")
                 print(dictionary)
                 
-                
+                self.fetchUserBadges()
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
@@ -553,6 +556,53 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             KVNProgress.dismiss()
         }
 
+    }
+    
+    func fetchUserBadges() {
+        // Fetch cards from server
+        let parameters = ["data" : currentUser.userProfile.badges]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        // Store current user cards to local device
+        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
+        //UDWrapper.setData("contact_cards", value: encodedData)
+        
+        
+        // Show progress hud
+        //KVNProgress.show(withStatus: "Saving your new card...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).getBadgesCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSArray = response as! NSArray
+                print("\n\nBadge List")
+                print(dictionary)
+                // Init badges
+                for item in dictionary{
+                    let badge = CardProfile.Bagde(snapshot: item as! NSDictionary)
+                    ContactManager.sharedManager.currentUser.userProfile.badgeList.append(badge)
+                    
+                    print("Printing badge")
+                    print(badge)
+                }
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
     }
     
     func fetchCurrentUser() {
@@ -575,12 +625,19 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
                 // Set card uuid with response from network
                 let dictionary : Dictionary = response as! [String : Any]
-                print("\n\nCard List")
-                //print(dictionary)
+                print("\n\nUser from get call")
+                print(dictionary)
                 
-                let user = User(snapshot: dictionary as NSDictionary)
+                let profileDict = dictionary["data"]
+                
+                let user = User(snapshot: profileDict as! NSDictionary)
+                
+               //let user = //User(snapshot: dictionary as NSDictionary)
                 print("PRINTING USER")
                 user.printUser()
+                
+                // Set current user
+                self.currentUser = user
                 
                 // Fetch cards 
                 self.fetchUserCards()
@@ -597,6 +654,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         }
         
     }
+    
+    
     
     // For notifications
     func addObservers() {

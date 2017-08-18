@@ -29,6 +29,7 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 - (NSURLSessionDataTask*)updateTransactionCall:(NSDictionary*)parameters transactionID:(NSString*)transactionID completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)approveTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)rejectTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)searchTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
 
 // Auth
@@ -50,10 +51,19 @@ typedef void(^CompletionBlock)(id dictionary, NSError *error);
 // Contacts
 - (NSURLSessionDataTask*)uploadContactCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)getContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+- (NSURLSessionDataTask*)getTransactionContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
 // Events
 - (NSURLSessionDataTask*)uploadEventCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 - (NSURLSessionDataTask*)getEventsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
 
+// Badges
+- (NSURLSessionDataTask*)getBadgesCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock;
+
 
 @end
+
+
+
+
+

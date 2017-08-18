@@ -18,6 +18,7 @@ public class User{
     var firstName : String = ""
     var lastName : String = ""
     var fullName : String = ""
+    var deviceToken : String = ""
     //var emails = [[String : String]]()
     //var phoneNumbers = [[String : String]]()
     
@@ -128,10 +129,13 @@ public class User{
         
         profileImageId = snapshot["profile_image_id"] as? String ?? ""
         
+        deviceToken = snapshot["device_token"] as? String ?? ""
+        
         userPhoneForVerification = snapshot.object(forKey: "userPhoneVerified") as? String ?? ""
         userPhoneVerified = snapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
         
         // Create card profile
+        
         userProfile = CardProfile(snapshot: snapshot["profile"] as! NSDictionary)
         
         
@@ -158,6 +162,8 @@ public class User{
         
         userPhoneForVerification = snapshotWithLiteProfile.object(forKey: "userPhoneVerified") as? String ?? ""
         userPhoneVerified = snapshotWithLiteProfile.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
+        //deviceToken = snapshotWithLiteProfile["device_token"] as? String ?? ""
         
         // Create card profile
         userProfile = CardProfile(withSnapshotLite: snapshotWithLiteProfile["profile"] as! NSDictionary)
@@ -248,6 +254,8 @@ public class User{
             Countly.user().name = (firstName+" "+lastName) as CountlyUserDetailsNullableString
 
         }
+        
+        deviceToken = withDefaultsSnapshot["device_token"] as? String ?? ""
        
         // For public profile
         //publicProfile = IncognitoData(snapshot: withRadarSnapshot["public_profile"] as! NSDictionary)
@@ -275,7 +283,8 @@ public class User{
             "userPhoneForVerification": userPhoneForVerification,
             "profile" : userProfile.toAnyObject(),
             "isIncognito" : userIsIncognito,
-            "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""]
+            "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""],
+            "device_token" : deviceToken
             
         ]
     }
@@ -296,9 +305,8 @@ public class User{
             "profile_image_id": profileImageId,
             "profile" : userProfile.toAnyObject(),
             "isIncognito" : userIsIncognito,
-            "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""]
-
-      
+            "public_profile" : publicProfile?.toAnyObject() ?? ["name": "", "image_id" : ""],
+            "device_token" : deviceToken
             
         ]
     }
@@ -409,8 +417,8 @@ public class User{
         print("\n")
         print("UserId :" + userId)
         print("Name :" + getName())
-        //print("Email :" )
-        //print(emails)
+        print("Device Token :" )
+        print(deviceToken)
         //print("Mobile Number : ")
         //print(phoneNumbers)
         // Test image data
@@ -421,7 +429,7 @@ public class User{
         print("userPhoneVerified", userPhoneVerified )
         print("userPhoneForVerification", userPhoneForVerification )
         
-        print("")
+        print("User Profile")
         userProfile.printProfle()
         
         print("Incognito")

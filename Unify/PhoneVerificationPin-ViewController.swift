@@ -226,7 +226,7 @@ class PhoneVerificationPinViewController: UIViewController {
 
                 
                 // Assign current user to manager object
-                ContactManager.sharedManager.currentUser = self.currentUser
+                //ContactManager.sharedManager.currentUser = self.currentUser
 
                 // Store user to device
                 //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
@@ -256,16 +256,10 @@ class PhoneVerificationPinViewController: UIViewController {
         // Bool check 
         if isCurrentUser {
             // Set to manager 
-            ContactManager.sharedManager.currentUser = self.currentUser
-            // Show homepage
-            DispatchQueue.main.async {
-                // Update UI
-                // Show Home Tab
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-                TabBarViewController
-                self.view.window?.rootViewController = homeViewController
-            }
+            //ContactManager.sharedManager.currentUser = self.currentUser
+            
+            // Fetch data 
+            self.fetchCurrentUser()
             
         }else{
             // Send to create profile
@@ -273,6 +267,67 @@ class PhoneVerificationPinViewController: UIViewController {
         }
     }
     
+    func fetchCurrentUser() {
+        // Fetch cards from server
+        let parameters = ["uuid" : currentUser.userId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Fetching profile...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).getUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Get User Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print("\n\nUser from get call")
+                print(dictionary)
+                
+                let profileDict = dictionary["data"]
+                
+                let user = User(snapshot: profileDict as! NSDictionary)
+                
+                //let user = //User(snapshot: dictionary as NSDictionary)
+                print("PRINTING USER")
+                user.printUser()
+                
+                // Set current user
+                ContactManager.sharedManager.currentUser = user
+                
+                // Show homepage
+                DispatchQueue.main.async {
+                    // Update UI
+                    // Show Home Tab
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                    TabBarViewController
+                    self.view.window?.rootViewController = homeViewController
+                }
+
+                
+                // Fetch cards
+                //self.fetchUserCards()
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your account info. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
+
     
     /*func createFirstCard() {
         // Create the card 

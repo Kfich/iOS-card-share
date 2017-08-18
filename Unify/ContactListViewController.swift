@@ -697,6 +697,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         })
         
         
+        
         // Build contacts array:
         
         // Init sorted contacts array

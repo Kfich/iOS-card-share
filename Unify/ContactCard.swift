@@ -31,8 +31,10 @@ public class ContactCard: NSObject, NSCoding{
     
     // Bool for settings toggle
     var isHidden = false
+    var isVerified = false
     var hidden = "0"
     
+
     
     // Init
     
@@ -64,6 +66,10 @@ public class ContactCard: NSObject, NSCoding{
         // Create card profile
         cardProfile = CardProfile(snapshot: profileDictionary)
         
+        // Card settings
+        isHidden = snapshot["isHidden"] as? Bool ?? false
+        isVerified = snapshot["isVerified"] as? Bool ?? false
+        
         // Test if card populated
         //printCard()
     }
@@ -83,6 +89,11 @@ public class ContactCard: NSObject, NSCoding{
         
         cardProfile = CardProfile(withSnapshotLite: withSnapshotLite["profile"] as! NSDictionary)
         
+        // Card Settings
+        isHidden = withSnapshotLite["isHidden"] as? Bool ?? false
+        isVerified = withSnapshotLite["isVerified"] as? Bool ?? false
+
+        
     }
     
     init(withSnapshotFromDefaults: NSDictionary) {
@@ -94,6 +105,11 @@ public class ContactCard: NSObject, NSCoding{
         profileDictionary = (withSnapshotFromDefaults["card_profile"] as? NSDictionary)!
         // Create card profile
         cardProfile = CardProfile(fromDefaultsWithDictionary: profileDictionary)
+        
+        // Card settings
+        isHidden = withSnapshotFromDefaults["isHidden"] as? Bool ?? false
+        isVerified = withSnapshotFromDefaults["isVerified"] as? Bool ?? false
+
         
         // Test if card populated
         //printCard()
@@ -135,7 +151,9 @@ public class ContactCard: NSObject, NSCoding{
             "card_holder_name": cardHolderName ?? "",
             //"image_url" : imageURL ?? Data(),
             "ownerId" : ownerId,
-            "card_profile" : cardProfile.toAnyObject()
+            "card_profile" : cardProfile.toAnyObject(),
+            "isHidden" : isHidden,
+            "isVerified" : isVerified
             
         ]
     }
@@ -147,7 +165,9 @@ public class ContactCard: NSObject, NSCoding{
             "card_holder_name": cardHolderName ?? "",
             //"image_url" : imageURL ?? Data(),
             "ownerId" : ownerId,
-            "card_profile" : cardProfile.toAnyObjectWithImage()
+            "card_profile" : cardProfile.toAnyObjectWithImage(),
+            "isHidden" : isHidden,
+            "isVerified" : isVerified
         ]
     }
     
@@ -227,10 +247,11 @@ public class ContactCard: NSObject, NSCoding{
         print("Card Name :")
         print(cardName ?? "")
         print("CardHolder Name :")
+        print("IsHidden >> \(isHidden)")
+        print("IsVerified >> \(isVerified)")
         print(cardHolderName ?? "")
         print("")
         print("Card Profile :")
-        
         cardProfile.printProfle()
        
     }

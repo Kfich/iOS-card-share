@@ -346,7 +346,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         Connection(configuration: nil).getCardsCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(String(describing: response))")
+                print("Fetch Card Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
                 let dictionary : NSArray = response as! NSArray

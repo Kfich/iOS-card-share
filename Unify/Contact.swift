@@ -52,9 +52,8 @@ public class Contact{
 
     // Init with JSON Snapshot
     init(snapshot: NSDictionary) {
-       /*
+       
         name = snapshot["name"] as! String
-        workInformationList = snapshot["work_info"] as! [[String : String]]
         titles = snapshot["titles"] as! [[String : String]]
         emails = snapshot["emails"] as! [[String : String]]
         phoneNumbers = snapshot["phone_numbers"] as! [[String : String]]
@@ -63,11 +62,19 @@ public class Contact{
         notes = snapshot["notes"] as! [[String : String]]
         websites = snapshot["websites"] as! [[String : String]]
         organizations = snapshot["organizations"] as! [[String : String]]
-        imageIds = snapshot["image_ids"] as! [[String : Any]]
-        //images = snapshot["images"] as! [[String : Any]]*/
+        imageId = snapshot["image_ids"] as! String
+        //images = snapshot["images"] as! [[String : Any]]
         
         
         // Testing to see if populated
+        
+    }
+    
+    init(snapshotLite: NSDictionary) {
+        
+        name = snapshotLite["name"] as? String ?? ""
+        emails = snapshotLite["emails"] as? [[String : String]] ?? [[String : String]]()
+        phoneNumbers = snapshotLite["phone_numbers"] as? [[String : String]] ?? [[String : String]]()
         
     }
     

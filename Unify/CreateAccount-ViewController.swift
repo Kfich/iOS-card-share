@@ -26,6 +26,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
     // User object to assign form fields
     var newUser = User()
     var card = ContactCard()
+    var selectedImage = UIImage()
     
     // To track image ids
     var idString = ""
@@ -126,10 +127,19 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
             
             // Previous location for image assignment to user object
             
-            // Show cropper view 
-            //self.showCropper(withImage: image!)
             
-            self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
+            self.selectedImage = image!
+            // Show cropper view 
+            
+            //self.profileImageContainerView.layer.borderColor = UIColor.clear as! CGColor
+            
+            self.dismiss(animated: true, completion: {
+                self.showCropper(withImage: self.selectedImage)
+            })
+            
+            //self.profileImageContainerView.image = image
+            
+            //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
 
         }
     
@@ -193,6 +203,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         newUser.lastName = lastName.text!
         newUser.setName(first: firstName.text!, last: lastName.text!)
         newUser.fullName = newUser.getName()
+        newUser.deviceToken = ContactManager.sharedManager.deviceToken
         
         
         
@@ -201,7 +212,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
         // Image data png
         //let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!, 0.5)
-        let imageData = UIImageJPEGRepresentation(self.profileImageContainerView.image!, 0.5)
+        let imageData = UIImageJPEGRepresentation(self.selectedImage, 0.5)
         print(imageData!)
         
         // Generate id string for image
@@ -640,8 +651,14 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
         // Test
         print("Cropped Image >> \n\(croppedImage)")
+        let imageView = configureSelectedImageView(selectedImage: croppedImage)
+        //self.profileImageContainerView.isHidden = true
+        self.profileImageContainerView.addSubview(imageView)
+        //self.profileImageContainerView.layer.borderColor = UIColor.clear as! CGColor
         
-        //self.profileImageContainerView.addSubview(self.configureSelectedImageView(selectedImage: croppedImage))
+        //self.profileImageContainerView.addSubview(self.configureSelectedImageView(imageView: imageView))
+        // Set to container
+        //self.profileImageContainerView.image = croppedImage
         // Dismiss vc
         dismiss(animated: true, completion: nil)
         
@@ -657,7 +674,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
     }
     
     
-    /*
+    
     func configureSelectedImageView(selectedImage: UIImage) -> UIImageView{
         // Config imageview
         
@@ -665,16 +682,16 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         let imageView = UIImageView(image: selectedImage)
         
         // Configure borders
-        imageView.layer.borderColor = UIColor.blue.cgColor
-        imageView.layer.borderWidth = 1.5
+        //imageView.layer.borderColor = UIColor.blue.cgColor
+        imageView.layer.borderWidth = 1.0
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 59    // Create container for image and name
         
         // Changed the image rendering size
-        imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)
+        imageView.frame = CGRect(x: 0, y: 0 , width: 125, height: 125)
         
         return imageView
-    }*/
+    }
     
     func configureSelectedImageView(imageView: UIImageView) {
         // Config imageview

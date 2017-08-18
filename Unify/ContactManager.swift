@@ -21,7 +21,7 @@ class ContactManager{
     
     // Contact store
     var store: CNContactStore = CNContactStore()
-    
+    var deviceToken : String = ""
     
     var jsonData : Data = Data()
     
@@ -196,7 +196,6 @@ class ContactManager{
         
     }
     
-
     
     func parseForSocialIcons() {
         

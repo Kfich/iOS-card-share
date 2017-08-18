@@ -93,6 +93,9 @@
 - (NSURLSessionDataTask*)rejectTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kRejectTransaction];
 }
+- (NSURLSessionDataTask*)searchTransactionCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kSearchTransactions];
+}
 
 // Auth
 - (NSURLSessionDataTask*)logoutCall:(NSDictionary*)parameters userID:(NSString*)userID completionBlock:(CompletionBlock)completionBlock {
@@ -132,6 +135,9 @@
 - (NSURLSessionDataTask*)getContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetContacts];
 }
+- (NSURLSessionDataTask*)getTransactionContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetManyContacts];
+}
 
 // Events
 - (NSURLSessionDataTask*)uploadEventCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
@@ -139,6 +145,11 @@
 }
 - (NSURLSessionDataTask*)getEventsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetEvents];
+}
+
+// Badges
+- (NSURLSessionDataTask*)getBadgesCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetBadges];
 }
 
 

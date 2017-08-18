@@ -18,6 +18,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
     var selectedCards = [ContactCard]()
     var editedCard = ContactCard()
     
+    var hiddenCardIds = [String]()
     
     // IBOutlets
     // ---------------------------------
@@ -55,11 +56,37 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
     }
     
     
+    @IBAction func doneHidingCards(_ sender: Any) {
+        
+    
+        // Init temp
+        var hiddenCards = [String]()
+        // Set hidden cards array
+        for i in 0 ..< ContactManager.sharedManager.currentUserCards.count - 1{
+            // Init card
+            let card = ContactManager.sharedManager.currentUserCards[i]
+            // Check if hidden
+            if card.isHidden == true{
+                // Append to hidden list
+                hiddenCards.append(card.cardId!)
+            }else{
+                print("Card is visible >> \(card.cardId)")
+            }
+        }
+        
+        // Set hidden list
+        UDWrapper.setArray("hidden_cards", value: hiddenCards as NSArray)
+        
+        // Drop vc
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     
     // TableView DataSource && Delegate Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentUserCards.count
+        return ContactManager.sharedManager.currentUserCards.count - 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,7 +97,11 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         // Set text
         //cell.textLabel?.text = currentUserCards[indexPath.row].cardName
         // Set text
-        cell.badgeName.text = currentUserCards[indexPath.row].cardName
+        
+        cell.badgeName.text = ContactManager.sharedManager.currentUserCards[indexPath.row].cardName
+        cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUserCards[indexPath.row].isHidden
+        
+        //cell.swict
         
         return cell
     }
@@ -81,7 +112,30 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         print("Item selected at index : \(indexPath.row), nice...")
     }
     
-    
+    // Custom methods
+    func fetchHiddenCards() {
+        
+        if let hiddenArray = UDWrapper.getArray("hidden_cards"){
+            
+            let count = 0
+            
+            for value in ContactManager.sharedManager.currentUserCards {
+                // Check id against hidden vals
+                let id = value.cardId
+                
+                if hiddenArray.contains(id){
+                    // Hard is hidden
+                    value.isHidden = true
+                }else{
+                    print("Card visible")
+                }
+                
+            }
+            
+        }else{
+            print("User has no cards")
+        }
+    }
     
     
     func postNotificationForCardRefresh() {

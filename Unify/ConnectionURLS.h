@@ -31,6 +31,7 @@
 #define kUpdateTransaction    kServerURL(kAppwsServerURL, @"transaction/update")
 #define kApproveTransaction   kServerURL(kAppwsServerURL, @"transaction/approve")
 #define kRejectTransaction    kServerURL(kAppwsServerURL, @"transaction/reject")
+#define kSearchTransactions   kServerURL(kAppwsServerURL, @"transaction/search")
 
 // Auth
 #define kLogoutUser           kServerURL(kAppwsServerURL, @"auth/logout")
@@ -50,10 +51,16 @@
 // Contacts
 #define kUploadContact        kServerURL(kAppwsServerURL, @"contacts/add")
 #define kGetContacts          kServerURL(kAppwsServerURL, @"contacts/get")
+#define kGetManyContacts      kServerURL(kAppwsServerURL, @"contacts/getMany")
+
 
 // Events
 #define kUploadEvent          kServerURL(kAppwsServerURL, @"calendar/create")
 #define kGetEvents            kServerURL(kAppwsServerURL, @"calendar/get")
+
+
+// Badges
+#define kGetBadges            kServerURL(kAppwsServerURL, @"corporate/getManyBadges")
 
 
 #endif

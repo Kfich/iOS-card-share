@@ -12,7 +12,7 @@ import Contacts
 import MessageUI
 
 
-class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate  {
+class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate {
     
     // Properties
     // --------------------------
@@ -39,6 +39,29 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     let locationManager = CLLocationManager()
 
     var cellReuseIdentifier = "ContactListCell"
+    
+    // For search results
+    var dataArray = [String]()
+    var filteredArray = [String]()
+    var shouldShowSearchResults = false
+    var customSearchController: CustomSearchController!
+    
+    // Sorted contact list
+    var letters: [Character] = []
+    var contacts = [Character: [String]]()
+    
+    var contactObjectTable = [[String: Any]]()
+    var contactNamesHashTable = [String: CNContact]()
+    
+    
+    var tuples = [(String, String)]()
+    var contactTuples = [(String, CNContact)]()
+    
+    var selectedContact = CNContact()
+    var contactObjectList = [Contact]()
+    
+    var phoneContacts = [CNContact]()
+
     
     // Radar 
     var radarStatus: Bool = false
@@ -93,6 +116,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Hide table
         self.tableView.isHidden = true
+        
+        // Get contacts
+        self.getContacts()
+        
+        // Configure bar
+        self.configureCustomSearchController()
+        
 
     }
 
@@ -187,91 +217,532 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     
-    // Tableview delegate methods
-    // number of rows in table view
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return ContactManager.sharedManager.phoneContactList.count //contactList.count
+// ++++++++++++ Tableview ++++++++++++++++++++++++++
+    
+    
+    
+    // MARK: UITableView Delegate and Datasource functions
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if shouldShowSearchResults {
+            return 1
+        }else{
+            // Index by letter
+            return letters.count
+        }
     }
     
-    // create a cell for each table view row
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if shouldShowSearchResults {
+            return filteredArray.count
+        }
+        else {
+            return contacts[letters[section]]!.count
+        }
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return String(letters[section])
+    }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
         
-        // create a new cell if needed or reuse an old one
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ContactListCell!
-        // Create var with current contact in array
-        let contact = ContactManager.sharedManager.phoneContactList[indexPath.row]
-        
-        // Set name formatted
-        cell?.contactNameLabel?.text = formatter.string(from: contact) ?? "No Name"
-        
-        
-        // If image data avilable, set image
-        if contact.imageDataAvailable {
-            print("Has IMAGE")
-            let image = UIImage(data: contact.imageData!)
-            // Set image for contact
-            cell?.contactImageView?.image = image
-        }else{
-            cell?.contactImageView.image = UIImage(named: "profile")
+        if shouldShowSearchResults {
+            cell.contactNameLabel?.text = filteredArray[indexPath.row]
+        }
+        else {
+            // Assign contact object
+            
+            //let contact
+            cell.contactNameLabel?.text = contacts[letters[indexPath.section]]?[indexPath.row]//dataArray[indexPath.row]
+            
         }
         
-        // Add tap gesture to follow up button
+        // Set cell image
+        cell.contactImageView.image = UIImage(named: "profile")
         
-        return cell!
+        // Configure imageviews
+        self.configureSelectedImageView(imageView: cell.contactImageView)
+        
+        // Set image
+        //cell.contactImageView.image = UIImage(named: "profile")
+        
+        
+        return cell
     }
     
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 47.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
+        // Add label to the view
+        let lbl = UILabel(frame: CGRect(8, 3, 15, 15))
+        lbl.text = String(letters[section])
+        lbl.textAlignment = .left
+        
+        lbl.textColor = UIColor.white
+        lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(16))
+        containerView.addSubview(lbl)
+        
+        return containerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+    
+    // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // cell selected code here
+        
+        // Deselect row
         tableView.deselectRow(at: indexPath, animated: true)
         
-        // Set recipient
-        ContactManager.sharedManager.recipientToIntro = ContactManager.sharedManager.phoneContactList[indexPath.row]
         
-        // Toggle BOOL
-        ContactManager.sharedManager.userSelectedRecipient = true
         
-        // Trigger send action
-        self.shareWithContact(self)
+        /* contactListTableView.deselectRow(at: indexPath, animated: true)
+         
+         print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
+         // Assign selected contact
+         selectedContact = ContactManager.sharedManager.phoneContactList[indexPath.row]
+         // Pass in segue
+         self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row) */
         
-        // Set Checkmark
-        /*let selectedCell = tableView.cellForRow(at: indexPath)
+        var selectedId = ""
         
-        selectedCells.append(indexPath as NSIndexPath)
+        if shouldShowSearchResults {
+            // Show results from filtered array
+            print("Index path", indexPath)
+            print(filteredArray[indexPath.row])
+            
+            // Search for contact by name in list
+            for item in self.tuples {
+                if item.1 == filteredArray[indexPath.row] {
+                    // This is the selected item
+                    print("Selected Item: >> \(item)")
+                    // Set Id
+                    selectedId = item.0
+                }
+                
+                
+            }
+            
+            
+        }else{
+            //print("Index path for data array", indexPath)
+            //print(dataArray[indexPath.row])
+            
+            // Search for contact by name in list
+            for item in self.tuples {
+                if item.1 == contacts[letters[indexPath.section]]?[indexPath.row] {
+                    // This is the selected item
+                    print("Selected Item: >> \(item)")
+                    // Set Id
+                    selectedId = item.0
+                }
+                
+                
+            }
+            
+            //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
+        }
         
-        if selectedCell?.accessoryType == .checkmark {
-            
-            selectedCell?.accessoryType = .none
-            
-            selectedCells = selectedCells.filter {$0 as IndexPath != indexPath}
-            
-            
-            // Remove from list
-            
-            
-            
-            selectedContactList.remove(at: indexPath.row)
-            
-        } else {
-            
-            selectedCell?.accessoryType = .checkmark
-            
-            // Append to list
-            //self.selectedContactList.append(radarContactList[indexPath.row])
-            
-            // Append id to selectedList
-           // self.selectedUserIds.append(radarContactList[indexPath.row].userId)
-            
-            // Set recipient
-            ContactManager.sharedManager.recipientToIntro = ContactManager.sharedManager.phoneContactList[indexPath.row]
-            
-            // Toggle BOOL 
-            ContactManager.sharedManager.userSelectedRecipient = true
-        }*/
+        // Set contact from list
+        for item in contactTuples{
+            if item.0 == selectedId {
+                // Set contact object
+                self.selectedContact = item.1
+                
+                // Print to test
+                print(self.selectedContact.givenName)
+                // Call segue
+                // Set recipient
+                ContactManager.sharedManager.recipientToIntro = self.selectedContact
+                
+                // Toggle BOOL
+                ContactManager.sharedManager.userSelectedRecipient = true
+                
+                // Trigger send action
+                self.shareWithContact(self)
+                
+                
+            }
+        }
         
+    }
+
+    // Search Bar Configuration & Delegates
+    
+    
+    func configureCustomSearchController() {
+        
+        // Init blue color
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.tableView.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
+        
+        customSearchController.customSearchBar.placeholder = "Search"
+        customSearchController.customSearchBar.tintColor = blue
+        self.tableView.tableHeaderView = customSearchController.customSearchBar
+        
+        customSearchController.customDelegate = self
+    }
+    
+    
+    // MARK: UISearchBarDelegate functions
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = true
+        self.tableView.reloadData()
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        self.tableView.reloadData()
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            self.tableView.reloadData()
+        }
+        
+        //self.tableView.searchBar.resignFirstResponder()
+    }
+    
+    
+    // MARK: UISearchResultsUpdating delegate function
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchString = searchController.searchBar.text else {
+            return
+        }
+        
+        // Filter the data array and get only those countries that match the search text.
+        filteredArray = dataArray.filter({ (country) -> Bool in
+            let countryText:NSString = country as NSString
+            
+            return (countryText.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
+        
+        // Reload the tableview.
+        self.tableView.reloadData()
+    }
+    
+    
+    // MARK: CustomSearchControllerDelegate functions
+    
+    func didStartSearching() {
+        shouldShowSearchResults = true
+        self.tableView.reloadData()
+    }
+    
+    
+    func didTapOnSearchButton() {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            self.tableView.reloadData()
+        }
+    }
+    
+    
+    func didTapOnCancelButton() {
+        shouldShowSearchResults = false
+        self.tableView.reloadData()
+    }
+    
+    
+    func didChangeSearchText(_ searchText: String) {
+        // Filter the data array and get only those countries that match the search text.
+        filteredArray = dataArray.filter({ (country) -> Bool in
+            let countryText: NSString = country as NSString
+            
+            return (countryText.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
+        
+        // Reload the tableview.
+        self.tableView.reloadData()
+    }
+    
+    
+    // Custom Methods
+    
+    // Generate random string for transaction id
+    func randomString(length: Int) -> String {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        
+        return randomString
+    }
+    
+    
+    func sortContacts() {
+        // Test for sorting contacts by last name into sections
+        
+        //let data = self.dataArray // Example data, use your phonebook data here.
+        
+        // Build letters array:
+        
+        //letters: [Character]
+        // Init data array
+        dataArray = self.tuples.map { $0.1 }
+        
+        
+        
+        letters = dataArray.map { (name) -> Character in
+            print(name[name.startIndex])
+            return name[name.startIndex]
+        }
+        
+        letters = letters.sorted()
+        // Print letters array
+        //print("\n\nLETTERS >>>> \(letters)")
+        
+        letters = letters.reduce([], { (list, name) -> [Character] in
+            if !list.contains(name) {
+                // Test to see if letters added
+                print("\n\nAdded >>>> \(list + [name])")
+                return list + [name]
+            }
+            return list
+        })
+        
+        
+        // Build contacts array:
+        
+        // Init sorted contacts array
+        //var contacts = [Character: [String]]()
+        
+        
+        
+        
+        // Iterate over contact list
+        for entry in dataArray {
+            
+            if contacts[entry[entry.startIndex]] == nil {
+                // Set index if doesn't exist
+                contacts[entry[entry.startIndex]] = [String]()
+            }
+            
+            // Add entry to section
+            contacts[entry[entry.startIndex]]!.append(entry)
+            
+        }
+        
+        // Sort list
+        for (letter, list) in contacts {
+            contacts[letter] = list.sorted()
+            // Test output
+            print(contacts[letter])
+        }
+    }
+
+    
+    
+    
+    // Contact management
+    func getContacts() {
+        let status = CNContactStore.authorizationStatus(for: .contacts)
+        if status == .denied || status == .restricted {
+            //presentSettingsActionSheet()
+            return
+        }
+        
+        // open it
+        
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts) { granted, error in
+            guard granted else {
+                DispatchQueue.main.async {
+                    //self.presentSettingsActionSheet()
+                }
+                return
+            }
+            
+            // get the contacts
+            
+            var contacts = [CNContact]()
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor])
+            // Sort users by last name
+            request.sortOrder = CNContactSortOrder.familyName
+            // Execute request
+            do {
+                try store.enumerateContacts(with: request) { contact, stop in
+                    contacts.append(contact)
+                }
+            } catch {
+                print(error)
+            }
+            
+            // Set phone contact list
+            self.phoneContacts = contacts
+            
+            // do something with the contacts array (e.g. print the names)
+            
+            let formatter = CNContactFormatter()
+            formatter.style = .fullName
+            for contact in contacts {
+                //print(formatter.string(from: contact) ?? "No Name")
+                
+                // Generate ID String
+                let str = self.randomString(length: 10)
+                // Assign id to object
+                let contactTuple = (str, formatter.string(from: contact) ?? "No Name")
+                let objectTuple = (str, contact)
+                
+                // Create tuples and append to list
+                self.tuples.append(contactTuple)
+                print("Tuple >> \(contactTuple)")
+                self.contactTuples.append(objectTuple)
+                print("Object Tuple >> \(objectTuple)")
+                
+                let dataArrayObject = ["id" : str, "name": formatter.string(from: contact) ?? "No Name"]
+                self.contactObjectTable.append(dataArrayObject)
+                
+                //print("The ContactDictionary")
+                //print(contactDictionary)
+                
+                //print("The data array object")
+                //print(dataArrayObject)
+                
+                
+                
+                //dataArray
+                
+                //self.dataArray.append(formatter.string(from: contact) ?? "No Name")
+                
+                
+                if contact.phoneNumbers.count > 0 {
+                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
+                }
+                if contact.emailAddresses.count > 0 {
+                    //print((contact.emailAddresses[0].value))
+                }
+                if contact.imageDataAvailable {
+                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
+                    //print("Has IMAGE")
+                }
+                // Previous apprend area
+                //self.phoneContactList.append(contact)
+                
+                // print(self.phoneContactList.count)
+                //print(contact)
+            }
+            
+            self.sortContacts()
+            
+            // Sync up with main queue
+            DispatchQueue.main.async {
+                
+                // Sort list
+                //self.sortContacts()
+                // Reload the tableview.
+                self.tableView.reloadData()
+            }
+            
+        }
+    }
+
+    
+    
+    
+    
+    // Settings
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+        
+        // All arrays are empty
+        /*if checkForEmptyData() == true {
+         return true
+         }else{
+         return false
+         }*/
+        return false
+    }
+    
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        // Lock scroll
+        return false
+    }
+    
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Configure string
+        
+        let emptyString = "No Profile Info Found"
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        // Config Message for user
+        
+        let emptyString = ""
+        let attrString = NSAttributedString(string: emptyString)
+        
+        return attrString
         
     }
     
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
+        // Config button for data set
+        
+        let emptyString = "Tap to Sync Contacts"
+        
+        let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        let attributes = [ NSForegroundColorAttributeName: blue ]
+        
+        let attrString = NSAttributedString(string: emptyString, attributes: attributes)
+        
+        return attrString
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        // Set to height of header bar
+        return -64
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap view: UIView) {
+        // Configure action for tap
+        print("The View Was tapped")
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTap button: UIButton) {
+        // Configure action for button tap
+        print("The Button Was tapped")
+        
+        // Sync contact list
+        ContactManager.sharedManager.getContacts()
+    }
+
+
+// ++++++++++++ Tableview ++++++++++++++++++++++++++
     // Location Managment
     
     func updateLocation(){
@@ -544,6 +1015,15 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
 
     // Custom Methods
     
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 23    // Create container for image and name
+        
+    }
     
     func validateForm() -> Bool {
 
@@ -1012,11 +1492,12 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
 
                 // Show success indicator
                 KVNProgress.showSuccess(withStatus: "You are now connected!")
-                
+               
+                /*
                 if self.syncContactSwitch.isOn == true {
                  // Upload sync contact record
                  self.syncContact()
-                 }
+                 }*/
                 
                 
             } else {

@@ -176,21 +176,22 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         }else{
             return 1
         }*/
-        return self.socialBadges.count
+        return ContactManager.sharedManager.currentUser.userProfile.badgeList.count//self.socialBadges.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
         
-        //cell.contentView.backgroundColor = UIColor.red
+        ///cell.contentView.backgroundColor = UIColor.red
         self.configureBadges(cell: cell)
+        
+        let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
         
         // Configure corner radius
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = self.socialBadges[indexPath.row]
-        
+        imageView.setImageWith(fileUrl as! URL)
         // Set image
-        imageView.image = image
+        //imageView.image = image
         
         // Add subview
         cell.contentView.addSubview(imageView)
@@ -528,6 +529,17 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
         self.present(controller, animated: true, completion: nil)
     }
+    
+    func launchBadgeWebView() {
+        // Config the social link webVC
+        ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     
     func initializeBadgeList() {
         // Image config

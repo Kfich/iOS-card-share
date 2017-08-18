@@ -24,6 +24,10 @@ public class CardProfile{
     var websites = [[String : String]]()
     var organizations = [[String : String]]()
     
+    // Badges
+    var badges = [String]()
+    var badgeList = [Bagde]()
+    
     // For user profiles
     var bios = [[String : String]]()
     var titles = [[String : String]]()
@@ -33,26 +37,40 @@ public class CardProfile{
     var images = [[String : Any]]()
     var imageIds = [[String : Any]]()
     
+    // Badge struct
+    struct Bagde {
+        var pictureUrl: String
+        var website: String
+        var isHidden: Bool?
+        
+        init(snapshot: NSDictionary) {
+            pictureUrl = snapshot["image"] as? String ?? ""
+            website = snapshot["url"] as? String ?? ""
+        }
+
+    }
+    
     // Initializers
     
     init(){}
     
     // Init with JSON Snapshot
     init(snapshot: NSDictionary) {
+        print("Hello")
         
-        bios = snapshot["bios"] as! [[String : String]]
-        workInformationList = snapshot["work_info"] as! [[String : String]]
-        titles = snapshot["titles"] as! [[String : String]]
-        emails = snapshot["emails"] as! [[String : String]]
-        phoneNumbers = snapshot["phone_numbers"] as! [[String : String]]
-        socialLinks = snapshot["social_links"] as! [[String : String]]
-        tags = snapshot["tags"] as! [[String : String]]
-        notes = snapshot["notes"] as! [[String : String]]
-        websites = snapshot["websites"] as! [[String : String]]
-        organizations = snapshot["organizations"] as! [[String : String]]
-        imageIds = snapshot["image_ids"] as! [[String : Any]]
+        bios = snapshot["bios"] as? [[String : String]] ?? [[String : String]]()
+        workInformationList = snapshot["work_info"] as? [[String : String]] ?? [[String : String]]()
+        titles = snapshot["titles"] as? [[String : String]] ?? [[String : String]]()
+        emails = snapshot["emails"] as? [[String : String]] ?? [[String : String]]()
+        phoneNumbers = snapshot["phone_numbers"] as? [[String : String]] ?? [[String : String]]()
+        socialLinks = snapshot["social_links"] as? [[String : String]] ?? [[String : String]]()
+        tags = snapshot["tags"] as? [[String : String]] ?? [[String : String]]()
+        notes = snapshot["notes"] as? [[String : String]] ?? [[String : String]]()
+        websites = snapshot["websites"] as? [[String : String]] ?? [[String : String]]()
+        organizations = snapshot["organizations"] as? [[String : String]] ?? [[String : String]]()
+        imageIds = snapshot["image_ids"] as? [[String : String]] ?? [[String : String]]()
         //images = snapshot["images"] as! [[String : Any]]
-        
+        badges = snapshot["badges"] as? [String] ?? [String]()
         
         // Testing to see if populated
     
@@ -61,7 +79,6 @@ public class CardProfile{
     init(withSnapshotLite: NSDictionary) {
         
         let emails1 = withSnapshotLite["emails"] as! NSArray
-        print("\n\n\n\n\nTHIS IS THE ARRAY |N|N|N|N| \n\n\n\n")
         print(emails1)
         phoneNumbers = withSnapshotLite["phone_numbers"] as! [[String : String]]
         
@@ -82,7 +99,10 @@ public class CardProfile{
         websites = fromDefaultsWithDictionary["websites"] as! [[String : String]]
         organizations = fromDefaultsWithDictionary["organizations"] as! [[String : String]]
         //imageIds = fromDefaultsWithDictionary["image_ids"] as! [[String : Any]]
+        
         images = fromDefaultsWithDictionary["images"] as! [[String : Any]]
+        
+        badges = fromDefaultsWithDictionary["badges"] as? [String] ?? [String]()
         // Testing to see if populated
         
     }
@@ -101,7 +121,8 @@ public class CardProfile{
             "notes" : notes,
             "websites" : websites,
             "organizations" : organizations,
-            "image_ids": imageIds
+            "image_ids": imageIds,
+            "badges" : badges
         ]
     }
 
@@ -118,7 +139,8 @@ public class CardProfile{
             "websites" : websites,
             "organizations" : organizations,
             "image_ids": imageIds,
-            "images" : images
+            "images" : images,
+            "badges" : badges
         ]
     }
 
@@ -281,6 +303,8 @@ public class CardProfile{
         print(websites as Any)
         print("Organizations : ")
         print(organizations as Any)
+        print("Badges : ")
+        print(badges)
         
         print("Images : ")
         //print(images as Any)

@@ -12,7 +12,7 @@ import UIDropDown
 import MessageUI
 
 
-class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating{
+class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIActionSheetDelegate{
     
     // Properties
     // ----------------------------------------
@@ -26,6 +26,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     var introductions = [Transaction]()
     
     var selectedUsers = [User]()
+    var selectedContacts = [Contact]()
+    
     var selectedIndex = Int()
     var selectedTransaction = Transaction()
     var segmentedControl = UISegmentedControl()
@@ -35,6 +37,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var shouldShowSearchResults = false
     
+    var selectedUserEmails = [String]()
+    var searchTransactionList = [Transaction]()
     
     
     @IBOutlet var navigationBar: UINavigationItem!
@@ -47,6 +51,20 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Page Config
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        // Clear array list for fresh start
+        self.transactions.removeAll()
+        self.transactionListReversed.removeAll()
+        self.transactions = [Transaction]()
+        self.transactionListReversed = [Transaction]()
+        self.connections.removeAll()
+        self.introductions.removeAll()
+        
+        self.tableView.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -56,6 +74,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Set currentUser object 
         currentUser = ContactManager.sharedManager.currentUser
+        
+        // Clear array list for fresh start
+        self.transactions.removeAll()
+        self.transactionListReversed.removeAll()
+        self.transactions = [Transaction]()
+        self.transactionListReversed = [Transaction]()
+        self.connections.removeAll()
+        self.introductions.removeAll()
+    
         
         // Fetch the users transactions 
         getTranstactions()
@@ -125,17 +152,30 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
 
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if self.transactions[indexPath.row].rejected != true{
-            // Set selected and follow up
-            // Set selected transaction
-            self.selectedTransaction = self.transactions[indexPath.row]
+        // Set selected trans
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // All
+            self.selectedTransaction = transactionListReversed[indexPath.row]
+        }else if segmentedControl.selectedSegmentIndex == 1 {
+            // Connections
+            self.selectedTransaction = connections[indexPath.row]
+        }else{
+            // Intro
+            self.selectedTransaction = introductions[indexPath.row]
             
-            // Get users in transaction
+        }
+
+        
+        //if selectedTransaction.type
+        // Get users in transaction
+        
+        if selectedTransaction.type == "connection" {
+            // Hit for userList
             self.fetchUsersForTransaction()
             
         }else{
-            alertMessageOk(title: "", message: "This transaction was rejected")
+            // Hit for contact list
+            self.fetchContactsForTransaction()
         }
         
         // Pass in segue
@@ -185,25 +225,23 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        /*switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            return self.transactionListReversed.count
-        case 1:
-            return self.connections.count
-        case 2:
-            return self.introductions.count
-        default:
-            return 0
-        }*/
-
         if shouldShowSearchResults {
-            return 1
-        }else{
-            // Index by letter
-            return 5
+            
+            return self.searchTransactionList.count
+       
+        }else {
+            
+            switch segmentedControl.selectedSegmentIndex {
+            case 0:
+                return self.transactionListReversed.count
+            case 1:
+                return self.connections.count
+            case 2:
+                return self.introductions.count
+            default:
+                return 0
+            }
         }
-        //return 5 //self.transactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -212,17 +250,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         //var cell = UITableViewCell()
         
         var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
-        /*
-        // config cell
-            // Set to all transactions list 
-            
+        
             // Init transaction
-        
-        
-        let trans = transactionListReversed[indexPath.row]
-             
-             if trans.type == "introduction"{
-             
+        if shouldShowSearchResults {
+            
+            //return self.searchTransactionList.count
+            let trans = searchTransactionList[indexPath.row]
+            
+            if trans.type == "introduction"{
+                
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
                 // Execute func
@@ -231,8 +267,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Add tap gesture to cell labels
                 self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
                 self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
-             
-             }else {
+                
+            }else {
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
                 // Execute func
@@ -242,30 +278,58 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
                 self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
                 
-        }*/
-
-        if segmentedControl.selectedSegmentIndex == 0 {
-            // norhing
-        }/*else if segmentedControl.selectedSegmentIndex == 1 {
-            // Config for connections
-            //let trans = connections[indexPath.row]
-            // Configure Cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
-            // Execute func
-            configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
-
-        }else if segmentedControl.selectedSegmentIndex == 2{
-            // Config for intro 
-            //let trans = introductions[indexPath.row]
-            // Configure Cell
-            cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
-            // Execute func
-            configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
-        }*/
+            }
         
+            
+        }else {
+            
+            let trans = transactionListReversed[indexPath.row]
+            
+            if trans.type == "introduction"{
+                
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForIntro(cell: cell , index: indexPath.row)
+                
+                // Add tap gesture to cell labels
+                self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
+                
+            }else {
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForConnection(cell: cell , index: indexPath.row)
+                
+                // Add tap gesture to cell labels
+                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
+                
+            }
+            
+            if segmentedControl.selectedSegmentIndex == 0 {
+                // norhing
+            }else if segmentedControl.selectedSegmentIndex == 1 {
+                // Config for connections
+                //let trans = connections[indexPath.row]
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+                
+            }else if segmentedControl.selectedSegmentIndex == 2{
+                // Config for intro
+                //let trans = introductions[indexPath.row]
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+            }
+        
+        }
         
 
-        
         return cell
     }
     
@@ -283,6 +347,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
+            
+            // Reject transaction call
+            self.rejectTransaction()
+            
             self.tableView.isEditing = false
             
             print("This is the cell to delete")
@@ -330,6 +398,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         shouldShowSearchResults = true
+        // Empty list
+        self.searchTransactionList.removeAll()
         // Toggle cancel button
         customSearchController.customSearchBar.showsCancelButton = true
         self.tableView.reloadData()
@@ -340,6 +410,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         shouldShowSearchResults = false
         // Toggle cancel button
         customSearchController.customSearchBar.showsCancelButton = false
+        // Empty list
+        self.searchTransactionList.removeAll()
+        // Reload
         self.tableView.reloadData()
     }
     
@@ -361,6 +434,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             return
         }
         
+        
+        
         // Filter the data array and get only those countries that match the search text.
        /* filteredArray = dataArray.filter({ (country) -> Bool in
             let countryText:NSString = country as NSString
@@ -369,7 +444,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         })*/
         
         // Reload the tableview.
-        self.tableView.reloadData()
+        //self.tableView.reloadData()
     }
     
     
@@ -377,6 +452,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func didStartSearching() {
         shouldShowSearchResults = true
+        print("Filtered list count >> \(self.searchTransactionList)")
         self.tableView.reloadData()
     }
     
@@ -384,13 +460,17 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     func didTapOnSearchButton() {
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
+            // Hit search endpoint
             self.tableView.reloadData()
         }
+        self.searchTransactions()
     }
     
     
     func didTapOnCancelButton() {
         shouldShowSearchResults = false
+        // Empty list 
+        self.searchTransactionList.removeAll()
         self.tableView.reloadData()
     }
     
@@ -407,7 +487,68 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.reloadData()
     }
     
-    
+    // Action sheet 
+    func showActionAlert(phones: [String], emails: [String]) {
+        // Config action 
+        let actionSheetController: UIAlertController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .actionSheet)
+        
+        // Make Button
+        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            print("Cancel")
+        }
+        
+        // Add button
+        actionSheetController.addAction(cancelActionButton)
+        
+        // Make button
+        let emailAction = UIAlertAction(title: "Email", style: .default)
+        { _ in
+            
+            // Show email controller
+            self.showEmailCard()
+            
+            print("Email")
+        }
+        // Add Buttoin
+        actionSheetController.addAction(emailAction)
+        
+        // Make
+        let textAction = UIAlertAction(title: "Text", style: .default)
+        { _ in
+            print("Text")
+        }
+        // Add Buttoin
+        actionSheetController.addAction(textAction)
+
+        // Add
+        let callAction = UIAlertAction(title: "Call", style: .default)
+        { _ in
+            print("call")
+            
+            // Get call ready
+            // Set phone val
+            let phone = phones[0]
+            
+            // configure call
+            if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+
+        }
+        if phones.count == 1 {
+            //  Add action
+            actionSheetController.addAction(callAction)
+        }else{
+            // More than one phone
+            print("More than one cell")
+        }
+        
+        self.present(actionSheetController, animated: true, completion: nil)
+    }
     
     
     
@@ -535,7 +676,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let parameters = ["uuid" : self.selectedTransaction.transactionId]
         
         // Show HUD
-        KVNProgress.show(withStatus: "Rejecting the connection...")
+        KVNProgress.show(withStatus: "Deleting the connection...")
         
         // Send to sever
         
@@ -550,6 +691,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Change status for trans
                 self.transactions[self.selectedIndex].approved = false
+                // Remove transaction from list
+                self.transactions.remove(at: self.selectedIndex)
                 
                 // Reload table 
                 self.tableView.reloadData()
@@ -568,11 +711,84 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    func searchTransactions() {
+        
+        print("Searching transaction")
+        
+        let searchString = customSearchController.customSearchBar.text ?? ""
+
+        
+        
+        // Export transaction
+        let parameters = ["uuid" : ContactManager.sharedManager.currentUser.userId, "search": searchString]
+        
+        // Show HUD
+        KVNProgress.show(withStatus: "Searching..")
+        
+        // Send to sever
+        
+        Connection(configuration: nil).searchTransactionCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Rejection Response ---> \(String(describing: response))")
+                
+                // Init dictionary to capture response
+                if let dictionary = response as? [String : Any] {
+                    // // Parse dictionary for array of trans
+                    let dictionaryArray = dictionary["transactions"] as! NSArray
+                    
+                    // Iterate over array, append trans to list
+                    for item in dictionaryArray {
+                        // Update counter
+                        // Init user objects from array
+                        let trans = Transaction(snapshot: item as! NSDictionary)
+                        print("Transaction List")
+                        //trans.printTransaction()
+                        
+                        
+                        // Append users to radarContacts array
+                        self.searchTransactionList.append(trans)
+                    }
+                    
+                    // Sort list
+                    self.sortTransactionList(list: self.searchTransactionList)
+                    
+                    
+                    // Update the table values
+                    self.tableView.reloadData()
+                    
+                    // Parse lists for segment control
+                    self.parseTransactionList(transactionList: self.searchTransactionList)
+                    
+                    // Show sucess
+                    KVNProgress.showSuccess()
+                }else{
+                    print("Array empty !!!!")
+                    // dismiss HUD
+                    KVNProgress.dismiss()
+                }
+
+                
+            } else {
+                print("Rejection Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+    
+    
+    
     func getTranstactions() {
         
         // Clear array list for fresh start 
         self.transactions.removeAll()
+        self.transactionListReversed.removeAll()
         self.transactions = [Transaction]()
+        self.transactionListReversed = [Transaction]()
+        self.transactionList.removeAll()
         
         // 
         // Hit endpoint for updates on users nearby
@@ -697,6 +913,64 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    func fetchContactsForTransaction() {
+        // Fetch the user data associated with users
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["data": selectedTransaction.recipientList]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        // Show progress
+        KVNProgress.show(withStatus: "Fetching details on the activity...")
+        
+        // Create User Objects
+        Connection(configuration: nil).getTransactionContactsCall(parameters, completionBlock: { response, error in
+            
+            if error == nil {
+                
+                //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                
+                // Init dictionary to capture response
+                let userArray = response as? NSDictionary
+                // // Parse dictionary for array of trans
+                print(userArray)
+                
+                let userList = userArray?["data"] as! NSArray
+                
+                
+                // Iterate over array, append trans to list
+                for item in userList{
+                    
+                    print("Contact Item >> \(item)")
+                    
+                    // Init user objects from array
+                    let contact = Contact(snapshotLite: item as! NSDictionary)
+                    
+                    // Append users to Selected array
+                    self.selectedContacts.append(contact)
+                }
+                
+                // Func to parse phone numbers and show sms client
+                self.parseAndSend()
+                
+                // Show sucess
+                KVNProgress.showSuccess()
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - User Fetch Error: \n\n>>>>>>>> \(error)\n\n")
+                KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
+            }
+            // Regardless, hide hud
+            KVNProgress.dismiss()
+        })
+        
+    }
+
+    
+    
     func fetchUsersForTransaction() {
         // Fetch the user data associated with users
         
@@ -756,40 +1030,122 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func parseAndSend() {
         // Get PhoneNumbers
-        let userPhoneNumbers = self.retrievePhoneForUsers(contactsArray: self.selectedUsers)
+        let userPhoneNumbers = self.retrievePhoneForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
+        self.selectedUserEmails = self.retrieveEmailForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
         
-        // Show the message client
-        self.showSMSCard(recipientList: userPhoneNumbers)
+        if selectedUserEmails.count > 0 && userPhoneNumbers.count > 0{
+            // Show option message
+            showActionAlert(phones: userPhoneNumbers, emails: selectedUserEmails)
+        }else if selectedUserEmails.count > 0 && userPhoneNumbers.count == 0{
+            // Show email client
+            self.showEmailCard()
+        }else if userPhoneNumbers.count > 0{
+            // Show the message client
+            self.showSMSCard(recipientList: userPhoneNumbers)
+        }
+    
     }
     
     
-    func retrievePhoneForUsers(contactsArray: [User]) -> [String] {
+    func retrievePhoneForUsers(contactsArray: [User], contacts: [Contact]) -> [String] {
         
-        // Init email array 
+        // Init email array
         var phoneList = [String]()
         
-        // Iterate through email list for contact emails
-        for contact in contactsArray {
-            // Check for phone number
-            if contact.userProfile.phoneNumbers[0]["phone"] != nil{
-                let phone = contact.userProfile.phoneNumbers[0]["phone"]
+        if self.selectedTransaction.type == "connection" {
+            // Iterate through email list for contact emails
+            for contact in contactsArray {
+                // Check for phone number
+                if contact.userProfile.phoneNumbers.count > 0{
+                    let phone = contact.userProfile.phoneNumbers[0]["phone"]
+                    
+                    // Add phone to list
+                    phoneList.append(phone!)
+                    
+                    // Print to test phone
+                    print("PHONE !!!! PHONE")
+                    print("\n\n\(String(describing: phone))")
+                    print(phoneList.count)
+                }
                 
-                // Add phone to list
-                phoneList.append(phone!)
+            }
+        }else{
+            // Iterate through email list for contact emails
+            for contact in contacts {
+                // Check for phone number
+                if contact.phoneNumbers.count > 0{
+                    let phone = contact.phoneNumbers[0]["phone"]
+                    
+                    // Add phone to list
+                    phoneList.append(phone!)
+                    
+                    // Print to test phone
+                    print("PHONE !!!! PHONE")
+                    print("\n\n\(String(describing: phone))")
+                    print(phoneList.count)
+                }
                 
-                // Print to test phone
-                print("PHONE !!!! PHONE")
-                print("\n\n\(String(describing: phone))")
-                print(phoneList.count)
             }
             
         }
-        // Append emails to a list of emails 
         
-        // Return the list of emails
+
+        // Append phone to a list of phones
+        
+        // Return the list of phones
         return phoneList
         
     }
+    
+    func retrieveEmailForUsers(contactsArray: [User], contacts: [Contact]) -> [String] {
+        
+        // Init email array
+        var emailList = [String]()
+        if self.selectedTransaction.type == "connection" {
+            // Iterate through email list for contact emails
+            for contact in contactsArray {
+                // Check for phone number
+                if contact.userProfile.emails.count > 0{
+                    let email = contact.userProfile.emails[0]["email"]
+                    
+                    // Add phone to list
+                    emailList.append(email!)
+                    
+                    // Print to test phone
+                    print("PHONE !!!! PHONE")
+                    print("\n\n\(String(describing: email))")
+                    print(emailList.count)
+                }
+                
+            }
+        }else{
+            // Iterate through email list for contact emails
+            for contact in contacts {
+                // Check for phone number
+                if contact.emails.count > 0{
+                    let email = contact.emails[0]["email"]
+                    
+                    // Add phone to list
+                    emailList.append(email!)
+                    
+                    // Print to test phone
+                    print("PHONE !!!! PHONE")
+                    print("\n\n\(String(describing: email))")
+                    print(emailList.count)
+                }
+                
+            }
+        }
+        
+
+        // Append emails to a list of emails
+        
+        // Return the list of emails
+        return emailList
+        
+    }
+    
+    
     
     func createTransaction(type: String) {
         // Set type & Transaction data
@@ -840,7 +1196,26 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func configureViewsForIntro(cell: ActivityCardTableCell, index: Int){
         // Set transaction values for cell
-        let trans = transactions[index]
+        var trans = Transaction()
+       
+        if shouldShowSearchResults {
+            // Trans list
+            trans = searchTransactionList[index]
+            
+        }else{
+            
+            if segmentedControl.selectedSegmentIndex == 0 {
+                // All
+                trans = transactionListReversed[index]
+            }else if segmentedControl.selectedSegmentIndex == 1 {
+                // Connections
+                trans = connections[index]
+            }else{
+                // Intro
+                trans = introductions[index]
+                
+            }
+        }
         
         // Assign user objects
         
@@ -857,7 +1232,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let image = UIImage(named: "contact")
         cell.profileImage.image = image
         // Set description text
-        cell.descriptionLabel.text = "You introduced \(trans.recipientList[0]) to \(trans.recipientList[1])"
+        
+        if trans.recipientList.count > 1{
+            cell.descriptionLabel.text = "You introduced \(trans.recipientList[0] ?? "") to \(trans.recipientList[1] ?? "")"
+        }else{
+            cell.descriptionLabel.text = "You made an introduction"
+        }
         
         // Set location
         cell.locationLabel.text = trans.location
@@ -892,6 +1272,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }
         
+        // Hide location 
+        cell.locationIcon.isHidden = true
+        
         // Config label 
         self.configureFollowUpLabel(label: cell.approveButton)
         
@@ -909,21 +1292,41 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         label.clipsToBounds = true
         label.layer.borderWidth = 1.0
         label.layer.borderColor = UIColor.lightGray.cgColor
-        label.layer.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0) as! CGColor
+        label.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         label.textColor = UIColor.white
     }
     
     
     func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
         // Set transaction values for cell
-        let trans = transactions[index]
+        var trans = Transaction()
+        
+        if shouldShowSearchResults {
+            // Trans list
+            trans = searchTransactionList[index]
+            
+        }else{
+            
+            if segmentedControl.selectedSegmentIndex == 0 {
+                // All
+                trans = transactionListReversed[index]
+            }else if segmentedControl.selectedSegmentIndex == 1 {
+                // Connections
+                trans = connections[index]
+            }else{
+                // Intro
+                trans = introductions[index]
+                
+            }
+        }
+
         // Temp string
         var name : String = ""
         
         // Check if user sent card
         if trans.senderId == self.currentUser.userId {
             // Set card name to recipient
-            if trans.type != "quick_share" {
+            if (trans.type != "quick_share" && trans.type != "introduction") {
                 // Add recipient card name
                 name = (trans.recipientCard?.cardHolderName)!
             }else{
@@ -993,15 +1396,16 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }*/
         
-        // Config label
-        self.configureFollowUpLabel(label: cell.connectionApproveButton)
+        // Hide
+        
         
         // Config label
         self.configureFollowUpLabel(label: cell.connectionApproveButton)
+        
         
         if trans.location == ""{
             // Hide icon
-            
+            cell.connectionLocationIcon.isHidden = true
         }
         
         // Add tag to view
@@ -1175,50 +1579,16 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Create Instance of controller
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
-        
-        // Check for nil vals
-        
-        var name = ""
-        var recipientName = ""
-        var phone = ""
-        var emailContact = ""
-        var emailRecipient = ""
-        //var title = ""
-        
-        
-        // CNContact Objects
-        let contact = ContactManager.sharedManager.contactToIntro
-        let recipient = ContactManager.sharedManager.recipientToIntro
-        
-        // Check if they both have email
-        //name = formatter.string(from: contact) ?? "No Name"
-        //recipientName = formatter.string(from: recipient) ?? "No Name"
-        
-        if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
-            
-            let contactEmail = contact.emailAddresses[0].value as String
-            let recipientEmail = recipient.emailAddresses[0].value as String
-            
-            // Set variable
-            emailContact = contactEmail
-            emailRecipient = recipientEmail
-            
-        }
-        
-        if contact.phoneNumbers.count > 0 {
-            phone = (contact.emailAddresses[0].value as String)
-        }
-        
-        // Create Message
-        
+    
         // Set card link from cardID
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
         
-        let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.fullName) \n\n\(cardLink)"
+        // Configure message
+        let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
         // Create Message
-        mailComposerVC.setToRecipients([emailContact, emailRecipient])
-        mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")
+        mailComposerVC.setToRecipients(self.selectedUserEmails)
+        mailComposerVC.setSubject("Unify Follow-Up")
         mailComposerVC.setMessageBody(str, isHTML: false)
         
         return mailComposerVC
