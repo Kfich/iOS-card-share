@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/CreateCardViewController.swift"
-            timestampString = "524434385.780672"
+            timestampString = "524707920.402667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "531"
-            endingLineNumber = "531"
+            startingLineNumber = "553"
+            endingLineNumber = "553"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/CreateCardViewController.swift"
-            timestampString = "524434385.780672"
+            timestampString = "524707920.402667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "587"
-            endingLineNumber = "587"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/EditProfileViewController.swift"
-            timestampString = "524680697.301942"
+            timestampString = "524699113.616166"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "383"
-            endingLineNumber = "383"
+            startingLineNumber = "417"
+            endingLineNumber = "417"
             landmarkName = "parseForSocialIcons()"
             landmarkType = "7">
          </BreakpointContent>
@@ -346,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/EditProfileViewController.swift"
-            timestampString = "524680393.523639"
+            timestampString = "524699113.616166"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "504"
-            endingLineNumber = "504"
+            startingLineNumber = "646"
+            endingLineNumber = "646"
             landmarkName = "updateCurrentUser()"
             landmarkType = "7">
          </BreakpointContent>

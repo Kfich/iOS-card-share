@@ -409,8 +409,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
             
-            //let containerView = self.createAddNewCell(cell: cell)
-            //cell.addSubview(containerView)
+            let containerView = self.createAddNewCell(cell: cell)
+            cell.addSubview(containerView)
         
         
         

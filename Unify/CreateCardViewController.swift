@@ -401,8 +401,16 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         let image = self.socialBadges[indexPath.row]
         
+        // Add
+        let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+        let addImage = UIImage(named: "icn-plus-green")
+        addView.image = addImage
+        
+        
         // Set image
         imageView.image = image
+        // Add to imageview
+        imageView.addSubview(addView)
         
         // Add subview
         cell.contentView.addSubview(imageView)
@@ -411,8 +419,22 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Init cell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+       
         
-        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        // Change the image
+        let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+        let addImage = UIImage(named: "icn-minus-red")
+        addView.image = addImage
+        
+        cell.contentView.addSubview(addView)
+        // Add to selected cells
+        
+        collectionView.reloadData()
+
+        
+        //
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }

@@ -975,10 +975,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             transaction.recipientNames?.append(self.contact.name)
             transaction.recipientNames?.append(contactName)
             
-            if self.syncContactSwitch.isOn == true {
+            /*if self.syncContactSwitch.isOn == true {
                 // Upload sync contact record
                 self.syncContact()
-            }
+            }*/
 
         }
         
@@ -1012,6 +1012,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
 
                 // Show success indicator
                 KVNProgress.showSuccess(withStatus: "You are now connected!")
+                
+                if self.syncContactSwitch.isOn == true {
+                 // Upload sync contact record
+                 self.syncContact()
+                 }
                 
                 
             } else {

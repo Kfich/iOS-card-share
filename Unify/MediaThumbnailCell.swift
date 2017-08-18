@@ -15,6 +15,8 @@ class MediaThumbnailCell: UICollectionViewCell {
     
     @IBOutlet var mediaImageView: UIImageView!
     
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

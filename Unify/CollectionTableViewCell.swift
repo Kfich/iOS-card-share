@@ -14,6 +14,7 @@ class CollectionTableViewCell: UITableViewCell {
     // --------------------------
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
     
+    @IBOutlet var titleLabel: UILabel!
 
     
     override func awakeFromNib() {

@@ -479,7 +479,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }else{
             // Reject transaction 
-            self.rejectTransaction()
+            //self.rejectTransaction()
         }
     }
     
@@ -866,8 +866,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Hide buttons if already approved
         if trans.approved {
             // Hide and replace
-            cell.rejectButton.isHidden = true
-            cell.rejectButton.isEnabled = false
+            //cell.rejectButton.isHidden = true
+            //cell.rejectButton.isEnabled = false
             
             cell.approveButton.text = "Follow up"
             cell.approveButton.isEnabled = false
@@ -875,7 +875,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Change the label
             //cell.approveButton.setTitle("Follow up", for: .normal)
             
-        }else if trans.rejected{
+        }
+        /*else if trans.rejected{
             // Show
             cell.approveButton.isHidden = true
             cell.approveButton.isEnabled = false
@@ -884,14 +885,32 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.rejectButton.isEnabled = false
         }else{
             print("In Between state, waiting for approval")
+        }*/
+        
+        if trans.location == ""{
+            // Hide icon
+            
         }
+        
+        // Config label 
+        self.configureFollowUpLabel(label: cell.approveButton)
         
         // Add tag to view
         cell.cardWrapperView.tag = index
         cell.approveButton.tag = index
         // Make rejection tag index + 1 to identify the users action intent
-        cell.rejectButton.tag = index
+        //cell.rejectButton.tag = index
         
+    }
+    
+    func configureFollowUpLabel(label: UILabel) {
+        
+        label.layer.cornerRadius = 10.0
+        label.clipsToBounds = true
+        label.layer.borderWidth = 1.0
+        label.layer.borderColor = UIColor.lightGray.cgColor
+        label.layer.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0) as! CGColor
+        label.textColor = UIColor.white
     }
     
     
@@ -938,13 +957,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         if trans.senderId == self.currentUser.userId {
             
             // Hide and replace
-            cell.connectionRejectButton.isHidden = true
-            cell.connectionRejectButton.isEnabled = false
+            //cell.connectionRejectButton.isHidden = true
+            //cell.connectionRejectButton.isEnabled = false
         
             cell.connectionApproveButton.isHidden = true
             cell.connectionApproveButton.isEnabled = false
         
-        }else{
+        }/*else{
             
             // Hide buttons if already approved
             if trans.approved {
@@ -972,7 +991,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             }
 
             
-        }
+        }*/
+        
+        // Config label
+        self.configureFollowUpLabel(label: cell.connectionApproveButton)
+        
+        // Config label
+        self.configureFollowUpLabel(label: cell.connectionApproveButton)
         
         if trans.location == ""{
             // Hide icon

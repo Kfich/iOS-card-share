@@ -66,6 +66,8 @@
 		741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */; };
 		FB019A9F1F28E7B500908A67 /* ImageURLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB019A9E1F28E7B500908A67 /* ImageURLS.swift */; };
 		FB019AA21F28EE7C00908A67 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB019AA11F28EE7C00908A67 /* Contact.swift */; };
+		FB03B6CC1F462C3900340518 /* UserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB03B6CA1F462C3900340518 /* UserInfoCell.swift */; };
+		FB03B6CD1F462C3900340518 /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB03B6CB1F462C3900340518 /* UserInfoCell.xib */; };
 		FB08130B1F02BA3E00CF14BE /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */; };
 		FB08130D1F02C0BB00CF14BE /* ContactListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB08130C1F02C0BB00CF14BE /* ContactListCell.swift */; };
 		FB0F48621F1E9A0200EF9871 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */; };
@@ -100,6 +102,7 @@
 		FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738331EDDD6CD0074200F /* BusinessCardView.xib */; };
 		FB3738361EDDDE0F0074200F /* ContactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3738351EDDDE0F0074200F /* ContactCardView.swift */; };
 		FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738371EDDDE240074200F /* ContactCardView.xib */; };
+		FB4B7ED01F460915007D05DC /* CustomImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4B7ECF1F460915007D05DC /* CustomImageCell.xib */; };
 		FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */; };
 		FB767D311F429DD40065F46E /* RSKImageCropperStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB767D221F429DD40065F46E /* RSKImageCropperStrings.bundle */; };
 		FB767D321F429DD40065F46E /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D241F429DD40065F46E /* RSKImageCropViewController.m */; };
@@ -281,6 +284,8 @@
 		D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Unify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB019A9E1F28E7B500908A67 /* ImageURLS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageURLS.swift; sourceTree = "<group>"; };
 		FB019AA11F28EE7C00908A67 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		FB03B6CA1F462C3900340518 /* UserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoCell.swift; sourceTree = "<group>"; };
+		FB03B6CB1F462C3900340518 /* UserInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoCell.xib; sourceTree = "<group>"; };
 		FB0812FF1F02B00800CF14BE /* SanFranciscoDisplayBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayBold.ttf; sourceTree = "<group>"; };
 		FB0813001F02B00800CF14BE /* SanFranciscoDisplayMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayMedium.ttf; sourceTree = "<group>"; };
 		FB0813011F02B00800CF14BE /* SanFranciscoDisplayRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFranciscoDisplayRegular.ttf; sourceTree = "<group>"; };
@@ -337,6 +342,7 @@
 		FB3738331EDDD6CD0074200F /* BusinessCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessCardView.xib; sourceTree = "<group>"; };
 		FB3738351EDDDE0F0074200F /* ContactCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCardView.swift; sourceTree = "<group>"; };
 		FB3738371EDDDE240074200F /* ContactCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCardView.xib; sourceTree = "<group>"; };
+		FB4B7ECF1F460915007D05DC /* CustomImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomImageCell.xib; sourceTree = "<group>"; };
 		FB767D1E1F429DD40065F46E /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
 		FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
 		FB767D201F429DD40065F46E /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
@@ -759,6 +765,8 @@
 		FB3738301EDDD69A0074200F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				FB03B6CA1F462C3900340518 /* UserInfoCell.swift */,
+				FB03B6CB1F462C3900340518 /* UserInfoCell.xib */,
 				FBA1F5161F38FA1300CDCB76 /* CustomSearchBar.swift */,
 				FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */,
 				FB37382C1EDDD59D0074200F /* BusinessCardView.swift */,
@@ -766,6 +774,7 @@
 				FB3738351EDDDE0F0074200F /* ContactCardView.swift */,
 				FB3738371EDDDE240074200F /* ContactCardView.xib */,
 				FB8E4DB01F46040D009F6236 /* CustomImageCell.swift */,
+				FB4B7ECF1F460915007D05DC /* CustomImageCell.xib */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -884,7 +893,7 @@
 				TargetAttributes = {
 					1CAE5B7F1E913A06006EFF40 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L8E3N3XE58;
+						DevelopmentTeam = WLFGCQXG8T;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -950,11 +959,13 @@
 				FB767D311F429DD40065F46E /* RSKImageCropperStrings.bundle in Resources */,
 				FB3738341EDDD6CD0074200F /* BusinessCardView.xib in Resources */,
 				1C31041C1E95BA9200F4D70D /* GoogleService-Info.plist in Resources */,
+				FB4B7ED01F460915007D05DC /* CustomImageCell.xib in Resources */,
 				1C151D2B1F1DBE73004B23CE /* Countly.podspec in Resources */,
 				1C151D3B1F1DBE73004B23CE /* LICENSE in Resources */,
 				1C151D291F1DBE73004B23CE /* .gitattributes in Resources */,
 				1CB31CA91E942BC500A0C4A5 /* SkeletonCell.xib in Resources */,
 				FB0F48621F1E9A0200EF9871 /* Default-568h@2x.png in Resources */,
+				FB03B6CD1F462C3900340518 /* UserInfoCell.xib in Resources */,
 				1CAE5B891E913A06006EFF40 /* Main.storyboard in Resources */,
 				FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */,
 				FB2F42861F1526CB00E3D6B5 /* KVNProgressView.xib in Resources */,
@@ -1137,6 +1148,7 @@
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
 				FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */,
 				1C151D2F1F1DBE73004B23CE /* CountlyCommon.m in Sources */,
+				FB03B6CC1F462C3900340518 /* UserInfoCell.swift in Sources */,
 				1C151D2C1F1DBE73004B23CE /* Countly_OpenUDID.m in Sources */,
 				FBF2EFB91F45453000DDF9B4 /* String+Fuse.swift in Sources */,
 				FB24EE481F0D667B006A997D /* PMAlertAction.swift in Sources */,
@@ -1297,7 +1309,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L8E3N3XE58;
+				DEVELOPMENT_TEAM = WLFGCQXG8T;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1305,7 +1317,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";
@@ -1324,7 +1336,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Unify/Unify.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = L8E3N3XE58;
+				DEVELOPMENT_TEAM = WLFGCQXG8T;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1332,7 +1344,7 @@
 				INFOPLIST_FILE = Unify/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.unify.Unify;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.unify.Unify1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Unify/Unify-Bridging-Header.h";

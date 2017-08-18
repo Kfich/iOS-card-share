@@ -79,6 +79,16 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Dispose of any resources that can be recreated.
     }
     
+    // IBActions
+    // ------------------------
+    
+    @IBAction func importContacts(_ sender: Any) {
+        // Get contacts
+        self.getContacts()
+    }
+    
+    
+    
     
     // MARK: UITableView Delegate and Datasource functions
     

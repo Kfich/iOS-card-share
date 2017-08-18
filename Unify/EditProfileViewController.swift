@@ -9,6 +9,7 @@
 import UIKit
 import Eureka
 import MBPhotoPicker
+import Alamofire
 
 class EditProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RSKImageCropViewControllerDelegate {
     
@@ -38,6 +39,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var socialBadges = [UIImage]()
     var linkToDelete = ""
     
+    var userBadges = [UIImage]()
+    var profileImages = [UIImage]()
+    
     // Selected image
     var selectedImage = UIImage()
     
@@ -57,6 +61,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     // Table view to hold custom rows
     @IBOutlet var collectionTableView: UITableView!
+    
+    @IBOutlet var profileImageCollectionView: UICollectionView!
     
     
     // IBActions
@@ -83,6 +89,13 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
             
             // Set image to view
             self.profileImageView.image = image
+            self.selectedImage = image!
+            
+            self.profileImages.insert(self.selectedImage, at: 0)
+            self.profileImageCollectionView.reloadData()
+            
+            // Set image to profile
+            self.setImageData()
             
             // Previous location for image assignment to user object
             
@@ -190,6 +203,11 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+    // Tableview delegates * Datat source
     func numberOfSections(in tableView: UITableView) -> Int {
         // 
         return 2
@@ -201,7 +219,12 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CollectionTableViewCell
+        
+        if indexPath.section == 1{
+            // Badges
+            cell.titleLabel.text = "BADGES"
+        }
         
         return cell
     }
@@ -364,6 +387,17 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         parseForSocialIcons()
     }
     
+    func removeImageFromProfile(index: Int) {
+        
+        print("Initial list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
+        // Remove item at index
+        ContactManager.sharedManager.currentUser.profileImages.remove(at: index)
+        print("Post delete list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
+        
+        // Reload table data
+        parseAccountForImges()
+    }
+    
     func parseForSocialIcons() {
         
         
@@ -432,10 +466,118 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Add image to the end of list
         let image = UIImage(named: "icn-plus-green")
         self.socialBadges.append(image!)
+        // Get images
+        parseAccountForImges()
         
         // Reload table
         self.collectionTableView.reloadData()
         
+    }
+    
+    func parseAccountForImges() {
+        
+        // Clear all from list
+        self.profileImages.removeAll()
+        
+        // Check for image, set to imageview
+        if currentUser.profileImages.count > 0{
+            for img in currentUser.profileImages {
+                let image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+                // Append to list
+                self.profileImages.append(image!)
+            }
+        }
+        
+        // Append dummy image to the end
+        // Add image to the end of list
+        let image = UIImage(named: "icn-plus-green")
+        self.profileImages.append(image!)
+        
+        // Refresh
+        self.profileImageCollectionView.reloadData()
+        
+    }
+    
+    func setImageData() {
+        // Image data png
+        //let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!, 0.5)
+        let imageData = UIImageJPEGRepresentation(self.selectedImage, 0.5)
+        print(imageData!)
+        
+        // Generate id string for image
+        let idString = currentUser.randomString(length: 20)
+        
+        // Assign asset name and type
+        let fname = idString
+        let mimetype = "image/png"
+        
+        // Create image dictionary
+        let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
+        // Add image to user profile images
+        ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
+        
+        
+        // Upload to Server
+        // Save card to DB
+        let parameters = imageDict
+        print(parameters)
+        
+        // Init imageURLS
+        let urls = ImageURLS()
+        
+        // Create URL For Prod
+        //let prodURL = urls.uploadToStagingURL
+        
+        // Create URL For Test
+        let testURL = urls.uploadToDevelopmentURL
+        
+        
+        // Show progress HUD
+        KVNProgress.show(withStatus: "Generating profile..")
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+             }*/
+            
+            // Currently Set to point to Prod Server
+        }, to:testURL)
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n success...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                    // Dismiss hud
+                    KVNProgress.showSuccess()
+                    
+                    // Reload table
+                    self.profileImageCollectionView.reloadData()
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
+        
+        
+        // Test if image stored
+        //print(self.newUser.profileImages)
+
     }
     
     
@@ -588,58 +730,135 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
 
 extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if self.socialBadges.count != 0 {
-            // Return the count 
-            return self.socialBadges.count
+        
+        if collectionView == self.profileImageCollectionView {
+            return self.profileImages.count
         }else{
-            return 1
+            
+            if section == 0 {
+                // Social icons
+                if self.socialBadges.count != 0 {
+                    // Return the count
+                    return self.socialBadges.count
+                }else{
+                    return 1
+                }
+                
+            }else{
+                if self.userBadges.count != 0 {
+                    // Return the count
+                    return self.userBadges.count
+                }else{
+                    return 1
+                }
+            }
+            
         }
+    
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         
-        configureViews(cell: cell)
         
-        // Configure badge image
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-        let image = self.socialBadges[indexPath.row]
-        // Set image
-        imageView.image = image
+        //var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        var cell = UICollectionViewCell()
         
-        if indexPath.row !=  self.socialBadges.count - 1{
-            // Add delete icon
-            // Configure corner radius
-            let deleteImageView = UIImageView(frame: CGRect(x: 25, y: 6, width: 20, height: 20))
-            let deleteIcon = UIImage(named: "icn-minus-red")
-            deleteImageView.image = deleteIcon
+        if collectionView == self.profileImageCollectionView {
+           
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath)
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let image = self.profileImages[indexPath.row]
+            imageView.layer.masksToBounds = true
+            // Set image to view 
+            imageView.image = image
+            // Add to collection
+            cell.contentView.addSubview(imageView)
+            //cell.backgroundColor = UIColor.red
             
-            imageView.addSubview(deleteImageView)
-            //deleteImageView.image = deleteIcon
+            if indexPath.row != self.profileImages.count - 1 {
+                // Delete
+                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteImage = UIImage(named: "icn-minus-red")
+                deleteIconView.image = deleteImage
+                
+                // Add to imageview
+                imageView.addSubview(deleteIconView)
+                
+            }else{
+                
+                print("Last image index")
+                // Badge icon
+                //image = self.userBadges[indexPath.row]
+            }
+            
             
         }else{
-           // Last index
-            print("Last index papa")
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            
+            //configureViews(cell: cell)
+            
+            // Configure badge image
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            var image = UIImage()
+            image = self.socialBadges[indexPath.row]
+            // Set image
+            imageView.image = image
+            
+            if indexPath.row != self.socialBadges.count - 1 {
+                // Delete
+                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteImage = UIImage(named: "icn-minus-red")
+                deleteIconView.image = deleteImage
+                
+                // Add to imageview
+                imageView.addSubview(deleteIconView)
+                
+            }else{
+                
+                print("Last image index")
+                // Badge icon
+                //image = self.userBadges[indexPath.row]
+            }
+            
+            //cell.contentView.addSubview(deleteImageView)
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
         }
-
-        //cell.contentView.addSubview(deleteImageView)
         
-        // Add subview
-        cell.contentView.addSubview(imageView)
+        configureViews(cell: cell)
+
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if indexPath.row !=  self.socialBadges.count - 1{
-            // Delete the card
-            self.removeBadgeFromProfile(index: indexPath.row)
+        if collectionView == self.profileImageCollectionView {
+            
+            if indexPath.row !=  self.profileImages.count - 1{
+                // Delete the card
+                self.removeImageFromProfile(index: indexPath.row)
+            }else{
+                // Add new badge
+                //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+                self.selectProfilePicture(self)
+            }
+            //cell.backgroundColor = UIColor.red
+            
         }else{
-            // Add new badge
-            performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
-        }
         
+            if indexPath.row !=  self.socialBadges.count - 1{
+                // Delete the card
+                self.removeBadgeFromProfile(index: indexPath.row)
+            }else{
+                // Add new badge
+                performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+            }
+
+        
+        }
         // Remove icon from list
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
@@ -650,7 +869,8 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
         cell.contentView.layer.cornerRadius = 23.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        cell.contentView.layer.backgroundColor = UIColor.clear.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         
         // Set shadow on the container view

@@ -45,7 +45,13 @@ class AddEventViewController: UIViewController {
     @IBAction func addEventButtonTapped(_ sender: UIBarButtonItem) {
         // Create an Event Store instance
         
-        let appointment = ["data" : ["event_name" : self.eventNameTextField.text ?? "Some Event Name", "username": ContactManager.sharedManager.currentUser.getName(), "start": self.eventStartDatePicker.date.toString(), "end": self.eventEndDatePicker.date.toString()]]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let start = dateFormatter.string(from: self.eventStartDatePicker.date)
+        let end = dateFormatter.string(from: self.eventEndDatePicker.date)
+
+        
+        let appointment = ["data" : ["event_name" : self.eventNameTextField.text ?? "Some Event Name", "username": ContactManager.sharedManager.currentUser.getName(), "start": start, "end": end]]
         
         // Upload
         self.uploadEvent(params: appointment as NSDictionary)

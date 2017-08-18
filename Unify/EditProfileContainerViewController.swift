@@ -109,6 +109,15 @@ class EditProfileContainerViewController: FormViewController {
                     
                     
                 }
+                /*+++ Section()
+                <<< CustomImageRow { row in
+                    row.value = SocialBagde(name: "Mathias",
+                                     badgeId: "mathias@xmartlabs.com",
+                                     image: Date(timeIntervalSince1970: 712119600),
+                                     pictureUrl: URL(string: "http://lh4.ggpht.com/VpeucXbRtK2pmVY6At76vU45Q7YWXB6kz25Sm_JKW1tgfmJDP3gSAlDwowjGEORSM-EW=w300"))
+                }*/
+                
+                
                 +++
                 
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete],

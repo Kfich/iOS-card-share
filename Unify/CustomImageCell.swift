@@ -7,17 +7,8 @@
 //
 
 import Foundation
-
-
-import Foundation
 import Eureka
-
-final class CustomImageRow: Row<CustomImageCell>, RowType {
-    required init(tag: String?) {
-        super.init(tag: tag)
-        cellProvider = CellProvider<CustomImageCell>(nibName: "UserBadgeCell")
-    }
-}
+import UIKit
 
 final class CustomImageCell: Cell<SocialBagde>, CellType, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -69,6 +60,7 @@ final class CustomImageCell: Cell<SocialBagde>, CellType, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardBadgeCell", for: indexPath)
         
         //cell.contentView.backgroundColor = UIColor.red
@@ -114,6 +106,14 @@ final class CustomImageCell: Cell<SocialBagde>, CellType, UICollectionViewDelega
 
     
 }
+
+final class CustomImageRow: Row<CustomImageCell>, RowType {
+    required init(tag: String?) {
+        super.init(tag: tag)
+        cellProvider = CellProvider<CustomImageCell>(nibName: "CustomImageCell")
+    }
+}
+
 
 struct SocialBagde: Equatable {
     var name: String
