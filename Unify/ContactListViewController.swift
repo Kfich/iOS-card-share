@@ -280,7 +280,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
     
-
     func getContacts() {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
