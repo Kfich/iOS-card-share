@@ -57,7 +57,7 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
     @IBOutlet var cardHeaderView: UIView!
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
+    @IBOutlet var addNewButton: UIButton!
     
     // Init 
     
@@ -67,6 +67,12 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
         collectionView.delegate = self
         collectionView.dataSource = self
         
+    }
+    
+    
+    @IBAction func addNewCardSelected(_ sender: Any) {
+        // Post for card create
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CreateCardSelected"), object: self)
     }
     
     

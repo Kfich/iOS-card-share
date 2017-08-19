@@ -149,6 +149,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Set page control count
         pageControl.numberOfPages = ContactManager.sharedManager.currentUserCards.count
         
+        cardCollectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: "AddNewCardCell")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -404,15 +406,16 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         
         // get a reference to our storyboard cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
     
         
         if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
             
-            let containerView = self.createAddNewCell(cell: cell)
-            cell.addSubview(containerView)
-        
-        
+           // AddNewCardCell
+            // get a reference to our storyboard cell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddNewCardCell", for: indexPath as IndexPath) as! CardCollectionViewCell
+            
+            //cell.cardWrapperView.backgroundColor = UIColor.blue
         
         }else{
             
@@ -692,6 +695,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.layer.borderWidth = 1.5
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
+        
+        cell.cardWrapperView.backgroundColor = UIColor.blue
         
        /* // Assign media buttons
         cell.mediaButton1.image = UIImage(named: "social-blank")

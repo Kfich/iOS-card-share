@@ -2491,7 +2491,7 @@
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hhX-bE-G6n">
                                 <rect key="frame" x="0.0" y="221" width="375" height="229"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="229" id="yyw-ME-5Xa"/>
                                 </constraints>
@@ -2696,6 +2696,34 @@
                                             <outlet property="collectionView" destination="jVr-pe-Iee" id="qnf-qR-A7g"/>
                                         </connections>
                                     </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AddNewCardCell" id="LII-7p-fes" customClass="CardCollectionViewCell" customModule="Unify" customModuleProvider="target">
+                                        <rect key="frame" x="384" y="2" width="369" height="225"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="369" height="225"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tEF-o7-GIa">
+                                                    <rect key="frame" x="0.0" y="0.0" width="369" height="225"/>
+                                                    <color key="backgroundColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <state key="normal" image="add-card"/>
+                                                    <connections>
+                                                        <action selector="addNewCardSelected:" destination="LII-7p-fes" eventType="touchUpInside" id="lQl-w3-4jf"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstItem="tEF-o7-GIa" firstAttribute="leading" secondItem="LII-7p-fes" secondAttribute="leading" id="5dT-li-kb8"/>
+                                            <constraint firstAttribute="trailing" secondItem="tEF-o7-GIa" secondAttribute="trailing" id="GSk-oR-uld"/>
+                                            <constraint firstAttribute="bottom" secondItem="tEF-o7-GIa" secondAttribute="bottom" id="V7a-gD-a8g"/>
+                                            <constraint firstItem="tEF-o7-GIa" firstAttribute="top" secondItem="LII-7p-fes" secondAttribute="top" id="ouF-Gi-vCB"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="addNewButton" destination="tEF-o7-GIa" id="qTe-FL-HVK"/>
+                                        </connections>
+                                    </collectionViewCell>
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="N2C-XP-IWx" id="1MR-ef-XIX"/>
@@ -2850,7 +2878,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ur8-ad-2Ap" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4396" y="3457"/>
+            <point key="canvasLocation" x="4396" y="3456.521739130435"/>
         </scene>
         <!--Activity-->
         <scene sceneID="vqk-Gu-2sd">
@@ -10872,6 +10900,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="add-card" width="346" height="189"/>
         <image name="arrow-down" width="72" height="72"/>
         <image name="arrow-left" width="72" height="72"/>
         <image name="backgroundGradient" width="378" height="666"/>

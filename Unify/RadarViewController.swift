@@ -1271,6 +1271,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             //user.printUser()
                             // Add to list of users on radar
                             self.radarUsers.append(user)
+                            //self.radarUsers.append(user)
                             
                             // Create selected index
                             let selectedIndex = Check(arrayIndex: self.counter, selected: false)
@@ -1279,15 +1280,16 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             // Append users to radarContacts array
                             self.radarContacts.append(user)
+                            //self.radarContacts.append(user)
                             //print("Radar List Count >>>> \(self.radarContacts.count)")
                             
                             // Set random coordinates for plotting images on radar
-                            let distance = user.distance
-                            let direction = user.direction
+                            //let distance = user.distance
+                            //let direction = user.direction
                             
-                            /*
-                            let distance = Int(random: -5..<10)
-                            let direction = Int(random: -5..<10)*/
+                            
+                            let distance = Int(random: -6..<12)
+                            let direction = Int(random: -2..<10)
                             
                             
                             // Check if user count is at 7 
