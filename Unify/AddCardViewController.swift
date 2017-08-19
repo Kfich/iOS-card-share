@@ -101,12 +101,21 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         // Set Page Control
         //self.contactPageControl.currentPage = indexPath.row
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
-        
-        // get a reference to our storyboard cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
-        
-        //cell.backgroundColor = UIColor.clear
+        if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
+            
+            // AddNewCardCell
+            // get a reference to our storyboard cell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddNewCardCell", for: indexPath as IndexPath) as! CardCollectionViewCell
+            
+            //cell.cardWrapperView.backgroundColor = UIColor.blue
+            
+        }else{
+            // get a reference to our storyboard cell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
+            
+            //cell.backgroundColor = UIColor.clear
             
             // Find current card index
             let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
@@ -143,6 +152,9 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             
             // Configure the card view
             configureViews(cell: cell)
+        
+        }
+        
             
             return cell
             

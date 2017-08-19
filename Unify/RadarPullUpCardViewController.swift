@@ -409,11 +409,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
     
         
-        if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
+        if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
             
            // AddNewCardCell
             // get a reference to our storyboard cell
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddNewCardCell", for: indexPath as IndexPath) as! CardCollectionViewCell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileAddNewCardCell", for: indexPath as IndexPath) as! CardCollectionViewCell
             
             //cell.cardWrapperView.backgroundColor = UIColor.blue
         

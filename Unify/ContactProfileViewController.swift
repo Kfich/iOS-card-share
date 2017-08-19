@@ -762,9 +762,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         }*/
 
     }
-    
-    
-    
+
     
     func checkForArrayLenth(array: Array<Any>) -> Bool {
         var isEmpty = Bool()
