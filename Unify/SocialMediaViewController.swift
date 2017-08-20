@@ -29,6 +29,19 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     let img8 = UIImage(named: "icn-social-facebook.png")
     let img9 = UIImage(named: "icn-social-facebook.png")
     let img10 = UIImage(named: "icn-social-facebook.png")
+    let img11 = UIImage(named: "icn-social-facebook.png")
+    let img12 = UIImage(named: "icn-social-twitter.png")
+    let img13 = UIImage(named: "icn-social-instagram.png")
+    let img14 = UIImage(named: "icn-social-harvard.png")
+    let img15 = UIImage(named: "icn-social-pinterest.png")
+    let img16 = UIImage(named: "icn-social-pinterest.png")
+    let img17 = UIImage(named: "icn-social-facebook.png")
+    let img18 = UIImage(named: "icn-social-facebook.png")
+    let img19 = UIImage(named: "icn-social-facebook.png")
+    let img20 = UIImage(named: "icn-social-facebook.png")
+    let img21 = UIImage(named: "icn-social-facebook.png")
+    let img22 = UIImage(named: "icn-social-facebook.png")
+    let img23 = UIImage(named: "icn-social-facebook.png")
 
     
     
@@ -64,7 +77,10 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         //links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pinterest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
         
-        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.harvard.edu/", "https://www.pinterest.com/"]
+        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.harvard.edu/", "https://www.pinterest.com/", "https://www.snapchat.com/", "https://www.plus.google.com/", "https://www.crunchbase.com/", "https://www.youtube.com/",
+                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.picasa.com/", "https://www.quora.com/", "https://www.reddit.com/", "https://www.messenger.com/", "https://www.whatsapp.com/", "https://www.viber.com/", "https://www.skype.com/" ]
+        
+        //socialOptions = [, , , , , , , , , , , , , , , , , , , , , , ]
         
         // For notifcations 
         self.addObservers()
@@ -76,7 +92,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!]/*, img6!, img7!, img8!, img9!, img10!]*/
+        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!, img14!, img15!, img16!, img17!, img18!, img19!, img20!, img21!, img22!, img23!]
     }
     
     override func didReceiveMemoryWarning() {

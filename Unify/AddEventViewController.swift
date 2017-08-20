@@ -20,9 +20,10 @@ class AddEventViewController: UIViewController, MFMessageComposeViewControllerDe
     var selectedContact = Contact()
     
     //var selectedContact = CNContact()
-    let formatter = CNContactFormatter()
+    //let formatter = CNContactFormatter()
     var contact = Contact()
     var cardLink = "https://project-unify-node-server.herokuapp.com/card/render/"
+    var appointmentLink = URL(string: "")
     
     // var selectedCard = ContactCard()
     
@@ -51,6 +52,10 @@ class AddEventViewController: UIViewController, MFMessageComposeViewControllerDe
         self.eventStartDatePicker.setDate(initialDatePickerValue(), animated: false)
         self.eventEndDatePicker.setDate(initialDatePickerValue(), animated: false)
         
+        
+        // Set selected phone & email
+        
+        self.selectedContact = ContactManager.sharedManager.contactToInvite
         // Create calen
     }
     
@@ -117,11 +122,37 @@ class AddEventViewController: UIViewController, MFMessageComposeViewControllerDe
                 // Call successful
                 print("Transaction Created Response ---> \(String(describing: response))")
                 
+                let res = response as? String ?? ""
+                
+                let link = URL(string: "https://project-unify-node-server.herokuapp.com/\(res)")
+                
+                print("Response link >>", link)
+                
+                // Set link
+                self.appointmentLink = link
+                
+                if self.selectedContact.emails.count > 0{
+                    // Set email string
+                   self.showEmailCard()
+                }else if self.selectedContact.phoneNumbers.count > 0{
+                    // Show sms 
+                    self.showSMSCard()
+                }else{
+                    
+                    // Show success
+                    KVNProgress.showSuccess(withStatus: "Appointment sent!")
+                    
+                    //Dimiss vc
+                    self.dismiss(animated: true , completion: nil)
+                    
+                }
+
+                
                 // Show success
-                KVNProgress.showSuccess(withStatus: "Appointment sent!")
+                //KVNProgress.showSuccess(withStatus: "Appointment sent!")
                 
                 //Dimiss vc
-                self.dismiss(animated: true , completion: nil)
+                //self.dismiss(animated: true , completion: nil)
                 
             } else {
                 // Error occured
@@ -223,7 +254,7 @@ class AddEventViewController: UIViewController, MFMessageComposeViewControllerDe
         transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
         
         // Show progress hud
-        KVNProgress.show(withStatus: "Making the connection...")
+        KVNProgress.show(withStatus: "Sending your invite...")
         
         // Save card to DB
         let parameters = ["data": self.transaction.toAnyObject()]
@@ -288,47 +319,12 @@ class AddEventViewController: UIViewController, MFMessageComposeViewControllerDe
             
             composeVC.messageComposeDelegate = self
             
-            // 6468251231
-            
-            // Check for nil vals
-            
-            var name = ""
-            var recipientName = ""
-            var phone = ""
-            var email = ""
-            //var title = ""
-            
-            
-            // CNContact Objects
-            let contact = ContactManager.sharedManager.contactToIntro
-            let recipient = ContactManager.sharedManager.recipientToIntro
-            
-            // Check if they both have email
-            name = formatter.string(from: contact) ?? "No Name"
-            recipientName = formatter.string(from: recipient) ?? ""
-            
-            /* if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
-             
-             let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-             // Set contact phone number
-             phone = contactPhone!
-             
-             let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
-             
-             // Launch text client
-             composeVC.recipients = [contactPhone!, recipientPhone!]
-             }
-             
-             if contact.emailAddresses.count > 0 {
-             email = (contact.emailAddresses[0].value as String)
-             }*/
-            
             
             // Set card link from cardID
-            cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
+            //cardLink = self.appointmentLink
             
             // Test String
-            let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n \(cardLink)"
+            let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n \(appointmentLink)"
             
             // Set string as message body
             composeVC.body = str
@@ -360,15 +356,13 @@ class AddEventViewController: UIViewController, MFMessageComposeViewControllerDe
         // CNContact Objects
         let contact = self.selectedContact
         
-        // Check if they both have email
-        name = formatter.string(from: contact) ?? "No Name"
-        
-        if contact.emailAddresses.count > 0{
+    
+        if self.selectedContact.emails.count > 0{
             // Set email string
-            let contactEmail = contact.emailAddresses[0].value as String
+            let contactEmail = self.selectedContact.emails[0]["email"]
             
             // Set variable
-            emailContact = contactEmail
+            emailContact = contactEmail!
         }
         
         // Create Message
@@ -376,10 +370,10 @@ class AddEventViewController: UIViewController, MFMessageComposeViewControllerDe
         //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
         
         // Set card link from cardID
-        cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
+        //cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
         
         // Test String
-        let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(appointmentLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact])

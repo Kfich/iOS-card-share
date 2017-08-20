@@ -67,8 +67,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     @IBOutlet var viewCardsButton: UIButton!
     
     // Badge carosel
+    @IBOutlet var badgeCollectionView: UICollectionView!
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
-
     // Page Setup
     
     override func viewDidLoad() {
@@ -180,29 +180,63 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
         
-        ///cell.contentView.backgroundColor = UIColor.red
-        self.configureBadges(cell: cell)
+        var cell = UICollectionViewCell()
         
-        let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+        if collectionView == self.badgeCollectionView {
+            // Badge config
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            imageView.setImageWith(fileUrl as! URL)
+            // Set image
+            //imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+        }else{
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+        }
         
-        // Configure corner radius
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        imageView.setImageWith(fileUrl as! URL)
-        // Set image
-        //imageView.image = image
-        
-        // Add subview
-        cell.contentView.addSubview(imageView)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        // Set selected index 
-        self.selectedBadgeIndex = indexPath.row
+        if collectionView == self.badgeCollectionView {
+            // Set index
+            self.selectedBadgeIndex = indexPath.row
+            // Config the social link webVC
+            ContactManager.sharedManager.selectedSocialMediaLink = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl
+        }else{
+            // Social link badges
+            // Set selected index
+            self.selectedBadgeIndex = indexPath.row
+            // Config the social link webVC
+            ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
+            
+        }
         
         // Show WebVC
         self.launchMediaWebView()
@@ -522,7 +556,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func launchMediaWebView() {
         // Config the social link webVC
-        ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
+        //ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
         
         // Call the viewController
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -553,9 +587,22 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         let img8 = UIImage(named: "icn-social-facebook.png")
         let img9 = UIImage(named: "icn-social-facebook.png")
         let img10 = UIImage(named: "icn-social-facebook.png")
+        let img11 = UIImage(named: "icn-social-facebook.png")
+        let img12 = UIImage(named: "icn-social-twitter.png")
+        let img13 = UIImage(named: "icn-social-instagram.png")
+        let img14 = UIImage(named: "icn-social-harvard.png")
+        let img15 = UIImage(named: "icn-social-pinterest.png")
+        let img16 = UIImage(named: "icn-social-pinterest.png")
+        let img17 = UIImage(named: "icn-social-facebook.png")
+        let img18 = UIImage(named: "icn-social-facebook.png")
+        let img19 = UIImage(named: "icn-social-facebook.png")
+        let img20 = UIImage(named: "icn-social-facebook.png")
+        let img21 = UIImage(named: "icn-social-facebook.png")
+        let img22 = UIImage(named: "icn-social-facebook.png")
+        let img23 = UIImage(named: "icn-social-facebook.png")
         
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!], ["snapchat" : img6!], ["plus.google" : img7!], ["crunchbase" : img8!], ["youtube" : img9!], ["soundcloud" : img10!], ["flickr" : img11!], ["about.me" : img12!], ["angelist" : img13!], ["foursquare" : img14!], ["medium" : img15!], ["tumblr" : img16!], ["picasa" : img17!], ["quora" : img18!], ["reddit" : img19!], ["messenger" : img20!], ["whatsapp" : img21!], ["viber" : img22!], ["skype" : img23!]]
         
         
         // let fb : NSDictionary = ["facebook" : img1!]

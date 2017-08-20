@@ -64,6 +64,7 @@ class ContactManager{
     // Contacts for into activity
     var contactToIntro = CNContact()
     var recipientToIntro = CNContact()
+    var contactToInvite = Contact()
     
     // Contact for sending cards
     var contactForCardShare = CNContact()
