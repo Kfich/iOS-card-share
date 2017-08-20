@@ -144,6 +144,10 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.socialBadgeCollectionView.reloadData()
         
         profileInfoTableView.reloadData()
+        self.badgeCollectionView.reloadData()
+        
+        
+        
         
     }
 
@@ -176,7 +180,14 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         }else{
             return 1
         }*/
-        return ContactManager.sharedManager.currentUser.userProfile.badgeList.count//self.socialBadges.count
+        
+        if collectionView == self.badgeCollectionView {
+            // Return count
+            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+        }else{
+            
+            return self.socialBadges.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -742,15 +742,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
 extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if collectionView == self.badgeCollectionView {
-            if ContactManager.sharedManager.currentUser.userProfile.badgeList.count != 0 {
-                // return the count
-                return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
-            }else{
-                return 1
-            }
-            
-        }else if collectionView == self.profileImageCollectionView {
+     if collectionView == self.profileImageCollectionView {
         
             return self.profileImages.count
         
@@ -784,37 +776,7 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
         //var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         var cell = UICollectionViewCell()
         
-        if collectionView == self.badgeCollectionView {
-            // Badge config
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
-            
-            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
-            
-            // Configure corner radius
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            imageView.setImageWith(fileUrl as! URL)
-            
-            if indexPath.row != self.profileImages.count - 1 {
-                // Delete
-                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
-                let deleteImage = UIImage(named: "icn-minus-red")
-                deleteIconView.image = deleteImage
-                
-                // Add to imageview
-                imageView.addSubview(deleteIconView)
-                
-            }else{
-                
-                print("Last image index")
-                // Badge icon
-                //image = self.userBadges[indexPath.row]
-            }
-
-            
-            // Add subview
-            cell.contentView.addSubview(imageView)
-        
-        }else if collectionView == self.profileImageCollectionView {
+        if collectionView == self.profileImageCollectionView {
            
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath)
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
