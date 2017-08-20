@@ -378,7 +378,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 
                 // Store user to device
-                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
                 
                 // Hide HUD
                 KVNProgress.showSuccess()
@@ -624,7 +624,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         //ContactManager.sharedManager.currentUser = User()
         
         // Store user to device
-        UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+        UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
         
         // Send to verification screen
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

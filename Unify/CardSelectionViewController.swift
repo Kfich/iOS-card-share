@@ -67,6 +67,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    @IBOutlet var badgeCollectionView: UICollectionView!
     
     
     
@@ -266,30 +267,55 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        /* if self.socialBadges.count != 0 {
-         // Return the count
-         return self.socialBadges.count
-         }else{
-         return 1
-         }*/
-        return self.socialBadges.count
+        if collectionView == self.badgeCollectionView {
+            // Return count
+            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+        }else{
+            
+            return self.socialBadges.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
         
-        //cell.contentView.backgroundColor = UIColor.red
-        self.configureBadges(cell: cell)
+        if collectionView == self.badgeCollectionView {
+            // Badge config
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+            
+            self.configureBadges(cell: cell)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            imageView.setImageWith(fileUrl! as URL)
+            // Set image
+            //imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            
+        }else{
+            
+            //cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
         
-        // Configure corner radius
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = self.socialBadges[indexPath.row]
-        
-        // Set image
-        imageView.image = image
-        
-        // Add subview
-        cell.contentView.addSubview(imageView)
+        }
         
         return cell
     }

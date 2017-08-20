@@ -60,6 +60,7 @@ class ContactManager{
     var currentUser = User()
     var selectedCard = ContactCard()
     var currentUserCards = [ContactCard]()
+    var viewableUserCards = [ContactCard]()
     
     // Contacts for into activity
     var contactToIntro = CNContact()

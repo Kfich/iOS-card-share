@@ -300,7 +300,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                     self.currentUser.setVerificationPhoneStatus(status: true)
                     
                     // Store user to device
-                    UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                    UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
                     
                     // Print to test
                     self.currentUser.printUser()

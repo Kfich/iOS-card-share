@@ -47,6 +47,12 @@ public class CardProfile{
             pictureUrl = snapshot["image"] as? String ?? ""
             website = snapshot["url"] as? String ?? ""
         }
+        
+        init(){
+            
+            pictureUrl = ""
+            website = ""
+        }
 
     }
     

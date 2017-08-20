@@ -525,17 +525,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         print("\n\nTHE CARD TO ANY - PARAMS")
         print(parameters)
         
-        // Store current user cards to local device
-        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
-        //UDWrapper.setData("contact_cards", value: encodedData)
+        // Temp card list
+        var tempCardList = [ContactCard]()
         
-        
-        // Show progress hud
-        //KVNProgress.show(withStatus: "Saving your new card...")
-        
-        // Save card to DB
-        //let parameters = ["data": card.toAnyObject()]
-        
+        // Connect to server
         Connection(configuration: nil).getCardsCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
                 print("Card Created Response ---> \(String(describing: response))")
@@ -544,6 +537,25 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 let dictionary : NSArray = response as! NSArray
                 print("\n\nCard List")
                 print(dictionary)
+                
+                for item in dictionary{
+                    let card = ContactCard(snapshot: item as! NSDictionary)
+                    tempCardList.append(card)
+                }
+                
+                
+                for card in ContactManager.sharedManager.currentUserCards{
+                    
+                    for temp in tempCardList{
+                        // Check for match
+                        if temp.cardId == card.cardId{
+                            // Test
+                            print("Found an ID match")
+                            // Set the field
+                            card.isVerified = temp.isVerified
+                        }
+                    }
+                }
                 
                 self.fetchUserBadges()
                 
@@ -562,7 +574,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Fetch cards from server
         let parameters = ["data" : currentUser.userProfile.badges]
         
-        print("\n\nTHE CARD TO ANY - PARAMS")
+        print("\n\nTHE Badges TO ANY - PARAMS")
         print(parameters)
         
         // Store current user cards to local device
@@ -582,7 +594,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
                 // Set card uuid with response from network
                 let dictionary : NSArray = response as! NSArray
-                print("\n\nBadge List")
+                print("\n\nBadge List YYAAA")
                 print(dictionary)
                 // Init badges
                 for item in dictionary{
@@ -591,6 +603,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                     
                     print("Printing badge")
                     print(badge)
+                    print("Count for corp ", ContactManager.sharedManager.currentUser.userProfile.badgeList.count)
                 }
                 
                 

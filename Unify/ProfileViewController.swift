@@ -137,7 +137,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // View to remove separators
         profileInfoTableView.tableFooterView = UIView()
         
-        // Parse for social data 
+        // Parse for social data
         //self.parseForSocialIcons()
         
         
@@ -198,6 +198,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             // Badge config
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
             
+            self.configureBadges(cell: cell)
+            
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
@@ -205,12 +207,13 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            imageView.setImageWith(fileUrl as! URL)
+            imageView.setImageWith(fileUrl! as URL)
             // Set image
             //imageView.image = image
             
             // Add subview
             cell.contentView.addSubview(imageView)
+        
         }else{
             
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)

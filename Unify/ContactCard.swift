@@ -71,6 +71,7 @@ public class ContactCard: NSObject, NSCoding{
         isVerified = snapshot["isVerified"] as? Bool ?? false
         
         // Test if card populated
+        print("Printing from card")
         //printCard()
     }
     

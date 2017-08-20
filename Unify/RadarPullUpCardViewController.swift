@@ -132,6 +132,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             print("User has no cards")
         }
         
+        // Fetch cards for missing values
+        self.fetchUserCards()
+        
         
         // Set background image on collectionview
         let bgImage = UIImageView();
@@ -147,7 +150,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Configure page control dots
         // Set page control count
-        pageControl.numberOfPages = ContactManager.sharedManager.currentUserCards.count
+        pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count
         
         cardCollectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: "AddNewCardCell")
         
@@ -324,50 +327,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             KVNProgress.dismiss()
         }
     }
-    
-    func fetchUserCards() {
-        // Set current user 
-        self.currentUser = ContactManager.sharedManager.currentUser
-        
-        // Fetch cards from server
-        let parameters = ["uuid" : currentUser.userId]
-        
-        print("\n\nTHE CARD TO ANY - PARAMS")
-        print(parameters)
-        
-        // Store current user cards to local device
-        //let encodedData = NSKeyedArchiver.archivedData(withRootObject: ContactManager.sharedManager.currentUserCards)
-        //UDWrapper.setData("contact_cards", value: encodedData)
-        
-        
-        // Show progress hud
-        //KVNProgress.show(withStatus: "Saving your new card...")
-        
-        // Save card to DB
-        //let parameters = ["data": card.toAnyObject()]
-        
-        Connection(configuration: nil).getCardsCall(parameters as [AnyHashable : Any]){ response, error in
-            if error == nil {
-                print("Fetch Card Response ---> \(String(describing: response))")
-                
-                // Set card uuid with response from network
-                let dictionary : NSArray = response as! NSArray
-                print("\n\nCard List")
-                print(dictionary)
-                
-                
-                
-                
-            } else {
-                print("Card Created Error Response ---> \(String(describing: error))")
-                // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
-            }
-            // Hide indicator
-            KVNProgress.dismiss()
-        }
-        
-    }
+
     
     
     // Tap Gesture Handler
@@ -391,7 +351,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.cards.count
         if ContactManager.sharedManager.currentUserCards.count > 0{
-            return ContactManager.sharedManager.currentUserCards.count
+            return ContactManager.sharedManager.viewableUserCards.count
         }else{
             emptyMessage(collectionView: cardCollectionView)
             return 0
@@ -401,26 +361,23 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     // make a cell for each cell index path
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        // Set Page Control 
-        self.pageControl.currentPage = indexPath.row
-        
         
         // get a reference to our storyboard cell
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
     
         
-        if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
+        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count {
             
            // AddNewCardCell
             // get a reference to our storyboard cell
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileAddNewCardCell", for: indexPath as IndexPath) as! CardCollectionViewCell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddNewCardCell", for: indexPath as IndexPath) as! CardCollectionViewCell
             
             //cell.cardWrapperView.backgroundColor = UIColor.blue
         
         }else{
             
             // Find current card index
-            let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            let currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             
             // Get badge list
             cell.badgeList = self.parseCardForBagdes(card: currentCard)
@@ -466,7 +423,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         self.pageControl.currentPage = indexPath.row
         
-        if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
+        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count - 1{
             
             /*let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
             containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
@@ -480,8 +437,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Add subviews
             containerView.addSubview(imageView)*/
             
-            //let containerView = self.createAddNewCell(cell: cell)
-            //cell.addSubview(containerView)
+            let containerView = self.createAddNewCell(cell: cell)
+            cell.addSubview(containerView)
         }
         
     }
@@ -533,7 +490,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         
-        if ContactManager.sharedManager.currentUserCards.count == 0{
+        if ContactManager.sharedManager.viewableUserCards.count == 0{
             
             // Show add new card
             
@@ -609,6 +566,71 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     }
     
     // Custom Methods
+    
+    func fetchUserCards() {
+        // Fetch cards from server
+        let parameters = ["uuid" : ContactManager.sharedManager.currentUser.userId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        // Temp card list
+        var tempCardList = [ContactCard]()
+        
+        // Connect to server
+        Connection(configuration: nil).getCardsCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                //print("Card Fetch Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSArray = response as! NSArray
+                print("\n\nCard List")
+                print(dictionary)
+                
+                for item in dictionary{
+                    let card = ContactCard(snapshot: item as! NSDictionary)
+                    tempCardList.append(card)
+                }
+                
+                
+                for card in ContactManager.sharedManager.currentUserCards{
+                    
+                    for temp in tempCardList{
+                        // Check for match
+                        if temp.cardId == card.cardId{
+                            // Test
+                            print("Found an ID match")
+                            // Set the field
+                            card.isVerified = temp.isVerified
+                            card.isHidden = temp.isHidden
+                            
+                            if card.isHidden != true{
+                                // Add to viewable
+                                ContactManager.sharedManager.viewableUserCards.append(card)
+                                print("Viewable card count")
+                            }
+                        }
+                    }
+                }
+                
+                // Add dummy cell
+                let dummyCard = ContactCard()
+                ContactManager.sharedManager.viewableUserCards.append(dummyCard)
+                
+                // Reload data
+                self.cardCollectionView.reloadData()
+                
+            } else {
+                print("Card Fetch Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
+
     
     func parseCardForBagdes(card: ContactCard) -> [UIImage] {
         // Execute from manager
@@ -696,7 +718,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
         
-        cell.cardWrapperView.backgroundColor = UIColor.blue
+        //cell.cardWrapperView.backgroundColor = UIColor.blue
         
        /* // Assign media buttons
         cell.mediaButton1.image = UIImage(named: "social-blank")

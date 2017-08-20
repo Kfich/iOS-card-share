@@ -370,7 +370,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
     func populateFirstCard() {
         // Assign image for card
         // Image data png
-        let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!)
+        let imageData = UIImagePNGRepresentation(self.selectedImage)
         print(imageData!)
         
         // Assign asset name and type
@@ -654,11 +654,10 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         let imageView = configureSelectedImageView(selectedImage: croppedImage)
         //self.profileImageContainerView.isHidden = true
         self.profileImageContainerView.addSubview(imageView)
-        //self.profileImageContainerView.layer.borderColor = UIColor.clear as! CGColor
         
-        //self.profileImageContainerView.addSubview(self.configureSelectedImageView(imageView: imageView))
-        // Set to container
-        //self.profileImageContainerView.image = croppedImage
+        // Set cropped image 
+        self.selectedImage = croppedImage
+
         // Dismiss vc
         dismiss(animated: true, completion: nil)
         

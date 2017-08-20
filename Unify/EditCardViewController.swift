@@ -28,6 +28,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var corpBadges : [CardProfile.Bagde] = []
+
+    
     
     // Selected Items 
     var selectedBios = [String]()
@@ -40,12 +43,14 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var selectedSocialLinks = [String]()
     var selectedNotes = [String]()
     var selectedTags = [String]()
+    var selectedCorpBadges: [CardProfile.Bagde] = []
+    var selectedCorpLinks = [String]()
     
     // Store image icons
     var socialLinkBadges = [[String : Any]]()
     var links = [String]()
     var socialBadges = [UIImage]()
-    
+    var userDidEditProfile = false
     
     var isSimulator = false
     
@@ -86,6 +91,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Badge carosel
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    @IBOutlet var badgeCollectionView: UICollectionView!
+    
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,7 +108,10 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Parse card for profile info
         self.parseCardForSelections()
-    
+        
+        // Add dummy badge to list
+        let badge = CardProfile.Bagde()
+        ContactManager.sharedManager.currentUser.userProfile.badgeList.append(badge)
         
         // Populate the card 
         self.populateCards()
@@ -132,6 +142,16 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        if self.userDidEditProfile{
+            print("Already removed")
+        }else{
+            // Remove dummy badge
+            ContactManager.sharedManager.currentUser.userProfile.badgeList.removeLast()
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -205,6 +225,12 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Sending card to server
     @IBAction func doneCreatingCard(_ sender: Any) {
+        
+        // Toggle bool 
+        self.userDidEditProfile = true
+        
+        // Remove dummy badge
+        ContactManager.sharedManager.currentUser.userProfile.badgeList.removeLast()
         
         // Assign image for card
         // Image data png
@@ -477,25 +503,120 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
         
-        //cell.contentView.backgroundColor = UIColor.red
-        self.configureBadges(cell: cell)
         
-        // Configure corner radius
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = self.socialBadges[indexPath.row]
-        
-        // Set image
-        imageView.image = image
-        
-        // Add subview
-        cell.contentView.addSubview(imageView)
+        if collectionView == self.badgeCollectionView {
+            // Badge config
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+            
+            self.configureBadges(cell: cell)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            imageView.setImageWith(fileUrl! as URL)
+            
+            // Add delete icons
+            if indexPath.row != self.socialBadges.count - 1 {
+                // Delete
+                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteImage = UIImage(named: "icn-minus-red")
+                deleteIconView.image = deleteImage
+                
+                // Add to imageview
+                imageView.addSubview(deleteIconView)
+                
+            }else{
+                
+                print("Last image index")
+                // Badge icon
+                //image = self.userBadges[indexPath.row]
+            }
+            
+            
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            
+            
+            
+        }else{
+            
+            //cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+            if indexPath.row != self.socialBadges.count - 1 {
+                // Delete
+                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteImage = UIImage(named: "icn-minus-red")
+                deleteIconView.image = deleteImage
+                
+                // Add to imageview
+                imageView.addSubview(deleteIconView)
+                
+            }else{
+                
+                print("Last image index")
+                // Badge icon
+                //image = self.userBadges[indexPath.row]
+            }
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        if collectionView == self.badgeCollectionView {
+            
+            // Check if in array
+            if self.selectedCorpLinks.contains(corpBadges[indexPath.row].website) {
+                // Already in list
+                print("Item already in list")
+                self.selectedCorpBadges.remove(at: indexPath.row)
+                self.corpBadges.remove(at: indexPath.row)
+                self.selectedCorpLinks.remove(at: indexPath.row)
+            }else{
+                // Append to array
+                card.cardProfile.badgeList.append(corpBadges[indexPath.row])
+                // Print for test
+                print(card.cardProfile.badgeList as Any)
+            }
+
+        }else{
+            
+            // Check if in array
+            if self.selectedSocialLinks.contains(socialLinks[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedSocialLinks.remove(at: indexPath.row)
+                self.socialLinks.remove(at: indexPath.row)
+            }else{
+                // Append to array
+                card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.socialLinks as Any)
+            }
+
+            
+            
+        }
+        // Reload to show changes
+        collectionView.reloadData()
+
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
@@ -1002,6 +1123,14 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 selectedSocialLinks.append(link["link"]! )
             }
         }
+        
+        if card.cardProfile.badgeList.count > 0{
+            for badge in card.cardProfile.badgeList{
+                selectedCorpBadges.append(badge)
+                selectedCorpLinks.append(badge.website)
+            }
+        }
+
     }
     
     
@@ -1016,6 +1145,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.organizations = [String]()
         self.websites = [String]()
         self.workInformation = [String]()
+        self.corpBadges.removeAll()
         
         // Parse bio info
         if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
@@ -1096,6 +1226,16 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Executing parse call from edit card")
             }
         }
+
+        if ContactManager.sharedManager.currentUser.userProfile.badgeList.count > 0{
+            
+            for badge in ContactManager.sharedManager.currentUser.userProfile.badgeList{
+                // Append badges from proile
+                corpBadges.append(badge)
+                print("Executing parse call from edit card")
+            }
+        }
+
         
         // Parse for social badges 
         self.parseForSocialIcons()

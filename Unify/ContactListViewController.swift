@@ -369,10 +369,12 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             }
             
             // Find out if contacts synced
-            let synced = UDWrapper.getBool("contacts_synced") 
+            let synced = UDWrapper.getBool("contacts_synced")
+            print("Contacts sync value!! >> \(synced)")
             
             if  synced{
                 
+                print("Contacts synced!! >> \(synced)")
                 //Set bool to indicate contacts have been synced
                 UDWrapper.setBool("contacts_synced", value: true)
             
@@ -679,8 +681,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         
         letters = dataArray.map { (name) -> Character in
-            print(name[name.startIndex])
-            return name[name.startIndex]
+            print("UPPER CASE HERE")
+            let nameToUpper = name.uppercased()
+            print(nameToUpper[nameToUpper.startIndex])
+            return nameToUpper[nameToUpper.startIndex]
         }
         
         letters = letters.sorted()

@@ -42,6 +42,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     let img21 = UIImage(named: "icn-social-facebook.png")
     let img22 = UIImage(named: "icn-social-facebook.png")
     let img23 = UIImage(named: "icn-social-facebook.png")
+    let img24 = UIImage(named: "social-blank")
 
     
     
@@ -78,7 +79,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         //links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pinterest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
         
         links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.harvard.edu/", "https://www.pinterest.com/", "https://www.snapchat.com/", "https://www.plus.google.com/", "https://www.crunchbase.com/", "https://www.youtube.com/",
-                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.picasa.com/", "https://www.quora.com/", "https://www.reddit.com/", "https://www.messenger.com/", "https://www.whatsapp.com/", "https://www.viber.com/", "https://www.skype.com/" ]
+                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.picasa.com/", "https://www.quora.com/", "https://www.reddit.com/", "https://www.messenger.com/", "https://www.whatsapp.com/", "https://www.viber.com/", "https://www.skype.com/", "other"]
         
         //socialOptions = [, , , , , , , , , , , , , , , , , , , , , , ]
         

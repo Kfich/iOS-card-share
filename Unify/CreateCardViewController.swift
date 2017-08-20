@@ -30,6 +30,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var corpBadges = [CardProfile.Bagde()]
+    
     
     var isSimulator = false
     
@@ -50,6 +52,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
+    @IBOutlet var badgeCollectionView: UICollectionView!
     
     // Labels
     @IBOutlet var nameLabel: UILabel!
@@ -87,6 +90,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         if currentUser.profileImages.count > 0{
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
         }
+        
+        // Add name off jump 
+        showAlertWithTextField(description: "Add Card Name", placeholder: "Enter Name", actionType: "Add Name")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -113,7 +119,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.organizations = [String]()
         self.websites = [String]()
         self.workInformation = [String]()
-        
+        self.corpBadges.removeAll()
         
         // Set name as default value
         if currentUser.fullName != ""{
@@ -180,10 +186,21 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Parse socials links
         if currentUser.userProfile.socialLinks.count > 0{
             for link in currentUser.userProfile.socialLinks{
-                print("Parsing from the create card VC viewwillappear")
+                print("Parsing from the create card VC view willappear")
                 //socialLinks.append(link["link"]!)
             }
         }
+        
+        if currentUser.userProfile.badgeList.count > 0{
+            
+            for badge in ContactManager.sharedManager.currentUser.userProfile.badgeList{
+                // Append badges from proile
+                corpBadges.append(badge)
+                print("Executing parse call from edit card")
+            }
+        }
+        
+
         
         // Parse for social icons
         parseForSocialIcons()
@@ -382,54 +399,88 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        /* if self.socialBadges.count != 0 {
-         // Return the count
-         return self.socialBadges.count
-         }else{
-         return 1
-         }*/
-        return self.socialBadges.count
+        if collectionView == self.badgeCollectionView {
+            // Return count
+            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+        }else{
+            
+            return self.socialBadges.count
+        }
+
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
         
-        //cell.contentView.backgroundColor = UIColor.red
-        self.configureBadges(cell: cell)
         
-        // Configure corner radius
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = self.socialBadges[indexPath.row]
+        if collectionView == self.badgeCollectionView {
+            // Badge config
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+            
+            self.configureBadges(cell: cell)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            imageView.setImageWith(fileUrl! as URL)
+            // Set image
+            //imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            
+        }else{
+            
+            //cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Add
+            let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+            let addImage = UIImage(named: "icn-plus-green")
+            addView.image = addImage
+            
+            
+            // Set image
+            imageView.image = image
+            // Add to imageview
+            imageView.addSubview(addView)
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+
         
-        // Add
-        let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
-        let addImage = UIImage(named: "icn-plus-green")
-        addView.image = addImage
-        
-        
-        // Set image
-        imageView.image = image
-        // Add to imageview
-        imageView.addSubview(addView)
-        
-        // Add subview
-        cell.contentView.addSubview(imageView)
+        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Init cell
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
-       
         
-        // Change the image
-        let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
-        let addImage = UIImage(named: "icn-minus-red")
-        addView.image = addImage
+        //var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
         
-        cell.contentView.addSubview(addView)
-        // Add to selected cells
+        if collectionView == self.badgeCollectionView {
+            // Badge cell
+             card.cardProfile.badgeList.append(corpBadges[indexPath.row])
+            // Highlight cell
+            print("Badge Card List >> \(card.cardProfile.badgeList)")
+            
+        
+        }else{
+            // Add social to card
+            card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+            // Highlight cell
+            print("Social Card List >> \(card.cardProfile.socialLinks)")
+        }
         
         collectionView.reloadData()
 

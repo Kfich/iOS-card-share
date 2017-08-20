@@ -644,7 +644,7 @@ class EditProfileContainerViewController: FormViewController {
                 
                 
                 // Store user to device
-                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
                 
                 // Hide HUD
                 KVNProgress.dismiss()

@@ -683,7 +683,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 
                 // Store user to device
-                UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
                 
                 // Refresh profile
                 self.postNotificationForRefresh()

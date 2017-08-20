@@ -17,6 +17,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
     var currentUserBadges =  [UIImage]()
     var selectedCards = [ContactCard]()
     var editedCard = ContactCard()
+    var verifiedCards = [ContactCard]()
     
     var hiddenCardIds = [String]()
     
@@ -34,6 +35,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         // Set cards array
         self.currentUserCards = ContactManager.sharedManager.currentUserCards
         
+        
         if ContactManager.sharedManager.hideCardsSelected {
             // Set titleview
             self.viewTitleLabel.text = "Manage Cards"
@@ -41,8 +43,27 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
             // Set titleview
             self.viewTitleLabel.text = "Manage Badges"
         }
+        
+        // Parse for verified cards 
+        for val in ContactManager.sharedManager.currentUserCards{
+            // Check if verified
+            if val.isVerified {
+                // Add to list
+                self.verifiedCards.append(val)
+            }
+        }
+        
+        
+        
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        ContactManager.sharedManager.hideCardsSelected = false
+        ContactManager.sharedManager.hideBadgesSelected = false
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -86,7 +107,15 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
     // TableView DataSource && Delegate Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ContactManager.sharedManager.currentUserCards.count - 1
+        
+        if ContactManager.sharedManager.hideCardsSelected {
+            // Return count
+             return self.verifiedCards.count
+            
+        }else{
+            // Set titleview
+             return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -98,9 +127,17 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         //cell.textLabel?.text = currentUserCards[indexPath.row].cardName
         // Set text
         
-        cell.badgeName.text = ContactManager.sharedManager.currentUserCards[indexPath.row].cardName
-        cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUserCards[indexPath.row].isHidden
-        
+        if ContactManager.sharedManager.hideCardsSelected {
+            // Return count
+            cell.badgeName.text = ContactManager.sharedManager.currentUserCards[indexPath.row].cardName
+            cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUserCards[indexPath.row].isHidden
+            
+        }else{
+            // Set titleview
+            cell.badgeName.text = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].website
+            cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
+            
+        }
         //cell.swict
         
         return cell
