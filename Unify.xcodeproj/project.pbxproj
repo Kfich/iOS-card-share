@@ -104,6 +104,8 @@
 		FB3738381EDDDE240074200F /* ContactCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB3738371EDDDE240074200F /* ContactCardView.xib */; };
 		FB4B7ED01F460915007D05DC /* CustomImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4B7ECF1F460915007D05DC /* CustomImageCell.xib */; };
 		FB62DA161F4A537200B5CFB5 /* PinAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB62DA151F4A537200B5CFB5 /* PinAuthViewController.swift */; };
+		FB62DA1D1F4A73B600B5CFB5 /* YIInnerShadowLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FB62DA1A1F4A73B600B5CFB5 /* YIInnerShadowLayer.m */; };
+		FB62DA1E1F4A73B600B5CFB5 /* YIInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB62DA1C1F4A73B600B5CFB5 /* YIInnerShadowView.m */; };
 		FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */; };
 		FB767D311F429DD40065F46E /* RSKImageCropperStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB767D221F429DD40065F46E /* RSKImageCropperStrings.bundle */; };
 		FB767D321F429DD40065F46E /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D241F429DD40065F46E /* RSKImageCropViewController.m */; };
@@ -345,6 +347,10 @@
 		FB3738371EDDDE240074200F /* ContactCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCardView.xib; sourceTree = "<group>"; };
 		FB4B7ECF1F460915007D05DC /* CustomImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomImageCell.xib; sourceTree = "<group>"; };
 		FB62DA151F4A537200B5CFB5 /* PinAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinAuthViewController.swift; sourceTree = "<group>"; };
+		FB62DA191F4A73B600B5CFB5 /* YIInnerShadowLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIInnerShadowLayer.h; sourceTree = "<group>"; };
+		FB62DA1A1F4A73B600B5CFB5 /* YIInnerShadowLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIInnerShadowLayer.m; sourceTree = "<group>"; };
+		FB62DA1B1F4A73B600B5CFB5 /* YIInnerShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIInnerShadowView.h; sourceTree = "<group>"; };
+		FB62DA1C1F4A73B600B5CFB5 /* YIInnerShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIInnerShadowView.m; sourceTree = "<group>"; };
 		FB767D1E1F429DD40065F46E /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
 		FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
 		FB767D201F429DD40065F46E /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
@@ -705,6 +711,10 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FB62DA191F4A73B600B5CFB5 /* YIInnerShadowLayer.h */,
+				FB62DA1A1F4A73B600B5CFB5 /* YIInnerShadowLayer.m */,
+				FB62DA1B1F4A73B600B5CFB5 /* YIInnerShadowView.h */,
+				FB62DA1C1F4A73B600B5CFB5 /* YIInnerShadowView.m */,
 				FBF2EFB41F45453000DDF9B4 /* Fuse.swift */,
 				FBF2EFB51F45453000DDF9B4 /* FuseUtilities.swift */,
 				FBF2EFB61F45453000DDF9B4 /* String+Fuse.swift */,
@@ -1059,6 +1069,7 @@
 				FBF871321EE71F0100243CE2 /* ContactCard.swift in Sources */,
 				1C151D331F1DBE73004B23CE /* CountlyDeviceInfo.m in Sources */,
 				1C3104141E959DB700F4D70D /* ProfileHeaderCell.swift in Sources */,
+				FB62DA1D1F4A73B600B5CFB5 /* YIInnerShadowLayer.m in Sources */,
 				FB767D4D1F436EC60065F46E /* Appointment.swift in Sources */,
 				FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */,
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
@@ -1112,6 +1123,7 @@
 				FB019AA21F28EE7C00908A67 /* Contact.swift in Sources */,
 				FB90A8B61F27941600E67B1E /* ContactUsViewController.swift in Sources */,
 				FBA1F5171F38FA1300CDCB76 /* CustomSearchBar.swift in Sources */,
+				FB62DA1E1F4A73B600B5CFB5 /* YIInnerShadowView.m in Sources */,
 				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
 				FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */,
 				FB199D071F339D7300FFFCC1 /* SocialMediaDetailViewController.swift in Sources */,

@@ -378,11 +378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarViewController.swift"
-            timestampString = "524960656.148612"
+            timestampString = "524968509.431497"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "601"
-            endingLineNumber = "601"
+            startingLineNumber = "608"
+            endingLineNumber = "608"
             landmarkName = "fetchUserBadges()"
             landmarkType = "7">
          </BreakpointContent>

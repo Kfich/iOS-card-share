@@ -26,6 +26,20 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
     @IBOutlet var viewTitleLabel: UILabel!
     @IBOutlet var optionsTableView: UITableView!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Set title 
+        if ContactManager.sharedManager.hideCardsSelected {
+            // Set titleview
+            self.viewTitleLabel.text = "Manage Cards"
+        }else{
+            // Set titleview
+            self.viewTitleLabel.text = "Manage Badges"
+        }
+
+        
+    }
     
     // Page Setup
     override func viewWillAppear(_ animated: Bool) {

@@ -130,7 +130,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Setup views
         
         // Hide button
-        sendCardButton.isHidden = true
+        //sendCardButton.isHidden = true
+        
+        if selectedUserIds.count == 0 {
+            // Disable button 
+            self.sendCardButton.isEnabled = false
+        }
         
         // Config buttons for view
         configureViews()
@@ -381,6 +386,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 self.postUpdateLocationNotification()
                 
             }
+            //
+            self.sendCardButton.isEnabled = true
             
             
             // Configure Label text and set image
@@ -408,7 +415,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.radarUsers.removeAll()
             
             // Hide card button
-            self.sendCardButton.isHidden = true
+            self.sendCardButton.isEnabled = false
             
             // Post notification for list VC
             //self.postEndRadarNotification()
@@ -488,7 +495,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     func configureViews() {
         //self.sendCardButton.isHidden = false
         // Config send button
-        self.sendCardButton.layer.cornerRadius = 10.0
+        self.sendCardButton.layer.cornerRadius = 12.0
         self.sendCardButton.clipsToBounds = true
         self.sendCardButton.layer.borderWidth = 1.0
         self.sendCardButton.layer.borderColor = UIColor.lightGray.cgColor
@@ -706,12 +713,14 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func showSendCard() {
         // Toggle button on
-        self.sendCardButton.isHidden = false
+        //self.sendCardButton.isHidden = false
+        self.sendCardButton.isEnabled = true
     }
     
     func hideSendCard() {
         // Toggle button on
-        self.sendCardButton.isHidden = true
+        //self.sendCardButton.isHidden = true
+        self.sendCardButton.isEnabled = false
     }
     
     
@@ -978,6 +987,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     }
     
     func radarContactSelected(sender:UITapGestureRecognizer) {
+        // Set button color
+        self.sendCardButton.backgroundColor = UIColor.white
         
         print("Radar User Index Counter >>> \((sender.view?.tag)!)")
         
@@ -1042,9 +1053,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         if selectedUsers.count > 0 {
             // Show button for send
             sendCardButton.isHidden = false
+            sendCardButton.isEnabled = true
         }else{
             // Hide button
-            sendCardButton.isHidden = true
+            //sendCardButton.isHidden = true
+            // Set button to origial settings
+            
+            sendCardButton.isEnabled = false
         }
         
         

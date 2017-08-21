@@ -120,10 +120,10 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
         textField.delegate = self
         
         // Hide pins to start
-        firstPinView.isHidden = true
+        /*firstPinView.isHidden = true
         secondPinView.isHidden = true
         thirdPinView.isHidden = true
-        fourthPinView.isHidden = true
+        fourthPinView.isHidden = true*/
         
         
         /*let when = DispatchTime.now() + 5 // change 2 to desired number of seconds
@@ -139,7 +139,7 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         textField.becomeFirstResponder()
-        //   textField.inputAccessoryView = keyboardCancelButton
+        textField.inputAccessoryView = keyboardCancelButton
         
         
     }
@@ -261,18 +261,18 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
         switch counter {
         case 1:
             firstPin.isHidden = false
-            firstPinView.isHidden = true
+            firstPinView.isHidden = false
         case 2:
             secondPin.isHidden = false
-            secondPinView.isHidden = true
+            secondPinView.isHidden = false
             
         case 3:
             thirdPin.isHidden = false
-            thirdPinView.isHidden = true
+            thirdPinView.isHidden = false
             
         case 4:
             fourthPin.isHidden = false
-            fourthPinView.isHidden = true
+            fourthPinView.isHidden = false
             
         default:
             print("All pins hidden")

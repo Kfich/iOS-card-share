@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+
     
     // Store image icons
     var socialLinkBadges = [[String : Any]]()
@@ -36,6 +37,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // Bools to check if array contents empty
     var arraysPopulated = false
     
+    var sections = [String]()
+    var tableData = [String: [String]]()
     
     // IBOutlets
     // ===================================
@@ -69,6 +72,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // Badge carosel
     @IBOutlet var badgeCollectionView: UICollectionView!
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    
+    @IBOutlet var shadowView: YIInnerShadowView!
+    
     // Page Setup
     
     override func viewDidLoad() {
@@ -146,7 +152,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         profileInfoTableView.reloadData()
         self.badgeCollectionView.reloadData()
         
-        
+        // Set shadow
+        self.shadowView.shadowRadius = 2
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         
     }
@@ -264,7 +272,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        cell.contentView.layer.borderColor = UIColor.clear.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -308,30 +316,11 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
          return 0
          }
          */
-        return 8
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return bios.count
-        case 1:
-            return workInformation.count
-        case 2:
-            return titles.count
-        case 3:
-            return emails.count
-        case 4:
-            return phoneNumbers.count
-        case 5:
-            return socialLinks.count
-        case 6:
-            return websites.count
-        case 7:
-            return organizations.count
-        default:
-            return 0
-        }
+            return tableData[sections[section]]!.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -339,7 +328,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         /*if bios.count == 0 && workInformation.count == 0 && titles.count == 0 && emails.count == 0 && phoneNumbers.count == 0 && socialLinks.count == 0 && websites.count == 0 && organizations.count == 0{
             return "Edit profile to add information"
         }*/
-        
+        /*
         switch section {
         case 0:
             if bios.count != 0 {
@@ -396,7 +385,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             
         default:
             return "Edit profile to add information"
-        }
+        }*/
+        return sections[section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -404,8 +394,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
         
+        cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
-        switch indexPath.section {
+        /*switch indexPath.section {
         case 0:
             //cell.titleLabel.text = "Bio \(indexPath.row)"
             cell.descriptionLabel.text = bios[indexPath.row]
@@ -442,9 +433,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             // Set
             cell.titleLabel.text = "No Data"
             return cell
-        }
+        }*/
         
-        
+        return cell
         
     }
     // Set row height
@@ -452,10 +443,51 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 45.0
     }
-    
-    /*func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    /*
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // Config container view
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        // Create section header buttons
+        let imageName = "icn-time.png"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        imageView.frame = CGRect(x: 10, y: 10, width: 12, height: 12)
+        
+        // Add label to the view
+        let lbl = UILabel(frame: CGRect(30, 9, 100, 15))
+        lbl.text = "Recents"
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor.white
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        
+        // Add subviews
+        containerView.addSubview(lbl)
+        containerView.addSubview(imageView)
+        
+        return containerView
+    }
+    */
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+        containerView.backgroundColor = UIColor.white
+        
+        // Add label to the view
+        var lbl = UILabel(frame: CGRect(8, 3, 180, 15))
+        lbl.text = sections[section]
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        
+        // Add subviews
+        containerView.addSubview(lbl)
+        
+        return containerView
+        
+        /*let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         // Add label to the view
         var lbl = UILabel(frame: CGRect(8, 3, 100, 15))
         lbl.textAlignment = .left
@@ -466,12 +498,25 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         switch section {
         case 0:
             if bios.count != 0 {
-                lbl.text = "Bios"
-                // Create container
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
                 containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
+                
+                // Create section header buttons
+                let imageName = "icn-time.png"
+                let image = UIImage(named: imageName)
+                let imageView = UIImageView(image: image!)
+                imageView.frame = CGRect(x: 10, y: 10, width: 12, height: 12)
+                
+                // Add label to the view
+                //lbl = UILabel(frame: CGRect(30, 9, 100, 15))
+                lbl.text = "Recents"
+                lbl.textAlignment = .left
+                lbl.textColor = UIColor.white
+                lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+                
+                // Add subviews
                 containerView.addSubview(lbl)
+                containerView.addSubview(imageView)
                 return containerView
             }
         case 1:
@@ -495,11 +540,25 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             }
         case 3:
             if emails.count != 0 {
-                lbl.text = "Emails"
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
-                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
+                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+                containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+                
+                // Create section header buttons
+                let imageName = "icn-time.png"
+                let image = UIImage(named: imageName)
+                let imageView = UIImageView(image: image!)
+                imageView.frame = CGRect(x: 10, y: 10, width: 12, height: 12)
+                
+                // Add label to the view
+                //lbl = UILabel(frame: CGRect(30, 9, 100, 15))
+                lbl.text = "Recents"
+                lbl.textAlignment = .left
+                lbl.textColor = UIColor.white
+                lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+                
+                // Add subviews
                 containerView.addSubview(lbl)
+                containerView.addSubview(imageView)
                 return containerView
             }
             
@@ -545,15 +604,14 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             
         default:
             lbl.text = ""
-            let containerView = UIView()
-            return containerView
+
         }
-        return view
+        return view*/
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
-    }*/
+    }
 
     
     
@@ -710,79 +768,118 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.organizations = [String]()
         self.websites = [String]()
         self.workInformation = [String]()
+        self.sections.removeAll()
+        self.tableData.removeAll()
         
         // Parse bio info
         //currentUser = ContactManager.sharedManager.currentUser
         
         if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
+            // Add section
+            sections.append("Bios")
             // Iterate throught array and append available content
             for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
                 bios.append((bio["bio"])!)
                 print(bio["bio"])
             }
+            
+            // Create section data 
+            self.tableData["Bios"] = bios
         }
         
         // Parse work info
         
         if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
+            // Add section
+            sections.append("Work")
             // Iterate and parse
             for info in ContactManager.sharedManager.currentUser.userProfile.workInformationList{
                 workInformation.append((info["work"])!)
             }
+            // Create section data
+            self.tableData["Work"] = workInformation
         }
         // Parse work info
         if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+            // Add section
+            sections.append("Titles")
             for info in ContactManager.sharedManager.currentUser.userProfile.titles{
                 titles.append((info["title"])!)
                 print(info["title"])
             }
+            // Create section data
+            self.tableData["Titles"] = titles
         }
-         
+        
          if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
+            // Add section
+            sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 phoneNumbers.append((number["phone"])!)
             }
+            // Create section data
+            self.tableData["Phone Numbers"] = phoneNumbers
          
         }
         // Parse emails
         
         if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
+            // Add section
+            sections.append("Emails")
             for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
             }
+            // Create section data
+            self.tableData["Emails"] = emails
         }
         
         // Parse websites
         if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+            // Add section
+            sections.append("Websites")
             for site in ContactManager.sharedManager.currentUser.userProfile.websites{
                 websites.append(site["website"]!)
             }
+            // Create section data
+            self.tableData["Websites"] = websites
          
         }
          // Parse organizations
         if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            // Add section
+            sections.append("Organizations")
             for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
                 organizations.append(org["organization"]!)
             }
+            // Create section data
+            self.tableData["Organizations"] = organizations
         }
          // Parse Tags
         if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
+            // Add section
+            sections.append("Tags")
             
             for hashtag in ContactManager.sharedManager.currentUser.userProfile.tags{
          
                 tags.append(hashtag["tag"]!)
         
             }
+            // Create section data
+            self.tableData["Tags"] = tags
          }
         
         // Parse notes
          if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
          
+            // Add section
+            sections.append("Notes")
             for note in ContactManager.sharedManager.currentUser.userProfile.notes{
          
             notes.append(note["note"]!)
          
             }
+            // Create section data
+            self.tableData["Notes"] = notes
          }
          // Parse socials links
          if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
@@ -793,7 +890,10 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
                 print("ParseProfileData function executing")
          
             }
+            
          }
+        
+        print("This is the section count .. \(sections.count)")
         
         // Parse out social icons
         self.parseForSocialIcons()

@@ -50,6 +50,9 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
     
     @IBOutlet var cardWrapperView: UIView!
     
+    @IBOutlet var shadowView: YIInnerShadowView!
+    
+    
     
     
     
@@ -95,6 +98,10 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         //self.profileImageContainerView = self.configureSelectedImageView(selectedImage: UIImage(named: "user")!)
         
         self.configureSelectedImageView(imageView: self.profileImageContainerView)
+        
+        // Set shadow 
+        self.shadowView.shadowRadius = 3
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         
     }
