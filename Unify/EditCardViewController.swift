@@ -87,6 +87,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet var mediaButton6: UIBarButtonItem!
     @IBOutlet var mediaButton7: UIBarButtonItem!
     
+    @IBOutlet var cardNameButton: UIButton!
     // Action buttons
     
     @IBOutlet var addImageButton: UIButton!
@@ -147,6 +148,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
          titles = ["Entrepreneur", "Salesman", "Full Stack Engineer"]
          workInformation = ["Job 1", "Job 2", "Example Job", "Sample Job"]
          */
+        
+        // Set button 
+        self.cardNameButton.setTitle(card.cardName ?? "", for: .normal)
         
     }
     

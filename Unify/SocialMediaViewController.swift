@@ -127,6 +127,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         cell.contentView.backgroundColor = UIColor.clear
         
+        
         // Set image from array of images
         //cell.mediaImageView.image =  UIImage(named: "icn-social-facebook.png")//thumbnailImageList[indexPath.row]
         

@@ -475,7 +475,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         }
         
         // Add image to the end of list
-        let image = UIImage(named: "icn-plus-green")
+        let image = UIImage(named: "Green-1")
         self.socialBadges.append(image!)
         // Get images
         parseAccountForImges()
@@ -493,7 +493,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Check for image, set to imageview
         if currentUser.profileImages.count > 0{
             for img in currentUser.profileImages {
-                let image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+                let image = UIImage(data: img["image_data"] as! Data)
                 // Append to list
                 self.profileImages.append(image!)
             }
@@ -501,7 +501,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Append dummy image to the end
         // Add image to the end of list
-        let image = UIImage(named: "icn-plus-green")
+        let image = UIImage(named: "Green-1")
         self.profileImages.append(image!)
         
         // Refresh
@@ -881,8 +881,8 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
         
         cell.contentView.layer.cornerRadius = 23.0
         cell.contentView.clipsToBounds = true
-        cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.backgroundColor = UIColor.clear.cgColor
+        //cell.contentView.layer.borderWidth = 0.5
+        //cell.contentView.layer.backgroundColor = UIColor.clear.cgColor
         //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         

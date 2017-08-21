@@ -72,8 +72,9 @@ class EditProfileContainerViewController: FormViewController {
             self.parseProfileData()
             
             
+            self.tableView.backgroundColor = UIColor.white
             
-            title = "Multivalued Examples"
+            //title = "Multivalued Examples"
             form +++
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "Bio Information", footer: "") {
                     $0.tag = "Bio Section"
@@ -270,28 +271,28 @@ class EditProfileContainerViewController: FormViewController {
                 +++
                 
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                                   header: "Social Media Links",
+                                   header: "Tags",
                                    footer: "") {
-                                    $0.tag = "Media Section"
+                                    $0.tag = "Tag Section"
                                     $0.addButtonProvider = { section in
                                         return ButtonRow(){
-                                            $0.title = "Add Media Info"
+                                            $0.title = "Add Tag"
                                             //$0.tag = "Add Media Info"
                                             }.cellUpdate { cell, row in
                                                 cell.textLabel?.textAlignment = .left
                                         }
                                     }
                                     $0.multivaluedRowToInsertAt = { index in
-                                        return NameRow("socialLinkRow_\(index)") {
-                                            $0.placeholder = "Link"
+                                        return NameRow("tagRow_\(index)") {
+                                            $0.placeholder = "Tag"
                                             //$0.tag = "Add Media Info"
                                         }
                                     }
                                     
                                     // Iterate through array and set val
-                                    for val in socialLinks{
+                                    for val in tags{
                                         $0 <<< NameRow() {
-                                            $0.placeholder = "Link"
+                                            $0.placeholder = "Tag"
                                             $0.value = val
                                             //$0.tag = "Add Media Info"
                                         }
@@ -463,13 +464,13 @@ class EditProfileContainerViewController: FormViewController {
             }
             
             // Social Media Section
-            let mediaValues = form.sectionBy(tag: "Media Section")
+            let mediaValues = form.sectionBy(tag: "Tag Section")
             for val in mediaValues! {
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.setSocialLinks(socialRecords: ["link": str])
-                        socialLinks.append(str)
+                        ContactManager.sharedManager.currentUser.userProfile.setTags(tagRecords: ["tag": str])
+                        tags.append(str)
                         
                         //print("Social links not needed here anymore")
                     }
@@ -586,6 +587,7 @@ class EditProfileContainerViewController: FormViewController {
          ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
          ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
          ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.tags.removeAll()
     }
     
     func removeAllFromArrays() {
@@ -608,6 +610,7 @@ class EditProfileContainerViewController: FormViewController {
         organizations.removeAll()
         socialLinks.removeAll()
         workInformation.removeAll()
+        tags.removeAll()
         
         
         
