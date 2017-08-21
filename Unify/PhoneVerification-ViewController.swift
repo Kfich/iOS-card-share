@@ -402,7 +402,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             print(">Passed Token")
             print(sender)
             
-            let nextScene =  segue.destination as! PhoneVerificationPinViewController
+            let nextScene =  segue.destination as! PinAuthViewController
             nextScene.currentUser = self.currentUser
             nextScene.isCurrentUser = self.isCurrentUser
             // Test the object has proper values

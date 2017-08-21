@@ -105,13 +105,20 @@ class AddContactContainerViewController: FormViewController {
         // Parse socials links
         if contact.socialLinks.count > 0{
             for link in contact.socialLinks{
-                notes.append(link["link"]!)
+                socialLinks.append(link["link"]!)
+            }
+        }
+        // Parse socials links
+        if contact.tags.count > 0{
+            for link in contact.tags{
+                tags.append(link["tag"]!)
             }
         }
         
+        // Set bg
+        tableView.backgroundColor = UIColor.white
         
-        
-        title = "Multivalued Examples"
+        //title = "Multivalued Examples"
         form +++
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Titles",
@@ -255,6 +262,36 @@ class AddContactContainerViewController: FormViewController {
                                 for val in socialLinks{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Link"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+            }
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "Tags",
+                               footer: "") {
+                                $0.tag = "Tag Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Tag"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("tagRow_\(index)") {
+                                        $0.placeholder = "Tag"
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in tags{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Tag"
                                         $0.value = val
                                         //$0.tag = "Add Media Info"
                                     }
@@ -412,6 +449,21 @@ class AddContactContainerViewController: FormViewController {
                     }
                 }
             }
+            
+            // Social Media Section
+            let tagValues = form.sectionBy(tag: "Tag Section")
+            for val in tagValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        contact.setTags(tag: str)
+                        tags.append(str)
+                        
+                        //print("Social links not needed here anymore")
+                    }
+                }
+            }
+
             
             // Organization section
             let organizationValues = form.sectionBy(tag: "Organization Section")

@@ -13,9 +13,12 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
     // Properties
     // =========================================
     
+    var currentUser = User()
     var counter = 0
     var testPin = "1111"
     var usePin: Bool = false
+    var userPin = ""
+    var isCurrentUser = false
     
     var attempt = 1 {
         didSet {
@@ -186,7 +189,9 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
     // Validate pin entry
     func onPin(pin: String) {
         
-        if pin == testPin {
+        self.processPin(pinString: pin)
+        
+        /*if pin == testPin {
             attempt = 1
             view.endEditing(true)
             //goHome()
@@ -205,7 +210,7 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
             if attempt < totalAttempt {
                 print("This printed !")
                 
-                showOKAlertView(title: nil, message: "Incorrect PIN\nAttempt \(attempt) of \(totalAttempt)")
+                showOKAlertView(title: nil, message: "Incorrect PIN\nPlease try again.")
                 
                 attempt = attempt + 1
                 
@@ -217,7 +222,160 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
                 resetPin()
                 // self.navigationController?.popViewControllerAnimated(true)
             }
+        }*/
+    }
+    // Custom Methods
+    
+    // Process Pin on confirmation
+    
+    func processPin(pinString: String){
+        
+        userPin = pinString
+        
+        // Set Params
+        let parameters = ["pin": userPin, "token": currentUser.userId]
+        
+        // Show Progress HUD
+        KVNProgress.show(withStatus: "Creating your account...")
+        
+        Connection(configuration: nil).verifyPinCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Create User Response: \(String(describing: response))\n\n")
+                
+                Countly.sharedInstance().recordEvent("phone verification successful")
+                
+                // If here, that means we matched
+                
+                // Show indicator
+                KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
+                
+                
+                self.currentUser.setVerificationPhoneStatus(status: true)
+                
+                
+                
+                // Assign current user to manager object
+                //ContactManager.sharedManager.currentUser = self.currentUser
+                
+                // Store user to device
+                //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                
+                
+                // Check if current user
+                self.checkForExisitingAccount()
+                
+                
+                
+            } else {
+                
+                print(error ?? "Error Occured Processing pin")
+                
+                //self.verifyBtn.isEnabled = true
+                
+                // Show user popup of error message
+                print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")
+                //KVNProgress.showError(withStatus: "Your pin is incorrect. Please try again")
+                print("Wrong pin")
+                self.updatePins(count: 0)
+                
+                if self.attempt < self.totalAttempt {
+                    print("This printed !")
+                    
+                    self.showOKAlertView(title: nil, message: "Incorrect PIN\nPlease try again.")
+                    
+                    self.attempt = self.attempt + 1
+                    
+                    self.pinEntry = ""
+                    self.textField.text = ""
+                    self.counter = 0
+                    
+                } else {
+                    self.resetPin()
+                    // self.navigationController?.popViewControllerAnimated(true)
+                }
+
+            }
+            
+        })
+        
+        
+    }
+    
+    func checkForExisitingAccount()  {
+        // Bool check
+        if isCurrentUser {
+            // Set to manager
+            //ContactManager.sharedManager.currentUser = self.currentUser
+            
+            // Fetch data
+            self.fetchCurrentUser()
+            
+        }else{
+            // Send to create profile
+            performSegue(withIdentifier: "createProfileSegue", sender: self)
         }
+    }
+    
+    func fetchCurrentUser() {
+        // Fetch cards from server
+        let parameters = ["uuid" : currentUser.userId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Fetching profile...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).getUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Get User Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print("\n\nUser from get call")
+                print(dictionary)
+                
+                let profileDict = dictionary["data"]
+                
+                let user = User(snapshot: profileDict as! NSDictionary)
+                
+                //let user = //User(snapshot: dictionary as NSDictionary)
+                print("PRINTING USER")
+                user.printUser()
+                
+                // Set current user
+                ContactManager.sharedManager.currentUser = user
+                
+                // Show homepage
+                DispatchQueue.main.async {
+                    // Update UI
+                    // Show Home Tab
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                    TabBarViewController
+                    self.view.window?.rootViewController = homeViewController
+                }
+                
+                
+                // Fetch cards
+                //self.fetchUserCards()
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your account info. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
     }
     
     // Reset pin entry

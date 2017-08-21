@@ -18,6 +18,8 @@ class SettingsViewCell: UITableViewCell {
     
     // IBOutlets
     // ------------------------
+    @IBOutlet var badgeImageView: UIImageView!
+    
     @IBOutlet var incongnitoSwitch: UISwitch!
     
     @IBOutlet var syncContactsSwitch: UISwitch!

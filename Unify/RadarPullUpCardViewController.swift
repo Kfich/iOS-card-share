@@ -366,7 +366,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
     
         
-        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count {
+        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count - 1 {
             
            // AddNewCardCell
             // get a reference to our storyboard cell
@@ -381,6 +381,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             // Get badge list
             cell.badgeList = self.parseCardForBagdes(card: currentCard)
+            
+            if currentCard.isVerified{
+                cell.cardWrapperView.layer.borderWidth = 1.5
+                cell.cardWrapperView.layer.borderColor = UIColor.yellow as! CGColor
+            }
             
             // Populate text field data
             
@@ -438,7 +443,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             containerView.addSubview(imageView)*/
             
             let containerView = self.createAddNewCell(cell: cell)
-            cell.addSubview(containerView)
+            cell.contentView.addSubview(containerView)
         }
         
     }
@@ -642,15 +647,15 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func createAddNewCell(cell: UICollectionViewCell) -> UIView{
         
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height))
+        //containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         //containerView.layer.borderColor = UIColor.clear as? CGColor
         
         // Create section header buttons
         let imageName = "add-card"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
+        imageView.frame = CGRect(x: 0, y: 10, width: cell.contentView.frame.width - 10, height: cell.contentView.frame.height - 25)
         
         // Add gesture action
         

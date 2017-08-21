@@ -159,7 +159,7 @@ class AddContactViewController: UIViewController {
         // Configure borders
         imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 35    // Create container for image and name
+        imageView.layer.cornerRadius = 45    // Create container for image and name
         
     }
     

@@ -166,7 +166,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             print("iphone 6 plus zoomed")
         } else {
             //standard device
-            halo.position.y = pulseView.frame.height / 2.55
+            halo.position.y = pulseView.frame.height / 2.7
             halo.position.x = pulseView.frame.width / 1.8
             print("iphone 6 plus")
         }

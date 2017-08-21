@@ -17,6 +17,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     var selectedLink = ""
     var thumbnailImageList = [UIImage]()
     var reuseIdentifier = "ThumbnailCell"
+    var selectedIndex = 0
     
     // Test data config
     let img1 = UIImage(named: "icn-social-facebook.png")
@@ -153,6 +154,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         // Set selected link
         self.selectedLink = links[indexPath.row]
+        self.selectedIndex = indexPath.row
         // Hit the segue
         performSegue(withIdentifier: "showAddSocialLink", sender: self)
     }
@@ -184,6 +186,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         // Notification to reload views
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: self)
     }
+    
     
     func configureViews(cell: MediaThumbnailCell, index: Int){
         // Add radius config & border color
@@ -221,6 +224,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     
     
     
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -233,6 +237,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
             let nextVC = segue.destination as! SocialMediaDetailViewController
             // Pass selected link
             nextVC.selectedMediaLink = self.selectedLink
+            nextVC.selectedImage = self.thumbnailImageList[self.selectedIndex]
         }
      }
     

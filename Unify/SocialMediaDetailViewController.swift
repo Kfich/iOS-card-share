@@ -14,12 +14,13 @@ class SocialMediaDetailViewController: UIViewController {
     // -------------------------------------
     var currentUser = User()
     var selectedMediaLink = ""
+    var selectedImage = UIImage()
     
     // IBOutlets
     // -------------------------------------
     @IBOutlet var mediaTextField: UITextField!
     
-    
+    @IBOutlet var iconImageView: UIImageView!
     
     // Page setup
     override func viewDidLoad() {
@@ -29,6 +30,7 @@ class SocialMediaDetailViewController: UIViewController {
         
         // Set selected link to the box 
         mediaTextField.text = self.selectedMediaLink
+        self.configureSelectedImageView(imageView: iconImageView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -104,6 +106,17 @@ class SocialMediaDetailViewController: UIViewController {
         // Notification for radar screen
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Media Selected"), object: self)
         
+    }
+
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1.5
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 45    // Create container for image and name
+        // Set image
+        imageView.image = self.selectedImage
     }
 
     

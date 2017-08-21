@@ -136,7 +136,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
     
         // Init cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
-        
+        self.configureSelectedImageView(imageView: cell.badgeImageView)
         // Set text
         //cell.textLabel?.text = currentUserCards[indexPath.row].cardName
         // Set text
@@ -145,10 +145,13 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
             // Return count
             cell.badgeName.text = ContactManager.sharedManager.currentUserCards[indexPath.row].cardName
             cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUserCards[indexPath.row].isHidden
+            //cell.badgeImageView.image = ContactManager.sharedManager.currentUserCards[indexPath].
             
         }else{
             // Set titleview
             cell.badgeName.text = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].website
+            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            cell.badgeImageView.setImageWith(fileUrl! as URL)
             cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
             
         }
@@ -195,7 +198,16 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
 
         
     }
-    
+    func configureSelectedImageView(imageView: UIImageView) {
+        // Config imageview
+        
+        // Configure borders
+        imageView.layer.borderWidth = 1
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 17    // Create container for image and name
+
+    }
+
     
 
     /*

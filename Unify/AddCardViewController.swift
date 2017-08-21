@@ -120,6 +120,11 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             // Find current card index
             let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
             
+            if currentCard.isVerified{
+                cell.cardWrapperView.layer.borderWidth = 1.5
+                cell.cardWrapperView.layer.borderColor = UIColor.yellow as! CGColor
+            }
+            
             // Populate text field data
             
             if currentCard.cardHolderName != nil {

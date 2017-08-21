@@ -47,7 +47,7 @@ class TabBarViewController: UITabBarController{
         self.tabBar.items?[0].image = UIImage(named: "contact")
         
         //self.tabBar.items?[1].selectedImage = UIImage(named: "intro-full")
-        self.tabBar.items?[1].image = UIImage(named: "intro")
+        self.tabBar.items?[1].image = UIImage(named: "intro-full")
         
         /*self.tabBar.items?[1].selectedImage = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.automatic)
         self.tabBar.items?[1].image = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.automatic)*/

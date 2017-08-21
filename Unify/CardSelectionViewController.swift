@@ -152,6 +152,12 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Set shadow
         self.shadowView.shadowRadius = 3.0
         self.shadowView.shadowMask = YIInnerShadowMaskTop
+        
+        // Register
+        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"SocialBadgeCell")
+        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"BadgeCell")
+        
+        //self.socialBadgeCollectionView
     }
 
     // Page Setup
@@ -187,6 +193,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Set color to nav bar
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
+        
+        // Register
+        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"SocialBadgeCell")
+        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"BadgeCell")
         
         
         // Reset arrays
@@ -329,11 +339,11 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SocialBadgeCell", for: indexPath) as! MediaThumbnailCell
         
         if collectionView == self.badgeCollectionView {
             // Badge config
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath) as! MediaThumbnailCell
             
             self.configureBadges(cell: cell)
             
