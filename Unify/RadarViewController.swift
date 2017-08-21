@@ -158,6 +158,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         //add halo to pulseview as sublayer only once when view loads to prevent dups
         
+        
         if (UIScreen.main.bounds.size.height == 667.0 && UIScreen.main.nativeScale < UIScreen.main.scale){
             //plus device
             halo.position.y = pulseView.frame.height / 2.55

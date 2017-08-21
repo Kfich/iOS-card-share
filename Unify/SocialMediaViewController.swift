@@ -88,12 +88,19 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         mediaCollectionView.reloadData()
         
+        // Configure blur
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mediaCollectionView.backgroundView?.addSubview(blurEffectView)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!, img14!, img15!, img16!, img17!, img18!, img19!, img20!, img21!, img22!, img23!]
+        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!, img14!, img15!, img16!, img17!, img18!, img19!, img20!, img21!, img22!, img23!, img24!]
     }
     
     override func didReceiveMemoryWarning() {
@@ -106,7 +113,8 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     
     @IBAction func dismissView(_ sender: Any) {
         // Dismiss view 
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -180,9 +188,9 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     func configureViews(cell: MediaThumbnailCell, index: Int){
         // Add radius config & border color
         
-        cell.contentView.layer.cornerRadius = 75.0
+        cell.contentView.layer.cornerRadius = 45.0
         cell.contentView.clipsToBounds = true
-        cell.contentView.layer.borderWidth = 0.5
+        //cell.contentView.layer.borderWidth = 0.5
         //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
@@ -192,7 +200,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         cell.layer.shadowRadius = 0.5
         
         let imageView = UIImageView()
-        imageView.frame = CGRect(x: 0, y: 0 , width: 150, height: 150)
+        imageView.frame = CGRect(x: 0, y: 0 , width: 90, height: 90)
         //let image = thumbnailImageList[]
         imageView.image = thumbnailImageList[index]
         cell.contentView.addSubview(imageView)

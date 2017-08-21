@@ -329,65 +329,85 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func deleteCard(_ sender: Any) {
         
-        // Delete card from local storage
-        ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
-        
-        
-        
-        // Set array to defualts
-        UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
-        
-        
-        // Delete card
-        
-        // Send to server
-        let parameters = ["uuid" : card.cardId]
-        print("\n\nTHE CARD TO ANY - PARAMS")
-        print(parameters)
-        
-        // Show alert 
-        KVNProgress.show(withStatus: "Deleting current card ...")
-        
-        // Connect to server
-        Connection(configuration: nil).deleteCardCall(parameters){ response, error in
-            if error == nil {
-                print("Card Created Response ---> \(String(describing: response))")
-                
-                // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                print(dictionary)
-                
-                // Remove from manager card array
-                //ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
-                
-                // Reset array to defualts
-                //UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
-                
-                // Hide HUD
-                KVNProgress.dismiss()
-                
-                // Post notification for radar view to refresh
-                self.postDeleteNotification()
-                // Dismiss VC
-                /*self.dismiss(animated: true, completion: {
-                    // Send to database to update card with the new uuid
-                    print("Send to db")
-                })*/
-                
-            } else {
-                print("Card Created Error Response ---> \(String(describing: error))")
-                // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error deleting your card. Please try again.")
-            }
-            // Hide indicator
-            KVNProgress.dismiss()
-        }
-        // Dismiss VC
-        self.dismiss(animated: true, completion: {
-            // Send to database to update card with the new uuid
-            print("Send to db")
+        // Configure alertview
+        let alertView = UIAlertController(title: "Are you sure you want to delete this card?", message: "You are about to delete this card.", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
+            
+            // Dismiss alert
+            self.dismiss(animated: true, completion: nil)
+            
         })
         
+        let ok = UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
+            
+            // Delete card from local storage
+            ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
+            
+            
+            
+            // Set array to defualts
+            UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+            
+            
+            // Delete card
+            
+            // Send to server
+            let parameters = ["uuid" : self.card.cardId]
+            print("\n\nTHE CARD TO ANY - PARAMS")
+            print(parameters)
+            
+            // Show alert
+            KVNProgress.show(withStatus: "Deleting current card ...")
+            
+            // Connect to server
+            Connection(configuration: nil).deleteCardCall(parameters){ response, error in
+                if error == nil {
+                    print("Card Created Response ---> \(String(describing: response))")
+                    
+                    // Set card uuid with response from network
+                    let dictionary : Dictionary = response as! [String : Any]
+                    print(dictionary)
+                    
+                    // Remove from manager card array
+                    //ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
+                    
+                    // Reset array to defualts
+                    //UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+                    
+                    // Hide HUD
+                    KVNProgress.dismiss()
+                    
+                    // Post notification for radar view to refresh
+                    self.postDeleteNotification()
+                    // Dismiss VC
+                    /*self.dismiss(animated: true, completion: {
+                     // Send to database to update card with the new uuid
+                     print("Send to db")
+                     })*/
+                    
+                } else {
+                    print("Card Created Error Response ---> \(String(describing: error))")
+                    // Show user popup of error message
+                    KVNProgress.showError(withStatus: "There was an error deleting your card. Please try again.")
+                }
+                // Hide indicator
+                KVNProgress.dismiss()
+            }
+            // Dismiss VC
+            self.dismiss(animated: true, completion: {
+                // Send to database to update card with the new uuid
+                print("Send to db")
+            })
+
+            
+        })
+        
+        // Add actions 
+        alertView.addAction(cancel)
+        alertView.addAction(ok)
+        // Show Alert
+        self.present(alertView, animated: true, completion: nil)
+
     }
     
     func configureSelectedImageView(imageView: UIImageView) {
