@@ -52,6 +52,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var socialBadges = [UIImage]()
     var userDidEditProfile = false
     
+    var sections = [String]()
+    var tableData = [String: [String]]()
+    
     var isSimulator = false
     
     // Photo picker variable
@@ -93,6 +96,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
     
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -124,6 +128,10 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Photo picker config
         configurePhotoPicker()
+        
+        // Set shadow 
+        self.shadowView.shadowRadius = 3
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Do any additional setup after loading the view.
         
@@ -641,90 +649,44 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 8
+        
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return bios.count
-        case 1:
-            return workInformation.count
-        case 2:
-            return titles.count
-        case 3:
-            return emails.count
-        case 4:
-            return phoneNumbers.count
-        case 5:
-            return socialLinks.count
-        case 6:
-            return websites.count
-        case 7:
-            return organizations.count
-        default:
-            return 5
-        }
+        return tableData[sections[section]]!.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            if bios.count != 0 {
-                return "Bios"
-            }else{
-                return ""
-            }
-        case 1:
-            if workInformation.count != 0 {
-                return "Work Information"
-            }else{
-                return ""
-            }
-        case 2:
-            if titles.count != 0 {
-                return "Titles"
-            }else{
-                return ""
-            }
-        case 3:
-            if emails.count != 0 {
-                return "Emails"
-            }else{
-                return ""
-            }
-            
-        case 4:
-            if phoneNumbers.count != 0 {
-                return "Phone Numbers"
-            }else{
-                return ""
-            }
-            
-        case 5:
-            if socialLinks.count != 0 {
-                return "Social Media"
-            }else{
-                return ""
-            }
-            
-        case 6:
-            if websites.count != 0 {
-                return "Websites"
-            }else{
-                return ""
-            }
-            
-        case 7:
-            if organizations.count != 0 {
-                return "Organizations"
-            }else{
-                return ""
-            }
-            
-        default:
-            return ""
-        }
+        
+        return sections[section]
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        return 45.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+        containerView.backgroundColor = UIColor.white
+        
+        // Add label to the view
+        var lbl = UILabel(frame: CGRect(8, 3, 180, 15))
+        lbl.text = sections[section]
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        
+        // Add subviews
+        containerView.addSubview(lbl)
+        
+        return containerView
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -870,8 +832,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         // Switch case to find right section
-        switch indexPath.section {
-        case 0:
+        switch sections[indexPath.section]{
+        case "Bios":
             //card.cardProfile.bio = bios[indexPath.row]
             
             if self.selectedBios.contains(bios[indexPath.row]) {
@@ -887,7 +849,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
             }
             
-        case 1:
+        case "Work":
             //card.cardProfile.workInfo = workInformation[indexPath.row]
             
             if self.selectedWorkInformation.contains(workInformation[indexPath.row]) {
@@ -901,7 +863,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 card.cardProfile.setWorkRecords(emailRecords: ["work" : workInformation[indexPath.row]])
             }
             
-        case 2:
+        case "Titles":
             //card.cardProfile.title = titles[indexPath.row]
             
             // Check if already selected
@@ -918,7 +880,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 self.titleLabel.text = titles[indexPath.row]
             }
             
-        case 3:
+        case "Emails":
             // Check if in array already
             if self.selectedEmails.contains(emails[indexPath.row]) {
                 // Already in list
@@ -939,7 +901,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
             //self.emailLabel.text = emails[indexPath.row]
             
-        case 4:
+        case "Phone Numbers":
             
             // Check if in array
             if self.selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
@@ -958,20 +920,20 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             
-        case 5:
+        case "Tags":
             // Check if in array 
-            if self.selectedSocialLinks.contains(socialLinks[indexPath.row]) {
+            if self.selectedSocialLinks.contains(tags[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedSocialLinks.remove(at: indexPath.row)
-                self.socialLinks.remove(at: indexPath.row)
+                self.selectedTags.remove(at: indexPath.row)
+                self.tags.remove(at: indexPath.row)
             }else{
                 // Append to array
-                card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+                card.cardProfile.tags.append(["tag" : tags[indexPath.row]])
                 // Print for test
-                print(card.cardProfile.socialLinks as Any)
+                print(card.cardProfile.tags as Any)
             }
-        case 6:
+        case "Websites":
             // Check if in array 
             if self.selectedWebsites.contains(websites[indexPath.row]) {
                 // Already in list
@@ -984,7 +946,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 // Print for test
                 print(card.cardProfile.websites as Any)
             }
-        case 7:
+        case "Organizations":
             if self.selectedOrganizations.contains(organizations[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
@@ -996,6 +958,19 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 // Print for test
                 print(card.cardProfile.organizations as Any)
             }
+        case "Notes":
+            if self.selectedNotes.contains(notes[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedNotes.remove(at: indexPath.row)
+                self.notes.remove(at: indexPath.row)
+            }else{
+                // Append to array
+                card.cardProfile.notes.append(["note" : notes[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.notes as Any)
+            }
+
         default:
             print("Nothing doing here..")
         }
@@ -1146,76 +1121,110 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.websites = [String]()
         self.workInformation = [String]()
         self.corpBadges.removeAll()
+        self.sections.removeAll()
+        self.tableData.removeAll()
         
         // Parse bio info
         if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
+            // Add section
+            sections.append("Bios")
             // Iterate throught array and append available content
             for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
                 bios.append((bio["bio"])!)
             }
-            
+            // Create section data
+            self.tableData["Bios"] = bios
         }
         
         // Parse work info
         
         if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
-            
+            // Add section
+            sections.append("Work")
             for info in ContactManager.sharedManager.currentUser.userProfile.workInformationList{
                 workInformation.append((info["work"])!)
             }
+            // Create section data
+            self.tableData["Work"] = workInformation
         }
+        
         // Parse work info
         if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+            // Add section
+            sections.append("Titles")
             for info in ContactManager.sharedManager.currentUser.userProfile.titles{
                 titles.append((info["title"])!)
             }
+            // Create section data
+            self.tableData["Titles"] = titles
         }
         
         if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
+            // Add section
+            sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 phoneNumbers.append((number["phone"])!)
             }
+            // Create section data
+            self.tableData["Phone Numbers"] = phoneNumbers
             
         }
         // Parse emails
         
         if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
+            // Add section
+            sections.append("Emails")
             for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
             }
+            // Create section data
+            self.tableData["Emails"] = emails
         }
         
         // Parse websites
         if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+            // Add section
+            sections.append("Websites")
             for site in ContactManager.sharedManager.currentUser.userProfile.websites{
                 websites.append(site["website"]!)
             }
-            
+            // Create section data
+            self.tableData["Websites"] = websites
         }
         // Parse organizations
         if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            // Add section
+            sections.append("Organizations")
             for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
                 organizations.append(org["organization"]!)
             }
+            // Create section data
+            self.tableData["Organizations"] = organizations
         }
         // Parse Tags
         if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
-            
+            // Add section
+            sections.append("Tags")
             for hashtag in ContactManager.sharedManager.currentUser.userProfile.tags{
                 
                 tags.append(hashtag["tag"]!)
                 
             }
+            // Create section data
+            self.tableData["Tags"] = tags
         }
         
         // Parse notes
         if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
-            
+            // Add section
+            sections.append("Notes")
             for note in ContactManager.sharedManager.currentUser.userProfile.notes{
                 
                 notes.append(note["note"]!)
                 
             }
+            // Create section data
+            self.tableData["Notes"] = notes
         }
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{

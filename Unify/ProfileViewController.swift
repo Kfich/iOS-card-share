@@ -289,33 +289,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        
-        //if biosPopulated && titlesPopulated && workInformationPopulated && emailsPopulated && titlesPopulated && organizationsPopulated && websitesPopulated
-        
-        /*var count = 0
-         // Iterate through arrays and see if populated
-         switch count {
-         case 0:
-         
-         return bios.count
-         case 1:
-         return workInformation.count
-         case 2:
-         return titles.count
-         case 3:
-         return emails.count
-         case 4:
-         return phoneNumbers.count
-         case 5:
-         return socialLinks.count
-         case 6:
-         return websites.count
-         case 7:
-         return organizations.count
-         default:
-         return 0
-         }
-         */
         return sections.count
     }
     
@@ -325,67 +298,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        /*if bios.count == 0 && workInformation.count == 0 && titles.count == 0 && emails.count == 0 && phoneNumbers.count == 0 && socialLinks.count == 0 && websites.count == 0 && organizations.count == 0{
-            return "Edit profile to add information"
-        }*/
-        /*
-        switch section {
-        case 0:
-            if bios.count != 0 {
-                return "Bios"
-            }else{
-                return ""
-            }
-        case 1:
-            if workInformation.count != 0 {
-                return "Work Information"
-            }else{
-                return ""
-            }
-        case 2:
-            if titles.count != 0 {
-                return "Titles"
-            }else{
-                return ""
-            }
-        case 3:
-            if emails.count != 0 {
-                return "Emails"
-            }else{
-                return ""
-            }
-            
-        case 4:
-            if phoneNumbers.count != 0 {
-                return "Phone Numbers"
-            }else{
-                return ""
-            }
-            
-        case 5:
-            if socialLinks.count != 0 {
-                return "Social Media"
-            }else{
-                return ""
-            }
-            
-        case 6:
-            if websites.count != 0 {
-                return "Websites"
-            }else{
-                return ""
-            }
-            
-        case 7:
-            if organizations.count != 0 {
-                return "Organizations"
-            }else{
-                return ""
-            }
-            
-        default:
-            return "Edit profile to add information"
-        }*/
         return sections[section]
     }
     
@@ -396,45 +308,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
-        /*switch indexPath.section {
-        case 0:
-            //cell.titleLabel.text = "Bio \(indexPath.row)"
-            cell.descriptionLabel.text = bios[indexPath.row]
-            return cell
-        case 1:
-            //cell.titleLabel.text = "Work \(indexPath.row)"
-            cell.descriptionLabel.text = workInformation[indexPath.row] 
-            return cell
-        case 2:
-            //cell.titleLabel.text = "Title \(indexPath.row)"
-            cell.descriptionLabel.text = titles[indexPath.row]
-            return cell
-        case 3:
-            //cell.titleLabel.text = "Email \(indexPath.row)"
-            cell.descriptionLabel.text = emails[indexPath.row] 
-            return cell
-        case 4:
-            //cell.titleLabel.text = "Phone \(indexPath.row)"
-            cell.descriptionLabel.text = phoneNumbers[indexPath.row]
-            return cell
-        case 5:
-            //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
-            cell.descriptionLabel.text = socialLinks[indexPath.row]
-            return cell
-        case 6:
-            //cell.titleLabel.text = "Website \(indexPath.row)"
-            cell.descriptionLabel.text = websites[indexPath.row]
-            return cell
-        case 7:
-            //cell.titleLabel.text = "Organization \(indexPath.row)"
-            cell.descriptionLabel.text = organizations[indexPath.row]
-            return cell
-        default:
-            // Set
-            cell.titleLabel.text = "No Data"
-            return cell
-        }*/
-        
         return cell
         
     }
@@ -443,32 +316,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 45.0
     }
-    /*
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        // Config container view
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
-        containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-        
-        // Create section header buttons
-        let imageName = "icn-time.png"
-        let image = UIImage(named: imageName)
-        let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 10, y: 10, width: 12, height: 12)
-        
-        // Add label to the view
-        let lbl = UILabel(frame: CGRect(30, 9, 100, 15))
-        lbl.text = "Recents"
-        lbl.textAlignment = .left
-        lbl.textColor = UIColor.white
-        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
-        
-        // Add subviews
-        containerView.addSubview(lbl)
-        containerView.addSubview(imageView)
-        
-        return containerView
-    }
-    */
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -487,126 +334,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         return containerView
         
-        /*let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        // Add label to the view
-        var lbl = UILabel(frame: CGRect(8, 3, 100, 15))
-        lbl.textAlignment = .left
-        
-        lbl.textColor = UIColor.white
-        lbl.font = UIFont(name: "Avenir", size: CGFloat(11))
-        
-        switch section {
-        case 0:
-            if bios.count != 0 {
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
-                containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                
-                // Create section header buttons
-                let imageName = "icn-time.png"
-                let image = UIImage(named: imageName)
-                let imageView = UIImageView(image: image!)
-                imageView.frame = CGRect(x: 10, y: 10, width: 12, height: 12)
-                
-                // Add label to the view
-                //lbl = UILabel(frame: CGRect(30, 9, 100, 15))
-                lbl.text = "Recents"
-                lbl.textAlignment = .left
-                lbl.textColor = UIColor.white
-                lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
-                
-                // Add subviews
-                containerView.addSubview(lbl)
-                containerView.addSubview(imageView)
-                return containerView
-            }
-        case 1:
-            if workInformation.count != 0 {
-                lbl.text = "Work"
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
-                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
-                containerView.addSubview(lbl)
-                return containerView
-            }
-                
-        case 2:
-            if titles.count != 0 {
-                lbl.text = "Titles"
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
-                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
-                containerView.addSubview(lbl)
-                return containerView
-            }
-        case 3:
-            if emails.count != 0 {
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
-                containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                
-                // Create section header buttons
-                let imageName = "icn-time.png"
-                let image = UIImage(named: imageName)
-                let imageView = UIImageView(image: image!)
-                imageView.frame = CGRect(x: 10, y: 10, width: 12, height: 12)
-                
-                // Add label to the view
-                //lbl = UILabel(frame: CGRect(30, 9, 100, 15))
-                lbl.text = "Recents"
-                lbl.textAlignment = .left
-                lbl.textColor = UIColor.white
-                lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
-                
-                // Add subviews
-                containerView.addSubview(lbl)
-                containerView.addSubview(imageView)
-                return containerView
-            }
-            
-        case 4:
-            if phoneNumbers.count != 0 {
-                lbl.text = "Phone Numbers"
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
-                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
-                containerView.addSubview(lbl)
-                return containerView
-            }
-            
-        case 5:
-            if socialLinks.count != 0 {
-                lbl.text = "Social Media"
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
-                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
-                containerView.addSubview(lbl)
-                return containerView
-            }
-            
-        case 6:
-            if websites.count != 0 {
-                lbl.text = "Websites"
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
-                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
-                containerView.addSubview(lbl)
-                return containerView
-            }
-            
-        case 7:
-            if organizations.count != 0 {
-                lbl.text = "Organizations"
-                let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 19))
-                containerView.backgroundColor = UIColor.clear//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-                // Add label to view
-                containerView.addSubview(lbl)
-                return containerView
-            }
-            
-        default:
-            lbl.text = ""
-
-        }
-        return view*/
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

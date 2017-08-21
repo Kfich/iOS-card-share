@@ -35,7 +35,13 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     var socialLinkBadges = [[String : Any]]()
     var links = [String]()
     var socialBadges = [UIImage]()
+    
+    
+    var sections = [String]()
+    var tableData = [String: [String]]()
 
+    @IBOutlet var shadowView: YIInnerShadowView!
+    
 
     
     // IBOutlets
@@ -65,6 +71,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     @IBOutlet var emailButton: UIBarButtonItem!
     @IBOutlet var callButton: UIBarButtonItem!
     
+    @IBOutlet var cardNameLabel: UILabel!
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
@@ -142,6 +149,9 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // Set shadow
+        self.shadowView.shadowRadius = 3.0
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
     }
 
     // Page Setup
@@ -188,59 +198,97 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.organizations = [String]()
         self.websites = [String]()
         self.workInformation = [String]()
+        self.sections.removeAll()
+        self.tableData.removeAll()
         
         // Parse card for profile info
         if selectedCard.cardProfile.bios.count > 0{
+            // Add section
+            sections.append("Bios")
             // Iterate throught array and append available content
             for bio in selectedCard.cardProfile.bios{
                 bios.append(bio["bio"]!)
             }
+            // Create section data
+            self.tableData["Bios"] = bios
             
         }
         // Parse work info
         if selectedCard.cardProfile.workInformationList.count > 0{
+            // Add section
+            sections.append("Work")
             for info in selectedCard.cardProfile.workInformationList{
                 workInformation.append(info["work"]!)
             }
+            // Create section data
+            self.tableData["Work"] = workInformation
         }
         
         // Parse work info
         if selectedCard.cardProfile.titles.count > 0{
+            // Add section
+            sections.append("Titles")
             for info in selectedCard.cardProfile.titles{
                 titles.append((info["title"])!)
             }
+            // Create section data
+            self.tableData["Titles"] = titles
         }
         
         if selectedCard.cardProfile.phoneNumbers.count > 0{
+            // Add section
+            sections.append("Phone Numbers")
             for number in selectedCard.cardProfile.phoneNumbers{
                 phoneNumbers.append(number["phone"]! )
             }
+            // Create section data
+            self.tableData["Phone Numbers"] = phoneNumbers
         }
         
         if selectedCard.cardProfile.emails.count > 0{
+            // Add section
+            sections.append("Emails")
             for email in selectedCard.cardProfile.emails{
                 emails.append(email["email"]! )
             }
+            // Create section data
+            self.tableData["Emails"] = emails
         }
         if selectedCard.cardProfile.websites.count > 0{
+            // Add section
+            sections.append("Websites")
             for site in selectedCard.cardProfile.websites{
                 websites.append(site["website"]! )
             }
+            // Create section data
+            self.tableData["Websites"] = websites
         }
         if selectedCard.cardProfile.organizations.count > 0{
+            // Add section
+            sections.append("Organizations")
             for org in selectedCard.cardProfile.organizations{
                 organizations.append(org["organization"]! )
             }
+            // Create section data
+            self.tableData["Organizations"] = organizations
         }
         if selectedCard.cardProfile.tags.count > 0{
+            // Add section
+            sections.append("Tags")
             for hashtag in selectedCard.cardProfile.tags{
                 tags.append(hashtag["tag"]! )
             }
+            // Create section data
+            self.tableData["Tags"] = tags
         }
         if selectedCard.cardProfile.notes.count > 0{
+            // Add section
+            sections.append("Notes")
             for note in selectedCard.cardProfile.notes{
                 notes.append(note["note"]! )
             }
+            // Create section data
+            self.tableData["Notes"] = notes
         }
         if selectedCard.cardProfile.socialLinks.count > 0{
             for link in selectedCard.cardProfile.socialLinks{
@@ -254,6 +302,9 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         // Reload table data 
         profileInfoTableView.reloadData()
+        
+        // Set card name label 
+        self.cardNameLabel.text = selectedCard.cardName ?? ""
 
         
     }
@@ -346,119 +397,20 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     // MARK: - Table view data source
     
+    // MARK: - Table view data source
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        
-        //if biosPopulated && titlesPopulated && workInformationPopulated && emailsPopulated && titlesPopulated && organizationsPopulated && websitesPopulated
-        
-        /*var count = 0
-         // Iterate through arrays and see if populated
-         switch count {
-         case 0:
-         
-         return bios.count
-         case 1:
-         return workInformation.count
-         case 2:
-         return titles.count
-         case 3:
-         return emails.count
-         case 4:
-         return phoneNumbers.count
-         case 5:
-         return socialLinks.count
-         case 6:
-         return websites.count
-         case 7:
-         return organizations.count
-         default:
-         return 0
-         }
-         */
-        return 8
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return bios.count
-        case 1:
-            return workInformation.count
-        case 2:
-            return titles.count
-        case 3:
-            return emails.count
-        case 4:
-            return phoneNumbers.count
-        case 5:
-            return socialLinks.count
-        case 6:
-            return websites.count
-        case 7:
-            return organizations.count
-        default:
-            return 0
-        }
+        return tableData[sections[section]]!.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            if bios.count != 0 {
-                return "Bios"
-            }else{
-                return ""
-            }
-        case 1:
-            if workInformation.count != 0 {
-                return "Work Information"
-            }else{
-                return ""
-            }
-        case 2:
-            if titles.count != 0 {
-                return "Titles"
-            }else{
-                return ""
-            }
-        case 3:
-            if emails.count != 0 {
-                return "Emails"
-            }else{
-                return ""
-            }
-            
-        case 4:
-            if phoneNumbers.count != 0 {
-                return "Phone Numbers"
-            }else{
-                return ""
-            }
-            
-        case 5:
-            if socialLinks.count != 0 {
-                return "Social Media"
-            }else{
-                return ""
-            }
-            
-        case 6:
-            if websites.count != 0 {
-                return "Websites"
-            }else{
-                return ""
-            }
-            
-        case 7:
-            if organizations.count != 0 {
-                return "Organizations"
-            }else{
-                return ""
-            }
-            
-        default:
-            return ""
-        }
+        
+        return sections[section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -466,49 +418,40 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
         
+        cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
-        switch indexPath.section {
-        case 0:
-            //cell.titleLabel.text = "Bio \(indexPath.row)"
-            cell.descriptionLabel.text = bios[indexPath.row]
-            return cell
-        case 1:
-            //cell.titleLabel.text = "Work \(indexPath.row)"
-            cell.descriptionLabel.text = workInformation[indexPath.row]
-            return cell
-        case 2:
-            //cell.titleLabel.text = "Title \(indexPath.row)"
-            cell.descriptionLabel.text = titles[indexPath.row]
-            return cell
-        case 3:
-            //cell.titleLabel.text = "Email \(indexPath.row)"
-            cell.descriptionLabel.text = emails[indexPath.row]
-            return cell
-        case 4:
-            //cell.titleLabel.text = "Phone \(indexPath.row)"
-            cell.descriptionLabel.text = phoneNumbers[indexPath.row]
-            return cell
-        case 5:
-            //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
-            cell.descriptionLabel.text = socialLinks[indexPath.row]
-            return cell
-        case 6:
-            //cell.titleLabel.text = "Website \(indexPath.row)"
-            cell.descriptionLabel.text = websites[indexPath.row]
-            return cell
-        case 7:
-            //cell.titleLabel.text = "Organization \(indexPath.row)"
-            cell.descriptionLabel.text = organizations[indexPath.row]
-            return cell
-        default:
-            // Set
-            cell.titleLabel.text = "No Data"
-            return cell
-        }
-        
-        
+        return cell
         
     }
+    // Set row height
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        return 45.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+        containerView.backgroundColor = UIColor.white
+        
+        // Add label to the view
+        var lbl = UILabel(frame: CGRect(8, 3, 180, 15))
+        lbl.text = sections[section]
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        
+        // Add subviews
+        containerView.addSubview(lbl)
+        
+        return containerView
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+
     
     // Message Composer Delegate
     

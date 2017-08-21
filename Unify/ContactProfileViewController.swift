@@ -62,6 +62,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     var socialBadges = [UIImage]()
     var selectedBadgeIndex : Int = 0
     
+    var sections = [String]()
+    var tableData = [String: [String]]()
+    
     // IBOutlets
     // --------------------------------------------
     @IBOutlet var followupActionToolbar: UIToolbar!
@@ -283,120 +286,19 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     // MARK: - Table view data source
     
+
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        
-        //if biosPopulated && titlesPopulated && workInformationPopulated && emailsPopulated && titlesPopulated && organizationsPopulated && websitesPopulated
-        
-        /*var count = 0
-        // Iterate through arrays and see if populated
-        switch count {
-        case 0:
-            
-            return bios.count
-        case 1:
-            return workInformation.count
-        case 2:
-            return titles.count
-        case 3:
-            return emails.count
-        case 4:
-            return phoneNumbers.count
-        case 5:
-            return socialLinks.count
-        case 6:
-            return websites.count
-        case 7:
-            return organizations.count
-        default:
-            return 0
-        }
-        */
-        return 8
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return bios.count
-        case 1:
-            return workInformation.count
-        case 2:
-            return titles.count
-        case 3:
-            return emails.count
-        case 4:
-            return phoneNumbers.count
-        case 5:
-            return socialLinks.count
-        case 6:
-            return websites.count
-        case 7:
-            return organizations.count
-        default:
-            return 0
-        }
+        return tableData[sections[section]]!.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            if bios.count != 0 {
-                return "Bios"
-            }else{
-                return ""
-            }
-        case 1:
-            if workInformation.count != 0 {
-                return "Work Information"
-            }else{
-                return ""
-            }
-        case 2:
-            if titles.count != 0 {
-                return "Titles"
-            }else{
-                return ""
-            }
-        case 3:
-            if emails.count != 0 {
-                return "Emails"
-            }else{
-                return ""
-            }
-            
-        case 4:
-            if phoneNumbers.count != 0 {
-                return "Phone Numbers"
-            }else{
-                return ""
-            }
-            
-        case 5:
-            if socialLinks.count != 0 {
-                return "Social Media"
-            }else{
-                return ""
-            }
-            
-        case 6:
-            if websites.count != 0 {
-                return "Websites"
-            }else{
-                return ""
-            }
-            
-        case 7:
-            if organizations.count != 0 {
-                return "Organizations"
-            }else{
-                return ""
-            }
-            
-        default:
-            return "No data"
-        }
-
+        
+        return sections[section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -404,48 +306,38 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
         
+        cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
-        switch indexPath.section {
-        case 0:
-            //cell.titleLabel.text = "Bio \(indexPath.row)"
-            cell.descriptionLabel.text = bios[indexPath.row]
-            return cell
-        case 1:
-            //cell.titleLabel.text = "Work \(indexPath.row)"
-            cell.descriptionLabel.text = workInformation[indexPath.row]
-            return cell
-        case 2:
-            //cell.titleLabel.text = "Title \(indexPath.row)"
-            cell.descriptionLabel.text = titles[indexPath.row]
-            return cell
-        case 3:
-            //cell.titleLabel.text = "Email \(indexPath.row)"
-            cell.descriptionLabel.text = emails[indexPath.row]
-            return cell
-        case 4:
-            //cell.titleLabel.text = "Phone \(indexPath.row)"
-            cell.descriptionLabel.text = phoneNumbers[indexPath.row]
-            return cell
-        case 5:
-            //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
-            cell.descriptionLabel.text = socialLinks[indexPath.row]
-            return cell
-        case 6:
-            //cell.titleLabel.text = "Website \(indexPath.row)"
-            cell.descriptionLabel.text = websites[indexPath.row]
-            return cell
-        case 7:
-            //cell.titleLabel.text = "Organization \(indexPath.row)"
-            cell.descriptionLabel.text = organizations[indexPath.row]
-            return cell
-        default:
-            // Set
-            cell.titleLabel.text = "No Data"
-            return cell
-        }
+        return cell
         
+    }
+    // Set row height
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        return 45.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+        containerView.backgroundColor = UIColor.white
         
+        // Add label to the view
+        var lbl = UILabel(frame: CGRect(8, 3, 180, 15))
+        lbl.text = sections[section]
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        
+        // Add subviews
+        containerView.addSubview(lbl)
+        
+        return containerView
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
     }
     
 
@@ -579,6 +471,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         organizations.removeAll()
         socialLinks.removeAll()
         workInformation.removeAll()
+        self.sections.removeAll()
+        self.tableData.removeAll()
         
         
         // Init formatter
@@ -595,6 +489,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             
             // Check for count
             if contact.phoneNumbers.count > 0 {
+                // Add section
+                sections.append("Phone Numbers")
                 // Iterate over items
                 for number in contact.phoneNumbers{
                     // print to test
@@ -610,9 +506,13 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                     self.phoneNumbers.append(digits)
                     print(phoneNumbers.count)
                 }
+                // Create section data
+                self.tableData["Phone Numbers"] = phoneNumbers
                 
             }
             if contact.emailAddresses.count > 0 {
+                // Add section
+                sections.append("Emails")
                 // Iterate over array and pull value
                 for address in contact.emailAddresses {
                     // Print to test
@@ -625,7 +525,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                     self.emails.append(address.value as String)
                     print(emails.count)
                 }
+                // Create section data
+                self.tableData["Emails"] = emails
             }
+        
             if contact.imageDataAvailable {
                 // Print to test
                 print("Has IMAGE Data")
@@ -651,7 +554,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 contactObject.imageDictionary = imageDict
                 
             }
+        
             if contact.urlAddresses.count > 0{
+                // Add section
+                sections.append("Websites")
                 // Iterate over items
                 for address in contact.urlAddresses {
                     // Print to test
@@ -664,6 +570,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                     self.websites.append(address.value as String)
                     print(websites.count)
                 }
+                // Create section data
+                self.tableData["Websites"] = websites
                 
             }
             if contact.socialProfiles.count > 0{
@@ -686,6 +594,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             }
             
             if contact.jobTitle != "" {
+                // Add section
+                sections.append("Titles")
                 //Print to test
                 print("Job Title: \(contact.jobTitle)")
                 
@@ -694,8 +604,12 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 
                 // Append to list 
                 self.titles.append(contact.jobTitle)
+                // Create section data
+                self.tableData["Titles"] = titles
             }
             if contact.organizationName != "" {
+                // Add section
+                sections.append("Organizations")
                 //print to test
                 print("Organization : \(contact.organizationName)")
                 
@@ -704,8 +618,13 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 
                 // Append to list
                 self.organizations.append(contact.organizationName)
+                
+                // Create section data
+                self.tableData["Organizations"] = organizations
             }
             if contact.note != "" {
+                // Add section
+                sections.append("Notes")
                 //print to test
                 print(contact.note)
                 
@@ -715,6 +634,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 // Append to list
                 self.notes.append(contact.note)
                 
+                // Create section data
+                self.tableData["Notes"] = notes
             }
             
             // Test object
