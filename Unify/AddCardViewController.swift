@@ -170,7 +170,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         self.contactPageControl.currentPage = indexPath.row
         
-        if indexPath.row == ContactManager.sharedManager.currentUserCards.count - 1{
+        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count - 1{
             
             /*let containerView = UIView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
              containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
@@ -195,7 +195,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         
-        if ContactManager.sharedManager.currentUserCards.count == 0{
+        if ContactManager.sharedManager.viewableUserCards.count == 0{
             
             // Show add new card
             
@@ -209,7 +209,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             print("You selected cell #\(indexPath.item)!")
             
             // Set selected card object
-            selectedUserCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            selectedUserCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             
             // Show Selected Card segue
             performSegue(withIdentifier: "CardSuiteSelection", sender: self)

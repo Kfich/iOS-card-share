@@ -69,6 +69,7 @@ class SocialMediaDetailViewController: UIViewController {
             // No error 
             // Assign value to profile
             ContactManager.sharedManager.currentUser.userProfile.setSocialLinks(socialRecords: ["link" : mediaTextField.text!])
+            print(ContactManager.sharedManager.currentUser.userProfile.socialLinks)
             
             // Assign link to temp list until done selected
             //ContactManager.sharedManager.tempSocialLinks.append(["link" : mediaTextField.text!])

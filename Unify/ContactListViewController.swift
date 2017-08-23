@@ -21,10 +21,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     // Properties
     // --------------------------------------
+    var formatter = CNContactFormatter()
+    
     var dataArray = [String]()
     
     
-    var filteredArray = [String]()
+    var filteredArray = [CNContact]()
+    var contactSearchResults = [Contact]()
     
     var shouldShowSearchResults = false
     
@@ -37,18 +40,21 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     var timer = Timer()
     
     // Sorted contact list
-    var letters: [Character] = []
-    var contacts = [Character: [String]]()
+    var letters: [String] = []
+    var contacts = [String: [String]]()
     
-    var contactObjectTable = [[String: Any]]()
-    var contactNamesHashTable = [String: CNContact]()
+    var contactObjectTable = [String: [Contact]]()
+    var contactsHashTable = [String: [CNContact]]()
+    var tableData = [String: [CNContact]]()
     
     
     var tuples = [(String, String)]()
     var contactTuples = [(String, CNContact)]()
     
     var selectedContact = CNContact()
+    var selectedContactObject = Contact()
     var contactObjectList = [Contact]()
+    var contactList = [Contact]()
     
     var phoneContacts = [CNContact]()
     
@@ -66,6 +72,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         //loadListOfCountries()
         
         getContacts()
+        
+        //self.fetchContactsForUser()
         
         // Uncomment the following line to enable the default search controller.
         // configureSearchController()
@@ -88,8 +96,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    
-    
     // MARK: UITableView Delegate and Datasource functions
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -104,19 +110,20 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if shouldShowSearchResults {
-            return filteredArray.count
+            return contactSearchResults.count
         }
         else {
-            return contacts[letters[section]]!.count
+            print("Section row count >>", contactsHashTable[letters[section]]!.count)
+            return contactObjectTable[letters[section]]!.count
         }
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
+        return letters//["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return String(letters[section])
+        return letters[section]
     }
     
     
@@ -124,18 +131,61 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
         
         if shouldShowSearchResults {
-            cell.contactNameLabel?.text = filteredArray[indexPath.row]
+            
+            let contact = contactSearchResults[indexPath.row]
+            
+            cell.contactNameLabel?.text = contactSearchResults[indexPath.row].name//filteredArray[indexPath.row].givenName
+            
+            // Set image data here
+            if contact.imageId != "" {
+                print("Has IMAGE")
+                // Set id
+                let id = contact.imageId
+                
+                // Set image for contact
+                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                let placeholderImage = UIImage(named: "profile")!
+                // Set image
+                cell.contactImageView?.setImageWith(url)
+                
+                
+            }else{
+                cell.contactImageView.image = UIImage(named: "profile")
+            }
+
+            
         }
         else {
             // Assign contact object
             
-            //let contact
-            cell.contactNameLabel?.text = contacts[letters[indexPath.section]]?[indexPath.row]//dataArray[indexPath.row]
+            let contact = contactObjectTable[letters[indexPath.section]]?[indexPath.row]
+            let name = contact?.name //self.formatter.string(from: contact!) ?? "No Name"
+            // Set name
+            cell.contactNameLabel?.text = name//contactsHashTable[letters[indexPath.section]]?[indexPath.row].givenName ?? "Nothing"//dataArray[indexPath.row]
+            
+            // Set image data here
+            if contact?.imageId != "" {
+                print("Has IMAGE")
+                // Set id
+                let id = contact?.imageId
+                
+                // Set image for contact
+                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                let placeholderImage = UIImage(named: "profile")!
+                // Set image
+                cell.contactImageView?.setImageWith(url)
+                
+                
+            }else{
+                cell.contactImageView.image = UIImage(named: "profile")
+            }
+
             
         }
         
+        
         // Set cell image
-        cell.contactImageView.image = UIImage(named: "profile")
+        //cell.contactImageView.image = UIImage(named: "profile")
         
         // Configure imageviews
         self.configureSelectedImageView(imageView: cell.contactImageView)
@@ -194,54 +244,21 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         if shouldShowSearchResults {
             // Show results from filtered array
             print("Index path", indexPath)
-            print(filteredArray[indexPath.row])
+            print(contactSearchResults[indexPath.row])
             
-            // Search for contact by name in list
-            for item in self.tuples {
-                if item.1 == filteredArray[indexPath.row] {
-                    // This is the selected item
-                    print("Selected Item: >> \(item)")
-                    // Set Id
-                    selectedId = item.0
-                }
-                
-                
-            }
-            
+            // Set selected contact
+            self.selectedContactObject = contactSearchResults[indexPath.row]
             
         }else{
-            //print("Index path for data array", indexPath)
-            //print(dataArray[indexPath.row])
-            
-            // Search for contact by name in list
-            for item in self.tuples {
-                if item.1 == contacts[letters[indexPath.section]]?[indexPath.row] {
-                    // This is the selected item
-                    print("Selected Item: >> \(item)")
-                    // Set Id
-                    selectedId = item.0
-                }
-                
-                
-            }
-            
-            //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
+            // Set selected contact
+            self.selectedContactObject = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
+        
         }
         
-        // Set contact from list
-        for item in contactTuples{
-            if item.0 == selectedId {
-                // Set contact object
-                self.selectedContact = item.1
-                
-                // Print to test
-                print(self.selectedContact.givenName)
-                // Call segue
-                // Pass in segue
-                self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
-                
-            }
-        }
+        // Pass segue
+        self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
+
+        
         
     }
     
@@ -261,7 +278,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         letters.removeAll()
         contacts.removeAll()
         contactObjectTable.removeAll()
-        contactNamesHashTable.removeAll()
+        //contactsHashTable.removeAll()
         tuples.removeAll()
         contactTuples.removeAll()
         dataArray.removeAll()
@@ -318,31 +335,23 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             // do something with the contacts array (e.g. print the names)
             
-            let formatter = CNContactFormatter()
-            formatter.style = .fullName
+            self.formatter = CNContactFormatter()
+            self.formatter.style = .fullName
+            
             for contact in contacts {
                 //print(formatter.string(from: contact) ?? "No Name")
                 
                 // Generate ID String
                 let str = self.randomString(length: 10)
                 // Assign id to object
-                let contactTuple = (str, formatter.string(from: contact) ?? "No Name")
+                let contactTuple = (str, self.formatter.string(from: contact) ?? "No Name")
                 let objectTuple = (str, contact)
                 
                 // Create tuples and append to list
                 self.tuples.append(contactTuple)
-                print("Tuple >> \(contactTuple)")
+                //print("Tuple >> \(contactTuple)")
                 self.contactTuples.append(objectTuple)
-                print("Object Tuple >> \(objectTuple)")
-                
-                let dataArrayObject = ["id" : str, "name": formatter.string(from: contact) ?? "No Name"]
-                self.contactObjectTable.append(dataArrayObject)
-                
-                //print("The ContactDictionary")
-                //print(contactDictionary)
-                
-                //print("The data array object")
-                //print(dataArrayObject)
+                //print("Object Tuple >> \(objectTuple)")
                 
                 
                 
@@ -372,7 +381,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             let synced = UDWrapper.getBool("contacts_synced")
             print("Contacts sync value!! >> \(synced)")
             
-            if  synced{
+            /*if  synced{
                 
                 print("Contacts synced!! >> \(synced)")
                 //Set bool to indicate contacts have been synced
@@ -385,27 +394,36 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 // Upload Contacts
                 self.uploadContactRecords()
-            }
+            }*/
             
-            // Set appeared to true
-            // self.contactListHasAppeared = true
+            // Create contact objects
+            //self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
             
-            // Post refresh
-            // self.postContactListRefresh()
+            // Create contact objects
+            self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
             
-            
+            // Sort list
             self.sortContacts()
+            
+            
             
             // Sync up with main queue
             DispatchQueue.main.async {
                 
-                // Sort list
-                //self.sortContacts()
+                // Upload Contacts
+                //self.uploadContactRecords()
                 // Reload the tableview.
                 self.tblSearchResults.reloadData()
             }
             
         }
+        /*DispatchQueue.main.async {
+         
+         // Sort list
+         //self.sortContacts()
+         // Reload the tableview.
+         self.tblSearchResults.reloadData()
+         }*/
     }
     
     func createContactRecords(phoneContactList: [CNContact]) -> [Contact] {
@@ -430,7 +448,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Iterate over items
                 for number in contact.phoneNumbers{
                     // print to test
-                    print("Number: \((number.value.value(forKey: "digits" )!))")
+                    //print("Number: \((number.value.value(forKey: "digits" )!))")
                     
                     // Init the number
                     let digits = number.value.value(forKey: "digits") as! String
@@ -452,7 +470,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             }
             if contact.imageDataAvailable {
                 // Print to test
-                print("Has IMAGE Data")
+                //print("Has IMAGE Data")
                 
                 // Create ID and add to dictionary
                 // Image data png
@@ -473,6 +491,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Append to object
                 contactObject.setContactImageId(id: idString)
                 contactObject.imageDictionary = imageDict
+                
+                // Upload Record
+                ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
                 
             }
             if contact.urlAddresses.count > 0{
@@ -525,7 +546,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             }
             
             // Test object
-            print("Contact >> \n\(contactObject.toAnyObject()))")
+            //print("Contact >> \n\(contactObject.toAnyObject()))")
             
             // Append object to contactObjectList
             contactObjectList.append(contactObject)
@@ -600,15 +621,15 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             return
         }
         
-        // Filter the data array and get only those countries that match the search text.
+        /*// Filter the data array and get only those countries that match the search text.
         filteredArray = dataArray.filter({ (country) -> Bool in
             let countryText:NSString = country as NSString
             
             return (countryText.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
+        })*/
         
         // Reload the tableview.
-        tblSearchResults.reloadData()
+        //tblSearchResults.reloadData()
     }
     
     
@@ -616,38 +637,114 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func didStartSearching() {
         shouldShowSearchResults = true
-        tblSearchResults.reloadData()
+        print("Filtered list count >> \(self.contactSearchResults.count)")
+        self.tblSearchResults.reloadData()
     }
     
     
     func didTapOnSearchButton() {
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
-            tblSearchResults.reloadData()
+            // Hit search endpoint
+            self.tblSearchResults.reloadData()
         }
+        self.searchContacts()
     }
     
     
     func didTapOnCancelButton() {
         shouldShowSearchResults = false
-        tblSearchResults.reloadData()
+        // Empty list
+        self.contactSearchResults.removeAll()
+        self.tblSearchResults.reloadData()
     }
-    
     
     func didChangeSearchText(_ searchText: String) {
         // Filter the data array and get only those countries that match the search text.
-        filteredArray = dataArray.filter({ (country) -> Bool in
-            let countryText: NSString = country as NSString
+        /*filteredArray = contactsHashTable.filter({ (contact) -> Bool in
+            let countryText: NSString = contact.
             
             return (countryText.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
+        })*/
         
         // Reload the tableview.
-        tblSearchResults.reloadData()
+        //tblSearchResults.reloadData()
     }
     
     
     // Custom Methods
+    
+    
+    func searchContacts() {
+        
+        print("Searching transaction")
+        
+        let searchString = customSearchController.customSearchBar.text ?? ""
+        
+        
+        
+        // Export transaction
+        let parameters = ["uuid" : ContactManager.sharedManager.currentUser.userId, "search": searchString]
+        
+        // Show HUD
+        KVNProgress.show(withStatus: "Searching..")
+        
+        // Clear results
+        self.contactSearchResults.removeAll()
+        self.tblSearchResults.reloadData()
+        
+        // Send to sever
+        
+        Connection(configuration: nil).searchContactsCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Get contacts Response ---> \(String(describing: response))")
+                
+                // Init dictionary to capture response
+                if let dictionary = response as? [String : Any] {
+                    // // Parse dictionary for array of trans
+                    let dictionaryArray = dictionary["contacts"] as! NSArray
+                    
+                    // Iterate over array, append trans to list
+                    for item in dictionaryArray {
+                        // Update counter
+                        // Init user objects from array
+                        let contact = Contact(snapshot: item as! NSDictionary)
+                        print("Transaction List")
+                        //trans.printTransaction()
+                        
+                        
+                        // Append users to radarContacts array
+                        self.contactSearchResults.append(contact)
+                    }
+                    
+                    // Sort list
+                    //self.sortTransactionList(list: self.searchTransactionList)
+                    
+                    
+                    // Update the table values
+                    self.tblSearchResults.reloadData()
+                    
+                    
+                    // Show sucess
+                    KVNProgress.showSuccess()
+                }else{
+                    print("Array empty !!!!")
+                    // dismiss HUD
+                    KVNProgress.dismiss()
+                }
+                
+                
+            } else {
+                print("Rejection Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+
     
     // Generate random string for transaction id
     func randomString(length: Int) -> String {
@@ -666,6 +763,11 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         return randomString
     }
     
+    func sortUnifyContacts(phoneList: [Contact]) {
+        
+        
+        
+    }
     
     func sortContacts() {
         // Test for sorting contacts by last name into sections
@@ -680,55 +782,108 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         
         
-        letters = dataArray.map { (name) -> Character in
-            print("UPPER CASE HERE")
+        letters = dataArray.map { (name) -> String in
+            //print("UPPER CASE HERE")
             let nameToUpper = name.uppercased()
-            print(nameToUpper[nameToUpper.startIndex])
-            return nameToUpper[nameToUpper.startIndex]
+            //print(nameToUpper[nameToUpper.startIndex])
+            return String(nameToUpper[nameToUpper.startIndex])
         }
         
+        // Sort letters array
         letters = letters.sorted()
-        // Print letters array
-        //print("\n\nLETTERS >>>> \(letters)")
         
-        letters = letters.reduce([], { (list, name) -> [Character] in
+        // Reduce letters to single count for each
+        letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
-                print("\n\nAdded >>>> \(list + [name])")
+                //print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
         })
         
-        
-        
-        // Build contacts array:
-        
-        // Init sorted contacts array
-        //var contacts = [Character: [String]]()
-        
-        
-        
-        
-        // Iterate over contact list
-        for entry in dataArray {
+        // Create indicies based on letters
+        for letter in letters{
             
-            if contacts[entry[entry.startIndex]] == nil {
-                // Set index if doesn't exist
-                contacts[entry[entry.startIndex]] = [String]()
-            }
-            
-            // Add entry to section
-            contacts[entry[entry.startIndex]]!.append(entry)
-            
+            // Create section in hash table
+            contactsHashTable[letter] = [CNContact]()
+            // Unify contacts table
+            contactObjectTable[letter] = [Contact]()
+
         }
+        
+        // Apple contacts
+        for contact in self.phoneContacts{
+            // Init contact name
+            var contactName : String = self.formatter.string(from: contact) ?? "No Name"
+            // Uppercase the name
+            contactName = contactName.uppercased()
+            
+            // Check if section exists
+            if contactsHashTable[String(describing: contactName.characters.first!)] == nil{
+                //print("Hash Section Empty!")
+                // If empty, initialize list
+               contactsHashTable[String(describing: contactName.characters.first!)] = []
+            }
+            // Add contact to list
+            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+            let startIndex = String(describing: contactName.characters.first!)
+            print("Start Index: >> \(startIndex)")
+            
+            contactsHashTable[startIndex]!.append(contact)
+            //print("Section count for added item")
+            //print(contactsHashTable[startIndex]?.count)
+        }
+        
+        
+        // Unify Contacts
+        for contact in self.contactObjectList{
+            // Init contact name
+            var contactName : String = contact.name 
+            // Uppercase the name
+            contactName = contactName.uppercased()
+            
+            // Check if section exists
+            if contactObjectTable[String(describing: contactName.characters.first!)] == nil{
+                //print("Hash Section Empty!")
+                // If empty, initialize list
+                contactObjectTable[String(describing: contactName.characters.first!)] = []
+            }
+            // Add contact to list
+            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+            let startIndex = String(describing: contactName.characters.first!)
+            print("Start Index: >> \(startIndex)")
+            
+            contactObjectTable[startIndex]!.append(contact)
+            //print("Section count for added item")
+            //print(contactsHashTable[startIndex]?.count)
+        }
+        
         
         // Sort list
-        for (letter, list) in contacts {
-            contacts[letter] = list.sorted()
+        for (section, list) in contactObjectTable {
+           // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
             // Test output
-            print(contacts[letter])
+            print("THE unify contacts hash table section list count")
+            print(contacts[section]?.count)
+            print(list)
         }
+        
+        // Assign table data 
+        //self.tableData = contactsHashTable
+        
+        //print("Table Data \n\(self.tableData)")
+        
+        //print(contactsHashTable)
+        
+        print("The Table Count >> ", contactObjectTable.count)
+        
+        DispatchQueue.main.async {
+            
+            // Reload data
+            self.tblSearchResults.reloadData()
+        }
+
     }
     
     func addGestureToImage(image: UIImageView, index: IndexPath) {
@@ -759,7 +914,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             print(filteredArray[row])
             
             // Search for contact by name in list
-            for item in self.tuples {
+            /*for item in self.tuples {
                 if item.1 == filteredArray[row] {
                     // This is the selected item
                     print("Selected Item: >> \(item)")
@@ -768,7 +923,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 }
                 
                 
-            }
+            }*/
             
             
         }else{
@@ -808,10 +963,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     
                     
                     // Sync up with main queue
-                    DispatchQueue.main.async {
+                    /*DispatchQueue.main.async {
                         // Set selected tab
                         self.tabBarController?.selectedIndex = 1
-                    }
+                    }*/
                     
                     
                 }
@@ -866,7 +1021,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         // Check if we're at the end of the list
-        if self.index < ContactManager.sharedManager.contactObjectList.count{
+        if self.index < self.contactObjectList.count - 1{
+            
             // Increment index
             self.index = self.index + 1
             
@@ -878,6 +1034,92 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             UDWrapper.setBool("contacts_synced", value: true)
         }
         
+        
+    }
+    
+    func deleteContactsForUser() {
+        // Fetch the user data associated with users
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        
+        
+        // Create User Objects
+        Connection(configuration: nil).deleteContactsCall(parameters, completionBlock: { response, error in
+            
+            if error == nil {
+                
+                print("\n\nDeleting Contacts >>> \(response)\n\n")
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - User Fetch Error: \n\n>>>>>>>> \(error)\n\n")
+                KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
+            }
+            // Regardless, hide hud
+            KVNProgress.dismiss()
+        })
+        
+    }
+    
+    
+    func fetchContactsForUser() {
+        // Fetch the user data associated with users
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        // Show progress
+        KVNProgress.show(withStatus: "Fetching details on the activity...")
+        
+        // Create User Objects
+        Connection(configuration: nil).getContactsCall(parameters, completionBlock: { response, error in
+            
+            if error == nil {
+                
+                //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                
+                // Init dictionary to capture response
+                let userArray = response as? NSDictionary
+                // // Parse dictionary for array of trans
+                print(userArray)
+                
+                let userList = userArray?["data"] as! NSArray
+                
+                
+                // Iterate over array, append trans to list
+                for item in userList{
+                    
+                    print("Contact Item >> \(item)")
+                    
+                    // Init user objects from array
+                    let contact = Contact(snapshotLite: item as! NSDictionary)
+                    
+                    // Append users to Selected array
+                    self.contactList.append(contact)
+                }
+                
+                // Delete all for next sync
+                //self.deleteContactsForUser()
+                
+                // Show sucess
+                //KVNProgress.showSuccess()
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - User Fetch Error: \n\n>>>>>>>> \(error)\n\n")
+                KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
+            }
+            // Regardless, hide hud
+            KVNProgress.dismiss()
+        })
         
     }
     

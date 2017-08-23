@@ -117,10 +117,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             // Add dummy card to array for 'Add Card' Cell
             let addCardView = ContactCard()
-            // Append to current user 
+            
+            // Append to current user
             ContactManager.sharedManager.currentUserCards.append(addCardView)
+            
             // Reload tableview data
             cardCollectionView.reloadData()
+            
             // Set Selected card
             if ContactManager.sharedManager.currentUserCards.count > 0 {
               ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
@@ -188,6 +191,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         print("New Card Added")
         print("\(ContactManager.sharedManager.currentUserCards.count)")
+        ContactManager.sharedManager.viewableUserCards.insert(ContactManager.sharedManager.currentUserCards[0], at: 0)
         
         // Set background image on collectionview
         let bgImage = UIImageView();
@@ -384,7 +388,18 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             if currentCard.isVerified{
                 cell.cardWrapperView.layer.borderWidth = 1.5
-                cell.cardWrapperView.layer.borderColor = UIColor.yellow as! CGColor
+                
+                //let str = currentCard.cardDesign.color
+                //let data = str.data(using: .utf8)!
+                //let hexString = data.map{ String(format:"%02x", $0) }.joined()
+                
+                cell.cardWrapperView.backgroundColor = UIColor.yellow
+                //cell.cardWrapperView.backgroundColor = UIColor(rgb: hexString)
+                
+                if ContactManager.sharedManager.currentUser.profileImages.count > 0{
+                    cell.cardImage.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+                }
+
             }
             
             // Populate text field data
@@ -572,6 +587,14 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Custom Methods
     
+    func fetchCardDesigns(cards: [ContactCard]) {
+        for card in ContactManager.sharedManager.viewableUserCards {
+            
+            ContactManager.sharedManager.fetchCardDesigns(card: card, id: card.organizationReference)
+
+        }
+    }
+    
     func fetchUserCards() {
         // Fetch cards from server
         let parameters = ["uuid" : ContactManager.sharedManager.currentUser.userId]
@@ -589,11 +612,18 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 
                 // Set card uuid with response from network
                 let dictionary : NSArray = response as! NSArray
-                print("\n\nCard List")
+                //print("\n\nCard List")
                 print(dictionary)
                 
                 for item in dictionary{
                     let card = ContactCard(snapshot: item as! NSDictionary)
+                    
+                    //print("Printing the card from the call")
+                    card.printCard()
+                    if card.isVerified{
+                        //ContactManager.sharedManager.currentUserCards.append(card)
+                        ContactManager.sharedManager.viewableUserCards.append(card)
+                    }
                     tempCardList.append(card)
                 }
                 
@@ -609,6 +639,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                             card.isVerified = temp.isVerified
                             card.isHidden = temp.isHidden
                             
+                            
                             if card.isHidden != true{
                                 // Add to viewable
                                 ContactManager.sharedManager.viewableUserCards.append(card)
@@ -617,6 +648,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                         }
                     }
                 }
+                
+                // Get designs
+                self.fetchCardDesigns(cards: ContactManager.sharedManager.viewableUserCards)
+                
                 
                 // Add dummy cell
                 let dummyCard = ContactCard()
@@ -635,12 +670,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
         
     }
-
+    
     
     func parseCardForBagdes(card: ContactCard) -> [UIImage] {
         // Execute from manager
         let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: card)
-        print("The Badge List >> \(list)")
+        //print("The Badge List >> \(list)")
         
         return list
     }

@@ -580,7 +580,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func fetchUserBadges() {
         // Fetch cards from server
-        let parameters = ["data" : currentUser.userProfile.badges]
+        let parameters = ["data" : ContactManager.sharedManager.currentUser.userProfile.badges]
         
         print("\n\nTHE Badges TO ANY - PARAMS")
         print(parameters)
@@ -653,12 +653,11 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
                 let user = User(snapshot: profileDict as! NSDictionary)
                 
-               //let user = //User(snapshot: dictionary as NSDictionary)
-                print("PRINTING USER")
-                user.printUser()
-                
                 // Set current user
                 self.currentUser = user
+                
+                // Set manager badges
+                ContactManager.sharedManager.currentUser.userProfile.badges = self.currentUser.userProfile.badges
                 
                 // Fetch cards 
                 self.fetchUserCards()

@@ -138,6 +138,14 @@
 - (NSURLSessionDataTask*)getTransactionContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetManyContacts];
 }
+- (NSURLSessionDataTask*)searchContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString: kSearchContacts];
+}
+- (NSURLSessionDataTask*)deleteContactsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString: kDeleteContacts];
+}
+
+
 
 // Events
 - (NSURLSessionDataTask*)uploadEventCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
@@ -150,6 +158,9 @@
 // Badges
 - (NSURLSessionDataTask*)getBadgesCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetBadges];
+}
+- (NSURLSessionDataTask*)getOrgCardCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString:kGetOrgCard];
 }
 
 

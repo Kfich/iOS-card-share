@@ -447,19 +447,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
                     
                     // Append link to list
                     self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
-                     print("NOT IN LIST")
-                     // Append link to list
-                     self.socialBadges.append(item.first?.value as! UIImage)
-                     }else{
-                     print("ALREADY IN LIST")
-                     }*/
-                    // Append link to list
-                    //self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    
-                    
+
                     //print("THE IMAGE IS PRINTING")
                     //print(item.first?.value as! UIImage)
                     print("SOCIAL BADGES COUNT")
@@ -497,6 +485,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.workInformation = [String]()
         self.sections.removeAll()
         self.tableData.removeAll()
+        self.tags.removeAll()
         
         // Parse bio info
         //currentUser = ContactManager.sharedManager.currentUser

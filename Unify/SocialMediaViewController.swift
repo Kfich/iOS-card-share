@@ -59,7 +59,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         // Do any additional setup after loading the view.
         
         // Assign user 
-        self.currentUser = ContactManager.sharedManager.currentUser
+        //self.currentUser = ContactManager.sharedManager.currentUser
         //self.currentUser.printUser()
         
         // Assign delegates

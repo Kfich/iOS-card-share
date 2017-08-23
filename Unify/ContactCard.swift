@@ -21,6 +21,8 @@ public class ContactCard: NSObject, NSCoding{
     var image : UIImage?
     var imageId : String = ""
     var profileDictionary = NSDictionary()
+    var cardDesign = Design()
+    var organizationReference = ""
     
     // Set UserID to card
     var ownerId = ""
@@ -32,7 +34,31 @@ public class ContactCard: NSObject, NSCoding{
     // Bool for settings toggle
     var isHidden = false
     var isVerified = false
+    var verifiedString = ""
     var hidden = "0"
+    
+    struct Design {
+        var color: String
+        var logo: String
+        
+        // Init
+        init(){
+            color = ""
+            logo = ""
+        }
+        
+        // Init
+        init(snapshot: NSDictionary){
+            color = snapshot["color"] as? String ?? ""
+            logo = snapshot["logo"] as? String ?? ""
+        }
+        
+        // Export
+        func toAny() -> NSDictionary {
+            return ["color" : color, "logo" : logo]
+        }
+    }
+
     
 
     
@@ -61,6 +87,7 @@ public class ContactCard: NSObject, NSCoding{
         ownerId = snapshot["ownerId"] as! String
         cardName = snapshot["card_name"] as? String
         cardHolderName = snapshot["card_holder_name"] as? String
+        organizationReference = snapshot["organizationId"] as? String ?? ""
         //imageURL = snapshot["image_url"] as? String
         profileDictionary = (snapshot["card_profile"] as? NSDictionary)!
         // Create card profile
@@ -68,15 +95,21 @@ public class ContactCard: NSObject, NSCoding{
         
         // Card settings
         isHidden = snapshot["isHidden"] as? Bool ?? false
-        isVerified = snapshot["isVerified"] as? Bool ?? false
+        verifiedString = snapshot["verified"] as? String ?? "0"
+        
+        if verifiedString == "0" {
+            // Toggle false
+            isVerified = false
+        }else{
+            isVerified = true
+        }
         
         // Test if card populated
         print("Printing from card")
         //printCard()
     }
     
-    init(withSnapshotLite: NSDictionary)
-    {
+    init(withSnapshotLite: NSDictionary){
         cardId = withSnapshotLite["unify_uuid"] as? String
         //ownerId = withSnapshotLite["ownerId"] as! String
         //cardName = withSnapshotLite["first_name"] as? String
@@ -93,6 +126,7 @@ public class ContactCard: NSObject, NSCoding{
         // Card Settings
         isHidden = withSnapshotLite["isHidden"] as? Bool ?? false
         isVerified = withSnapshotLite["isVerified"] as? Bool ?? false
+        
 
         
     }
@@ -109,8 +143,9 @@ public class ContactCard: NSObject, NSCoding{
         
         // Card settings
         isHidden = withSnapshotFromDefaults["isHidden"] as? Bool ?? false
-        isVerified = withSnapshotFromDefaults["isVerified"] as? Bool ?? false
+        isVerified = withSnapshotFromDefaults["verified"] as? Bool ?? false
 
+        organizationReference = withSnapshotFromDefaults["organizationId"] as? String ?? ""
         
         // Test if card populated
         //printCard()
@@ -154,7 +189,7 @@ public class ContactCard: NSObject, NSCoding{
             "ownerId" : ownerId,
             "card_profile" : cardProfile.toAnyObject(),
             "isHidden" : isHidden,
-            "isVerified" : isVerified
+            "verified" : isVerified
             
         ]
     }
@@ -168,7 +203,7 @@ public class ContactCard: NSObject, NSCoding{
             "ownerId" : ownerId,
             "card_profile" : cardProfile.toAnyObjectWithImage(),
             "isHidden" : isHidden,
-            "isVerified" : isVerified
+            "verified" : isVerified
         ]
     }
     
@@ -245,6 +280,10 @@ public class ContactCard: NSObject, NSCoding{
         
         print("CardId :")
         print(cardId ?? "")
+        print("Hidden? :")
+        print(isHidden)
+        print("IsVerified? :")
+        print(isVerified)
         print("Card Name :")
         print(cardName ?? "")
         print("CardHolder Name :")

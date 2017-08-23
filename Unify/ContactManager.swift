@@ -94,6 +94,7 @@ class ContactManager{
     var socialLinks = [String]()
     var selectedSocialMediaLink : String = ""
     var cardBagdeLists = [String : [UIImage]]()
+    //var cardDesigns[]
     
     // Indexing the contact records for upload
     var index = 0
@@ -103,6 +104,7 @@ class ContactManager{
     var userLat : Double = 0.0
     var userLong : Double = 0.0
     var userAddress : String = ""
+    
     
     // Initialize class
     init() {
@@ -198,10 +200,83 @@ class ContactManager{
         
     }
     
+    /*func fetchVerifiedContactCardDesign(card: ContactCard){
+        
+        for card in viewableUserCards {
+            
+            // Save card to DB
+            let parameters = ["data": self.transaction.toAnyObject()]
+            print(parameters)
+            
+            // Send to server
+            
+            Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
+                if error == nil {
+                    print("Transaction Created Response ---> \(String(describing: response))")
+                    
+                    // Set card uuid with response from network
+                    let dictionary : Dictionary = response as! [String : Any]
+                    self.transaction.transactionId = (dictionary["uuid"] as? String)!
+                    
+                    // Insert to manager card array
+                    //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                    
+                    // Hide HUD
+                    KVNProgress.dismiss()
+                    
+                } else {
+                    print("Transaction Created Error Response ---> \(String(describing: error))")
+                    // Show user popup of error message
+                    KVNProgress.showError(withStatus: "There was an error with your connection. Please try again.")
+                    
+                }
+                // Hide indicator
+                KVNProgress.dismiss()
+            }
+
+        }
+      
+        
+    }*/
+    
+    func fetchCardDesigns(card: ContactCard, id: String){
+        
+        let design = NSDictionary()
+        
+        let parameters = ["organizationId": id]
+        
+
+        // Send to server
+        
+        Connection(configuration: nil).getOrgCardCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Transaction Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSDictionary = response as! NSDictionary
+                print("Card Design from manager")
+                print(dictionary)
+                
+                card.cardDesign = ContactCard.Design(snapshot: dictionary)
+                print("The card itsself's design >> \(card.cardDesign.toAny())")
+                
+                
+                // Append values to card itself
+                
+            } else {
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
     
     func parseForSocialIcons() {
         
-        // Create badge list 
+        // Create badge list
         self.initializeBadgeList()
         
         print("PARSING FOR PROFILES")
@@ -278,12 +353,16 @@ class ContactManager{
     func deleteCardFromArray(cardIdString : String) {
         //  Iterate over cards 
         var index = 0
+        var selectedCardId = ""
         
         for card in 0..<currentUserCards.count {
             // Find id match
             let card = currentUserCards[index]
             
             if card.cardId == cardIdString {
+                
+                // Set card ID
+                selectedCardId = card.cardId!
                 
                 print(index)
                 card.printCard()
@@ -297,10 +376,30 @@ class ContactManager{
                 // Exit loop
                 break
             }
-            
-            // increment index 
+            // increment index
             index = index + 1
         }
+        
+        // Remove all from viewable
+        // viewableUserCards.removeAll()
+        
+        var viewableIndex = 0
+        
+        // Viewable cards
+        for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count{
+            
+            let viewableCard = ContactManager.sharedManager.viewableUserCards[viewableIndex]
+            
+            if viewableCard.isHidden != true{
+                
+                // Add to viewable
+                ContactManager.sharedManager.viewableUserCards.append(viewableCard)
+                
+                print("Viewable card count")
+            }
+            
+        }
+        
         print("Current User Cards \(currentUserCardsDictionaryArray.count)")
         print("Current User Cards Dictionaries \(currentUserCards.count)")
     }
@@ -855,9 +954,5 @@ class ContactManager{
         // Post notification
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactList"), object: self)
     }
-    
-    
-    
-    
     
 }

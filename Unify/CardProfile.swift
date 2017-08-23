@@ -53,8 +53,12 @@ public class CardProfile{
             pictureUrl = ""
             website = ""
         }
+        func toAnyObject() -> NSDictionary {
+            return ["image": pictureUrl, "url": website]
+        }
 
     }
+    
     
     // Initializers
     
@@ -77,6 +81,7 @@ public class CardProfile{
         imageIds = snapshot["image_ids"] as? [[String : String]] ?? [[String : String]]()
         //images = snapshot["images"] as! [[String : Any]]
         badges = snapshot["badges"] as? [String] ?? [String]()
+        badgeList = snapshot["badgeList"] as? [Bagde] ?? [Bagde]()
         
         // Testing to see if populated
     
@@ -107,8 +112,9 @@ public class CardProfile{
         //imageIds = fromDefaultsWithDictionary["image_ids"] as! [[String : Any]]
         
         images = fromDefaultsWithDictionary["images"] as! [[String : Any]]
-        
         badges = fromDefaultsWithDictionary["badges"] as? [String] ?? [String]()
+        
+        
         // Testing to see if populated
         
     }
@@ -116,6 +122,10 @@ public class CardProfile{
     
     // Exporting the object
     func toAnyObject() -> NSDictionary {
+        
+       // var tempBadgeList[]
+        
+        
         return [
             "bios": bios,
             "work_info": workInformationList,
@@ -311,6 +321,9 @@ public class CardProfile{
         print(organizations as Any)
         print("Badges : ")
         print(badges)
+        print("Badge List : ")
+        print(badgeList)
+        
         
         print("Images : ")
         //print(images as Any)

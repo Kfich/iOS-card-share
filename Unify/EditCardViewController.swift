@@ -722,8 +722,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
         
         
-        switch indexPath.section {
-        case 0:
+        switch sections[indexPath.section] {
+        case "Bios":
             //cell.titleLabel.text = "Bio \(indexPath.row)"
             cell.descriptionLabel.text = bios[indexPath.row]
             
@@ -734,7 +734,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.accessoryType = .checkmark
             }
             return cell
-        case 1:
+        case "Work":
             //cell.titleLabel.text = "Work \(indexPath.row)"
             cell.descriptionLabel.text = workInformation[indexPath.row]
             
@@ -747,7 +747,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
 
             return cell
-        case 2:
+        case "Titles":
             //cell.titleLabel.text = "Title \(indexPath.row)"
             cell.descriptionLabel.text = titles[indexPath.row]
             
@@ -760,7 +760,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
 
             return cell
-        case 3:
+        case "Emails":
             //cell.titleLabel.text = "Email \(indexPath.row)"
             cell.descriptionLabel.text = emails[indexPath.row]
             
@@ -773,7 +773,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             return cell
-        case 4:
+        case "Phone Numbers":
             //cell.titleLabel.text = "Phone \(indexPath.row)"
             cell.descriptionLabel.text = phoneNumbers[indexPath.row]
             
@@ -785,19 +785,19 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.accessoryType = .checkmark
             }
             return cell
-        case 5:
+        case "Tags":
             //cell.titleLabel.text = "Social Media Link \(indexPath.row)"
-            cell.descriptionLabel.text = socialLinks[indexPath.row]
+            cell.descriptionLabel.text = tags[indexPath.row]
             
             // Check if in list
-            if selectedSocialLinks.contains(socialLinks[indexPath.row]) {
+            if selectedTags.contains(tags[indexPath.row]) {
                 // Set to selected cells list
                 selectedCells.append(indexPath as NSIndexPath)
                 // Set cell accessory type
                 cell.accessoryType = .checkmark
             }
             return cell
-        case 6:
+        case "Websites":
             //cell.titleLabel.text = "Website \(indexPath.row)"
             cell.descriptionLabel.text = websites[indexPath.row]
             
@@ -810,7 +810,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             return cell
-        case 7:
+        case "Organizations":
             //cell.titleLabel.text = "Organization \(indexPath.row)"
             cell.descriptionLabel.text = organizations[indexPath.row]
             
@@ -822,7 +822,18 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.accessoryType = .checkmark
             }
             return cell
+        case "Notes":
+            //cell.titleLabel.text = "Organization \(indexPath.row)"
+            cell.descriptionLabel.text = notes[indexPath.row]
             
+            // Check if in list
+            if selectedNotes.contains(notes[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
+            return cell
         default:
             return cell
         }

@@ -585,7 +585,7 @@ class EditProfileContainerViewController: FormViewController {
          ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.removeAll()
          ContactManager.sharedManager.currentUser.userProfile.websites.removeAll()
          ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
-         ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
+         //ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
          ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()
         ContactManager.sharedManager.currentUser.userProfile.tags.removeAll()
     }

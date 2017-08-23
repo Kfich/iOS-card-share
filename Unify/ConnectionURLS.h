@@ -52,6 +52,8 @@
 #define kUploadContact        kServerURL(kAppwsServerURL, @"contacts/add")
 #define kGetContacts          kServerURL(kAppwsServerURL, @"contacts/get")
 #define kGetManyContacts      kServerURL(kAppwsServerURL, @"contacts/getMany")
+#define kSearchContacts       kServerURL(kAppwsServerURL, @"contacts/search")
+#define kDeleteContacts       kServerURL(kAppwsServerURL, @"contacts/deleteAll")
 
 
 // Events
@@ -61,6 +63,7 @@
 
 // Badges
 #define kGetBadges            kServerURL(kAppwsServerURL, @"corporate/getManyBadges")
+#define kGetOrgCard           kServerURL(kAppwsServerURL, @"corporate/getOrgCard")
 
 
 #endif

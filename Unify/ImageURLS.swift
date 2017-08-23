@@ -11,6 +11,8 @@ import Alamofire
 
 public class ImageURLS{
     
+    static let sharedManager = ImageURLS()
+    
     // Properties
     // Uploading
     let uploadToStagingURL = "https://project-unify-node-server-stag.herokuapp.com/image/uploadcdn"
@@ -40,9 +42,6 @@ public class ImageURLS{
         let testURL = uploadToDevelopmentURL
         
         
-        // Show progress HUD
-        KVNProgress.show(withStatus: "Generating profile..")
-        
         // Upload image with Alamo
         Alamofire.upload(multipartFormData: { multipartFormData in
             multipartFormData.append(imageDict["image_data"] as! Data, withName: "files", fileName: "\(imageDict["file_name"] as! String).jpg", mimeType: "image/jpg")
@@ -63,8 +62,6 @@ public class ImageURLS{
                     print("\n\n\n\n success...")
                     print(response.result.value ?? "Successful upload")
                     
-                    // Dismiss hud
-                    //KVNProgress.dismiss()
                 }
                 
             case .failure(let encodingError):

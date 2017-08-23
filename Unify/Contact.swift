@@ -24,6 +24,8 @@ public class Contact{
     var tags = [[String : String]]()
     
     var origin : String = ""
+    var verified = false
+    var isVerified : String = "0"
     
     // For image storage
     var imageId : String = ""
@@ -46,23 +48,27 @@ public class Contact{
             "websites" : websites,
             "organizations" : organizations,
             "origin" : origin,
-            "image_id": imageId
+            "image_id": imageId,
+            "isVerified" : isVerified
         ]
     }
 
     // Init with JSON Snapshot
     init(snapshot: NSDictionary) {
        
-        name = snapshot["name"] as! String
-        titles = snapshot["titles"] as! [[String : String]]
-        emails = snapshot["emails"] as! [[String : String]]
-        phoneNumbers = snapshot["phone_numbers"] as! [[String : String]]
-        socialLinks = snapshot["social_links"] as! [[String : String]]
-        tags = snapshot["tags"] as! [[String : String]]
-        notes = snapshot["notes"] as! [[String : String]]
-        websites = snapshot["websites"] as! [[String : String]]
-        organizations = snapshot["organizations"] as! [[String : String]]
-        imageId = snapshot["image_ids"] as! String
+        name = snapshot["name"] as? String ?? "No name"
+        titles = snapshot["titles"] as? [[String : String]] ?? [[String : String]]()
+        emails = snapshot["emails"] as? [[String : String]] ?? [[String : String]]()
+        phoneNumbers = snapshot["phone_numbers"] as? [[String : String]] ?? [[String : String]]()
+        socialLinks = snapshot["social_links"] as? [[String : String]] ?? [[String : String]]()
+        tags = snapshot["tags"] as? [[String : String]] ?? [[String : String]]()
+        notes = snapshot["notes"] as? [[String : String]] ?? [[String : String]]()
+        websites = snapshot["websites"] as? [[String : String]] ?? [[String : String]]()
+        organizations = snapshot["organizations"] as? [[String : String]] ?? [[String : String]]()
+        imageId = snapshot["image_ids"] as? String ?? ""
+        origin = snapshot["origin"] as? String ?? ""
+        isVerified = snapshot["isVerified"] as? String ?? "0"
+        
         //images = snapshot["images"] as! [[String : Any]]
         
         

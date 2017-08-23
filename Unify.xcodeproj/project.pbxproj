@@ -525,7 +525,6 @@
 				FB37381C1EDDBC080074200F /* Auth */,
 				FBE8075B1F06D61200A05292 /* Cards */,
 				FBF933EC1F42403A00FF80EF /* Quickshare */,
-				FB3738221EDDBD640074200F /* Manager */,
 				1CB31CAC1E94336500A0C4A5 /* Algolia */,
 				FB3738301EDDD69A0074200F /* CustomViews */,
 				FB37381F1EDDBCFD0074200F /* Contacts */,
@@ -828,7 +827,6 @@
 				FBE807501F06C07C00A05292 /* JSONResponseSerializerWithData.m */,
 				FBE807511F06C07C00A05292 /* NSData+PKCS12.m */,
 				FBE807521F06C07C00A05292 /* JSONResponseSerializerWithData.h */,
-				FB019A9E1F28E7B500908A67 /* ImageURLS.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -855,6 +853,8 @@
 				FB019AA11F28EE7C00908A67 /* Contact.swift */,
 				FB767D4C1F436EC60065F46E /* Appointment.swift */,
 				FBF2EFB21F44E18200DDF9B4 /* Settings.swift */,
+				FB019A9E1F28E7B500908A67 /* ImageURLS.swift */,
+				FB3738221EDDBD640074200F /* Manager */,
 			);
 			name = Class_Files;
 			sourceTree = "<group>";

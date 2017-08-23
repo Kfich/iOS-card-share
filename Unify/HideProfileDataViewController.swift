@@ -59,15 +59,13 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         }
         
         // Parse for verified cards 
-        for val in ContactManager.sharedManager.currentUserCards{
+        for val in ContactManager.sharedManager.viewableUserCards{
             // Check if verified
             if val.isVerified {
                 // Add to list
                 self.verifiedCards.append(val)
             }
         }
-        
-        
         
     }
 
