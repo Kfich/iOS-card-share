@@ -152,7 +152,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }else{
             
             // Check if user has an image
-            if currentUser.profileImages.count > 0 {
+            if ContactManager.sharedManager.currentUser.profileImages.count > 0 {
                 image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)!
             }else{
                 image = UIImage(named: "search")!
@@ -283,8 +283,25 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func prepareImageForUpload() -> NSDictionary {
         // Prepare image for upload
         
-        let imageData = UIImageJPEGRepresentation(self.selectedImage, 0.5)
-        print(imageData!)
+        var imageData = Data()
+        
+        if editImageSelected {
+            // prepare the selected image
+            imageData = UIImageJPEGRepresentation(self.selectedImage, 0.75)!
+            print(imageData)
+        }else{
+            
+            if ContactManager.sharedManager.currentUser.profileImages.count > 0 {
+                self.selectedImage = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)!
+                
+                imageData = UIImageJPEGRepresentation(self.selectedImage, 0.75)!
+            }else{
+                self.selectedImage = UIImage(named: "search")!
+                imageData = UIImageJPEGRepresentation(self.selectedImage, 0.75)!
+            }
+
+            
+        }
         
         // Generate id string for image
         self.currentUser.publicProfile?.setImageId()
@@ -294,7 +311,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         let mimetype = "image/png"
         
         // Create image dictionary
-        let imageDict = ["image_id": self.currentUser.publicProfile?.imageId, "image_data": imageData!, "file_name": fname!, "type": mimetype] as [String : Any]
+        let imageDict = ["image_id": self.currentUser.publicProfile?.imageId, "image_data": imageData, "file_name": fname!, "type": mimetype] as [String : Any]
         
         return imageDict as NSDictionary
     }
@@ -362,7 +379,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Configure to send to server
         
         // Send to server
-        let parameters = ["data" : currentUser.toAnyObject(), "uuid" : currentUser.userId] as [String : Any]
+        let parameters = ["data" : ContactManager.sharedManager.currentUser.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
         print("\n\nTHE CARD TO ANY - PARAMS")
         print(parameters)
         
@@ -616,7 +633,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     // Logout 
     func logout() {
         // Set bool for auth to false
-        self.currentUser.setVerificationPhoneStatus(status: false)
+        ContactManager.sharedManager.currentUser.setVerificationPhoneStatus(status: false)
         
         // Clear manager
         ContactManager.sharedManager.currentUserCards.removeAll()

@@ -32,6 +32,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     var tags = [String]()
     var corpBadges = [CardProfile.Bagde()]
     
+    // Profile pics
+    var profileImagelist = [UIImage]()
     
     var isSimulator = false
     
@@ -56,6 +58,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
     @IBOutlet var badgeCollectionView: UICollectionView!
+    @IBOutlet var profileImageCollectionView: UICollectionView!
     
     // Labels
     @IBOutlet var nameLabel: UILabel!
@@ -243,6 +246,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Parse for social icons
         parseForSocialIcons()
+        
+        // Get images
+        parseAccountForImages()
 
         // View config
         configureViews()
@@ -441,11 +447,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         if collectionView == self.badgeCollectionView {
             // Return count
             return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
-        }else{
+        }else if collectionView == self.socialBadgeCollectionView{
             
             return self.socialBadges.count
+        }else{
+            // Profile collection view
+            return self.profileImagelist.count
         }
-
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -473,7 +481,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Add subview
             cell.contentView.addSubview(imageView)
             
-        }else{
+        }else if collectionView == self.socialBadgeCollectionView{
             
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
             //cell.contentView.backgroundColor = UIColor.red
@@ -498,7 +506,24 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.contentView.addSubview(imageView)
 
         
+        }else{
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.profileImagelist[indexPath.row]
+            imageView.layer.masksToBounds = true
+            // Set image to view
+            imageView.image = image
+            // Add to collection
+            cell.contentView.addSubview(imageView)
+            
+            
         }
+
         
         return cell
     }
@@ -515,11 +540,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             print("Badge Card List >> \(card.cardProfile.badgeList)")
             
         
-        }else{
+        }else if collectionView == self.socialBadgeCollectionView{
             // Add social to card
             card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
             // Highlight cell
             print("Social Card List >> \(card.cardProfile.socialLinks)")
+        }else{
+            self.profileImageView.image = self.profileImagelist[indexPath.row]
         }
         
         collectionView.reloadData()
@@ -536,7 +563,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -694,6 +721,26 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Custom Methods
     
+    func parseAccountForImages() {
+        
+        // Clear all from list
+        self.profileImagelist.removeAll()
+        
+        // Check for image, set to imageview
+        if ContactManager.sharedManager.currentUser.profileImages.count > 0{
+            // Add section
+            //sections.append("Photos")
+            for img in ContactManager.sharedManager.currentUser.profileImages {
+                let image = UIImage(data: img["image_data"] as! Data)
+                // Append to list
+                self.profileImagelist.append(image!)
+            }
+            // Create section data
+            //self.tableData["Photos"] = profileImagelist
+        }
+        
+    }
+    
     func initializeBadgeList() {
         // Image config
         let img1 = UIImage(named: "icn-social-facebook.png")
@@ -735,6 +782,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 print("Count >> \(socialLinks.count)")
             }
         }
+        
+        
         
         // Remove all items from badges
         self.socialBadges.removeAll()

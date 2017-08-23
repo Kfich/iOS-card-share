@@ -26,6 +26,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    
+    // Profile pics 
+    var profileImagelist = [UIImage]()
 
     
     // Store image icons
@@ -70,6 +73,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     @IBOutlet var viewCardsButton: UIButton!
     
     // Badge carosel
+    @IBOutlet var profileImageCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
@@ -156,6 +160,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.shadowView.shadowRadius = 2
         self.shadowView.shadowMask = YIInnerShadowMaskTop
         
+        // Get images
+        self.parseAccountForImages()
+        
         
     }
 
@@ -192,9 +199,12 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         if collectionView == self.badgeCollectionView {
             // Return count
             return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
-        }else{
+        }else if collectionView == self.socialBadgeCollectionView{
             
             return self.socialBadges.count
+        }else{
+            // Profile collection view
+            return self.profileImagelist.count
         }
     }
     
@@ -222,7 +232,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             // Add subview
             cell.contentView.addSubview(imageView)
         
-        }else{
+        }else if collectionView == self.socialBadgeCollectionView{
             
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
             
@@ -238,6 +248,34 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             
             // Add subview
             cell.contentView.addSubview(imageView)
+        }else{
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configurePhoto(cell: cell)
+            
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let image = self.profileImagelist[indexPath.row]
+            imageView.layer.masksToBounds = true
+            // Set image to view
+            imageView.image = image
+            // Add to collection
+            cell.contentView.addSubview(imageView)
+
+            
+            // Configure corner radius
+            /*let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.profileImagelist[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            imageView.clipsToBounds = true
+            imageView.layer.masksToBounds = true
+            // Add subview
+            cell.contentView.addSubview(imageView)*/
+            
+            
         }
         
         
@@ -251,17 +289,21 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             self.selectedBadgeIndex = indexPath.row
             // Config the social link webVC
             ContactManager.sharedManager.selectedSocialMediaLink = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl
-        }else{
+            
+            // Show WebVC
+            self.launchMediaWebView()
+            
+        }else if collectionView == self.socialBadgeCollectionView{
             // Social link badges
             // Set selected index
             self.selectedBadgeIndex = indexPath.row
             // Config the social link webVC
             ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
             
+            // Show WebVC
+            self.launchMediaWebView()
+            
         }
-        
-        // Show WebVC
-        self.launchMediaWebView()
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
@@ -270,6 +312,22 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Add radius config & border color
         
         cell.contentView.layer.cornerRadius = 20.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.clear.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
+    
+    func configurePhoto(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 22.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
         cell.contentView.layer.borderColor = UIColor.clear.cgColor
@@ -293,7 +351,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return tableData[sections[section]]!.count
+        return tableData[sections[section]]!.count
+        
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -303,12 +362,14 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        //var cell = UITableViewCell()
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+            // Set regular cell sections
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+            cell.descriptionLabel?.text = tableData[sections[indexPath.section]]?[indexPath.row]
+            return cell
         
-        cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
-        return cell
         
     }
     // Set row height
@@ -346,6 +407,15 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // -----------------------------------
     
     // Custom Methods
+    func postNotification() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshProfileImages"), object: self)
+        
+        //UpdateCurrentUserProfile
+        
+    }
+    
     func addObservers() {
         // Call to refresh table
         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.parseDataFromProfile), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
@@ -407,6 +477,29 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // let fb : NSDictionary = ["facebook" : img1!]
         // self.socialLinkBadges.append([fb])
         
+        
+    }
+    
+    func parseAccountForImages() {
+        
+        // Clear all from list
+        self.profileImagelist.removeAll()
+        
+        // Check for image, set to imageview
+        if ContactManager.sharedManager.currentUser.profileImages.count > 0{
+            // Add section
+            //sections.append("Photos")
+            for img in ContactManager.sharedManager.currentUser.profileImages {
+                let image = UIImage(data: img["image_data"] as! Data)
+                // Append to list
+                self.profileImagelist.append(image!)
+            }
+            // Create section data
+            //self.tableData["Photos"] = profileImagelist
+        }
+        
+        // Reload data table
+        //self.postNotification()
         
     }
     
@@ -613,6 +706,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         // Parse out social icons
         self.parseForSocialIcons()
+        
+        // Get profile
+        self.parseAccountForImages()
         
         // Refresh table
         profileInfoTableView.reloadData()
@@ -876,3 +972,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     */
 
 }
+
+
+
+
+

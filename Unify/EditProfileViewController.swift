@@ -636,13 +636,22 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let img8 = UIImage(named: "icn-social-facebook.png")
         let img9 = UIImage(named: "icn-social-facebook.png")
         let img10 = UIImage(named: "icn-social-facebook.png")
+        let img11 = UIImage(named: "icn-social-facebook.png")
+        let img12 = UIImage(named: "icn-social-twitter.png")
+        let img13 = UIImage(named: "icn-social-instagram.png")
+        let img14 = UIImage(named: "icn-social-harvard.png")
+        let img15 = UIImage(named: "icn-social-pinterest.png")
+        let img16 = UIImage(named: "icn-social-pinterest.png")
+        let img17 = UIImage(named: "icn-social-facebook.png")
+        let img18 = UIImage(named: "icn-social-facebook.png")
+        let img19 = UIImage(named: "icn-social-facebook.png")
+        let img20 = UIImage(named: "icn-social-facebook.png")
+        let img21 = UIImage(named: "icn-social-facebook.png")
+        let img22 = UIImage(named: "icn-social-facebook.png")
+        let img23 = UIImage(named: "icn-social-facebook.png")
         
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
-        
-    
-       // let fb : NSDictionary = ["facebook" : img1!]
-       // self.socialLinkBadges.append([fb])
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!], ["snapchat" : img6!], ["plus.google" : img7!], ["crunchbase" : img8!], ["youtube" : img9!], ["soundcloud" : img10!], ["flickr" : img11!], ["about.me" : img12!], ["angelist" : img13!], ["foursquare" : img14!], ["medium" : img15!], ["tumblr" : img16!], ["picasa" : img17!], ["quora" : img18!], ["reddit" : img19!], ["messenger" : img20!], ["whatsapp" : img21!], ["viber" : img22!], ["skype" : img23!]]
         
         
     }

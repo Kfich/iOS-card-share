@@ -30,7 +30,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var tags = [String]()
     var corpBadges : [CardProfile.Bagde] = []
 
-    
+    // Profile pics
+    var profileImagelist = [UIImage]()
     
     // Selected Items 
     var selectedBios = [String]()
@@ -96,7 +97,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     // Badge carosel
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
-    
+    @IBOutlet var profileImageCollectionView: UICollectionView!
     @IBOutlet var shadowView: YIInnerShadowView!
     
     
@@ -523,22 +524,27 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        /* if self.socialBadges.count != 0 {
-         // Return the count
-         return self.socialBadges.count
-         }else{
-         return 1
-         }*/
-        return self.socialBadges.count
+       
+        if collectionView == self.badgeCollectionView {
+            // Return count
+            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+        }/*else if collectionView == self.socialBadgeCollectionView{
+            
+            return self.socialBadges.count
+        }*/else{
+            // Profile collection view
+            return self.profileImagelist.count
+        }
+
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         
         
-        if collectionView == self.badgeCollectionView {
+       /* if collectionView == self.badgeCollectionView {
             // Badge config
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             
             self.configureBadges(cell: cell)
             
@@ -575,7 +581,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
             
             
-        }else{
+        }*//*else if collectionView == self.socialBadgeCollectionView{
             
             //cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
@@ -605,14 +611,28 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
             // Add subview
             cell.contentView.addSubview(imageView)
-        }
+        }*//*else{*/
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.profileImagelist[indexPath.row]
+            imageView.layer.masksToBounds = true
+            // Set image to view
+            imageView.image = image
+            // Add to collection
+            cell.contentView.addSubview(imageView)
+       // }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == self.badgeCollectionView {
+        /*if collectionView == self.badgeCollectionView {
             
             // Check if in array
             if self.selectedCorpLinks.contains(corpBadges[indexPath.row].website) {
@@ -628,7 +648,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 print(card.cardProfile.badgeList as Any)
             }
 
-        }else{
+        }*//*else if collectionView == self.socialBadgeCollectionView{
             
             // Check if in array
             if self.selectedSocialLinks.contains(socialLinks[indexPath.row]) {
@@ -645,7 +665,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
 
             
             
-        }
+        }else{*/
+            // Set profile image
+            self.profileImageView.image = profileImagelist[indexPath.row]
+            
+        //}
         // Reload to show changes
         collectionView.reloadData()
 
@@ -1023,6 +1047,29 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Custom Methods
     
+    func parseAccountForImages() {
+        
+        // Clear all from list
+        self.profileImagelist.removeAll()
+        
+        // Check for image, set to imageview
+        if ContactManager.sharedManager.currentUser.profileImages.count > 0{
+            // Add section
+            //sections.append("Photos")
+            for img in ContactManager.sharedManager.currentUser.profileImages {
+                let image = UIImage(data: img["image_data"] as! Data)
+                // Append to list
+                self.profileImagelist.append(image!)
+            }
+            // Create section data
+            //self.tableData["Photos"] = profileImagelist
+        }
+        
+    }
+    
+
+    
+    
     func postContactListRefresh() {
         // Post notification
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: self)
@@ -1283,6 +1330,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Parse for social badges 
         self.parseForSocialIcons()
+        
+        // Get images
+        self.parseAccountForImages()
         
         // Refresh table
         cardOptionsTableView.reloadData()

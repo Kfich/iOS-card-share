@@ -1210,6 +1210,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             let destination = segue.destination as! ContactProfileViewController
             // Assign selected contact object
             destination.selectedContact = self.selectedContact
+            destination.contact = self.selectedContactObject
             
             // Test
             print("Contact Passed in Seggy")

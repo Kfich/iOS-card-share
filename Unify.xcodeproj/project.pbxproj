@@ -142,6 +142,7 @@
 		FBA1F5191F38FA5400CDCB76 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */; };
 		FBD0C0941F3B8FF500BFE62C /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD0C0931F3B8FF500BFE62C /* CollectionTableViewCell.swift */; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
+		FBDD5B681F4DF716002B66B8 /* ProfileImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD5B671F4DF716002B66B8 /* ProfileImageCell.swift */; };
 		FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C801EDF395000E37E0C /* ProfileViewController.swift */; };
 		FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */; };
 		FBE76C851EDF471E00E37E0C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */; };
@@ -397,6 +398,7 @@
 		FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		FBD0C0931F3B8FF500BFE62C /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
+		FBDD5B671F4DF716002B66B8 /* ProfileImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageCell.swift; sourceTree = "<group>"; };
 		FBE76C801EDF395000E37E0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FBE76C821EDF43F200E37E0C /* AddCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCardViewController.swift; sourceTree = "<group>"; };
 		FBE76C841EDF471E00E37E0C /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -623,6 +625,7 @@
 				FB90A8B31F27929700E67B1E /* SettingsViewCell.swift */,
 				FB199D041F339A9200FFFCC1 /* MediaThumbnailCell.swift */,
 				FBD0C0931F3B8FF500BFE62C /* CollectionTableViewCell.swift */,
+				FBDD5B671F4DF716002B66B8 /* ProfileImageCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1136,6 +1139,7 @@
 				FB767D441F4358750065F46E /* EventAddedDelegate.swift in Sources */,
 				FB199CFB1F2A560000FFFCC1 /* RecipientOptionsViewController.swift in Sources */,
 				FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */,
+				FBDD5B681F4DF716002B66B8 /* ProfileImageCell.swift in Sources */,
 				FB767D331F429DD40065F46E /* RSKImageScrollView.m in Sources */,
 				FB199CFD1F324F6D00FFFCC1 /* RadarListViewController.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,

@@ -76,6 +76,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
     
+    @IBOutlet var socialCollectionView: UICollectionView!
+    
     
     
     // IBActions / Buttons Pressed
@@ -154,8 +156,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Register
-        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"SocialBadgeCell")
-        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"BadgeCell")
+        //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"Cell")
+        //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"BadgeCell")
         
         //self.socialBadgeCollectionView
     }
@@ -195,8 +197,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
         
         // Register
-        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"SocialBadgeCell")
-        self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"BadgeCell")
+        //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"Cell")
+       // self.socialBadgeCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"BadgeCell")
         
         
         // Reset arrays
@@ -339,7 +341,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SocialBadgeCell", for: indexPath) as! MediaThumbnailCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath) as! MediaThumbnailCell
         
         if collectionView == self.badgeCollectionView {
             // Badge config
@@ -361,7 +363,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add subview
             cell.contentView.addSubview(imageView)
             
-        }else{
+        }/*else{
             
             //cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
@@ -376,7 +378,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add subview
             cell.contentView.addSubview(imageView)
         
-        }
+        }*/
         
         return cell
     }
@@ -659,7 +661,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             
             
             // Reload table
-            self.socialBadgeCollectionView.reloadData()
+            //self.socialCollectionView.reloadData()
         }
         
         // Add image to the end of list
@@ -667,7 +669,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         //self.socialBadges.append(image!)
         
         // Reload table
-        self.socialBadgeCollectionView.reloadData()
+        //self.socialCollectionView.reloadData()
         
     }
 
