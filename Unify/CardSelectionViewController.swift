@@ -152,8 +152,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
 
         // Do any additional setup after loading the view.
         // Set shadow
-        self.shadowView.shadowRadius = 3.0
-        self.shadowView.shadowMask = YIInnerShadowMaskTop
+        //self.shadowView.shadowRadius = 3.0
+        //self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Register
         //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"Cell")
@@ -195,6 +195,18 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Set color to nav bar
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
+        
+        // Add collectionview to toolbar
+        /*let container = UIView(frame: CGRect(x: 0, y: 0, width: self.profileInfoTableView.frame.width, height: 3))
+         container.backgroundColor = UIColor.blue
+        container.addSubview(self.socialCollectionView)*/
+        
+        //self.socialMediaToolbar.addSubview(container)
+        
+        
+        
+        //self.profileInfoTableView.tableHeaderView = container
+        
         
         // Register
         //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"Cell")
@@ -316,7 +328,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         profileInfoTableView.reloadData()
         
         // Set card name label 
-        self.cardNameLabel.text = selectedCard.cardName ?? ""
+        self.nameLabel.text = selectedCard.cardName ?? ""
 
         
     }
@@ -328,8 +340,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     }
     
     
+    
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         if collectionView == self.badgeCollectionView {
             // Return count
             return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
@@ -337,15 +351,17 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             
             return self.socialBadges.count
         }
+        //return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath) as! MediaThumbnailCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+        cell.backgroundColor = UIColor.blue
         
         if collectionView == self.badgeCollectionView {
             // Badge config
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath) as! MediaThumbnailCell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
             
             self.configureBadges(cell: cell)
             
@@ -363,7 +379,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add subview
             cell.contentView.addSubview(imageView)
             
-        }/*else{
+        }else{
             
             //cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
@@ -378,7 +394,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add subview
             cell.contentView.addSubview(imageView)
         
-        }*/
+        }
         
         return cell
     }

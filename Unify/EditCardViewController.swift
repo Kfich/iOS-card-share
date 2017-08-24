@@ -131,9 +131,23 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         // Photo picker config
         configurePhotoPicker()
         
+        
+        // Get images
+        self.parseAccountForImages()
+        
+        //self.profileInfoTableView.tableHeaderView = profileImageCollectionView
+        
+        //let container = UIView(frame: CGRect(x: 0, y: 0, width: self.cardOptionsTableView.frame.width, height: 3))
+        //container.backgroundColor = UIColor.gray
+        //container.addSubview(self.profileImageCollectionView)
+        
+        
+        
+        self.cardOptionsTableView.tableFooterView = self.profileImageCollectionView
+        
         // Set shadow 
-        self.shadowView.shadowRadius = 3
-        self.shadowView.shadowMask = YIInnerShadowMaskTop
+        //self.shadowView.shadowRadius = 3
+        //self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Do any additional setup after loading the view.
         
@@ -151,7 +165,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
          */
         
         // Set button 
-        self.cardNameButton.setTitle(card.cardName ?? "", for: .normal)
+        //self.cardNameButton.setTitle(card.cardName ?? "", for: .normal)
         
     }
     
@@ -522,10 +536,12 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.dismiss(animated: true, completion: nil)
     }
     
+    
+    
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
        
-        if collectionView == self.badgeCollectionView {
+       /* if collectionView == self.badgeCollectionView {
             // Return count
             return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
         }/*else if collectionView == self.socialBadgeCollectionView{
@@ -534,13 +550,14 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         }*/else{
             // Profile collection view
             return self.profileImagelist.count
-        }
+        }*/
+        return 10
 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+        cell.backgroundColor = UIColor.blue
         
        /* if collectionView == self.badgeCollectionView {
             // Badge config
@@ -613,18 +630,18 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             cell.contentView.addSubview(imageView)
         }*//*else{*/
             
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+           // cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             
             ///cell.contentView.backgroundColor = UIColor.red
-            self.configureBadges(cell: cell)
+            //self.configureBadges(cell: cell)
             
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            /*let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
             let image = self.profileImagelist[indexPath.row]
             imageView.layer.masksToBounds = true
             // Set image to view
             imageView.image = image
             // Add to collection
-            cell.contentView.addSubview(imageView)
+            cell.contentView.addSubview(imageView)*/
        // }
         
         return cell
@@ -667,11 +684,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
         }else{*/
             // Set profile image
-            self.profileImageView.image = profileImagelist[indexPath.row]
+            //self.profileImageView.image = profileImagelist[indexPath.row]
             
         //}
         // Reload to show changes
-        collectionView.reloadData()
+        //collectionView.reloadData()
 
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
@@ -1481,7 +1498,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
             
             // Reload table
-            self.socialBadgeCollectionView.reloadData()
+            //self.socialBadgeCollectionView.reloadData()
         }
         
         // Add image to the end of list
@@ -1489,7 +1506,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         //self.socialBadges.append(image!)
         
         // Reload table
-        self.socialBadgeCollectionView.reloadData()
+        //self.socialBadgeCollectionView.reloadData()
         
     }
     

@@ -532,7 +532,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             print("You selected cell #\(indexPath.item)!")
             
             // Set selected card object
-            selectedUserCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            selectedUserCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             
             // Show Selected Card segue
             performSegue(withIdentifier: "showSelectedCard", sender: self)

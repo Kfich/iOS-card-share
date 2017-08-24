@@ -377,25 +377,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 //print(contact)
             }
             
-            // Find out if contacts synced
-            let synced = UDWrapper.getBool("contacts_synced")
-            print("Contacts sync value!! >> \(synced)")
-            
-            if  synced{
-                
-                print("Contacts synced!! >> \(synced)")
-                //Set bool to indicate contacts have been synced
-                UDWrapper.setBool("contacts_synced", value: true)
-            
-            }else{
-                
-                // Create contact objects
-                self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
-                
-                // Upload Contacts
-                self.uploadContactRecords()
-            }
-            
             // Create contact objects
             //self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
             
@@ -406,6 +387,11 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             self.sortContacts()
             
             
+            // Find out if contacts synced
+            var synced = UDWrapper.getBool("contacts_synced")
+            print("Contacts sync value!! >> \(synced)")
+            //synced = false
+            //print("Contacts overwrite sync value!! >> \(synced)")
             
             // Sync up with main queue
             DispatchQueue.main.async {
@@ -414,6 +400,19 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 //self.uploadContactRecords()
                 // Reload the tableview.
                 self.tblSearchResults.reloadData()
+                
+                if  synced{
+                    
+                    print("Contacts synced!! >> \(synced)")
+                    //Set bool to indicate contacts have been synced
+                    //UDWrapper.setBool("contacts_synced", value: true)
+                    
+                }else{
+                    
+                    // Upload Contacts
+                    self.uploadContactRecords()
+                }
+
             }
             
         }
