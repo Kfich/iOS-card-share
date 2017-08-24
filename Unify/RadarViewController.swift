@@ -566,7 +566,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                     }
                 }
                 
-                self.fetchUserBadges()
+                //self.fetchUserBadges()
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
@@ -660,10 +660,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Set manager badges
                 ContactManager.sharedManager.currentUser.userProfile.badges = self.currentUser.userProfile.badges
                 
+                print("RadarViewController FetchUser >> Badges tho >> \(self.currentUser.userProfile.badges)")
+                
                 // Fetch cards 
-                self.fetchUserCards()
+                //self.fetchUserCards()
                 
-                
+                self.fetchUserBadges()
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")

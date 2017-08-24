@@ -546,7 +546,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         
         // Show progress HUD
-        KVNProgress.show(withStatus: "Generating profile..")
+        KVNProgress.show(withStatus: "Adding image to profile..")
         
         // Upload image with Alamo
         Alamofire.upload(multipartFormData: { multipartFormData in

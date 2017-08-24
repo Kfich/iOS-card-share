@@ -71,23 +71,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         pullUpController.isLocked = true
         
         
-        // Find cards from UserDefaults
-        
-        /*if let data = UserDefaults.standard.object(forKey: "contact_cards") as? NSData {
-            
-            
-            let cards = NSKeyedUnarchiver.unarchiveObject(with: data as Data) as! [ContactCard]
-            
-            ContactManager.sharedManager.currentUserCards = cards
-            for card in ContactManager.sharedManager.currentUserCards{
-                card.printCard()
-            }
-            cardCollectionView.reloadData()
-            print("User has cards")
-            print(cards)
-        }else{
-            print("User has no cards")
-        }*/
+        //fetchCurrentUser()
         
         // Clear Cards array 
         //ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
@@ -121,8 +105,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Append to current user
             ContactManager.sharedManager.currentUserCards.append(addCardView)
             
-            // Reload tableview data
-            cardCollectionView.reloadData()
+            // Sync up with main queue
+            DispatchQueue.main.async {
+                
+                // Reload table
+                self.cardCollectionView.reloadData()
+            }
             
             // Set Selected card
             if ContactManager.sharedManager.currentUserCards.count > 0 {
@@ -199,8 +187,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         bgImage.contentMode = .scaleToFill
         self.cardCollectionView.backgroundView = bgImage
         
-        // Refresh table data
-        cardCollectionView.reloadData()
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            
+            // Reload table
+            self.cardCollectionView.reloadData()
+        }
     }
     
     func cardDeleted() {
@@ -220,8 +212,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         bgImage.contentMode = .scaleToFill
         self.cardCollectionView.backgroundView = bgImage
         
-        // Refresh table data
-        cardCollectionView.reloadData()
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            
+            // Reload table
+            self.cardCollectionView.reloadData()
+        }
     }
     
     func cardUpdated() {
@@ -247,8 +243,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Get cards again 
         self.parseForCards()
         
-        // Refresh table data
-        cardCollectionView.reloadData()
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            
+            // Reload table
+            self.cardCollectionView.reloadData()
+        }
     }
     
     // Func to present addCardVC
@@ -280,8 +280,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 contactCard.printCard()
             }
             
-            // Reload tableview data
-            cardCollectionView.reloadData()
+            // Sync up with main queue
+            DispatchQueue.main.async {
+                
+                // Reload table
+                self.cardCollectionView.reloadData()
+            }
+            
             // Set Selected card
             if ContactManager.sharedManager.currentUserCards.count > 0 {
                 ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
@@ -603,55 +608,115 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             let id = card.organizationReference
             
-            let parameters = ["organizationId": id]
-            
-            
-            // Send to server
-            
-            Connection(configuration: nil).getOrgCardCall(parameters as [AnyHashable : Any]){ response, error in
-                if error == nil {
-                    print("Transaction Created Response ---> \(String(describing: response))")
-                    
-                    // Set card uuid with response from network
-                    let dictionary : NSDictionary = response as! NSDictionary
-                    print("Card Design from manager")
-                    print(dictionary)
-                    
-                    card.cardDesign = ContactCard.Design(snapshot: dictionary)
-                    card.cardDesign.logo = dictionary["logo"] as! String
-                    print("Card Logo outhere \(card.cardDesign.logo)")
-                    print("The card itsself's design >> \(card.cardDesign.toAny())")
-                    
-                    // Reload table
-                    self.cardCollectionView.reloadData()
-                    
-                    // Append values to card itself
-                    
-                } else {
-                    print("Transaction Created Error Response ---> \(String(describing: error))")
-                    // Show user popup of error message
-                    KVNProgress.showError(withStatus: "There was an error with your connection. Please try again.")
-                    
+            if id != ""{
+                
+                let parameters = ["organizationId": id]
+                
+                
+                // Send to server
+                
+                Connection(configuration: nil).getOrgCardCall(parameters as [AnyHashable : Any]){ response, error in
+                    if error == nil {
+                        print("Transaction Created Response ---> \(String(describing: response))")
+                        
+                        // Set card uuid with response from network
+                        let dictionary : NSDictionary = response as! NSDictionary
+                        print("Card Design from manager")
+                        print(dictionary)
+                        
+                        card.cardDesign = ContactCard.Design(snapshot: dictionary)
+                        card.cardDesign.logo = dictionary["logo"] as! String
+                        print("Card Logo outhere \(card.cardDesign.logo)")
+                        print("The card itsself's design >> \(card.cardDesign.toAny())")
+                        
+                        // Sync up with main queue
+                        DispatchQueue.main.async {
+                            
+                            // Reload table
+                            self.cardCollectionView.reloadData()
+                        }
+                        
+                        
+                        // Append values to card itself
+                        
+                    } else {
+                        print("Transaction Created Error Response ---> \(String(describing: error))")
+                        // Show user popup of error message
+                        KVNProgress.showError(withStatus: "There was an error with your connection. Please try again.")
+                        
+                    }
+                    // Hide indicator
+                    //KVNProgress.dismiss()
                 }
-                // Hide indicator
-                //KVNProgress.dismiss()
+            }else{
+                print("The id to the card was empty")
             }
-
             
         }
         
-        // Reload table
-        self.cardCollectionView.reloadData()
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            
+            // Reload table
+            self.cardCollectionView.reloadData()
+        }
         
     }
 
-    
+    func fetchCurrentUser() {
+        // Fetch cards from server
+        let parameters = ["uuid" : currentUser.userId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Fetching profile...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        Connection(configuration: nil).getUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Get User Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print("\n\nUser from get call")
+                print(dictionary)
+                
+                let profileDict = dictionary["data"]
+                
+                let user = User(snapshot: profileDict as! NSDictionary)
+                
+                // Set current user
+                self.currentUser = user
+                
+                // Set manager badges
+                ContactManager.sharedManager.currentUser.userProfile.badges = self.currentUser.userProfile.badges
+                
+                // Fetch cards
+                self.fetchUserCards()
+                
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
     
     func fetchUserCards() {
         // Fetch cards from server
         let parameters = ["uuid" : ContactManager.sharedManager.currentUser.userId]
         
-        print("\n\nTHE CARD TO ANY - PARAMS")
+        print("\n\nThe card from the PullUpVC - ToAny()")
         print(parameters)
         
         // Temp card list
@@ -664,7 +729,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 
                 // Set card uuid with response from network
                 let dictionary : NSArray = response as! NSArray
-                //print("\n\nCard List")
+                print("\n\nCards Found From PullUpVC")
                 print(dictionary)
                 
                 for item in dictionary{
@@ -711,8 +776,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 let dummyCard = ContactCard()
                 ContactManager.sharedManager.viewableUserCards.append(dummyCard)
                 
-                // Reload data
-                self.cardCollectionView.reloadData()
+                // Sync up with main queue
+                DispatchQueue.main.async {
+                    
+                    // Reload table
+                    self.cardCollectionView.reloadData()
+                }
                 
             } else {
                 print("Card Fetch Error Response ---> \(String(describing: error))")

@@ -144,8 +144,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Set delegate for empty state
         profileInfoTableView.emptyDataSetSource = self
         profileInfoTableView.emptyDataSetDelegate = self
-        // View to remove separators
-        profileInfoTableView.tableFooterView = UIView()
+        
+        self.profileInfoTableView.tableFooterView = self.profileImageCollectionView
         
         // Parse for social data
         //self.parseForSocialIcons()
@@ -160,18 +160,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.shadowView.shadowRadius = 2
         self.shadowView.shadowMask = YIInnerShadowMaskTop
         
-        // Get images
-        self.parseAccountForImages()
-        
-        //self.profileInfoTableView.tableHeaderView = profileImageCollectionView
-        
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: self.profileInfoTableView.frame.width, height: 3))
-       // container.backgroundColor = UIColor.gray
-        container.addSubview(self.profileImageCollectionView)
-        
-        
-        
-        self.profileInfoTableView.tableHeaderView = container
         
     }
 
@@ -183,11 +171,89 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
      override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        /*// Get images
+        self.parseAccountForImages()
+        
+        //self.profileInfoTableView.tableHeaderView = profileImageCollectionView
+        
+        //let container = UIView(frame: CGRect(x: 0, y: 0, width: self.profileInfoTableView.frame.width, height: 3))
+        // container.backgroundColor = UIColor.gray
+        //container.addSubview(self.profileImageCollectionView)
+        
+        
+        
+        self.profileInfoTableView.tableFooterView = self.profileImageCollectionView
+        
         //currentUser = ContactManager.sharedManager.currentUser
         
         
         // Assign profile values
-       // self.parseDataFromProfile()
+       // self.parseDataFromProfile()*/
+        
+        
+        // View Config
+        configureViews()
+        
+        // Set up card viewer
+        populateCards()
+        
+        // Configure background image graphics
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIImage(named: "backgroundGradient")?.draw(in: self.view.bounds)
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
+        UIGraphicsEndImageContext()
+        
+        self.view.backgroundColor = UIColor(patternImage: image)
+        
+        
+        // Configure Nav bar
+        
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
+        // Set color
+        let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
+        self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
+        
+        // Create badge list
+        self.initializeBadgeList()
+        // Assign profile values
+        self.parseDataFromProfile()
+        
+        // For notifications
+        addObservers()
+        
+        // Set table delegate and data source
+        profileInfoTableView.delegate = self
+        profileInfoTableView.dataSource = self
+        
+        
+        // Set delegate for empty state
+        profileInfoTableView.emptyDataSetSource = self
+        profileInfoTableView.emptyDataSetDelegate = self
+        
+        //let container = UIView(frame: CGRect(x: 0, y: 0, width: self.profileInfoTableView.frame.width, height: 3))
+        // container.backgroundColor = UIColor.gray
+       // container.addSubview(self.profileImageCollectionView)
+        
+        
+        // Set footer as images collection 
+        
+        self.profileInfoTableView.tableFooterView = self.profileImageCollectionView
+        
+        // Parse for social data
+        //self.parseForSocialIcons()
+        
+        
+        self.socialBadgeCollectionView.reloadData()
+        
+        profileInfoTableView.reloadData()
+        self.badgeCollectionView.reloadData()
+        
+        // Set shadow
+        self.shadowView.shadowRadius = 2
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
     }
     
     
@@ -500,7 +566,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         }
         
         // Reload data table
-        //self.postNotification()
+        self.profileImageCollectionView.reloadData()
         
     }
     
@@ -580,6 +646,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.sections.removeAll()
         self.tableData.removeAll()
         self.tags.removeAll()
+        
         
         // Parse bio info
         //currentUser = ContactManager.sharedManager.currentUser
@@ -714,6 +781,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Refresh table
         profileInfoTableView.reloadData()
         socialBadgeCollectionView.reloadData()
+        profileImageCollectionView.reloadData()
         
         print("PRINTING USER from profile view")
         ContactManager.sharedManager.currentUser.printUser()

@@ -258,13 +258,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         //self.profileInfoTableView.tableHeaderView = profileImageCollectionView
         
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: self.cardOptionsTableView.frame.width, height: 3))
+        //let container = UIView(frame: CGRect(x: 0, y: 0, width: self.cardOptionsTableView.frame.width, height: 3))
         // container.backgroundColor = UIColor.gray
-        container.addSubview(self.profileImageCollectionView)
+        //container.addSubview(self.profileImageCollectionView)
         
         
-        
-        self.cardOptionsTableView.tableHeaderView = container
+        // Add profile images collection as footer
+        self.cardOptionsTableView.tableFooterView = self.profileImageCollectionView
        
         
     }
@@ -399,6 +399,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Save card to DB
         let parameters = ["data": card.toAnyObject()]
+        
+        print("The New Card Created Call >> \(card.toAnyObject())")
         
         Connection(configuration: nil).createCardCall(parameters as! [AnyHashable : Any]){ response, error in
             if error == nil {
@@ -755,23 +757,27 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func initializeBadgeList() {
         // Image config
-        let img1 = UIImage(named: "icn-social-facebook.png")
-        let img2 = UIImage(named: "icn-social-twitter.png")
-        let img3 = UIImage(named: "icn-social-instagram.png")
-        let img4 = UIImage(named: "icn-social-harvard.png")
-        let img5 = UIImage(named: "icn-social-pinterest.png")
-        let img6 = UIImage(named: "icn-social-pinterest.png")
-        let img7 = UIImage(named: "icn-social-facebook.png")
-        let img8 = UIImage(named: "icn-social-facebook.png")
-        let img9 = UIImage(named: "icn-social-facebook.png")
-        let img10 = UIImage(named: "icn-social-facebook.png")
-        
+        // Test data config
+        let img1 = UIImage(named: "Facebook.png")
+        let img2 = UIImage(named: "Twitter.png")
+        let img3 = UIImage(named: "instagram.png")
+        let img4 = UIImage(named: "Pinterest.png")
+        let img5 = UIImage(named: "Linkedin.png")
+        let img6 = UIImage(named: "GooglePlus.png")
+        let img7 = UIImage(named: "Crunchbase.png")
+        let img8 = UIImage(named: "Youtube.png")
+        let img9 = UIImage(named: "Soundcloud.png")
+        let img10 = UIImage(named: "Flickr.png")
+        let img11 = UIImage(named: "AboutMe.png")
+        let img12 = UIImage(named: "Angellist.png")
+        let img13 = UIImage(named: "Foursquare.png")
+        let img14 = UIImage(named: "Medium.png")
+        let img15 = UIImage(named: "Tumblr.png")
+        let img16 = UIImage(named: "Quora.png")
+        let img17 = UIImage(named: "Reddit.png")
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
         
-        
-        // let fb : NSDictionary = ["facebook" : img1!]
-        // self.socialLinkBadges.append([fb])
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
         
         
     }

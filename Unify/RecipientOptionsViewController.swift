@@ -101,7 +101,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Set tint
         segmentedControl.tintColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        segmentedControl.insertSegment(withTitle: "Tools", at: 0, animated: false)
+        segmentedControl.insertSegment(withTitle: "New", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Contacts", at: 1, animated: false)
         
         

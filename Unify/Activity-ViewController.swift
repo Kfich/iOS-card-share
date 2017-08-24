@@ -739,8 +739,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
             }
-            // Hide indicator
-            KVNProgress.dismiss()
+            
         }
     }
     
@@ -1264,10 +1263,20 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // See if image ref available
         let image = UIImage(named: "contact")
         cell.profileImage.image = image
+        
+        // Config label
+        self.configureFollowUpLabel(label: cell.approveButton)
+        
+        
         // Set description text
         
-        if trans.recipientList.count > 1{
+        if (trans.recipientNames?.count)! > 1{
             cell.descriptionLabel.text = "You introduced \(trans.recipientNames?[0] ?? "") to \(trans.recipientNames?[1] ?? "")"
+            
+            cell.approveButton.text = "Follow up"
+            cell.approveButton.isEnabled = false
+            cell.approveButton.backgroundColor = UIColor.white
+            
         }else{
             cell.descriptionLabel.text = "You made an introduction"
         }
@@ -1310,8 +1319,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Hide location 
         cell.locationIcon.isHidden = true
         
-        // Config label 
-        self.configureFollowUpLabel(label: cell.approveButton)
         
         // Add tag to view
         cell.cardWrapperView.tag = index
