@@ -349,7 +349,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let deleteRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler:{action, indexpath in
             
             // Reject transaction call
-            self.rejectTransaction()
+            self.rejectTransaction(index: indexPath.row)
             
             self.tableView.isEditing = false
             
@@ -608,11 +608,19 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         print("Sender Index: \((sender.view?.tag)!)")
         print("Intent : \(intent)")
         
-        // Set index 
-        self.selectedIndex = (sender.view?.tag)!
-        // Set selected transaction using tag
-        self.selectedTransaction = self.transactions[(sender.view?.tag)!]
         
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // All
+            self.selectedTransaction = transactionListReversed[(sender.view?.tag)!]
+        }else if segmentedControl.selectedSegmentIndex == 1 {
+            // Connections
+            self.selectedTransaction = connections[(sender.view?.tag)!]
+        }else{
+            // Intro
+            self.selectedTransaction = introductions[(sender.view?.tag)!]
+            
+        }
+
         // Post notification
         if intent == "Approve" {
             // Approve transaction 
@@ -649,8 +657,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Change status for trans
                 self.transactions[self.selectedIndex].approved = true
                 
+                // Refresh transaction feed
+                self.getTranstactions()
+                
+                
                 // Reload table
-                self.tableView.reloadData()
+                //self.tableView.reloadData()
                 // Hide HUD
                 KVNProgress.showSuccess(withStatus: "Approved.")
                 
@@ -665,12 +677,24 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    func rejectTransaction() {
+    func rejectTransaction(index: Int) {
         
         print("Rejecting transaction")
         
         // Set selected transaction 
         //self.selectedTransaction = self.transactions[]
+        
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // All
+            self.selectedTransaction = transactionListReversed[index]
+        }else if segmentedControl.selectedSegmentIndex == 1 {
+            // Connections
+            self.selectedTransaction = connections[index]
+        }else{
+            // Intro
+            self.selectedTransaction = introductions[index]
+            
+        }
         
         // Export transaction
         let parameters = ["uuid" : self.selectedTransaction.transactionId]
@@ -693,6 +717,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.transactions[self.selectedIndex].approved = false
                 // Remove transaction from list
                 self.transactions.remove(at: self.selectedIndex)
+                
+                // Re-fetch data
+                self.getTranstactions()
                 
                 // Reload table 
                 self.tableView.reloadData()
@@ -802,7 +829,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         Connection(configuration: nil).getTransactionsCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                print("\n\nGet Trans Response: \n\n>>>>>> \(response)\n\n")
                 
                 // Init dictionary to capture response
                 if let dictionary = response as? [String : Any] {
@@ -814,8 +841,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                         // Update counter
                         // Init user objects from array
                         let trans = Transaction(snapshot: item as! NSDictionary)
-                        print("Transaction List")
-                        //trans.printTransaction()
+                        print("Transaction Individual item after get")
+                        trans.printTransaction()
                         
                         
                         // Append users to radarContacts array
@@ -1365,50 +1392,68 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.connectionApproveButton.isHidden = true
             cell.connectionApproveButton.isEnabled = false
             
-            if trans.senderImageId != ""{
+            
+            if trans.recipientCard?.imageId != ""{
                 // Init url
                 let link = ImageURLS.sharedManager.getFromDevelopmentURL
-                let url = URL(string: "\(link)/\(trans.senderImageId)")
+                let id = trans.recipientCard?.imageId
+                let url = URL(string: "\(link)\(id!).jpg")
+                print("Link for image sender: \(link)\(trans.recipientCard?.imageId).jpg")
                 cell.connectionOwnerProfileImage.setImageWith(url!, placeholderImage: placeholder)
             }else{
                 cell.connectionOwnerProfileImage.image = placeholder
+                
             }
-        
-        }/*else{
             
-            // Hide buttons if already approved
-            if trans.approved {
-                // Hide and replace
-                cell.connectionRejectButton.isHidden = true
-                cell.connectionRejectButton.isEnabled = false
-                
-                cell.connectionApproveButton.text = "follow up"
-                cell.connectionApproveButton.isEnabled = false
-                
-                // Change the label
-                //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
-                
-            }else if trans.rejected{
-                // Show
-                cell.connectionApproveButton.isHidden = true
-                cell.connectionApproveButton.isEnabled = false
-                
-                // Hide approve
-                cell.connectionRejectButton.text = "Rejected"
-                cell.connectionRejectButton.isEnabled = false
-                
+            
+        }else{
+            // Set image
+            print("Image ID", trans.senderImageId)
+            
+            if trans.senderImageId != ""{
+                // Init url
+                let link = ImageURLS.sharedManager.getFromDevelopmentURL
+                let url = URL(string: "\(link)\(trans.senderImageId).jpg")
+                print("Link for image sender: \(link)\(trans.senderImageId).jpg")
+                cell.connectionOwnerProfileImage.setImageWith(url!, placeholderImage: placeholder)
             }else{
-                print("Waiting for confirmation")
+                cell.connectionOwnerProfileImage.image = placeholder
+                
             }
 
+        }
+        
             
-        }*/
-        
-        // Hide
-        
-        
+            // Hide buttons if already approved
+        if trans.approved {
+            // Hide and replace
+            cell.connectionRejectButton.isHidden = true
+            cell.connectionRejectButton.isEnabled = false
+                
+            cell.connectionApproveButton.text = "Follow up"
+            cell.connectionApproveButton.isEnabled = false
+            cell.connectionApproveButton.backgroundColor = UIColor.white
+            cell.connectionApproveButton.textColor = UIColor.red
+                
+            // Change the label
+            //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
+                
+        }else if trans.rejected{
+            // Show
+            cell.connectionApproveButton.isHidden = true
+            cell.connectionApproveButton.isEnabled = false
+                
+            // Hide approve
+            cell.connectionRejectButton.text = "Rejected"
+            cell.connectionRejectButton.isEnabled = false
+                
+        }else{
+            print("Waiting for confirmation")
+        }
+
+
         // Config label
-        self.configureFollowUpLabel(label: cell.connectionApproveButton)
+        //self.configureFollowUpLabel(label: cell.connectionApproveButton)
         
         
         if trans.location == ""{
@@ -1431,7 +1476,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Configure borders
         imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = imageView.frame.width/2    // Create container for image and name
+        imageView.layer.cornerRadius = 33   // Create container for image and name
         
     }
 

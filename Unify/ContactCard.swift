@@ -114,7 +114,8 @@ public class ContactCard: NSObject, NSCoding{
         //ownerId = withSnapshotLite["ownerId"] as! String
         //cardName = withSnapshotLite["first_name"] as? String
         //cardHolderName = withSnapshotLite["card_holder_name"] as? String
-        //imageURL = withSnapshotLite["image_url"] as? String
+        imageId = withSnapshotLite["profile_image_id"] as? String ?? ""
+        print("Snapshot lite image id init >> ", imageId)
         
         let first = withSnapshotLite["first_name"] as? String
         let last = withSnapshotLite["last_name"] as? String

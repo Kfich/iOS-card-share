@@ -100,6 +100,8 @@ public class Transaction{
             recipientCard = ContactCard.init(withSnapshotLite: contactDictionary ?? NSDictionary())
             
             print(recipientCard?.cardHolderName ?? "No name")
+            print("On init")
+            print(recipientCard?.imageId)
         }
         
         let approval = snapshot["approved"] as! String ?? "0"

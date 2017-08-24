@@ -23,7 +23,7 @@ public class CardProfile{
     var notes = [[String : String]]()
     var websites = [[String : String]]()
     var organizations = [[String : String]]()
-    
+    var imageId = ""
     // Badges
     var badges = [String]()
     var badgeList = [Bagde]()
@@ -89,9 +89,12 @@ public class CardProfile{
     
     init(withSnapshotLite: NSDictionary) {
         
-        let emails1 = withSnapshotLite["emails"] as! NSArray
-        print(emails1)
-        phoneNumbers = withSnapshotLite["phone_numbers"] as! [[String : String]]
+        emails = withSnapshotLite["emails"] as? [[String : String]] ?? [[String : String]]()
+        //print(emails1)
+        phoneNumbers = withSnapshotLite["phone_numbers"] as? [[String : String]] ?? [[String : String]]()
+        imageId = withSnapshotLite["profile_image_id"] as? String ?? ""
+        
+        print("Image Id for the shits >> ", imageId)
         
         // Testing to see if populated
         
