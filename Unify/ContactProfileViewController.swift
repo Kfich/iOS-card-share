@@ -178,7 +178,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         formatter.style = .fullName
 
         // Parse card for profile info
-        self.contact = self.parseContactRecord(contact: selectedContact)
+        self.parseContactRecord()
         
         // Config Views
         configureViews()
@@ -461,7 +461,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     // Initialize contact objects for upload
     
-    func parseContactRecord(contact: CNContact) -> Contact {
+    func parseContactRecord(){
         // Clear all profile info to prepare for override
         bios.removeAll()
         titles.removeAll()
@@ -482,10 +482,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         // Iterate over list and itialize contact objects
             
             // Init temp contact object
-            let contactObject = Contact()
+            //let contactObject = Contact()
             
             // Set name
-            contactObject.name = formatter.string(from: contact) ?? "No Name"
+            //contactObject.name = formatter.string(from: contact) ?? "No Name"
             
             // Check for count
             if contact.phoneNumbers.count > 0 {
@@ -494,15 +494,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 // Iterate over items
                 for number in contact.phoneNumbers{
                     // print to test
-                    print("Number: \((number.value.value(forKey: "digits" )!))")
+                    //print("Number: \((number.value.value(forKey: "digits" )!))")
                     
                     // Init the number
-                    let digits = number.value.value(forKey: "digits") as! String
+                    let digits = number["phone"]!
                     
-                    // Append to object
-                    contactObject.setPhoneRecords(phoneRecord: digits)
-                    
-                    // Append to array
                     self.phoneNumbers.append(digits)
                     print(phoneNumbers.count)
                 }
@@ -510,136 +506,118 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 self.tableData["Phone Numbers"] = phoneNumbers
                 
             }
-            if contact.emailAddresses.count > 0 {
+            if contact.emails.count > 0 {
                 // Add section
                 sections.append("Emails")
                 // Iterate over array and pull value
-                for address in contact.emailAddresses {
+                for address in contact.emails {
                     // Print to test
-                    print("Email : \(address.value)")
-                    
-                    // Append to object
-                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                    print("Email : \(address["email"])")
                     
                     // Append to array
-                    self.emails.append(address.value as String)
+                    self.emails.append(address["email"]!)
                     print(emails.count)
                 }
                 // Create section data
                 self.tableData["Emails"] = emails
             }
         
-            if contact.imageDataAvailable {
-                // Print to test
-                print("Has IMAGE Data")
-                
-                // Create ID and add to dictionary
-                // Image data png
-                let imageData = contact.imageData!
-                print(imageData)
-                
-                // Assign asset name and type
-                let idString = contactObject.randomString(length: 20)
-                
-                // Name image with id string
-                let fname = idString
-                let mimetype = "image/png"
-                
-                // Create image dictionary
-                let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
-                
-                
-                // Append to object
-                contactObject.setContactImageId(id: idString)
-                contactObject.imageDictionary = imageDict
-                
-            }
-        
-            if contact.urlAddresses.count > 0{
+            if contact.websites.count > 0{
                 // Add section
                 sections.append("Websites")
                 // Iterate over items
-                for address in contact.urlAddresses {
+                for address in contact.websites {
                     // Print to test
-                    print("Website : \(address.value as String)")
-                    
-                    // Append to object
-                    contactObject.setWebsites(websiteRecord: address.value as String)
+                    print("Website : \(address["website"]!)")
                     
                     // Append to list
-                    self.websites.append(address.value as String)
+                    self.websites.append(address["website"]!)
                     print(websites.count)
                 }
                 // Create section data
                 self.tableData["Websites"] = websites
                 
             }
-            if contact.socialProfiles.count > 0{
+            if contact.socialLinks.count > 0{
                 // Iterate over items
-                for profile in contact.socialProfiles {
+                for profile in contact.socialLinks {
                     // Print to test
-                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
-                    
-                    // Create temp link
-                    let link = profile.value.value(forKey: "urlString")  as! String
-                    
-                    // Append to object
-                    contactObject.setSocialLinks(socialLink: link)
+                    print("Social Profile : \(profile["link"]!)")
                     
                     // Append to list
-                    self.socialLinks.append(link)
+                    self.socialLinks.append(profile["link"]!)
                     print(socialLinks.count)
                 }
                 
             }
             
-            if contact.jobTitle != "" {
+            if contact.titles.count > 0 {
                 // Add section
                 sections.append("Titles")
-                //Print to test
-                print("Job Title: \(contact.jobTitle)")
                 
-                // Append to object
-                contactObject.setTitleRecords(title: contact.jobTitle)
-                
-                // Append to list 
-                self.titles.append(contact.jobTitle)
-                // Create section data
+                for title in contact.titles {
+                    // Print to test
+                    print("Title : \(title["title"]!)")
+                    
+                    // Append to list
+                    self.titles.append(title["title"]!)
+                    print(titles.count)
+                }
+                // Set list for section
                 self.tableData["Titles"] = titles
             }
-            if contact.organizationName != "" {
-                // Add section
-                sections.append("Organizations")
-                //print to test
-                print("Organization : \(contact.organizationName)")
-                
-                // Append to object
-                contactObject.setOrganizations(organization: contact.organizationName)
-                
-                // Append to list
-                self.organizations.append(contact.organizationName)
-                
-                // Create section data
-                self.tableData["Organizations"] = organizations
-            }
-            if contact.note != "" {
-                // Add section
-                sections.append("Notes")
-                //print to test
-                print(contact.note)
-                
-                // Append to object
-                contactObject.setNotes(note: contact.note)
-                
-                // Append to list
-                self.notes.append(contact.note)
-                
-                // Create section data
-                self.tableData["Notes"] = notes
-            }
+        
+        if contact.organizations.count > 0 {
+            // Add section
+            sections.append("Organizations")
             
+            for org in contact.organizations {
+                // Print to test
+                print("Org : \(org["organization"]!)")
+                
+                // Append to list
+                self.organizations.append(org["organization"]!)
+                print(organizations.count)
+            }
+            // Set list for section
+            self.tableData["Organizations"] = organizations
+        }
+
+        if contact.notes.count > 0 {
+            // Add section
+            sections.append("Notes")
+            
+            for note in contact.notes {
+                // Print to test
+                print("Note : \(note["note"]!)")
+                
+                // Append to list
+                self.notes.append(note["note"]!)
+                print(notes.count)
+            }
+            // Set list for section
+            self.tableData["Notes"] = notes
+        }
+
+        
+        if contact.tags.count > 0 {
+            // Add section
+            sections.append("Tags")
+            
+            for tag in contact.tags {
+                // Print to test
+                print("Title : \(tag["tag"]!)")
+                
+                // Append to list
+                self.tags.append(tag["tag"]!)
+                print(tags.count)
+            }
+            // Set list for section
+            self.tableData["Tags"] = tags
+        }
+
             // Test object
-            print("Contact >> \n\(contactObject.toAnyObject()))")
+            print("Contact >> \n\(contact.toAnyObject()))")
         
         // Parse for badges 
         self.parseForSocialIcons()
@@ -647,7 +625,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         // Reload table data
         self.profileInfoTableView.reloadData()
         
-        return contactObject
+        
     }
 
     
@@ -700,14 +678,16 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     func populateCards(){
         
         
-        nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
+        //nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
+        nameLabel.text = self.contact.name
         
-        if selectedContact.phoneNumbers.count > 0 {
+        if self.contact.phoneNumbers.count > 0 {
             // Set label text
-            phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
+            //phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
+            phoneLabel.text = self.contact.phoneNumbers[0]["phone"]
             
             // Set global phone val
-            self.selectedUserPhone = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as! String
+            self.selectedUserPhone = self.contact.phoneNumbers[0]["phone"]!
         }else{
             // Hide phone icon image 
             phoneImageView.isHidden = true
@@ -724,11 +704,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             smsButton.image = UIImage(named: "btn-chat-gray")
             
         }
-        if selectedContact.emailAddresses.count > 0 {
+        if contact.emails.count > 0 {
             // Set label text
-            emailLabel.text = (selectedContact.emailAddresses[0].value as String)
+            emailLabel.text = self.contact.emails[0]["email"]
             // Set global email
-            self.selectedUserEmail = (selectedContact.emailAddresses[0].value as String)
+            self.selectedUserEmail = self.contact.emails[0]["email"]!
         }else{
             // Hide email icon
             emailImageView.isHidden = true
@@ -740,15 +720,21 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             emailButton.image = UIImage(named: "btn-message-gray")
         }
         // Check if image data available
-        if selectedContact.imageDataAvailable {
-
+        
+        
+        if contact.imageId != "" {
             print("Has IMAGE")
-            // Create image var
-            let image = UIImage(data: selectedContact.imageData!)
+            // Set id
+            let id = contact.imageId
+            
             // Set image for contact
-            contactImageView.image = image
+            let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
+            let placeholderImage = UIImage(named: "profile")!
+            // Set image
+            //contactImageView?.setImageWith(url)
+            self.contactImageView.setImageWith(url)
+            
         }else{
-            // Set to placeholder image
             contactImageView.image = UIImage(named: "profile")
         }
 

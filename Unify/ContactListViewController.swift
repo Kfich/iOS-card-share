@@ -1213,7 +1213,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             destination.contact = self.selectedContactObject
             
             // Test
-            print("Contact Passed in Seggy")
+            print("Contact Passed in Seggy >> \(destination.contact.toAnyObject())")
         }
         
         

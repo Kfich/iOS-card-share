@@ -19,6 +19,7 @@ public class Transaction{
     var type : String = ""
     var senderName : String = ""
     var recipientNames : [String]?
+    var senderImageId = ""
     
     // Lat and Long for location
     var latitude = Double()
@@ -75,6 +76,7 @@ public class Transaction{
         //notes = snapshot["notes"] as! String
         senderId = snapshot["sender_id"] as! String
         senderCardId = snapshot["sender_card_id"] as! String
+        senderImageId = snapshot["sender_image_id"] as? String ?? ""
         type = snapshot["type"] as! String
         // Set recipient list
         
@@ -139,7 +141,8 @@ public class Transaction{
             "recipient_list": recipientList,
             "rejected" : rejected,
             "recipient_names" : recipientNames,
-            "approved" : approved
+            "approved" : approved,
+            "sender_image_id": senderImageId
             
         ]
     }

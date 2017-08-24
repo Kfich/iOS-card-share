@@ -25,6 +25,7 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
     
     @IBOutlet var cardWrapperView: UIView!
     
+    @IBOutlet var companyImageView: UIImageView!
     // Previous collection cell
     
     @IBOutlet weak var cardName: UILabel!

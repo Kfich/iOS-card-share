@@ -258,6 +258,8 @@ class ContactManager{
                 print(dictionary)
                 
                 card.cardDesign = ContactCard.Design(snapshot: dictionary)
+                card.cardDesign.logo = dictionary["logo"] as! String
+                print("Card Logo outhere \(card.cardDesign.logo)")
                 print("The card itsself's design >> \(card.cardDesign.toAny())")
                 
                 

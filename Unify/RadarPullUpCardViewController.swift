@@ -393,7 +393,15 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 //let data = str.data(using: .utf8)!
                 //let hexString = data.map{ String(format:"%02x", $0) }.joined()
                 
-                cell.cardWrapperView.backgroundColor = UIColor.yellow
+                print("\(currentCard.cardDesign.logo) The company logo link")
+                
+                // Set logo 
+                //cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo))
+                
+                if currentCard.cardDesign.logo != "" {
+                    cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo)!, placeholderImage: UIImage(named: "social-blank"))
+                }
+                //cell.cardWrapperView.backgroundColor = UIColor.yellow
                 //cell.cardWrapperView.backgroundColor = UIColor(rgb: hexString)
                 
                 if ContactManager.sharedManager.currentUser.profileImages.count > 0{
@@ -587,13 +595,57 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     // Custom Methods
     
-    func fetchCardDesigns(cards: [ContactCard]) {
-        for card in ContactManager.sharedManager.viewableUserCards {
+    func fetchCardDesigns(cards: [ContactCard]){
+        
+        //let design = NSDictionary()
+        
+        for card in cards {
             
-            ContactManager.sharedManager.fetchCardDesigns(card: card, id: card.organizationReference)
+            let id = card.organizationReference
+            
+            let parameters = ["organizationId": id]
+            
+            
+            // Send to server
+            
+            Connection(configuration: nil).getOrgCardCall(parameters as [AnyHashable : Any]){ response, error in
+                if error == nil {
+                    print("Transaction Created Response ---> \(String(describing: response))")
+                    
+                    // Set card uuid with response from network
+                    let dictionary : NSDictionary = response as! NSDictionary
+                    print("Card Design from manager")
+                    print(dictionary)
+                    
+                    card.cardDesign = ContactCard.Design(snapshot: dictionary)
+                    card.cardDesign.logo = dictionary["logo"] as! String
+                    print("Card Logo outhere \(card.cardDesign.logo)")
+                    print("The card itsself's design >> \(card.cardDesign.toAny())")
+                    
+                    // Reload table
+                    self.cardCollectionView.reloadData()
+                    
+                    // Append values to card itself
+                    
+                } else {
+                    print("Transaction Created Error Response ---> \(String(describing: error))")
+                    // Show user popup of error message
+                    KVNProgress.showError(withStatus: "There was an error with your connection. Please try again.")
+                    
+                }
+                // Hide indicator
+                //KVNProgress.dismiss()
+            }
 
+            
         }
+        
+        // Reload table
+        self.cardCollectionView.reloadData()
+        
     }
+
+    
     
     func fetchUserCards() {
         // Fetch cards from server
@@ -651,6 +703,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 
                 // Get designs
                 self.fetchCardDesigns(cards: ContactManager.sharedManager.viewableUserCards)
+                
+                
                 
                 
                 // Add dummy cell

@@ -167,7 +167,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         } else {
             //standard device
             halo.position.y = pulseView.frame.height / 2.7
-            halo.position.x = pulseView.frame.width / 1.8
+            halo.position.x = pulseView.frame.width / 2.0
             print("iphone 6 plus")
         }
         if (UIScreen.main.bounds.size.height == 568.0 && UIScreen.main.nativeScale > UIScreen.main.scale) {
@@ -476,6 +476,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             transaction.location = self.address
             // Attach card id
             transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+            transaction.senderImageId = ContactManager.sharedManager.currentUser.profileImageId
             
             
             // Print tranny

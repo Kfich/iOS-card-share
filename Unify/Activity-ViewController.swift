@@ -1343,8 +1343,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.configureSelectedImageView(imageView: cell.connectionOwnerProfileImage)
         
         // See if image ref available
-        let image = UIImage(named: "contact")
-        cell.connectionOwnerProfileImage.image = image
         // Set description text
         cell.connectionDescriptionLabel.text = "You connected with \(String(describing: name))"
         
@@ -1356,6 +1354,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set location
         cell.connectionLocationLabel.text = trans.location
         
+        let placeholder = UIImage(named: "contact")
         
         if trans.senderId == self.currentUser.userId {
             
@@ -1365,6 +1364,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
             cell.connectionApproveButton.isHidden = true
             cell.connectionApproveButton.isEnabled = false
+            
+            if trans.senderImageId != ""{
+                // Init url
+                let link = ImageURLS.sharedManager.getFromDevelopmentURL
+                let url = URL(string: "\(link)/\(trans.senderImageId)")
+                cell.connectionOwnerProfileImage.setImageWith(url!, placeholderImage: placeholder)
+            }else{
+                cell.connectionOwnerProfileImage.image = placeholder
+            }
         
         }/*else{
             

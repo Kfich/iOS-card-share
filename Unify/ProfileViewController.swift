@@ -163,6 +163,15 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Get images
         self.parseAccountForImages()
         
+        //self.profileInfoTableView.tableHeaderView = profileImageCollectionView
+        
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: self.profileInfoTableView.frame.width, height: 3))
+       // container.backgroundColor = UIColor.gray
+        container.addSubview(self.profileImageCollectionView)
+        
+        
+        
+        self.profileInfoTableView.tableHeaderView = container
         
     }
 
@@ -446,39 +455,31 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     func initializeBadgeList() {
         // Image config
-        let img1 = UIImage(named: "icn-social-facebook.png")
-        let img2 = UIImage(named: "icn-social-twitter.png")
-        let img3 = UIImage(named: "icn-social-instagram.png")
-        let img4 = UIImage(named: "icn-social-harvard.png")
-        let img5 = UIImage(named: "icn-social-pinterest.png")
-        let img6 = UIImage(named: "icn-social-pinterest.png")
-        let img7 = UIImage(named: "icn-social-facebook.png")
-        let img8 = UIImage(named: "icn-social-facebook.png")
-        let img9 = UIImage(named: "icn-social-facebook.png")
-        let img10 = UIImage(named: "icn-social-facebook.png")
-        let img11 = UIImage(named: "icn-social-facebook.png")
-        let img12 = UIImage(named: "icn-social-twitter.png")
-        let img13 = UIImage(named: "icn-social-instagram.png")
-        let img14 = UIImage(named: "icn-social-harvard.png")
-        let img15 = UIImage(named: "icn-social-pinterest.png")
-        let img16 = UIImage(named: "icn-social-pinterest.png")
-        let img17 = UIImage(named: "icn-social-facebook.png")
-        let img18 = UIImage(named: "icn-social-facebook.png")
-        let img19 = UIImage(named: "icn-social-facebook.png")
-        let img20 = UIImage(named: "icn-social-facebook.png")
-        let img21 = UIImage(named: "icn-social-facebook.png")
-        let img22 = UIImage(named: "icn-social-facebook.png")
-        let img23 = UIImage(named: "icn-social-facebook.png")
-        
+        // Test data config
+        let img1 = UIImage(named: "Facebook.png")
+        let img2 = UIImage(named: "Twitter.png")
+        let img3 = UIImage(named: "instagram.png")
+        let img4 = UIImage(named: "Pinterest.png")
+        let img5 = UIImage(named: "Linkedin.png")
+        let img6 = UIImage(named: "GooglePlus.png")
+        let img7 = UIImage(named: "Crunchbase.png")
+        let img8 = UIImage(named: "Youtube.png")
+        let img9 = UIImage(named: "Soundcloud.png")
+        let img10 = UIImage(named: "Flickr.png")
+        let img11 = UIImage(named: "AboutMe.png")
+        let img12 = UIImage(named: "Angellist.png")
+        let img13 = UIImage(named: "Foursquare.png")
+        let img14 = UIImage(named: "Medium.png")
+        let img15 = UIImage(named: "Tumblr.png")
+        let img16 = UIImage(named: "Quora.png")
+        let img17 = UIImage(named: "Reddit.png")
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!], ["snapchat" : img6!], ["plus.google" : img7!], ["crunchbase" : img8!], ["youtube" : img9!], ["soundcloud" : img10!], ["flickr" : img11!], ["about.me" : img12!], ["angelist" : img13!], ["foursquare" : img14!], ["medium" : img15!], ["tumblr" : img16!], ["picasa" : img17!], ["quora" : img18!], ["reddit" : img19!], ["messenger" : img20!], ["whatsapp" : img21!], ["viber" : img22!], ["skype" : img23!]]
         
-        
-        // let fb : NSDictionary = ["facebook" : img1!]
-        // self.socialLinkBadges.append([fb])
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
         
         
     }
+
     
     func parseAccountForImages() {
         
