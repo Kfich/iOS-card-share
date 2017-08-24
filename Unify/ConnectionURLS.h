@@ -6,10 +6,10 @@
 
 
 // Test Server
-#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
+//#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
 
 // Production Server
-//#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
+#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
 
 // User
 #define kCreateUser           kServerURL(kAppwsServerURL, @"user/create")

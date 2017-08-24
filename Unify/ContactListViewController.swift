@@ -381,7 +381,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             let synced = UDWrapper.getBool("contacts_synced")
             print("Contacts sync value!! >> \(synced)")
             
-            /*if  synced{
+            if  synced{
                 
                 print("Contacts synced!! >> \(synced)")
                 //Set bool to indicate contacts have been synced
@@ -394,7 +394,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 // Upload Contacts
                 self.uploadContactRecords()
-            }*/
+            }
             
             // Create contact objects
             //self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)

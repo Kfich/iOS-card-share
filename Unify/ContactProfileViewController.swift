@@ -149,12 +149,17 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     @IBAction func calendarSelected(_ sender: Any) {
         
+        
+        
         // Configure calendar
         //UIApplication.shared.openURL(NSURL(string: "calshow://")! as URL)
         
-        performSegue(withIdentifier: "showCreateAppointment", sender: self)
+        //performSegue(withIdentifier: "showCreateAppointment", sender: self)
+        // Typical usage
+        self.open(scheme: "calshow://")
     }
     
+
     
     
     
@@ -823,6 +828,21 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     
     // Custom Methods
+    
+    func open(scheme: String) {
+        if let url = URL(string: scheme) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:],
+                                          completionHandler: {
+                                            (success) in
+                                            print("Open \(scheme): \(success)")
+                })
+            } else {
+                let success = UIApplication.shared.openURL(url)
+                print("Open \(scheme): \(success)")
+            }
+        }
+    }
     
     func createTransaction(type: String) {
         

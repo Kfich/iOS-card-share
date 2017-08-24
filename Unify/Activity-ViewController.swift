@@ -38,6 +38,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     var shouldShowSearchResults = false
     
     var selectedUserEmails = [String]()
+    var selectedUserPhones = [String]()
     var searchTransactionList = [Transaction]()
     
     
@@ -515,6 +516,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Make
         let textAction = UIAlertAction(title: "Text", style: .default)
         { _ in
+            self.showSMSCard(recipientList: self.selectedUserPhones)
+            //self.parseAndSend()
+            //self.show
+            
             print("Text")
         }
         // Add Buttoin
@@ -527,7 +532,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // Get call ready
             // Set phone val
-            let phone = phones[0]
+            
+            
+            print(self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"])
+            
+            let phone: String = (self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"]!)!
+            print(phone)
             
             // configure call
             if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
@@ -539,13 +549,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             }
 
         }
-        if phones.count == 1 {
+    
             //  Add action
-            actionSheetController.addAction(callAction)
-        }else{
-            // More than one phone
-            print("More than one cell")
-        }
+        actionSheetController.addAction(callAction)
         
         self.present(actionSheetController, animated: true, completion: nil)
     }
@@ -1057,18 +1063,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func parseAndSend() {
         // Get PhoneNumbers
-        let userPhoneNumbers = self.retrievePhoneForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
+        self.selectedUserPhones = self.retrievePhoneForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
         self.selectedUserEmails = self.retrieveEmailForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
         
-        if selectedUserEmails.count > 0 && userPhoneNumbers.count > 0{
+        if selectedUserEmails.count > 0 && selectedUserPhones.count > 0{
             // Show option message
-            showActionAlert(phones: userPhoneNumbers, emails: selectedUserEmails)
-        }else if selectedUserEmails.count > 0 && userPhoneNumbers.count == 0{
+            showActionAlert(phones: selectedUserPhones, emails: selectedUserEmails)
+        }else if selectedUserEmails.count > 0 && selectedUserPhones.count == 0{
             // Show email client
             self.showEmailCard()
-        }else if userPhoneNumbers.count > 0{
+        }else if selectedUserPhones.count > 0{
             // Show the message client
-            self.showSMSCard(recipientList: userPhoneNumbers)
+            self.showSMSCard(recipientList: selectedUserPhones)
         }
     
     }
@@ -1261,7 +1267,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set description text
         
         if trans.recipientList.count > 1{
-            cell.descriptionLabel.text = "You introduced \(trans.recipientList[0] ?? "") to \(trans.recipientList[1] ?? "")"
+            cell.descriptionLabel.text = "You introduced \(trans.recipientNames?[0] ?? "") to \(trans.recipientNames?[1] ?? "")"
         }else{
             cell.descriptionLabel.text = "You made an introduction"
         }
@@ -1269,9 +1275,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set location
         cell.locationLabel.text = trans.location
         
+        cell.approveButton.isEnabled = false
+        //cell.approveButton.ish = false
         
         // Hide buttons if already approved
-        if trans.approved {
+        /*if trans.approved {
             // Hide and replace
             //cell.rejectButton.isHidden = true
             //cell.rejectButton.isEnabled = false
@@ -1282,7 +1290,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Change the label
             //cell.approveButton.setTitle("Follow up", for: .normal)
             
-        }
+        }*/
         /*else if trans.rejected{
             // Show
             cell.approveButton.isHidden = true
@@ -1364,6 +1372,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }else{
             // Set to recipient
             name = trans.senderName
+            if !trans.approved && trans.type == "connection"{
+                // Set description text
+                cell.connectionDescriptionLabel.text = "You have a pending connection with \(trans.recipientCard?.cardHolderName)"
+            }
+            
+
         }
         
         // Configure image 
@@ -1433,12 +1447,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.connectionApproveButton.text = "Follow up"
             cell.connectionApproveButton.isEnabled = false
             cell.connectionApproveButton.backgroundColor = UIColor.white
-            cell.connectionApproveButton.textColor = UIColor.red
                 
             // Change the label
             //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
                 
-        }else if trans.rejected{
+        }/*else if trans.rejected{
             // Show
             cell.connectionApproveButton.isHidden = true
             cell.connectionApproveButton.isEnabled = false
@@ -1447,8 +1460,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.connectionRejectButton.text = "Rejected"
             cell.connectionRejectButton.isEnabled = false
                 
-        }else{
+        }*/else{
             print("Waiting for confirmation")
+            // Set description text
+            cell.connectionDescriptionLabel.text = "You have a pending connection with \(String(describing: name))"
+            
+
+            
         }
 
 
@@ -1476,7 +1494,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Configure borders
         imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 33   // Create container for image and name
+        imageView.layer.cornerRadius = 33.5   // Create container for image and name
         
     }
 
@@ -1640,7 +1658,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
         // Create Message
-        mailComposerVC.setToRecipients(self.selectedUserEmails)
+        mailComposerVC.setToRecipients([(self.selectedTransaction.recipientCard?.cardProfile.emails[0]["email"])!])
         mailComposerVC.setSubject("Unify Follow-Up")
         mailComposerVC.setMessageBody(str, isHTML: false)
         

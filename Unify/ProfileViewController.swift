@@ -264,7 +264,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             ///cell.contentView.backgroundColor = UIColor.red
             self.configurePhoto(cell: cell)
             
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 45))
             let image = self.profileImagelist[indexPath.row]
             imageView.layer.masksToBounds = true
             // Set image to view

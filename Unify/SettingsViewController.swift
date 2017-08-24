@@ -328,8 +328,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func uploadImage(imageDictionary: NSDictionary) {
         // Link to endpoint and send 
         // Create URL For Test
-        let testURL = ImageURLS().uploadToDevelopmentURL
-        //let prodURL = ImageURLS().uploadToDevelopmentURL
+        //let testURL = ImageURLS().uploadToDevelopmentURL
+        let prodURL = ImageURLS().uploadToDevelopmentURL
         
         // Parse dictionary
         let imageData = imageDictionary["image_data"] as! Data
@@ -348,7 +348,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
              }*/
             
             // Currently Set to point to Prod Server
-        }, to:testURL)
+        }, to:prodURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):

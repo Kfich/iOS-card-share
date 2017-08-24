@@ -255,6 +255,16 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Photo picker config 
         configurePhotoPicker()
+        
+        //self.profileInfoTableView.tableHeaderView = profileImageCollectionView
+        
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: self.cardOptionsTableView.frame.width, height: 3))
+        // container.backgroundColor = UIColor.gray
+        container.addSubview(self.profileImageCollectionView)
+        
+        
+        
+        self.cardOptionsTableView.tableHeaderView = container
        
         
     }
@@ -513,9 +523,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 45))
             let image = self.profileImagelist[indexPath.row]
             imageView.layer.masksToBounds = true
+
+            
             // Set image to view
             imageView.image = image
             // Add to collection
