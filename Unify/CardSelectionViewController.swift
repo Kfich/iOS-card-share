@@ -78,6 +78,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     @IBOutlet var socialCollectionView: UICollectionView!
     
+    @IBOutlet var editCardButton: UIButton!
+    
     
     
     // IBActions / Buttons Pressed
@@ -328,7 +330,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         profileInfoTableView.reloadData()
         
         // Set card name label 
-        self.nameLabel.text = selectedCard.cardName ?? ""
+        self.nameLabel.text = selectedCard.cardHolderName ?? ""
 
         
     }
@@ -346,7 +348,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         if collectionView == self.badgeCollectionView {
             // Return count
-            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+            return self.selectedCard.cardProfile.badges.count//ContactManager.sharedManager.currentUser.userProfile.badgeList.count
         }else{
             
             return self.socialBadges.count
@@ -357,7 +359,6 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
-        cell.backgroundColor = UIColor.blue
         
         if collectionView == self.badgeCollectionView {
             // Badge config
@@ -368,7 +369,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -401,7 +402,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
@@ -764,10 +765,13 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Populate image view
         if selectedCard.cardProfile.images.count > 0{
             contactImageView.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
+        }else if selectedCard.isVerified{
+            contactImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
         }
+        
         // Populate label fields
-        if let name = selectedCard.cardHolderName{
-            nameLabel.text = name
+        if let name = selectedCard.cardName{
+            cardNameLabel.text = name
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
             phoneLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"]!
@@ -808,6 +812,13 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.profileInfoTableView.clipsToBounds = true
         self.profileInfoTableView.layer.borderWidth = 2.0
         self.profileInfoTableView.layer.borderColor = UIColor.white.cgColor
+        
+        if self.selectedCard.isVerified {
+            // Hide button
+            self.editCardButton.isHidden = true
+            self.editCardButton.isEnabled = false
+        }
+        
         
         // Set shadow on the container view
                 

@@ -48,6 +48,19 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     var sections = [String]()
     var tableData = [String: [String]]()
     
+    // Struct to check if user selected for radar
+    struct Check {
+        var index: Int
+        var isSelected: Bool // selection state
+        
+        init(arrayIndex: Int, selected: Bool) {
+            index = arrayIndex
+            isSelected = selected
+        }
+    }
+    
+    var selectedSocialLinkList = [Check]()
+
     
     // IBOutlets
     // ----------------------------
@@ -503,16 +516,29 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
             let image = self.socialBadges[indexPath.row]
             
-            // Add
+            
+            // Init add image
             let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
-            let addImage = UIImage(named: "icn-plus-green")
-            addView.image = addImage
+            
+            if self.selectedSocialLinkList[indexPath.row].isSelected {
+                // Add minus sign
+                
+                let addImage = UIImage(named: "icn-minus-red")
+                addView.image = addImage
+                
+            }else{
+                // Add plus sign
+                let addImage = UIImage(named: "icn-plus-green")
+                addView.image = addImage
+                
+            }
             
             
             // Set image
             imageView.image = image
             // Add to imageview
             imageView.addSubview(addView)
+            
             
             // Add subview
             cell.contentView.addSubview(imageView)
@@ -545,9 +571,10 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Init cell
         
-        //var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
         
         if collectionView == self.badgeCollectionView {
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
             // Badge cell
              card.cardProfile.badgeList.append(corpBadges[indexPath.row])
             // Highlight cell
@@ -555,8 +582,20 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
         
         }else if collectionView == self.socialBadgeCollectionView{
-            // Add social to card
-            card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+
+            if self.selectedSocialLinkList[indexPath.row].isSelected == true {
+                // Remove
+                self.selectedSocialLinkList[indexPath.row].isSelected = false
+                // Add social to card
+                card.cardProfile.socialLinks.remove(at: indexPath.row)
+            }else{
+                // Set selected index
+                self.selectedSocialLinkList[indexPath.row].isSelected = true
+                // Add social to card
+                card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+                
+            }
+            
             // Highlight cell
             print("Social Card List >> \(card.cardProfile.socialLinks)")
         }else{
@@ -564,7 +603,6 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         
         collectionView.reloadData()
-
         
         //
         
@@ -609,6 +647,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        
+        // Set checkmark
+        cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
         
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
@@ -792,12 +833,22 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Assign currentuser
         //self.currentUser = ContactManager.sharedManager.currentUser
         
+        var counter = 0
+        
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
             for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
                 socialLinks.append(link["link"]!)
+                
+                // Create selected index
+                let selectedIndex = Check(arrayIndex: counter, selected: false)
+                // Set Selected index
+                self.selectedSocialLinkList.append(selectedIndex)
                 // Test
                 print("Count >> \(socialLinks.count)")
+                // Update index
+                counter = counter + 1
+                print("Counter index >> \(counter)")
             }
         }
         
@@ -810,7 +861,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Iterate over links[]
         for link in self.socialLinks {
             // Check if link is a key
-            print("Link >> \(link)")
+            //print("Link >> \(link)")
             for item in self.socialLinkBadges {
                 // Test
                 //print("Item >> \(item.first?.key)")
@@ -819,7 +870,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 //print("String >> \(str)")
                 // Check if key in link
                 if link.lowercased().range(of:str!) != nil {
-                    print("exists")
+                    //print("exists")
                     
                     // Append link to list
                     self.socialBadges.append(item.first?.value as! UIImage)
@@ -838,8 +889,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                     
                     //print("THE IMAGE IS PRINTING")
                     //print(item.first?.value as! UIImage)
-                    print("SOCIAL BADGES COUNT")
-                    print(self.socialBadges.count)
+                    //print("SOCIAL BADGES COUNT")
+                    //print(self.socialBadges.count)
                     
                     
                 }
@@ -878,6 +929,12 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Config image
         self.configureSelectedImageView(imageView: self.profileImageView)
+        
+        // Round borders on table
+        self.cardOptionsTableView.layer.cornerRadius = 12.0
+        self.cardOptionsTableView.clipsToBounds = true
+        self.cardOptionsTableView.layer.borderWidth = 2.0
+        self.cardOptionsTableView.layer.borderColor = UIColor.white.cgColor
         
         // Assign media buttons
         /*mediaButton1.image = UIImage(named: "social-blank")

@@ -122,7 +122,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Return count
-             return self.verifiedCards.count
+             return ContactManager.sharedManager.viewableUserCards.count - 1
             
         }else{
             // Set titleview
@@ -141,19 +141,32 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Return count
-            cell.badgeName.text = ContactManager.sharedManager.currentUserCards[indexPath.row].cardName
-            cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUserCards[indexPath.row].isHidden
-            //cell.badgeImageView.image = ContactManager.sharedManager.currentUserCards[indexPath].
+            cell.badgeName.text = ContactManager.sharedManager.viewableUserCards[indexPath.row].cardName
+            cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.viewableUserCards[indexPath.row].isHidden
+            
+            
+            if ContactManager.sharedManager.viewableUserCards[indexPath.row].cardProfile.images.count > 0{
+                // Add card image
+                cell.badgeImageView.image =  UIImage(data:ContactManager.sharedManager.viewableUserCards[indexPath.row].cardProfile.images[0]["image_data"] as! Data)
+            }else{
+                // Set user prof image
+                if ContactManager.sharedManager.currentUser.profileImages.count > 0{
+                    cell.badgeImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+                }
+
+            }
+            
             
         }else{
             // Set titleview
             cell.badgeName.text = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].website
             let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
             cell.badgeImageView.setImageWith(fileUrl! as URL)
-            cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
+            cell.badgeToggleSwitch.isOn = true//ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
             
         }
         //cell.swict
+        cell.badgeToggleSwitch.isOn = true
         
         return cell
     }

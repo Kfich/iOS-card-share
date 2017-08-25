@@ -393,6 +393,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             //synced = false
             //print("Contacts overwrite sync value!! >> \(synced)")
             
+            
             // Sync up with main queue
             DispatchQueue.main.async {
                 
@@ -906,6 +907,38 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         print("Row :" , row)
         
         
+        if shouldShowSearchResults {
+            // Show results from filtered array
+            
+            
+        }else{
+           
+            // Set selected contact
+            //self.selectedContactObject = contactSearchResults[indexPath.row]
+            self.selectedContact = (contactsHashTable[letters[section!]]?[row])!
+            
+            // Set contact to manager
+            ContactManager.sharedManager.contactToIntro = selectedContact
+            
+            // Set navigation toggle on manager to indicate intent
+            ContactManager.sharedManager.userArrivedFromContactList = true
+            ContactManager.sharedManager.userArrivedFromIntro = true
+            
+            // Notification for intro screen
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)        // Set selected tab
+            
+            
+            // Sync up with main queue
+            DispatchQueue.main.async {
+                // Set selected tab
+                self.tabBarController?.selectedIndex = 1
+            }
+
+            
+        }
+
+        
+        /*
         var selectedId = ""
         
         if shouldShowSearchResults {
@@ -973,7 +1006,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
 
             
             //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
-        }
+        }*/
 
         
     }

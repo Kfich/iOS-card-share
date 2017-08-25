@@ -223,7 +223,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         alert.customSubview = subview
         
         // Add buttons to alert
-        alert.addButton("On") {
+        alert.addButton("Save") {
             print("Keep On")
             
             // Toggle the isIncognito on
@@ -251,7 +251,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             
         }
         
-        alert.addButton("Off") {
+        /*alert.addButton("Off") {
             print("Turn off")
             // Toggle the isIncognito off
             self.currentUser.userIsIncognito = false
@@ -263,7 +263,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Toggle switch off 
             self.postNotificationForUpdate()
             
-        }
+        }*/
         
         // Change background color for views
         //alert.buttons[0].customBackgroundColor = UIColor.clear

@@ -61,6 +61,19 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     // Photo picker variable
     var photoPicker = MBPhotoPicker()
     
+    // Struct to check if user selected for radar
+    struct Check {
+        var index: Int
+        var isSelected: Bool // selection state
+        
+        init(arrayIndex: Int, selected: Bool) {
+            index = arrayIndex
+            isSelected = selected
+        }
+    }
+    
+    var selectedSocialLinkList = [Check]()
+    
     
     // IBOutlets
     // ----------------------------
@@ -543,7 +556,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
        
         if collectionView == self.badgeCollectionView {
             // Return count
-            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+            return self.card.cardProfile.badgeList.count
         }else if collectionView == self.socialBadgeCollectionView{
             
             return self.socialBadges.count
@@ -566,14 +579,17 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            let fileUrl = NSURL(string: self.card.cardProfile.badgeList[indexPath.row].pictureUrl)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
             imageView.setImageWith(fileUrl! as URL)
             
-            // Add delete icons
-            if indexPath.row != self.socialBadges.count - 1 {
+            // Check if in array
+            
+            if self.selectedCorpLinks.contains(corpBadges[indexPath.row].website) {
+                // Already in list
+                print("Item already in list")
                 // Delete
                 let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
                 let deleteImage = UIImage(named: "icn-minus-red")
@@ -581,51 +597,56 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 // Add to imageview
                 imageView.addSubview(deleteIconView)
-                
             }else{
+                // Show plus
+                let plusIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let plusImage = UIImage(named: "icn-plus-green")
+                plusIconView.image = plusImage
                 
-                print("Last image index")
-                // Badge icon
-                //image = self.userBadges[indexPath.row]
+                // Add to imageview
+                imageView.addSubview(plusIconView)
             }
-            
-            
             
             // Add subview
             cell.contentView.addSubview(imageView)
             
             
-            
         }else if collectionView == self.socialBadgeCollectionView{
             
-            //cell.contentView.backgroundColor = UIColor.red
+            cell.contentView.backgroundColor = UIColor.red
+            
             self.configureBadges(cell: cell)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
             let image = self.socialBadges[indexPath.row]
             
-            // Set image
-            imageView.image = image
             
-            if indexPath.row != self.socialBadges.count - 1 {
-                // Delete
-                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
-                let deleteImage = UIImage(named: "icn-minus-red")
-                deleteIconView.image = deleteImage
+            // Init add image
+            let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+            
+            if self.selectedSocialLinkList[indexPath.row].isSelected {
+                // Add minus sign
                 
-                // Add to imageview
-                imageView.addSubview(deleteIconView)
+                let addImage = UIImage(named: "icn-minus-red")
+                addView.image = addImage
                 
             }else{
+                // Add plus sign
+                let addImage = UIImage(named: "icn-plus-green")
+                addView.image = addImage
                 
-                print("Last image index")
-                // Badge icon
-                //image = self.userBadges[indexPath.row]
             }
+            
+            // Set image
+            imageView.image = image
+            // Add to imageview
+            imageView.addSubview(addView)
+            
             
             // Add subview
             cell.contentView.addSubview(imageView)
+            
         }else{
             
            // cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
@@ -665,20 +686,20 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
 
         }else if collectionView == self.socialBadgeCollectionView{
             
-            // Check if in array
-            if self.selectedSocialLinks.contains(socialLinks[indexPath.row]) {
-                // Already in list
-                print("Item already in list")
-                self.selectedSocialLinks.remove(at: indexPath.row)
-                self.socialLinks.remove(at: indexPath.row)
+            if self.selectedSocialLinkList[indexPath.row].isSelected == true {
+                // Remove
+                self.selectedSocialLinkList[indexPath.row].isSelected = false
+                // Add social to card
+                card.cardProfile.socialLinks.remove(at: indexPath.row)
             }else{
-                // Append to array
+                // Set selected index
+                self.selectedSocialLinkList[indexPath.row].isSelected = true
+                // Add social to card
                 card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
-                // Print for test
-                print(card.cardProfile.socialLinks as Any)
+                
             }
-
-            
+            // Reload for index
+            self.socialBadgeCollectionView.reloadData()
             
         }else{
             // Set profile image
@@ -993,10 +1014,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 self.numberLabel.text = phoneNumbers[indexPath.row]
             }
             
-            
         case "Tags":
             // Check if in array 
-            if self.selectedSocialLinks.contains(tags[indexPath.row]) {
+            if self.selectedTags.contains(tags[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
                 self.selectedTags.remove(at: indexPath.row)
@@ -1101,6 +1121,12 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Config imageview
         self.configureSelectedImageView(imageView: self.profileImageView)
+        
+        // Round borders on table
+        self.cardOptionsTableView.layer.cornerRadius = 12.0
+        self.cardOptionsTableView.clipsToBounds = true
+        self.cardOptionsTableView.layer.borderWidth = 2.0
+        self.cardOptionsTableView.layer.borderColor = UIColor.white.cgColor
         
         // Assign media buttons
         /*mediaButton1.image = UIImage(named: "social-blank")
@@ -1332,7 +1358,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Executing parse call from edit card")
             }
         }
-
+        
         if ContactManager.sharedManager.currentUser.userProfile.badgeList.count > 0{
             
             for badge in ContactManager.sharedManager.currentUser.userProfile.badgeList{
@@ -1383,7 +1409,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                     // Take text and add it to the card
                     self.card.cardName = alertVC.textFields[0].text
                     // Set Card Name label text
-                    self.addCardNameButton.titleLabel?.text = alertVC.textFields[0].text
+                    self.cardNameButton.titleLabel?.text = alertVC.textFields[0].text
                 case "Add Tag":
                     // Take text and add it to the card
                     self.card.cardProfile.setTags(tagRecords: ["tag" : alertVC.textFields[0].text!])
@@ -1408,23 +1434,27 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     func initializeBadgeList() {
         // Image config
-        let img1 = UIImage(named: "icn-social-facebook.png")
-        let img2 = UIImage(named: "icn-social-twitter.png")
-        let img3 = UIImage(named: "icn-social-instagram.png")
-        let img4 = UIImage(named: "icn-social-harvard.png")
-        let img5 = UIImage(named: "icn-social-pinterest.png")
-        let img6 = UIImage(named: "icn-social-pinterest.png")
-        let img7 = UIImage(named: "icn-social-facebook.png")
-        let img8 = UIImage(named: "icn-social-facebook.png")
-        let img9 = UIImage(named: "icn-social-facebook.png")
-        let img10 = UIImage(named: "icn-social-facebook.png")
-        
+        // Test data config
+        let img1 = UIImage(named: "Facebook.png")
+        let img2 = UIImage(named: "Twitter.png")
+        let img3 = UIImage(named: "instagram.png")
+        let img4 = UIImage(named: "Pinterest.png")
+        let img5 = UIImage(named: "Linkedin.png")
+        let img6 = UIImage(named: "GooglePlus.png")
+        let img7 = UIImage(named: "Crunchbase.png")
+        let img8 = UIImage(named: "Youtube.png")
+        let img9 = UIImage(named: "Soundcloud.png")
+        let img10 = UIImage(named: "Flickr.png")
+        let img11 = UIImage(named: "AboutMe.png")
+        let img12 = UIImage(named: "Angellist.png")
+        let img13 = UIImage(named: "Foursquare.png")
+        let img14 = UIImage(named: "Medium.png")
+        let img15 = UIImage(named: "Tumblr.png")
+        let img16 = UIImage(named: "Quora.png")
+        let img17 = UIImage(named: "Reddit.png")
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
         
-        
-        // let fb : NSDictionary = ["facebook" : img1!]
-        // self.socialLinkBadges.append([fb])
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
         
         
     }
@@ -1441,16 +1471,25 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.socialLinks.removeAll()
         
         print("Looking for social icons on card selection view")
-        
-        // Assign currentuser
-        //self.currentUser = ContactManager.sharedManager.currentUser
+       
+        // Index for selection
+        var counter = 0
         
         // Parse socials links
         if card.cardProfile.socialLinks.count > 0{
             for link in card.cardProfile.socialLinks{
+                
+                // Create selected index
+                let selectedIndex = Check(arrayIndex: counter, selected: false)
+                // Set Selected index
+                self.selectedSocialLinkList.append(selectedIndex)
+                
                 socialLinks.append(link["link"]!)
                 // Test
                 print("Count >> \(socialLinks.count)")
+                
+                // Increment
+                counter = counter + 1
             }
         }
         

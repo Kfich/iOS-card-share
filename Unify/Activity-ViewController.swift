@@ -1274,8 +1274,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.descriptionLabel.text = "You introduced \(trans.recipientNames?[0] ?? "") to \(trans.recipientNames?[1] ?? "")"
             
             cell.approveButton.text = "Follow up"
+            cell.approveButton.textColor = UIColor.white
             cell.approveButton.isEnabled = false
-            cell.approveButton.backgroundColor = UIColor.white
+            //cell.approveButton.backgroundColor = UIColor.white
             
         }else{
             cell.descriptionLabel.text = "You made an introduction"
@@ -1333,7 +1334,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         label.layer.cornerRadius = 10.0
         label.clipsToBounds = true
         label.layer.borderWidth = 1.0
-        label.layer.borderColor = UIColor.lightGray.cgColor
+        label.layer.borderColor = UIColor.white.cgColor
         label.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         label.textColor = UIColor.white
     }
@@ -1418,8 +1419,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Init url
                 let link = ImageURLS.sharedManager.getFromDevelopmentURL
                 let id = trans.recipientCard?.imageId
-                let url = URL(string: "\(link)\(id!).jpg")
-                print("Link for image sender: \(link)\(trans.recipientCard?.imageId).jpg")
+                let url = URL(string: "\(link)\(id ?? "").jpg")
+                //print("Link for image sender: \(link)\(trans.recipientCard?.imageId).jpg")
                 cell.connectionOwnerProfileImage.setImageWith(url!, placeholderImage: placeholder)
             }else{
                 cell.connectionOwnerProfileImage.image = placeholder
@@ -1472,13 +1473,16 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Set description text
             cell.connectionDescriptionLabel.text = "You have a pending connection with \(String(describing: name))"
             
-
-            
         }
 
+        if trans.type == "quick_share" {
+            // Set label text
+            cell.connectionDescriptionLabel.text = "You shared your contact information with \(String(describing: name))"
+        }
+        
 
         // Config label
-        //self.configureFollowUpLabel(label: cell.connectionApproveButton)
+        self.configureFollowUpLabel(label: cell.connectionApproveButton)
         
         
         if trans.location == ""{
