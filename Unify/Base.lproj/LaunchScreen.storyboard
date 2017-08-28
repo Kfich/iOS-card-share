@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="SVN-cT-wal">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="386" height="667"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboard-logo" translatesAutoresizingMaskIntoConstraints="NO" id="G11-7P-n3Q">
                                 <rect key="frame" x="103" y="301.5" width="169" height="64"/>
@@ -37,7 +37,7 @@
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="SVN-cT-wal" secondAttribute="bottom" id="80U-TG-abm"/>
                             <constraint firstItem="G11-7P-n3Q" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="KAK-4H-2hX"/>
                             <constraint firstItem="SVN-cT-wal" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Poj-5N-VkJ"/>
-                            <constraint firstAttribute="trailing" secondItem="SVN-cT-wal" secondAttribute="trailing" id="SPJ-Z8-eXs"/>
+                            <constraint firstAttribute="trailing" secondItem="SVN-cT-wal" secondAttribute="trailing" constant="-11" id="SPJ-Z8-eXs"/>
                             <constraint firstItem="SVN-cT-wal" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="hZg-Hc-gvW"/>
                             <constraint firstItem="G11-7P-n3Q" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="q8O-Uq-fCl"/>
                         </constraints>

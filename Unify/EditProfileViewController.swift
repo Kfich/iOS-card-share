@@ -65,6 +65,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet var profileImageCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
     
+    @IBOutlet var formWrapperView: UIView!
+    
     
     // IBActions
     // ----------------------------------
@@ -198,6 +200,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Congif Name
         self.firstNameTextField.text = currentUser.firstName
         self.lastNameTextField.text = currentUser.lastName
+        
+        // View config 
+        self.configureViews()
     }
 
     
@@ -356,6 +361,16 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     
+    func configureViews(){
+        
+        // Round out the card view and set the background colors
+        // Configure cards
+        self.formWrapperView.layer.cornerRadius = 12.0
+        self.formWrapperView.clipsToBounds = true
+        self.formWrapperView.layer.borderWidth = 0.5
+        self.formWrapperView.layer.borderColor = UIColor.white.cgColor
+        
+    }
     
     
     func uploadEditedUser() {

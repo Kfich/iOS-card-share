@@ -813,7 +813,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let imageName = "add-card"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 0, y: 10, width: cell.contentView.frame.width - 10, height: cell.contentView.frame.height - 25)
+        imageView.frame = CGRect(x: 0, y: 12, width: cell.contentView.frame.width - 10, height: cell.contentView.frame.height - 25)
         
         // Add gesture action
         
