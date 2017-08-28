@@ -79,6 +79,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     
     @IBOutlet var shadowView: YIInnerShadowView!
     
+    @IBOutlet var imageContainerView: UIView!
     // Page Setup
     
     override func viewDidLoad() {
@@ -145,7 +146,21 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         profileInfoTableView.emptyDataSetSource = self
         profileInfoTableView.emptyDataSetDelegate = self
         
+        //self.imageContainerView.addSubview(self.profileImageCollectionView)
+        //self.imageContainerView.backgroundColor = UIColor.green
+        
+        // Create container for collectionview
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.profileInfoTableView.frame.width, height: 200))
+        containerView.backgroundColor = UIColor.black
+        
+        // Set collectionview frame
+        //self.profileImageCollectionView.frame = CGRect(x: 10, y: 0, width: self.profileInfoTableView.frame.width, height: 200)
+        
+        // Add collection to container
+        //containerView.addSubview(self.profileImageCollectionView)
+        
         self.profileInfoTableView.tableFooterView = self.profileImageCollectionView
+        
         
         // Parse for social data
         //self.parseForSocialIcons()
@@ -330,7 +345,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             ///cell.contentView.backgroundColor = UIColor.red
             self.configurePhoto(cell: cell)
             
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 45))
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
             let image = self.profileImagelist[indexPath.row]
             imageView.layer.masksToBounds = true
             // Set image to view
@@ -383,6 +398,16 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+        // Init view
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                             withReuseIdentifier: "CollectionHeader",
+                                                                             for: indexPath)
+        return headerView
+    }
+    
+    
     func configureBadges(cell: UICollectionViewCell){
         // Add radius config & border color
         
@@ -402,7 +427,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     func configurePhoto(cell: UICollectionViewCell){
         // Add radius config & border color
         
-        cell.contentView.layer.cornerRadius = 22.0
+        cell.contentView.layer.cornerRadius = 45.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
         cell.contentView.layer.borderColor = UIColor.clear.cgColor
@@ -414,6 +439,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         cell.layer.shadowRadius = 0.5
         
     }
+    
     
     
     
@@ -897,7 +923,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Configure cards
         self.profileCardWrapperView.layer.cornerRadius = 12.0
         self.profileCardWrapperView.clipsToBounds = true
-        self.profileCardWrapperView.layer.borderWidth = 2.0
+        self.profileCardWrapperView.layer.borderWidth = 0.5
         self.profileCardWrapperView.layer.borderColor = UIColor.white.cgColor
         
         // Config imageview
@@ -914,7 +940,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 45    // Create container for image and name
         

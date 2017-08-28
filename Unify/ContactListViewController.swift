@@ -291,7 +291,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 23    // Create container for image and name
         
@@ -474,6 +474,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 // Create ID and add to dictionary
                 // Image data png
+                
+                // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
+                
                 let imageData = contact.imageData!
                 print(imageData)
                 

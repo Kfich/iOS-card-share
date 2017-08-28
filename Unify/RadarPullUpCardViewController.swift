@@ -866,7 +866,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Add radius config & border color
         cell.cardWrapperView.layer.cornerRadius = 12.0
         cell.cardWrapperView.clipsToBounds = true
-        cell.cardWrapperView.layer.borderWidth = 1.5
+        cell.cardWrapperView.layer.borderWidth = 0.5
         cell.cardWrapperView.layer.borderColor = UIColor.clear.cgColor
         // Make card wrapper full cell size
         //cell.backgroundColor = UIColor.white
@@ -898,7 +898,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 45// Create container for image and name
         

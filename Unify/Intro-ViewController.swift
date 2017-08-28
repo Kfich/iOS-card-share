@@ -415,7 +415,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
          }else{
             
          // Set to placeholder image
-            contactImageView.image = UIImage(named: "profile")
+            //contactImageView.image = UIImage(named: "profile")
          }
         
         // Set Label w name
@@ -438,7 +438,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             recipientImageView.image = image
         }else{
             // Set to placeholder image
-            recipientImageView.image = UIImage(named: "profile")
+            //recipientImageView.image = UIImage(named: "profile")
         }
         
         // Set Label w name

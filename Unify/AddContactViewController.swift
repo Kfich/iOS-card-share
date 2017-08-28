@@ -11,7 +11,7 @@ import MBPhotoPicker
 import Contacts
 
 
-class AddContactViewController: UIViewController {
+class AddContactViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     // Properties
     // ----------------------------------
@@ -34,6 +34,7 @@ class AddContactViewController: UIViewController {
     var notes = [String]()
     var tags = [String]()
     
+    var socialBadges = [UIImage]()
     var uploadContactSelected = false
     
     // IBOutlets
@@ -49,6 +50,9 @@ class AddContactViewController: UIViewController {
     @IBOutlet var emailTextField: UITextField!
     
     @IBOutlet var doneButton: UIButton!
+    @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    
+    @IBOutlet var formWrapperView: UIView!
     
     
     // IBActions
@@ -131,6 +135,9 @@ class AddContactViewController: UIViewController {
         addObservers()
         
         
+        // Configure views
+        self.configureViews()
+        
         
         // Set image
         let image = UIImage(named: "profile-placeholder")
@@ -150,8 +157,93 @@ class AddContactViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
+    // Collection view Delegate && Data source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5 //self.socialBadges.count
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+        //cell.backgroundColor = UIColor.green
+        self.configureBadges(cell: cell)
+        
+        /*var cell = UICollectionViewCell()
+        
+        if collectionView == self.socialBadgeCollectionView{
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+            
+            ///cell.contentView.backgroundColor = UIColor.red
+            self.configureBadges(cell: cell)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+        }*/
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+        // Init view
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                         withReuseIdentifier: "CollectionHeader",
+                                                                         for: indexPath)
+        return headerView
+    }
+
+    
+    
+    
+    
+    
     // Custom Methods
     // ----------------------------------
+    
+    func configureBadges(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 20.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
+    
+    func configureViews(){
+        
+        // Round out the card view and set the background colors
+        // Configure cards
+        self.formWrapperView.layer.cornerRadius = 12.0
+        self.formWrapperView.clipsToBounds = true
+        self.formWrapperView.layer.borderWidth = 0.5
+        self.formWrapperView.layer.borderColor = UIColor.white.cgColor
+        
+    }
+
     
     func configureSelectedImageView(imageView: UIImageView) {
         // Config imageview

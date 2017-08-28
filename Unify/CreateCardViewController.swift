@@ -549,9 +549,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             
             ///cell.contentView.backgroundColor = UIColor.red
-            self.configureBadges(cell: cell)
+            self.configurePhoto(cell: cell)
             
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 45))
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
             let image = self.profileImagelist[indexPath.row]
             imageView.layer.masksToBounds = true
 
@@ -609,6 +609,17 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
     
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+        // Init view
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                         withReuseIdentifier: "CollectionHeader",
+                                                                         for: indexPath)
+        return headerView
+    }
+    
+    
     func configureBadges(cell: UICollectionViewCell){
         // Add radius config & border color
         
@@ -625,10 +636,26 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    // MARK: - Table view data source
+    func configurePhoto(cell: UICollectionViewCell){
+        // Add radius config & border color
+        
+        cell.contentView.layer.cornerRadius = 45.0
+        cell.contentView.clipsToBounds = true
+        cell.contentView.layer.borderWidth = 0.5
+        cell.contentView.layer.borderColor = UIColor.clear.cgColor
+        
+        // Set shadow on the container view
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 0.5
+        
+    }
+    
+
     
     // MARK: - Table view data source
-    
+ 
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return sections.count

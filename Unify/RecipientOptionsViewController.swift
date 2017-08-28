@@ -97,9 +97,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         self.currentUser = ContactManager.sharedManager.currentUser
         
         // Init and configure segment controller
-        segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: self.view.frame.width - 20, height: 30))
+        segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: 225, height: 30))
         // Set tint
-        segmentedControl.tintColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        segmentedControl.tintColor = UIColor.white//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         segmentedControl.insertSegment(withTitle: "New", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Contacts", at: 1, animated: false)
@@ -110,6 +110,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Add target action method
         segmentedControl.addTarget(self, action: #selector(RecipientOptionsViewController.toggleViews(sender:)), for: .valueChanged)
+        
+        // Set nav background 
+        // Set background image on collectionview
+        let bgImage = UIImageView();
+        bgImage.image = UIImage(named: "backgroundGradient");
+        bgImage.contentMode = .scaleToFill
+        self.navigationBar.titleView = bgImage
         
         // Add segment control to navigation bar
         self.navigationBar.titleView = segmentedControl

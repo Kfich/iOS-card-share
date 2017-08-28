@@ -82,12 +82,14 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         mediaCollectionView.reloadData()
         
-        // Configure blur
+        mediaCollectionView.backgroundColor = UIColor.clear
+        
+        /*// Configure blur
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mediaCollectionView.backgroundView?.addSubview(blurEffectView)
+        mediaCollectionView.backgroundView?.addSubview(blurEffectView)*/
         
     }
     
