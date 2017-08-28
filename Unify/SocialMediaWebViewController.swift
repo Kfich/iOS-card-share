@@ -52,6 +52,9 @@ class SocialMediaWebViewController:  UIViewController {
         webViewer.loadRequest(URLRequest(url: URL(string: viewLink)!))
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     /*
      // MARK: - Navigation
      

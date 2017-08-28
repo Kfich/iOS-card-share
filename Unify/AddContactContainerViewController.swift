@@ -28,6 +28,7 @@ class AddContactContainerViewController: FormViewController {
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     
     // To check user intent
     //var doneButtonSelected = false
@@ -112,6 +113,12 @@ class AddContactContainerViewController: FormViewController {
         if contact.tags.count > 0{
             for link in contact.tags{
                 tags.append(link["tag"]!)
+            }
+        }
+        // Parse addresses
+        if contact.addresses.count > 0{
+            for add in contact.addresses{
+                addresses.append(add["address"]!)
             }
         }
         
@@ -305,7 +312,7 @@ class AddContactContainerViewController: FormViewController {
                                 $0.tag = "Notes Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
-                                        $0.title = "Add notes"
+                                        $0.title = "Add Notes"
                                         //$0.tag = "Add Media Info"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
@@ -327,6 +334,38 @@ class AddContactContainerViewController: FormViewController {
                                     }
                                 }
             }
+            
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "Addresses",
+                               footer: "") {
+                                $0.tag = "Address Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Address"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("addressRow_\(index)") {
+                                        $0.placeholder = "Address"
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in addresses{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Address"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+            }
+
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -463,7 +502,20 @@ class AddContactContainerViewController: FormViewController {
                     }
                 }
             }
-
+            
+            // Address Section
+            let addressValues = form.sectionBy(tag: "Address Section")
+            for val in addressValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        contact.setAddresses(address: str)
+                        addresses.append(str)
+                        
+                        //print("Social links not needed here anymore")
+                    }
+                }
+            }
             
             // Organization section
             let organizationValues = form.sectionBy(tag: "Organization Section")

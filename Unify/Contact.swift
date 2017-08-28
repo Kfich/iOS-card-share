@@ -22,6 +22,7 @@ public class Contact{
     var websites = [[String : String]]()
     var notes = [[String : String]]()
     var tags = [[String : String]]()
+    var addresses = [[String : String]]()
     
     var origin : String = ""
     var verified = false
@@ -46,6 +47,7 @@ public class Contact{
             "notes" : notes,
             "tags" : tags,
             "websites" : websites,
+            "addresses" : addresses,
             "organizations" : organizations,
             "origin" : origin,
             "image_id": imageId,
@@ -65,6 +67,7 @@ public class Contact{
         notes = snapshot["notes"] as? [[String : String]] ?? [[String : String]]()
         websites = snapshot["websites"] as? [[String : String]] ?? [[String : String]]()
         organizations = snapshot["organizations"] as? [[String : String]] ?? [[String : String]]()
+        addresses = snapshot["addresses"] as? [[String : String]] ?? [[String : String]]()
         imageId = snapshot["image_ids"] as? String ?? ""
         origin = snapshot["origin"] as? String ?? ""
         isVerified = snapshot["isVerified"] as? String ?? "0"
@@ -178,7 +181,16 @@ public class Contact{
     func setOrganizations(organization : String){
         organizations.append(["organization" : organization])
     }
+
+    // Addresses
+    func getAddresses()->[[String : String]]{
+        return addresses
+    }
     
+    func setAddresses(address : String){
+        addresses.append(["address" : address])
+    }
+
     // Origin
     func getOrigin()-> String{
         return origin
@@ -226,7 +238,8 @@ public class Contact{
         print(notes)
         print("Tags : ")
         print(tags)
-        
+        print("Addresses : ")
+        print(addresses)
         print("Websites : ")
         print(websites)
         print("Organizations : ")

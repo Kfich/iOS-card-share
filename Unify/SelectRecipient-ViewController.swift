@@ -980,6 +980,10 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         ContactManager.sharedManager.getContacts()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     
     // MARK: - Navigation
     

@@ -218,7 +218,9 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     }
     
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
      // MARK: - Navigation
      

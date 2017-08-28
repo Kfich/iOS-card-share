@@ -460,7 +460,9 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     /*
      // MARK: - Navigation

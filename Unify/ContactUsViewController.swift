@@ -42,6 +42,9 @@ class ContactUsViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     /*
     // MARK: - Navigation

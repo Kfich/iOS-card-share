@@ -466,11 +466,6 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
     }
 
     
-    // Status bar
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
     
     // Keyboard Notifications
     
@@ -730,6 +725,9 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         }*/
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
 }
 

@@ -737,6 +737,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     /*
     // MARK: - Navigation
 

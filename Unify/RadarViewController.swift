@@ -57,6 +57,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // Holds contacts returned from server when radar starts
     var radarContacts = [User]()
     
+    // Array for storing plotted coordinates
+    var plotLocations = [[String: CGFloat]]()
+    
     
     // Halo
     let halo2 = PulsingHaloLayer()
@@ -158,24 +161,40 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         //add halo to pulseview as sublayer only once when view loads to prevent dups
         
+        // Swift 3
+        let modelName = UIDevice.current.modelName
         
-        if (UIScreen.main.bounds.size.height == 667.0 && UIScreen.main.nativeScale < UIScreen.main.scale){
+        print("Model Name \(modelName)")
+        
+        if modelName == "iPhone 6" || modelName == "iPhone 6s" || modelName == "iPhone 7" {
+            print("Iphone 6 landia my friend")
             //plus device
             halo.position.y = pulseView.frame.height / 2.55
-            halo.position.x = pulseView.frame.width / 1.8
-            print("iphone 6 plus zoomed")
-        } else {
+            halo.position.x = pulseView.frame.width / 2.0
+            
+        }else if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
             //standard device
             halo.position.y = pulseView.frame.height / 2.7
-            halo.position.x = pulseView.frame.width / 2.0
+            halo.position.x = pulseView.frame.width / 1.82
+        
+        }
+        
+        
+        if (UIScreen.main.bounds.size.height == 667.0 && UIScreen.main.nativeScale < UIScreen.main.scale){
+            
+            print("iphone 6 plus zoomed")
+        } else {
+        
             print("iphone 6 plus")
         }
-        if (UIScreen.main.bounds.size.height == 568.0 && UIScreen.main.nativeScale > UIScreen.main.scale) {
+        
+        /*if (UIScreen.main.bounds.size.height == 568.0 && UIScreen.main.nativeScale > UIScreen.main.scale) {
             print("zoomed iphone 6")
         } else {
             print("none zoomed standard iphone")
             halo.position.x = pulseView.frame.width / 2
-        }
+        }*/
         
 
         halo.haloLayerNumber = 3;
@@ -831,9 +850,94 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         containerView.backgroundColor = UIColor.clear
-        
         // Changed the image rendering size
         containerView.frame = CGRect(x: 100 + (10 * direction), y: 80 - (10 * distance), width: 60, height: 60)
+        
+        // Store location coordinates
+        let coords = ["x": containerView.frame.origin.x, "y": containerView.frame.origin.y]
+        self.plotLocations.append(coords)
+        print("\n\nPrinting coordinates : >> \(coords) <<  Tag# : \(tag)\n\n")
+        
+        
+        // Manually plot points
+        switch tag {
+        case 0:
+            containerView.frame.origin.x = 55
+            containerView.frame.origin.y = 95
+            print("New Coords from switch : x \(containerView.frame.origin.x), y \(containerView.frame.origin.y)")
+        case 1:
+            containerView.frame.origin.x = 110
+            containerView.frame.origin.y = 5
+            print("New Coords from switch : x \(containerView.frame.origin.x), y \(containerView.frame.origin.y)")
+        case 2:
+            containerView.frame.origin.x = 215
+            containerView.frame.origin.y = 5
+            print("New Coords from switch : x \(containerView.frame.origin.x), y \(containerView.frame.origin.y)")
+        case 3:
+            containerView.frame.origin.x = 255
+            containerView.frame.origin.y = 170
+            print("New Coords from switch : x \(containerView.frame.origin.x), y \(containerView.frame.origin.y)")
+        case 4:
+            containerView.frame.origin.x = 135
+            containerView.frame.origin.y = 180
+            print("New Coords from switch : x \(containerView.frame.origin.x), y \(containerView.frame.origin.y)")
+        case 5:
+            containerView.frame.origin.x = 285
+            containerView.frame.origin.y = 70
+            print("New Coords from switch : x \(containerView.frame.origin.x), y \(containerView.frame.origin.y)")
+        default:
+            print("Shit happens")
+        }
+        
+        // Subtracts new x from old x
+       /* if tag != 0 {
+            
+            let lastIndexX = self.plotLocations[tag - 1]["x"]
+            print("Last Index x : \(lastIndexX)")
+            let currentIndexX = coords["x"]
+            print("Current Index x : \(currentIndexX)")
+            // Calc different in x's
+            let difference = (lastIndexX! - currentIndexX!)
+            print("Index difference X : >>>>> \(abs(difference))")
+            
+            let lastIndexY = self.plotLocations[tag - 1]["y"]
+            print("Last Index y : \(lastIndexY)")
+            let currentIndexY = coords["y"]
+            print("Current Index y : \(currentIndexY)")
+            // Calc different in x's
+            let differenceY = (lastIndexY! - currentIndexY!)
+            print("Index difference y : >>>>> \(abs(differenceY))")
+            
+            if difference < 50 {
+                // Test coord
+                print("containerView.frame.origin.x Original \(containerView.frame.origin.x)")
+                
+                // Update coordinate
+                containerView.frame.origin.x = containerView.frame.origin.x + 60
+                print("containerView.frame.origin.x modified \(containerView.frame.origin.x)")
+            }
+            
+            if differenceY < 50 {
+                // Test coord
+                print("containerView.frame.origin.y Original \(containerView.frame.origin.y)")
+                
+                // Update coordinate
+                containerView.frame.origin.x = containerView.frame.origin.y + 60
+                print("containerView.frame.origin.y modified \(containerView.frame.origin.y)")
+            }
+            
+            
+            
+            
+        }*/
+        
+        // If diff less than 60
+        
+        // Replot direction
+        
+        
+        
+        
         // Changed the image rendering size
         imageView.frame = CGRect(x: 0, y: 0 , width: 60, height: 60)
         
@@ -890,13 +994,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Adding image of contact to map screen
         self.pulseView.addSubview(containerView)
         
-        // test on main view
-        /*let lbl = UILabel()
-         lbl.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
-         lbl.backgroundColor = UIColor.blue
-         lbl.text = "Yo \(tag)"
-         self.container.addSubview(lbl)*/
-        
+
     }
     
     func endRadar() {
@@ -1002,19 +1100,19 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             
             // Make sender bigger
             radarStatus = false
-            UIView.animate(withDuration: 0.25, animations: { () -> Void in
+            UIView.animate(withDuration: 0.0001, animations: { () -> Void in
                 
                 
                 //assuming the image is loaded second
                 
-                sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 100, height: 100)
+                sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 80, height: 80)
                 
-                sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! + 10, width: 100, height: 100)
+                sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! + 10, width: 80, height: 80)
                 
             }) { (Bool) -> Void in
                 
-                sender.view?.subviews[1].layer.borderWidth = 4
-                sender.view?.subviews[1].layer.cornerRadius = 50
+                sender.view?.subviews[1].layer.borderWidth = 3
+                sender.view?.subviews[1].layer.cornerRadius = 40
                 sender.view?.subviews[1].layer.borderColor = UIColor.green.cgColor
 
             }
@@ -1036,18 +1134,19 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             sender.view?.subviews[1].layer.borderWidth = 0
             sender.view?.subviews[1].layer.cornerRadius = 0
             sender.view?.subviews[1].layer.borderColor = UIColor.clear.cgColor
+            sender.view?.subviews[1].layer.cornerRadius = 30
 
             // Set tint to show deselection
             sender.view?.tintColor = UIColor.clear
             
             // Set to regular size 
             radarStatus = true
-            UIView.animate(withDuration: 0.25, animations: { () -> Void in
+            UIView.animate(withDuration: 0.0001, animations: { () -> Void in
                 
                 sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 60, height: 60)
                 
                 //sender.view?.subviews[1].layer.borderWidth = 0
-                sender.view?.subviews[1].layer.cornerRadius = 30
+                //sender.view?.subviews[1].layer.cornerRadius = 30
                 //sender.view?.subviews[1].layer.borderColor = UIColor.clear.cgColor
                 
                 sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! - 10, width: 60, height: 15)
@@ -1306,6 +1405,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             //user.printUser()
                             // Add to list of users on radar
                             self.radarUsers.append(user)
+                            self.radarUsers.append(user)
                             //self.radarUsers.append(user)
                             
                             // Create selected index
@@ -1323,8 +1423,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             //let direction = user.direction
                             
                             
-                            let distance = Int(random: -6..<12)
-                            let direction = Int(random: -2..<10)
+                            var distance = Int(random: -6..<12)
+                            var direction = Int(random: -2..<10)
                             
                             
                             // Check if user count is at 7 
@@ -1332,10 +1432,32 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             // plot person on map
                             // The tag is used to tag images to identify their index in the array
                             self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
-                        
+                            
+                            //print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
+                        /*
+                            distance = Int(random: -6..<12)
+                            direction = Int(random: -2..<10)
+        
+                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                            
+                            distance = Int(random: -6..<12)
+                            direction = Int(random: -2..<10)
+                            
+                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                            
+                            distance = Int(random: -6..<12)
+                            direction = Int(random: -2..<10)
+                            
+                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)*/
+                            
+                            
                             
                             // Update counter
+                            self.counter = self.counter + 1
+                            
+                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                        
+                            
                             self.counter = self.counter + 1
                             
                         }
@@ -1809,6 +1931,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // Navigation
     // ------------------------------------------------------------
@@ -1902,4 +2027,52 @@ extension Int {
         
         self = Int(min + arc4random_uniform(max - min)) - offset
     }
+}
+
+public extension UIDevice {
+    
+    var modelName: String {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        let identifier = machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
+        
+        switch identifier {
+        case "iPod5,1":                                 return "iPod Touch 5"
+        case "iPod7,1":                                 return "iPod Touch 6"
+        case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
+        case "iPhone4,1":                               return "iPhone 4s"
+        case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
+        case "iPhone5,3", "iPhone5,4":                  return "iPhone 5c"
+        case "iPhone6,1", "iPhone6,2":                  return "iPhone 5s"
+        case "iPhone7,2":                               return "iPhone 6"
+        case "iPhone7,1":                               return "iPhone 6 Plus"
+        case "iPhone8,1":                               return "iPhone 6s"
+        case "iPhone8,2":                               return "iPhone 6s Plus"
+        case "iPhone9,1", "iPhone9,3":                  return "iPhone 7"
+        case "iPhone9,2", "iPhone9,4":                  return "iPhone 7 Plus"
+        case "iPhone8,4":                               return "iPhone SE"
+        case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
+        case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad 3"
+        case "iPad3,4", "iPad3,5", "iPad3,6":           return "iPad 4"
+        case "iPad4,1", "iPad4,2", "iPad4,3":           return "iPad Air"
+        case "iPad5,3", "iPad5,4":                      return "iPad Air 2"
+        case "iPad6,11", "iPad6,12":                    return "iPad 5"
+        case "iPad2,5", "iPad2,6", "iPad2,7":           return "iPad Mini"
+        case "iPad4,4", "iPad4,5", "iPad4,6":           return "iPad Mini 2"
+        case "iPad4,7", "iPad4,8", "iPad4,9":           return "iPad Mini 3"
+        case "iPad5,1", "iPad5,2":                      return "iPad Mini 4"
+        case "iPad6,3", "iPad6,4":                      return "iPad Pro 9.7 Inch"
+        case "iPad6,7", "iPad6,8":                      return "iPad Pro 12.9 Inch"
+        case "iPad7,1", "iPad7,2":                      return "iPad Pro 12.9 Inch 2. Generation"
+        case "iPad7,3", "iPad7,4":                      return "iPad Pro 10.5 Inch"
+        case "AppleTV5,3":                              return "Apple TV"
+        case "i386", "x86_64":                          return "Simulator"
+        default:                                        return identifier
+        }
+    }
+    
 }

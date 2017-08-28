@@ -1585,6 +1585,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    
     /*
     // MARK: - Navigation
 

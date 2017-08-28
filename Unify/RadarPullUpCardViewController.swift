@@ -573,12 +573,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // we "calculate" the cached value here
         // and perform the snapping in ..targetHeightForBottomViewController..
         //halfWayPoint = totalHeight / 2.0
-        return 260
+        return 230
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, minimumHeightForBottomViewController bottomVC: UIViewController) -> CGFloat {
          /*topView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height;*/
-        return 260
+        return 230
         
     }
     

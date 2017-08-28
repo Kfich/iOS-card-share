@@ -537,7 +537,9 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     }
     
 
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // Navigation
     

@@ -43,6 +43,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     
     // Bools to check if array contents empty
     var biosPopulated = false
@@ -476,6 +477,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         organizations.removeAll()
         socialLinks.removeAll()
         workInformation.removeAll()
+        tags.removeAll()
+        addresses.removeAll()
         self.sections.removeAll()
         self.tableData.removeAll()
         
@@ -621,8 +624,24 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             self.tableData["Tags"] = tags
         }
 
-            // Test object
-            print("Contact >> \n\(contact.toAnyObject()))")
+        if contact.addresses.count > 0 {
+            // Add section
+            sections.append("Addresses")
+            for add in contact.addresses {
+                // Print to test
+                print("Address : \(add["address"]!)")
+                
+                // Append to list
+                self.addresses.append(add["address"]!)
+                print(addresses.count)
+            }
+            // Set list for section
+            self.tableData["Addresses"] = addresses
+        }
+
+        
+        // Test object
+        print("Contact >> \n\(contact.toAnyObject()))")
         
         // Parse for badges 
         self.parseForSocialIcons()
@@ -1080,6 +1099,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         }
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     /*
     // MARK: - Navigation
 

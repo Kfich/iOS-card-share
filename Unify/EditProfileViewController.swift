@@ -32,6 +32,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     
     // Store image icons
     var socialLinkBadges = [[String : Any]]()
@@ -934,7 +935,9 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
         
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     
     

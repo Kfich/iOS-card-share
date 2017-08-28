@@ -40,10 +40,6 @@ class PhoneVerificationPinViewController: UIViewController {
     @IBOutlet weak var modalFadeBox: UIView!
     
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         
         //set height to zero so assets move to bottom for smoother transaition
@@ -330,6 +326,9 @@ class PhoneVerificationPinViewController: UIViewController {
         
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     /*func createFirstCard() {
         // Create the card 

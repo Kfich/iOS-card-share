@@ -113,6 +113,10 @@ class CreateProfileViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
 }
 
 extension CreateProfileViewController: UISearchBarDelegate {

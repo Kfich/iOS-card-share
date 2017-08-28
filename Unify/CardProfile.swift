@@ -23,6 +23,7 @@ public class CardProfile{
     var notes = [[String : String]]()
     var websites = [[String : String]]()
     var organizations = [[String : String]]()
+    var addresses = [[String : String]]()
     var imageId = ""
     // Badges
     var badges = [String]()
@@ -78,6 +79,7 @@ public class CardProfile{
         notes = snapshot["notes"] as? [[String : String]] ?? [[String : String]]()
         websites = snapshot["websites"] as? [[String : String]] ?? [[String : String]]()
         organizations = snapshot["organizations"] as? [[String : String]] ?? [[String : String]]()
+        addresses = snapshot["addresses"] as? [[String : String]] ?? [[String : String]]()
         imageIds = snapshot["image_ids"] as? [[String : String]] ?? [[String : String]]()
         //images = snapshot["images"] as! [[String : Any]]
         badges = snapshot["badges"] as? [String] ?? [String]()
@@ -112,6 +114,8 @@ public class CardProfile{
         notes = fromDefaultsWithDictionary["notes"] as! [[String : String]]
         websites = fromDefaultsWithDictionary["websites"] as! [[String : String]]
         organizations = fromDefaultsWithDictionary["organizations"] as! [[String : String]]
+        addresses = fromDefaultsWithDictionary["addresses"] as? [[String : String]] ?? [[String : String]]()
+        
         //imageIds = fromDefaultsWithDictionary["image_ids"] as! [[String : Any]]
         
         images = fromDefaultsWithDictionary["images"] as! [[String : Any]]
@@ -140,6 +144,7 @@ public class CardProfile{
             "notes" : notes,
             "websites" : websites,
             "organizations" : organizations,
+            "addresses" : addresses,
             "image_ids": imageIds,
             "badges" : badges
         ]
@@ -157,6 +162,7 @@ public class CardProfile{
             "notes" : notes,
             "websites" : websites,
             "organizations" : organizations,
+            "addresses" : addresses,
             "image_ids": imageIds,
             "images" : images,
             "badges" : badges
@@ -279,6 +285,15 @@ public class CardProfile{
         organizations.append(organizationRecords)
     }
     
+    // Addresses
+    func getAddresses()->[[String : String]]{
+        return addresses
+    }
+    
+    func setAddresses(addressRecords : [String : String]){
+        addresses.append(addressRecords)
+    }
+    
     // Images
     func getImages()->[[String : Any]]{
         return images
@@ -322,11 +337,12 @@ public class CardProfile{
         print(websites as Any)
         print("Organizations : ")
         print(organizations as Any)
+        print("Addresses : ")
+        print(addresses as Any)
         print("Badges : ")
         print(badges)
         print("Badge List : ")
         print(badgeList)
-        
         
         print("Images : ")
         //print(images as Any)

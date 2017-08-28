@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     
     // Profile pics 
     var profileImagelist = [UIImage]()
@@ -672,6 +673,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.sections.removeAll()
         self.tableData.removeAll()
         self.tags.removeAll()
+        self.addresses.removeAll()
         
         
         // Parse bio info
@@ -784,6 +786,20 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             // Create section data
             self.tableData["Notes"] = notes
          }
+        // Parse notes
+        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
+            
+            // Add section
+            sections.append("Addresses")
+            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
+                
+                addresses.append(add["address"]!)
+                
+            }
+            // Create section data
+            self.tableData["Addresses"] = addresses
+        }
+        
          // Parse socials links
          if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
          
@@ -916,6 +932,9 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         }
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     func configureViews(){
         

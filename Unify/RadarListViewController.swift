@@ -506,6 +506,9 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     /*
     // MARK: - Navigation

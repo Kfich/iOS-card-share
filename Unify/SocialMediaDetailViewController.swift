@@ -166,6 +166,10 @@ class SocialMediaDetailViewController: UIViewController {
             KVNProgress.dismiss()
         }
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     /*
     // MARK: - Navigation

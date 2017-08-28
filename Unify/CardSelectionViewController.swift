@@ -846,7 +846,9 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
     }
 
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     
     

@@ -55,6 +55,8 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     @IBOutlet var formWrapperView: UIView!
     
     
+    
+    
     // IBActions
     // ----------------------------------
     @IBAction func selectProfilePicture(_ sender: AnyObject) {
@@ -432,6 +434,10 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     func postRefreshNotification() {
         // Notification for list refresh
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: self)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
         /*

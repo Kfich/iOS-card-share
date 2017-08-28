@@ -49,6 +49,11 @@ class PrivacyViewController: UIViewController {
         webViewer.loadRequest(URLRequest(url: URL(string: "http://gounify.com")!))
     }
 
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     /*
     // MARK: - Navigation
 

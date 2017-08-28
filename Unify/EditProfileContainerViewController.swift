@@ -27,6 +27,7 @@ class EditProfileContainerViewController: FormViewController {
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     
     // To check user intent
     //var doneButtonSelected = false
@@ -298,6 +299,38 @@ class EditProfileContainerViewController: FormViewController {
                                         }
                                     }
                 }
+                
+                +++
+                
+                MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                                   header: "Addresses",
+                                   footer: "") {
+                                    $0.tag = "Address Section"
+                                    $0.addButtonProvider = { section in
+                                        return ButtonRow(){
+                                            $0.title = "Add Address"
+                                            //$0.tag = "Add Media Info"
+                                            }.cellUpdate { cell, row in
+                                                cell.textLabel?.textAlignment = .left
+                                        }
+                                    }
+                                    $0.multivaluedRowToInsertAt = { index in
+                                        return NameRow("addRow_\(index)") {
+                                            $0.placeholder = "Address"
+                                            //$0.tag = "Add Media Info"
+                                        }
+                                    }
+                                    
+                                    // Iterate through array and set val
+                                    for val in addresses{
+                                        $0 <<< NameRow() {
+                                            $0.placeholder = "Address"
+                                            $0.value = val
+                                            //$0.tag = "Add Media Info"
+                                        }
+                                    }
+                }
+
                 +++
                 
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -488,7 +521,19 @@ class EditProfileContainerViewController: FormViewController {
                     }
                 }
             }
-            
+
+            // Organization section
+            let addressValues = form.sectionBy(tag: "Address Section")
+            for val in addressValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setAddresses(addressRecords: ["address": str])
+                        addresses.append(str)
+                    }
+                }
+            }
+
             // Set current user
             //ContactManager.sharedManager.currentUser = self.currentUser
             
@@ -568,6 +613,12 @@ class EditProfileContainerViewController: FormViewController {
                 notes.append(note["note"]!)
             }
         }
+        // Parse addresses
+        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
+            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
+                addresses.append(add["address"]!)
+            }
+        }
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
             for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
@@ -579,15 +630,17 @@ class EditProfileContainerViewController: FormViewController {
     
     func clearCurrentUserArrays() {
         // Clear all profile info to prepare for override
-         ContactManager.sharedManager.currentUser.userProfile.bios.removeAll()
-         ContactManager.sharedManager.currentUser.userProfile.titles.removeAll()
-         ContactManager.sharedManager.currentUser.userProfile.emails.removeAll()
-         ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.removeAll()
-         ContactManager.sharedManager.currentUser.userProfile.websites.removeAll()
-         ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
-         //ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
-         ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.bios.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.titles.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.emails.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.websites.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
+        //ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()
         ContactManager.sharedManager.currentUser.userProfile.tags.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.addresses.removeAll()
+        
     }
     
     func removeAllFromArrays() {
@@ -611,7 +664,7 @@ class EditProfileContainerViewController: FormViewController {
         socialLinks.removeAll()
         workInformation.removeAll()
         tags.removeAll()
-        
+        addresses.removeAll()
         
         
     }

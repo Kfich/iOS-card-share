@@ -1147,7 +1147,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AddNewCardFinished"), object: self)
     }
 
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     /*
      // MARK: - Navigation

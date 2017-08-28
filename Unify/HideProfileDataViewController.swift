@@ -219,7 +219,9 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
 
     }
 
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     /*
     // MARK: - Navigation

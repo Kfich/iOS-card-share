@@ -47,10 +47,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // ----------------------------------------
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var searchBarWrapperView: UIView!
+    
     
     
     
     // Page Config
+    
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
@@ -101,16 +105,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         //tableView.estimatedSectionHeaderHeight = 8.0
         self.automaticallyAdjustsScrollViewInsets = false
-        // Set a header for the table view
-       // let header = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
-       // header.backgroundColor = .red
-        //tableView.tableHeaderView = header
         
+       
         
         // Init and configure segment controller
         segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: tableView.frame.width - 20, height: 30))
         // Set tint
-        segmentedControl.tintColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        segmentedControl.tintColor = UIColor.white//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        //segmentedControl.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         segmentedControl.insertSegment(withTitle: "All", at: 0, animated: false)
         segmentedControl.insertSegment(withTitle: "Connections", at: 1, animated: false)
@@ -123,6 +125,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         
         // Add segment control to navigation bar
+        self.navigationBar.titleView?.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         self.navigationBar.titleView = segmentedControl
         
         
@@ -384,13 +387,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Init blue color 
         let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.tableView.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width, height: 35.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
         
         customSearchController.customSearchBar.placeholder = "Search"
         customSearchController.customSearchBar.tintColor = blue
         // Hide cancel button
         customSearchController.customSearchBar.showsCancelButton = false
-        self.tableView.tableHeaderView = customSearchController.customSearchBar
+        //self.tableView.tableHeaderView = customSearchController.customSearchBar
+        // Add search bar to wrapper view 
+        self.searchBarWrapperView.addSubview(customSearchController.customSearchBar)
         
         customSearchController.customDelegate = self
     }
@@ -628,7 +633,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         // Post notification
-        if intent == "Approve" {
+        if intent == "approve" {
             // Approve transaction 
             self.approveTransaction()
             
@@ -943,6 +948,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("No transaction type")
             }
         }
+        
+        // Reverse lists for sorting
+        self.connections = self.connections.reversed()
+        self.introductions = self.introductions.reversed()
     }
     
     func fetchContactsForTransaction() {
@@ -1331,7 +1340,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func configureFollowUpLabel(label: UILabel) {
         
-        label.layer.cornerRadius = 10.0
+        label.layer.cornerRadius = 17.0
         label.clipsToBounds = true
         label.layer.borderWidth = 1.0
         label.layer.borderColor = UIColor.white.cgColor
@@ -1362,6 +1371,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
             }
         }
+        
+        // Config label
+        self.configureFollowUpLabel(label: cell.connectionApproveButton)
 
         // Temp string
         var name : String = ""
@@ -1453,6 +1465,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             //cell.connectionRejectButton.isEnabled = false
                 
             cell.connectionApproveButton.text = "Follow up"
+            cell.connectionApproveButton.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
             cell.connectionApproveButton.isEnabled = false
             cell.connectionApproveButton.backgroundColor = UIColor.white
                 
@@ -1480,10 +1493,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.connectionDescriptionLabel.text = "You shared your contact information with \(String(describing: name))"
         }
         
-
-        // Config label
-        self.configureFollowUpLabel(label: cell.connectionApproveButton)
-        
         
         if trans.location == ""{
             // Hide icon
@@ -1503,9 +1512,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 33.5   // Create container for image and name
+        imageView.layer.cornerRadius = 30   // Create container for image and name
         
     }
 
@@ -1733,7 +1742,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     // Navigation
     

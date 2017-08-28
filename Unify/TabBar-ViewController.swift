@@ -79,6 +79,10 @@ class TabBarViewController: UITabBarController{
         
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     
 }
 

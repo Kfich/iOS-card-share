@@ -24,6 +24,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     let formatter = CNContactFormatter()
     var contact = Contact()
     var selectedCard = ContactCard()
+    var selectedEmail = ""
+    var selectedPhone = ""
     
     
     // Arrays to hold contact info
@@ -65,14 +67,6 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     
     // Buttons on social toolbar
     
-    @IBOutlet var mediaButton1: UIBarButtonItem!
-    @IBOutlet var mediaButton2: UIBarButtonItem!
-    @IBOutlet var mediaButton3: UIBarButtonItem!
-    
-    @IBOutlet var mediaButton4: UIBarButtonItem!
-    @IBOutlet var mediaButton5: UIBarButtonItem!
-    @IBOutlet var mediaButton6: UIBarButtonItem!
-    @IBOutlet var mediaButton7: UIBarButtonItem!
     
     @IBOutlet var syncToContactsSwitch: UISwitch!
     
@@ -89,6 +83,14 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     @IBOutlet var notesTextField: UITextField!
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    
+    @IBOutlet var tagsTextField: UITextField!
+    @IBOutlet var locationTextField: UITextField!
+    @IBOutlet var emailIcon: UIImageView!
+    @IBOutlet var phoneIcon: UIImageView!
+    @IBOutlet var phoneTextField: UITextField!
+    
+    
     
     
     
@@ -220,26 +222,31 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     
     func initializeBadgeList() {
         // Image config
-        let img1 = UIImage(named: "icn-social-facebook.png")
-        let img2 = UIImage(named: "icn-social-twitter.png")
-        let img3 = UIImage(named: "icn-social-instagram.png")
-        let img4 = UIImage(named: "icn-social-harvard.png")
-        let img5 = UIImage(named: "icn-social-pinterest.png")
-        let img6 = UIImage(named: "icn-social-pinterest.png")
-        let img7 = UIImage(named: "icn-social-facebook.png")
-        let img8 = UIImage(named: "icn-social-facebook.png")
-        let img9 = UIImage(named: "icn-social-facebook.png")
-        let img10 = UIImage(named: "icn-social-facebook.png")
-        
+        // Test data config
+        let img1 = UIImage(named: "Facebook.png")
+        let img2 = UIImage(named: "Twitter.png")
+        let img3 = UIImage(named: "instagram.png")
+        let img4 = UIImage(named: "Pinterest.png")
+        let img5 = UIImage(named: "Linkedin.png")
+        let img6 = UIImage(named: "GooglePlus.png")
+        let img7 = UIImage(named: "Crunchbase.png")
+        let img8 = UIImage(named: "Youtube.png")
+        let img9 = UIImage(named: "Soundcloud.png")
+        let img10 = UIImage(named: "Flickr.png")
+        let img11 = UIImage(named: "AboutMe.png")
+        let img12 = UIImage(named: "Angellist.png")
+        let img13 = UIImage(named: "Foursquare.png")
+        let img14 = UIImage(named: "Medium.png")
+        let img15 = UIImage(named: "Tumblr.png")
+        let img16 = UIImage(named: "Quora.png")
+        let img17 = UIImage(named: "Reddit.png")
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
         
-        
-        // let fb : NSDictionary = ["facebook" : img1!]
-        // self.socialLinkBadges.append([fb])
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
         
         
     }
+
     
     
     
@@ -347,9 +354,12 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         mediaButton6.image = UIImage(named: "social-blank")
         mediaButton7.image = UIImage(named: "social-blank")*/
         
-        if ContactManager.sharedManager.quickshareSMSSelected {
+        if ContactManager.sharedManager.quickshareEmailSelected {
             // Set placeholder
-            self.emailTextField.placeholder = "Phone number"
+            self.phoneTextField.placeholder = "Email"
+            self.phoneIcon.image = UIImage(named: "icn-mail-white")
+            self.emailTextField.placeholder = "Phone"
+            self.emailIcon.image = UIImage(named: "icn-phone-white")
         }
         
     }
@@ -424,8 +434,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             contact.name = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
             
             // Set notes
-            if notesTextField.text != nil{
-                contact.setNotes(note: notesTextField.text!)
+            if tagsTextField.text != nil{
+                contact.setTags(tag: tagsTextField.text!)
             }
             
             // Execute send actions
@@ -433,12 +443,24 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             // Check for user intent
             if ContactManager.sharedManager.quickshareSMSSelected {
                 // Set the number to contact
-                contact.phoneNumbers.append(["phone": emailTextField.text!])
+                contact.phoneNumbers.append(["phone": phoneTextField.text ?? ""])
+                contact.emails.append(["email": emailTextField.text ?? ""])
                 // Show sms
                 self.showSMSCard()
             }else{
                 // Set email
-                contact.emails.append(["email": emailTextField.text!])
+                contact.emails.append(["email": phoneTextField.text ?? ""])
+                contact.phoneNumbers.append(["phone": emailTextField.text ?? ""])
+                
+                print("Hitting from quickshare else")
+                print("Email \(phoneTextField.text ?? "")")
+                print("Phone \(emailTextField.text ?? "")")
+                
+                self.selectedEmail = phoneTextField.text ?? ""
+                self.selectedPhone = emailTextField.text ?? ""
+                
+                print(contact.emails)
+                print(contact.phoneNumbers)
                 // Show email 
                 self.showEmailCard()
             }
@@ -525,6 +547,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         transaction.recipientNames = [String]()
         transaction.recipientNames?.append(contact.name)
         print("APPENDING NAME \(self.contact.name)")
+        transaction.location = self.locationTextField.text ?? ""
         
         print("Printing Transaction")
         transaction.printTransaction()
@@ -695,13 +718,18 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             // Set contacts name
             let name = contact.name //"\(firstNameTextField.text!) \(lastNameTextField.text!)"
             
-            if contact.phoneNumbers.count > 0 {
+            /*if contact.phoneNumbers.count > 0 {
                 // Set contact phone
                 let contactPhone = contact.phoneNumbers[0]["phone"]
                 
                 // Launch text client
                 composeVC.recipients = [contactPhone!]
-            }
+            }*/
+            // Get phone
+            let contactPhone = self.phoneTextField.text ?? ""
+            
+            // Set recipient
+            composeVC.recipients = [self.selectedPhone]
             
             // Set card link from cardID
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
@@ -732,13 +760,15 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         let contactName = contact.name //"\(firstNameTextField.text!) \(lastNameTextField.text!)"
         
         // Check for nil values
-        if contact.emails.count > 0{
+        /*if contact.emails.count > 0{
             // Set email string
             let contactEmail = contact.emails[0]["email"]
             
             // Set variable
             emailContact = contactEmail!
-        }
+        }*/
+        // Set recipient
+        let contactEmail = self.emailTextField.text ?? ""
         
         // Create Message
         
@@ -751,7 +781,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         let str = "Hi \(contactName), I'd like to connect with you. Here's my information \n\(String(describing: currentUser.getName()))\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
         // Create Message
-        mailComposerVC.setToRecipients([emailContact])
+        mailComposerVC.setToRecipients([self.selectedEmail])
         mailComposerVC.setSubject("Unify Connection - I'd like to connect with you")
         mailComposerVC.setMessageBody(str, isHTML: false)
         
@@ -816,7 +846,9 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         controller.dismiss(animated: true, completion: nil)
     }
     
-
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     
     

@@ -31,9 +31,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     
     // Bar Styling
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
 
     
     // IBOutlets
@@ -391,7 +388,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         task.resume()
     }
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     
     // Navigation
