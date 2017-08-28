@@ -117,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         
         
-        // iOS 10 support
+       /* // iOS 10 support
         
         if #available(iOS 10, *) {
             
@@ -153,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
             
-        }
+        }*/
 
         
         

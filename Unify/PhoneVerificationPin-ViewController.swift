@@ -97,6 +97,8 @@ class PhoneVerificationPinViewController: UIViewController {
         super.viewDidLoad()
         
         
+        
+        
         // Test to see if user passed successfully 
         currentUser.printUser()
         

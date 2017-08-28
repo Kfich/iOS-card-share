@@ -267,7 +267,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Add tap gesture to cell labels
                 self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
-                self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
+                //self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
                 
             }else {
                 // Configure Cell
@@ -277,7 +277,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Add tap gesture to cell labels
                 self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
-                self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
+                //self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
                 
             }
         
@@ -295,7 +295,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Add tap gesture to cell labels
                 self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
-                self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
+                //self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
                 
             }else {
                 // Configure Cell
@@ -305,7 +305,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Add tap gesture to cell labels
                 self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
-                self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
+                //self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
                 
             }
             
@@ -1449,8 +1449,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Hide buttons if already approved
         if trans.approved {
             // Hide and replace
-            cell.connectionRejectButton.isHidden = true
-            cell.connectionRejectButton.isEnabled = false
+            //cell.connectionRejectButton.isHidden = true
+            //cell.connectionRejectButton.isEnabled = false
                 
             cell.connectionApproveButton.text = "Follow up"
             cell.connectionApproveButton.isEnabled = false

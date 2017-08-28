@@ -1046,6 +1046,10 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
                 sender.view?.subviews[1].frame = CGRect(x: (sender.view?.subviews[1].frame.origin.x)!, y: (sender.view?.subviews[1].frame.origin.y)!, width: 60, height: 60)
                 
+                //sender.view?.subviews[1].layer.borderWidth = 0
+                sender.view?.subviews[1].layer.cornerRadius = 30
+                //sender.view?.subviews[1].layer.borderColor = UIColor.clear.cgColor
+                
                 sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! - 10, width: 60, height: 15)
             })
             

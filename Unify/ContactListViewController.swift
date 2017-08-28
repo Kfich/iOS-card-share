@@ -477,26 +477,29 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
                 
-                let imageData = contact.imageData!
-                print(imageData)
+                if let imageData = contact.imageData{
+                    print(imageData)
+                    
+                    // Assign asset name and type
+                    let idString = contactObject.randomString(length: 20)
+                    
+                    // Name image with id string
+                    let fname = idString
+                    let mimetype = "image/png"
+                    
+                    // Create image dictionary
+                    let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+                    
+                    
+                    // Append to object
+                    contactObject.setContactImageId(id: idString)
+                    contactObject.imageDictionary = imageDict
+                    
+                    // Upload Record
+                    ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
+                    
+                }
                 
-                // Assign asset name and type
-                let idString = contactObject.randomString(length: 20)
-                
-                // Name image with id string
-                let fname = idString
-                let mimetype = "image/png"
-                
-                // Create image dictionary
-                let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
-                
-                
-                // Append to object
-                contactObject.setContactImageId(id: idString)
-                contactObject.imageDictionary = imageDict
-                
-                // Upload Record
-                ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
                 
             }
             if contact.urlAddresses.count > 0{

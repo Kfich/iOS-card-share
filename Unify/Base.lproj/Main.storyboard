@@ -1528,7 +1528,7 @@
                 <navigationController storyboardIdentifier="ProfileVC" navigationBarHidden="YES" id="wbp-bP-tiH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="SLj-8d-qLN"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xVx-3S-WBA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xVx-3S-WBA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1735,7 +1735,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="384" height="667"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6oV-eS-ubj">
-                                <rect key="frame" x="8" y="74" width="354" height="523"/>
+                                <rect key="frame" x="8" y="74" width="360" height="523"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PHOTOS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAA-A6-poD">
                                         <rect key="frame" x="8" y="212" width="46" height="14"/>
@@ -1797,7 +1797,7 @@
                                                 <rect key="frame" x="0.0" y="1" width="351" height="75"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y1K-De-rUa" id="0a2-pS-E12">
-                                                    <rect key="frame" x="0.0" y="0.0" width="351" height="75"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="351" height="74.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wdQ-m0-RGO">
@@ -1962,7 +1962,7 @@
                                 <constraints>
                                     <constraint firstItem="Wjn-yz-P6Z" firstAttribute="top" secondItem="KCx-Kz-APy" secondAttribute="bottom" constant="1" id="3zr-7I-Cwd"/>
                                     <constraint firstItem="KCx-Kz-APy" firstAttribute="top" secondItem="uAH-ha-KFH" secondAttribute="bottom" constant="13" id="44d-qR-VLb"/>
-                                    <constraint firstAttribute="trailing" secondItem="KCx-Kz-APy" secondAttribute="trailing" id="4ZV-S1-gV6"/>
+                                    <constraint firstAttribute="trailing" secondItem="KCx-Kz-APy" secondAttribute="trailing" constant="6" id="4ZV-S1-gV6"/>
                                     <constraint firstItem="KCx-Kz-APy" firstAttribute="leading" secondItem="6oV-eS-ubj" secondAttribute="leading" id="60p-WB-0sU"/>
                                     <constraint firstItem="KCx-Kz-APy" firstAttribute="trailing" secondItem="Wjn-yz-P6Z" secondAttribute="trailing" id="8td-6W-lVl"/>
                                     <constraint firstItem="KCx-Kz-APy" firstAttribute="top" secondItem="VAA-A6-poD" secondAttribute="bottom" constant="1" id="9WQ-Al-JHP"/>
@@ -1996,7 +1996,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ej5-NH-x7K">
-                                        <rect key="frame" x="298" y="26" width="60" height="30"/>
+                                        <rect key="frame" x="303" y="26" width="60" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="rsL-mg-ReE"/>
                                             <constraint firstAttribute="width" constant="60" id="vfx-m8-n8f"/>
@@ -2019,7 +2019,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="GME-f6-XaE"/>
                                     <constraint firstItem="C4A-ga-bLM" firstAttribute="leading" secondItem="tdX-og-lp8" secondAttribute="leading" constant="12" id="Hf1-eR-4bx"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ej5-NH-x7K" secondAttribute="trailing" constant="17" id="N5o-vt-AEC"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ej5-NH-x7K" secondAttribute="trailing" constant="12" id="N5o-vt-AEC"/>
                                     <constraint firstAttribute="bottom" secondItem="C4A-ga-bLM" secondAttribute="bottom" constant="8" id="NRG-TY-eCu"/>
                                     <constraint firstItem="Ej5-NH-x7K" firstAttribute="top" secondItem="tdX-og-lp8" secondAttribute="top" constant="26" id="Na0-uv-9yU"/>
                                     <constraint firstItem="Pjd-fv-Z7k" firstAttribute="centerY" secondItem="Ej5-NH-x7K" secondAttribute="centerY" id="ncL-MT-efy"/>
@@ -2035,7 +2035,7 @@
                             <constraint firstAttribute="trailing" secondItem="yMf-J9-ZGR" secondAttribute="trailing" constant="-9" id="HFr-4S-Uqf"/>
                             <constraint firstItem="yMf-J9-ZGR" firstAttribute="top" secondItem="3g5-yL-olm" secondAttribute="top" id="NQn-jM-AJl"/>
                             <constraint firstItem="tdX-og-lp8" firstAttribute="top" secondItem="3g5-yL-olm" secondAttribute="top" constant="12" id="Vhg-ji-Qd4"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="6oV-eS-ubj" secondAttribute="trailing" constant="-3" id="aNX-d7-3xl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6oV-eS-ubj" secondAttribute="trailing" constant="-9" id="aNX-d7-3xl"/>
                             <constraint firstItem="6oV-eS-ubj" firstAttribute="top" secondItem="tdX-og-lp8" secondAttribute="bottom" constant="-2" id="iKB-V8-gwf"/>
                             <constraint firstAttribute="bottom" secondItem="yMf-J9-ZGR" secondAttribute="bottom" id="kPB-Np-PhZ"/>
                             <constraint firstItem="6oV-eS-ubj" firstAttribute="leading" secondItem="3g5-yL-olm" secondAttribute="leadingMargin" constant="-8" id="m24-Cv-JPp"/>
@@ -2344,7 +2344,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ActivityVC" navigationBarHidden="YES" id="1Oc-5A-vEL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Activity" id="vMf-bf-9I9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bx0-lP-1KU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bx0-lP-1KU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4198,7 +4198,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ContactVC" navigationBarHidden="YES" id="pli-7b-Vvs" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Contacts" image="contactsicon" selectedImage="contactsicon" id="fnb-zs-j2f"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SOC-E3-VL8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="SOC-E3-VL8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6864,7 +6864,7 @@
                 <navigationController storyboardIdentifier="RadarVC" navigationBarHidden="YES" id="xIZ-TC-ypV" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" id="CI6-FL-GhO"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N9h-YD-6eO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N9h-YD-6eO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -10423,7 +10423,7 @@
         <scene sceneID="gZp-VV-fQI">
             <objects>
                 <collectionViewController id="tOI-Kc-32Q" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="O9M-i8-w5a">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="O9M-i8-w5a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -10533,7 +10533,7 @@
                     <tabBarItem key="tabBarItem" title="Intro" id="0XH-iX-L6l"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="LSz-30-GH9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JhS-bM-a1h">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="JhS-bM-a1h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -11002,7 +11002,7 @@
             <objects>
                 <navigationController storyboardIdentifier="CalendarListVC" automaticallyAdjustsScrollViewInsets="NO" id="3Hr-sD-wAa" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yF5-iR-0Pf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="yF5-iR-0Pf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -11256,7 +11256,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hQh-0Y-SfZ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wjm-wu-dQa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wjm-wu-dQa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -11274,7 +11274,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PTb-kK-DfG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VDD-zM-y3E">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="VDD-zM-y3E">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -11480,7 +11480,7 @@
                                                                 </collectionViewFlowLayout>
                                                                 <cells>
                                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BadgeCell" id="4o0-sU-BvP">
-                                                                        <rect key="frame" x="8" y="1" width="40" height="40"/>
+                                                                        <rect key="frame" x="8" y="0.5" width="40" height="40"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                             <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -11507,7 +11507,7 @@
                                                                 </collectionViewFlowLayout>
                                                                 <cells>
                                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BadgeCell" id="6Iq-JJ-82S">
-                                                                        <rect key="frame" x="8" y="1" width="40" height="40"/>
+                                                                        <rect key="frame" x="8" y="0.5" width="40" height="40"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                             <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -12278,7 +12278,7 @@
                                                                 </collectionViewFlowLayout>
                                                                 <cells>
                                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BadgeCell" id="1OU-Ij-4QA">
-                                                                        <rect key="frame" x="8" y="1" width="40" height="40"/>
+                                                                        <rect key="frame" x="8" y="0.5" width="40" height="40"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                             <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -12378,7 +12378,7 @@
                                                                 </collectionViewFlowLayout>
                                                                 <cells>
                                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BadgeCell" id="QU1-93-IkD">
-                                                                        <rect key="frame" x="8" y="1" width="40" height="40"/>
+                                                                        <rect key="frame" x="8" y="0.5" width="40" height="40"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                                             <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
