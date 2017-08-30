@@ -236,7 +236,7 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
         let parameters = ["pin": userPin, "token": currentUser.userId]
         
         // Show Progress HUD
-        KVNProgress.show(withStatus: "Creating your account...")
+        //KVNProgress.show(withStatus: "Creating your account...")
         
         Connection(configuration: nil).verifyPinCall(parameters, completionBlock: { response, error in
             if error == nil {
@@ -248,7 +248,7 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
                 // If here, that means we matched
                 
                 // Show indicator
-                KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
+                //KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
                 
                 
                 self.currentUser.setVerificationPhoneStatus(status: true)
@@ -326,7 +326,7 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
         
         
         // Show progress hud
-        KVNProgress.show(withStatus: "Fetching profile...")
+        //KVNProgress.show(withStatus: "Fetching profile...")
         
         // Save card to DB
         //let parameters = ["data": card.toAnyObject()]
@@ -370,10 +370,10 @@ class PinAuthViewController: UIViewController, UITextFieldDelegate {
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error retrieving your account info. Please try again.")
+                //KVNProgress.showError(withStatus: "There was an error retrieving your account info. Please try again.")
             }
             // Hide indicator
-            KVNProgress.dismiss()
+            //KVNProgress.dismiss()
         }
         
     }

@@ -48,6 +48,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var modalFadeBox: UIView!
     
+    @IBOutlet var sendCodeButton: UIButton!
+    
+    
     
     // Page Setup
     
@@ -97,6 +100,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         print("PHONE verification USER")
         currentUser.printUser()
         
+        // Set accessory view 
+        self.phoneNumberInput.inputAccessoryView = self.sendCodeButton
+        
         
         
         UIView.animate(withDuration: 1.5, animations: {
@@ -134,7 +140,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     // Keyboard Delegate Methods
     func keyboardWillShow(notification: NSNotification) {
         
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        /*if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y == 0{
                 let height = keyboardSize.height
                 
@@ -159,12 +165,12 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                 
             }
             
-        }
+        }*/
         
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+       /* if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y != 0 {
                 let height = keyboardSize.height
                 self.sendConfirmationBtn.frame.origin.y = self.view.frame.height - self.sendConfirmationBtn.frame.height - height
@@ -176,7 +182,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
             }
             
-        }
+        }*/
     }
     
     // Add formatting action to textfield
@@ -401,7 +407,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             print(">Passed Token")
             print(sender)
             
-            let nextScene =  segue.destination as! PinAuthViewController
+            let nextScene =  segue.destination as! PhoneVerificationPinViewController
             nextScene.currentUser = self.currentUser
             nextScene.isCurrentUser = self.isCurrentUser
             // Test the object has proper values

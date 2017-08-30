@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let urlCache = URLCache(memoryCapacity: 0, diskCapacity:50 * 1024 * 1024, diskPath:nil)
         URLCache.shared = urlCache
         
-        
+       
         if let user = UDWrapper.getDictionary("user"){
             // Assign current user to manager object
             //
@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         
         
-       /* // iOS 10 support
+        // iOS 10 support
         
         if #available(iOS 10, *) {
             
@@ -155,7 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
             
-        }*/
+        }
 
         
         

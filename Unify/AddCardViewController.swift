@@ -373,7 +373,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         // Create section header buttons
-        let imageName = "add-card"
+        let imageName = "add-card-1"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
         imageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)

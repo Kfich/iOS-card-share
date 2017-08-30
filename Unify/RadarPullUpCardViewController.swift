@@ -128,7 +128,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         
         // Set background image on collectionview
-        let bgImage = UIImageView();
+        let bgImage = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width + 10, height: self.view.frame.height + 10));
         bgImage.image = UIImage(named: "backgroundGradient");
         bgImage.contentMode = .scaleToFill
         self.cardCollectionView.backgroundView = bgImage
@@ -810,9 +810,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         //containerView.layer.borderColor = UIColor.clear as? CGColor
         
         // Create section header buttons
-        let imageName = "add-card"
+        let imageName = "add-card-1"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
+        //imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 0, y: 12, width: cell.contentView.frame.width - 10, height: cell.contentView.frame.height - 25)
         
         // Add gesture action
@@ -879,6 +880,17 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.clipsToBounds = true
         cell.cardHeaderView.layer.borderWidth = 1.5
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
+        /*
+        let shawdow = YIInnerShadowView()
+        shawdow.frame = CGRect(x: 0, y: 0, width: cell.cardHeaderView.frame.width, height: cell.cardHeaderView.frame.height)
+        shawdow.shadowMask = YIInnerShadowMaskTop
+        shawdow.shadowRadius = 15
+        shawdow.shadowColor = UIColor.lightText
+        
+        cell.cardHeaderView.addSubview(shawdow)*/
+        
+        //UIView(frame: CGRect(x: 0, y: 0, width: cell.cardHeaderView.frame.width, height: cell.cardHeaderView.frame.height))
+        
         
         
         //cell.cardWrapperView.backgroundColor = UIColor.blue

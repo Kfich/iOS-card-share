@@ -111,6 +111,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     // IBActions / Buttons Pressed
     // --------------------------------------------
@@ -211,6 +212,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor(red: 28/255.0, green: 52/255.0, blue: 110/255.0, alpha: 1.0)]
         self.navigationController?.navigationBar.titleTextAttributes = titleDict as? [String : Any]
         
+        // Set shadow
+        self.shadowView.shadowRadius = 2
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // reload table data
         
@@ -333,7 +337,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         lbl.text = sections[section]
         lbl.textAlignment = .left
         lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-        lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
+        lbl.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium) //UIFont(name: "Avenir", size: CGFloat(14))
         
         // Add subviews
         containerView.addSubview(lbl)

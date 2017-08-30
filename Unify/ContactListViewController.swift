@@ -72,6 +72,12 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         tblSearchResults.delegate = self
         tblSearchResults.dataSource = self
         
+        // Set delegate for empty state
+        tblSearchResults.emptyDataSetSource = self
+        tblSearchResults.emptyDataSetDelegate = self
+        // View to remove separators
+        tblSearchResults.tableFooterView = UIView()
+        
         //loadListOfCountries()
         
         getContacts()
@@ -116,7 +122,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             return contactSearchResults.count
         }
         else {
-            print("Section row count >>", contactsHashTable[letters[section]]!.count)
+            //print("Section row count >>", contactsHashTable[letters[section]]!.count)
             return contactObjectTable[letters[section]]!.count
         }
     }
@@ -211,7 +217,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(8, 3, 15, 15))
+        let lbl = UILabel(frame: CGRect(10, 3, 15, 15))
         lbl.text = String(letters[section])
         lbl.textAlignment = .left
         
@@ -296,7 +302,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Configure borders
         imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 23    // Create container for image and name
+        imageView.layer.cornerRadius = 15    // Create container for image and name
         
     }
     
@@ -589,7 +595,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Init blue color
         let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width, height: 35.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
         
         customSearchController.customSearchBar.placeholder = "Search"
         customSearchController.customSearchBar.tintColor = blue
@@ -1179,7 +1185,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
          }else{
          return false
          }*/
-        return false
+        return true
     }
     
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
@@ -1195,7 +1201,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         // Configure string
         
-        let emptyString = "No Profile Info Found"
+        let emptyString = "Contacts Not Imported"
         let attrString = NSAttributedString(string: emptyString)
         
         return attrString
@@ -1204,7 +1210,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         // Config Message for user
         
-        let emptyString = ""
+        let emptyString = "Syncing your contacts enables you to enjoy the full Unify experience"
         let attrString = NSAttributedString(string: emptyString)
         
         return attrString
@@ -1214,7 +1220,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
         // Config button for data set
         
-        let emptyString = "Tap to Sync Contacts"
+        let emptyString = "Import"
         
         let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         let attributes = [ NSForegroundColorAttributeName: blue ]

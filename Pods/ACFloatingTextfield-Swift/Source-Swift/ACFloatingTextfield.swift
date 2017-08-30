@@ -12,7 +12,7 @@ import UIKit
 @objc open class ACFloatingTextfield: UITextField {
 
      fileprivate var bottomLineView : UIView?
-     fileprivate var labelPlaceholder : UILabel?
+     var labelPlaceholder : UILabel?
      fileprivate var labelErrorPlaceholder : UILabel?
      fileprivate var showingError : Bool = false
 

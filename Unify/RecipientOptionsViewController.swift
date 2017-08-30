@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import Contacts
 import MessageUI
+import ACFloatingTextfield_Swift
 
 
 class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate {
@@ -77,14 +78,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet var syncContactSwitch: UISwitch!
     
     
-    @IBOutlet var phoneLabel: UITextField!
-    @IBOutlet var emailLabel: UITextField!
+    @IBOutlet var phoneLabel: ACFloatingTextfield!
+    @IBOutlet var emailLabel: ACFloatingTextfield!
     
-    @IBOutlet var firstNameLabel: UITextField!
-    @IBOutlet var lastNameLabel: UITextField!
+    @IBOutlet var firstNameLabel: ACFloatingTextfield!
+    @IBOutlet var lastNameLabel: ACFloatingTextfield!
     
-    @IBOutlet var tagsLabel: UITextField!
-    @IBOutlet var notesLabel: UITextField!
+    @IBOutlet var tagsLabel: ACFloatingTextfield!
+    @IBOutlet var notesLabel: ACFloatingTextfield!
 
     
 
@@ -101,8 +102,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Set tint
         segmentedControl.tintColor = UIColor.white//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        segmentedControl.insertSegment(withTitle: "New", at: 0, animated: false)
-        segmentedControl.insertSegment(withTitle: "Contacts", at: 1, animated: false)
+        segmentedControl.insertSegment(withTitle: "Contacts", at: 0, animated: false)
+        segmentedControl.insertSegment(withTitle: "New", at: 1, animated: false)
         
         
         // Set segment
@@ -122,13 +123,24 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         self.navigationBar.titleView = segmentedControl
         
         // Hide table
-        self.tableView.isHidden = true
+        self.tableView.isHidden = false
+        // Set height
+        //self.tableView.frame.height = self.view.frame.height
         
         // Get contacts
         self.getContacts()
         
         // Configure bar
         self.configureCustomSearchController()
+        
+        // Config textfields
+        phoneLabel.disableFloatingLabel = true
+        emailLabel.disableFloatingLabel = true
+        tagsLabel.disableFloatingLabel = true
+        notesLabel.disableFloatingLabel = true
+        firstNameLabel.disableFloatingLabel = true
+        lastNameLabel.disableFloatingLabel = true
+        
         
 
     }
@@ -1142,15 +1154,15 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         print("Toggling views for selection")
         
         switch(sender.selectedSegmentIndex) {
-        case 0:
-            // Test
-            print("Segment One")
-            // Hide view 
-            self.tableView.isHidden = true
-            
         case 1:
             // Test
             print("Segment Two")
+            // Hide view 
+            self.tableView.isHidden = true
+            
+        case 0:
+            // Test
+            print("Segment One")
             // Hide view
             self.tableView.isHidden = false
 
@@ -1158,7 +1170,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Test
             print("Segment One")
             // Hide view
-            self.tableView.isHidden = true
+            self.tableView.isHidden = false
 
         }
     }
@@ -1461,6 +1473,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             transaction.recipientNames = [String]()
             transaction.recipientNames?.append(self.contact.name)
             transaction.recipientNames?.append(contactName)
+            
+            // Set location from field
+            transaction.location = self.notesLabel.text ?? ""
             
             /*if self.syncContactSwitch.isOn == true {
                 // Upload sync contact record

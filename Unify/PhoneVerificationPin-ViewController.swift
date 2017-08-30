@@ -10,7 +10,7 @@ import UIKit
 import PopupDialog
 import PinCodeTextField
 
-class PhoneVerificationPinViewController: UIViewController {
+class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     
     // Properties
@@ -20,6 +20,27 @@ class PhoneVerificationPinViewController: UIViewController {
     var uuid_token: String?
     var pin = "1111"
     var userPin = ""
+    var counter = 0
+    var attempt = 1 {
+        didSet {
+            print(attempt)
+        }
+    }
+    var totalAttempt = 5
+    
+    var pinEntry: String!
+    
+    enum Stage {
+        case Pin
+        case Pin2
+        case Pin3
+        case Pin4
+        case Pin5
+        
+        case Restart
+        
+    }
+    
     
     // Bool check for user existance
     var isCurrentUser = false
@@ -39,12 +60,25 @@ class PhoneVerificationPinViewController: UIViewController {
     
     @IBOutlet weak var modalFadeBox: UIView!
     
+    @IBOutlet weak var textField: UITextField!
+    
     
     override func viewWillAppear(_ animated: Bool) {
         
         //set height to zero so assets move to bottom for smoother transaition
         let height = CGFloat(0)
         
+        //self.textField.inputView = self.verifyBtn
+        
+        DispatchQueue.main.async {
+            
+            //self.textField.becomeFirstResponder()
+            self.pinCodeArea.becomeFirstResponder()
+        }
+
+        
+        
+        /*
         //hide the assets
         self.verifyBtn.layer.opacity = 0
         self.termBox.layer.opacity = 0
@@ -64,14 +98,19 @@ class PhoneVerificationPinViewController: UIViewController {
         }) { (Bool) -> Void in
             
             //in case we need callback
-        }
+        }*/
         
 
         
     }
     
     func textFieldDidEndEditing(_ textField: PinCodeTextField) {
+        
+        /*
+        print("This is the execution for editing ending")
+        
         //set height to zero so assets move to bottom for smoother transaition
+        
         let height = CGFloat(0)
         
         //hide the assets
@@ -83,10 +122,33 @@ class PhoneVerificationPinViewController: UIViewController {
         self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
         self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
         
-        print("pin done")
+        print("pin done")*/
         
 
     }
+    
+    func textFieldDidBeginEditing(_ textField: PinCodeTextField) {
+        
+        print("Editing!!")
+        //set height to zero so assets move to bottom for smoother transaition
+        /*
+         let height = CGFloat(0)
+         
+         //hide the assets
+         self.verifyBtn.layer.opacity = 0
+         self.termBox.layer.opacity = 0
+         
+         
+         //hide the assets
+         self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
+         self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
+         
+         print("pin done")*/
+        
+        
+    }
+
+
     
     
     override func viewDidLoad() {
@@ -100,14 +162,19 @@ class PhoneVerificationPinViewController: UIViewController {
         
         
         // Set display to phone given prior
-        phoneNumberDisplay.text = global_phone
+        //phoneNumberDisplay.text = global_phone
  
         //pinCodeArea.delegate = self
         pinCodeArea.keyboardType = .numberPad
         
+        // Add button to top of keyboard
+        //pinCodeArea.inputAccessoryView = self.verifyBtn
+        
+        
         
         DispatchQueue.main.async {
            
+            //self.textField.becomeFirstResponder()
            self.pinCodeArea.becomeFirstResponder()
         }
         
@@ -115,7 +182,6 @@ class PhoneVerificationPinViewController: UIViewController {
         // Notifications for keyboard delegate
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         
     }
@@ -125,6 +191,9 @@ class PhoneVerificationPinViewController: UIViewController {
         
         // Clear array to avoid duplicate card
         ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        
+        // Drop keyboard
+        self.view.endEditing(true)
     }
     
     
@@ -132,7 +201,14 @@ class PhoneVerificationPinViewController: UIViewController {
     // -----------------------------------
     @IBAction func verify_tap(_ sender: Any) {
         
-        // May be a mistake, test it tho
+        // Return user to previous screen
+        self.navigationController?.popViewController(animated: true)
+        
+        // Execute issue pin call
+        //self.issuePin()
+        
+        
+       /* // May be a mistake, test it tho
         self.verifyBtn.isHidden = true
         
         // Also test
@@ -144,7 +220,7 @@ class PhoneVerificationPinViewController: UIViewController {
         })
 
         // Send pin to endpoint for match
-        processPin()
+        processPin()*/
         
 
 
@@ -165,7 +241,7 @@ class PhoneVerificationPinViewController: UIViewController {
                 
                 
                 
-                self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
+                //self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
                 
                 self.view.layoutSubviews()
                 self.view.layoutIfNeeded()
@@ -182,12 +258,28 @@ class PhoneVerificationPinViewController: UIViewController {
     }
     
     func keyboardWillHide(notification: NSNotification) {
+        
+        print("Maybe call pin on will hide?!?")
+        
+        // Hide verify btn
+        self.verifyBtn.isHidden = true
+        
+        
+        // Process pin
+        
+        
+        processPin()
+       
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y != 0 {
                 let height = keyboardSize.height
                 self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
                  self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
                 print("no keyboard")
+                
+                // Layout views
+                self.view.layoutSubviews()
+                self.view.layoutIfNeeded()
             }
             
         }
@@ -199,13 +291,16 @@ class PhoneVerificationPinViewController: UIViewController {
     
     func processPin(){
         
-        userPin = pinCodeArea.text!
+        userPin = pinCodeArea.text ?? ""
+        
+        print("This is the user pin from area >> \(userPin)")
+        
         
         // Set Params
         let parameters = ["pin": userPin, "token": currentUser.userId]
         
         // Show Progress HUD
-        KVNProgress.show(withStatus: "Creating your account...")
+        //KVNProgress.show(withStatus: "Creating your account...")
         
         Connection(configuration: nil).verifyPinCall(parameters, completionBlock: { response, error in
             if error == nil {
@@ -217,7 +312,7 @@ class PhoneVerificationPinViewController: UIViewController {
                 // If here, that means we matched
         
                 // Show indicator
-                KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
+                //KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
 
                 
                 self.currentUser.setVerificationPhoneStatus(status: true)
@@ -239,7 +334,9 @@ class PhoneVerificationPinViewController: UIViewController {
                 print(error ?? "Error Occured Processing pin")
                 
                 self.verifyBtn.isEnabled = true
-                
+                self.verifyBtn.isHidden = false
+         
+         
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")
                 KVNProgress.showError(withStatus: "Your pin is incorrect. Please try again")
@@ -274,7 +371,7 @@ class PhoneVerificationPinViewController: UIViewController {
         
         
         // Show progress hud
-        KVNProgress.show(withStatus: "Fetching profile...")
+        //KVNProgress.show(withStatus: "Fetching profile...")
         
         // Save card to DB
         //let parameters = ["data": card.toAnyObject()]
@@ -321,13 +418,138 @@ class PhoneVerificationPinViewController: UIViewController {
                 KVNProgress.showError(withStatus: "There was an error retrieving your account info. Please try again.")
             }
             // Hide indicator
-            KVNProgress.dismiss()
+           // KVNProgress.dismiss()
         }
         
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    
+    // Delegate Methods / Protocols
+    // =========================================
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        pinEntry = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        
+        print("Pin code area input", pinEntry)//to the console
+        
+        counter = counter + 1
+        
+        // Update counter
+        if counter > 4 {
+            return false
+        }
+        
+        if (pinEntry.characters.count == 4) {
+            
+            print("The pin entry output on 4 count .. \(pinEntry)")
+            //processPin()
+            
+            return false
+        }
+        
+        return true
+    }
+
+    
+    func issuePin()  {
+        // 
+        
+        // Save user to device if callback successful
+        
+        // Create user dictionary to store to DB
+        let parameters = ["data": currentUser.toAnyObject()]
+        
+        
+       // KVNProgress.show(withStatus: "Sending Confirmation Code...")
+        
+        // Create User Objects
+        Connection(configuration: nil).issuePinCall(parameters, completionBlock: { response, error in
+            if error == nil {
+                
+                print("\n\nConnection - Create User Response: \(String(describing: response))\n\n")
+                
+                // Here you set the id for the user and resubmit the object
+                
+                let dictionary : Dictionary = response as! [String : Any]
+                // Assign uuid to user object
+                self.currentUser.userId = dictionary["uuid"] as! String
+                
+                // Check if current user bool set
+                let check = dictionary["isUser"] as! Bool
+                
+                // Set bool with result
+                if check == false{
+                    // False
+                    self.isCurrentUser = false
+                }else{
+                    // True
+                    self.isCurrentUser = true
+                }
+                
+                // Check if user needs to be set
+                if self.isCurrentUser && UDWrapper.getDictionary("user") != nil {
+                    
+                    // Init user object
+                    if let user = UDWrapper.getDictionary("user"){
+                        // Init &  Set to manager
+                        self.currentUser =  User(withDefaultsSnapshot:user)
+                        // Set to manager
+                        ContactManager.sharedManager.currentUser = self.currentUser
+                        
+                    }
+                    // Set status to true
+                    self.currentUser.setVerificationPhoneStatus(status: true)
+                    
+                    // Store user to device
+                    UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
+                    
+                    // Print to test
+                    self.currentUser.printUser()
+                }else{
+                    // Send to create account
+                    
+                }
+                
+                // Set user to manager object
+                ContactManager.sharedManager.currentUser = self.currentUser
+                
+                // Show success
+                KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                
+                
+                DispatchQueue.main.async {
+                    // Update UI
+                    self.performSegue(withIdentifier: "sendConfirmationSegue", sender: self)
+                }
+                
+                
+                
+            } else {
+                print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")
+                
+                
+                // retry again
+                /*if self.retryAttempts < 3 {
+                    
+                    self.sendPhoneVerificationCode()
+                    
+                } else {
+                    
+                    KVNProgress.showError(withStatus: "There was an error. Please try again.")
+                    
+                }*/
+                
+                
+            }
+            
+        })
+
     }
     
     /*func createFirstCard() {

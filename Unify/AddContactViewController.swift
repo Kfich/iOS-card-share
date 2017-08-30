@@ -9,7 +9,8 @@
 import UIKit
 import MBPhotoPicker
 import Contacts
-
+import Alamofire
+import ACFloatingTextfield_Swift
 
 class AddContactViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -34,7 +35,11 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     var notes = [String]()
     var tags = [String]()
     
+    // Store image icons
+    var socialLinkBadges = [[String : Any]]()
+    var links = [String]()
     var socialBadges = [UIImage]()
+    
     var uploadContactSelected = false
     
     // IBOutlets
@@ -44,8 +49,8 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     
     @IBOutlet var selectProfileImageButton: UIButton!
     
-    @IBOutlet var firstNameTextField: UITextField!
-    @IBOutlet var lastNameTextField: UITextField!
+    @IBOutlet var firstNameTextField: ACFloatingTextfield!
+    @IBOutlet var lastNameTextField: ACFloatingTextfield!
     
     @IBOutlet var emailTextField: UITextField!
     
@@ -54,6 +59,7 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     
     @IBOutlet var formWrapperView: UIView!
     
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     
     
@@ -116,6 +122,9 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         // Set manager to false
         ContactManager.sharedManager.userCreatedNewContact = false
         
+        // Reset new contact 
+        ContactManager.sharedManager.newContact = Contact()
+        
         // Dismiss view
         dismiss(animated: true, completion: nil)
         
@@ -136,10 +145,18 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         // Add observers for notifications
         addObservers()
         
+        // Init badge list
+        initializeBadgeList()
+        
+        // Config textfields 
+        self.firstNameTextField.disableFloatingLabel = true
+        self.lastNameTextField.disableFloatingLabel = true
         
         // Configure views
         self.configureViews()
         
+        // Get icons
+        self.parseForSocialIcons()
         
         // Set image
         let image = UIImage(named: "profile-placeholder")
@@ -150,6 +167,10 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         
         // Config picker
         self.configurePhotoPicker()
+        
+        // Set shadow
+        self.shadowView.shadowRadius = 2
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
     }
     
@@ -163,7 +184,7 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5 //self.socialBadges.count
+        return self.socialBadges.count
         
     }
     
@@ -171,12 +192,50 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
         //cell.backgroundColor = UIColor.green
-        self.configureBadges(cell: cell)
+        //self.configureBadges(cell: cell)
+       
+        // Configure badge image
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        var image = UIImage()
+        image = self.socialBadges[indexPath.row]
+        // Set image
+        imageView.image = image
+
         
-        /*var cell = UICollectionViewCell()
-        
-        if collectionView == self.socialBadgeCollectionView{
+        if indexPath.row != self.socialBadges.count - 1 {
             
+            // Delete
+            let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+            let deleteImage = UIImage(named: "icn-minus-red")
+            deleteIconView.image = deleteImage
+            
+            // Add to imageview
+            imageView.addSubview(deleteIconView)
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            
+        }else{
+            
+            print("Last image index")
+            
+            // Configure badge image
+            let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
+            var image = UIImage()
+            image = self.socialBadges[indexPath.row]
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+        }
+
+        
+        
+        
+        /*
+        if collectionView == self.socialBadgeCollectionView{
+         
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
             
             ///cell.contentView.backgroundColor = UIColor.red
@@ -193,10 +252,20 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
             cell.contentView.addSubview(imageView)
         }*/
         
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if indexPath.row !=  self.socialBadges.count - 1{
+            // Delete the card
+            self.removeBadgeFromProfile(index: indexPath.row)
+        }else{
+            // Add new badge
+            performSegue(withIdentifier: "showContactMediaSelection", sender: self)
+        }
+
         
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
         
@@ -218,6 +287,16 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     
     // Custom Methods
     // ----------------------------------
+    
+    func removeBadgeFromProfile(index: Int) {
+        
+        print("Initial list count \(ContactManager.sharedManager.currentUser.userProfile.socialLinks.count)")
+        // Remove item at index
+        ContactManager.sharedManager.newContact.socialLinks.remove(at: index)
+        print("Post delete list count \(ContactManager.sharedManager.newContact.socialLinks.count)")
+        // Reload table data
+        parseForSocialIcons()
+    }
     
     func configureBadges(cell: UICollectionViewCell){
         // Add radius config & border color
@@ -268,6 +347,10 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         // Call to refresh table
         NotificationCenter.default.addObserver(self, selector: #selector(AddContactViewController.setContact), name: NSNotification.Name(rawValue: "NewContactAdded"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(AddContactViewController.parseForSocialIcons), name: NSNotification.Name(rawValue: "RefreshContactEditProfile"), object: nil)
+        
+        //RefreshContactEditProfile
+        
         
     }
     
@@ -302,7 +385,107 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         // Upload record
         self.uploadContactRecord()
     }
+    
+    func initializeBadgeList() {
+        // Image config
+        // Test data config
+        let img1 = UIImage(named: "Facebook.png")
+        let img2 = UIImage(named: "Twitter.png")
+        let img3 = UIImage(named: "instagram.png")
+        let img4 = UIImage(named: "Pinterest.png")
+        let img5 = UIImage(named: "Linkedin.png")
+        let img6 = UIImage(named: "GooglePlus.png")
+        let img7 = UIImage(named: "Crunchbase.png")
+        let img8 = UIImage(named: "Youtube.png")
+        let img9 = UIImage(named: "Soundcloud.png")
+        let img10 = UIImage(named: "Flickr.png")
+        let img11 = UIImage(named: "AboutMe.png")
+        let img12 = UIImage(named: "Angellist.png")
+        let img13 = UIImage(named: "Foursquare.png")
+        let img14 = UIImage(named: "Medium.png")
+        let img15 = UIImage(named: "Tumblr.png")
+        let img16 = UIImage(named: "Quora.png")
+        let img17 = UIImage(named: "Reddit.png")
+        // Hash images
+        
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
+        
+    }
 
+    
+    func parseForSocialIcons() {
+        
+        
+        print("PARSING for icons from add contact vc")
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        self.socialLinks.removeAll()
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if ContactManager.sharedManager.newContact.socialLinks.count > 0{
+            for link in ContactManager.sharedManager.newContact.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test
+                //print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
+                     print("NOT IN LIST")
+                     // Append link to list
+                     self.socialBadges.append(item.first?.value as! UIImage)
+                     }else{
+                     print("ALREADY IN LIST")
+                     }*/
+                    // Append link to list
+                    //self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
+                    
+                    
+                }
+            }
+            
+            
+            // Reload table
+            self.socialBadgeCollectionView.reloadData()
+        }
+        
+        // Add image to the end of list
+        let image = UIImage(named: "Green-1")
+        self.socialBadges.append(image!)
+        
+        // Reload table
+        self.socialBadgeCollectionView.reloadData()
+        
+    }
     
     
     
@@ -331,8 +514,12 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         // Assign contact object
         self.contact = ContactManager.sharedManager.newContact
         
+        print("The new contacts social media")
+        contact.printContact()
+        
+        
         // Show HUD
-        KVNProgress.show(withStatus: "Saving new contact..")
+        /*KVNProgress.show(withStatus: "Saving new contact..")
         
         // Send to server
         let parameters = ["data" : contact.toAnyObject(), "uuid": self.currentUser.userId] as [String : Any]
@@ -368,7 +555,7 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
             }
             // Hide indicator
             KVNProgress.dismiss()
-        }
+        }*/
     }
     
     func syncContact() {
@@ -386,14 +573,21 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         contactToAdd.givenName = self.firstNameTextField.text ?? ""
         contactToAdd.familyName = self.lastNameTextField.text ?? ""
         
-        // Parse for mobile
-        let mobileNumber = CNPhoneNumber(stringValue: (tempContact.phoneNumbers[0]["phone"] ?? ""))
-        let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
-        contactToAdd.phoneNumbers = [mobileValue]
+        if tempContact.phoneNumbers.count > 0{
+           
+            // Parse for mobile
+            let mobileNumber = CNPhoneNumber(stringValue: (tempContact.phoneNumbers[0]["phone"] ?? ""))
+            let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+            contactToAdd.phoneNumbers = [mobileValue]
+        }
         
-        // Parse for emails
-        let email = CNLabeledValue(label: CNLabelWork, value: tempContact.emails[0]["email"] as! NSString ?? "")
-        contactToAdd.emailAddresses = [email]
+        if tempContact.emails.count > 0 {
+            
+            // Parse for emails
+            let email = CNLabeledValue(label: CNLabelWork, value: tempContact.emails[0]["email"] as! NSString ?? "")
+            contactToAdd.emailAddresses = [email]
+        }
+        
         
         if let image = self.profileImageView.image {
             contactToAdd.imageData = UIImagePNGRepresentation(image)
@@ -429,6 +623,53 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         // Post notification for refresh
         self.postRefreshNotification()
 
+    }
+    
+    func uploadImage(imageDictionary: NSDictionary) {
+        // Link to endpoint and send
+        // Create URL For Test
+        let testURL = ImageURLS().uploadToDevelopmentURL
+        //let prodURL = ImageURLS().uploadToDevelopmentURL
+        
+        // Parse dictionary
+        let imageData = imageDictionary["image_data"] as! Data
+        let fname = imageDictionary["file_name"] as! String
+        
+        // Show progress HUD
+        KVNProgress.show(withStatus: "Generating profile..")
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+             }*/
+            
+            // Currently Set to point to Prod Server
+        }, to:testURL)
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n success...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
     }
     
     func postRefreshNotification() {

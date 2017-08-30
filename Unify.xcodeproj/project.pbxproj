@@ -106,6 +106,8 @@
 		FB62DA161F4A537200B5CFB5 /* PinAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB62DA151F4A537200B5CFB5 /* PinAuthViewController.swift */; };
 		FB62DA1D1F4A73B600B5CFB5 /* YIInnerShadowLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FB62DA1A1F4A73B600B5CFB5 /* YIInnerShadowLayer.m */; };
 		FB62DA1E1F4A73B600B5CFB5 /* YIInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB62DA1C1F4A73B600B5CFB5 /* YIInnerShadowView.m */; };
+		FB6FAB0D1F565A2200E66508 /* ContactSocialMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */; };
+		FB6FAB101F565A5600E66508 /* ContactSocialMediaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */; };
 		FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */; };
 		FB767D311F429DD40065F46E /* RSKImageCropperStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB767D221F429DD40065F46E /* RSKImageCropperStrings.bundle */; };
 		FB767D321F429DD40065F46E /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D241F429DD40065F46E /* RSKImageCropViewController.m */; };
@@ -352,6 +354,8 @@
 		FB62DA1A1F4A73B600B5CFB5 /* YIInnerShadowLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIInnerShadowLayer.m; sourceTree = "<group>"; };
 		FB62DA1B1F4A73B600B5CFB5 /* YIInnerShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIInnerShadowView.h; sourceTree = "<group>"; };
 		FB62DA1C1F4A73B600B5CFB5 /* YIInnerShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIInnerShadowView.m; sourceTree = "<group>"; };
+		FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSocialMediaViewController.swift; sourceTree = "<group>"; };
+		FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSocialMediaDetailViewController.swift; sourceTree = "<group>"; };
 		FB767D1E1F429DD40065F46E /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
 		FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
 		FB767D201F429DD40065F46E /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
@@ -649,6 +653,8 @@
 				FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */,
 				FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */,
 				FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */,
+				FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */,
+				FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -1108,6 +1114,7 @@
 				1C3104161E95A87900F4D70D /* ProfileContactCell.swift in Sources */,
 				1C3104121E9536D100F4D70D /* SingleActivity-ViewController.swift in Sources */,
 				FB767D371F429DD40065F46E /* UIImage+RSKImageCropper.m in Sources */,
+				FB6FAB0D1F565A2200E66508 /* ContactSocialMediaViewController.swift in Sources */,
 				FBF8712D1EE71B0800243CE2 /* User.swift in Sources */,
 				1CB31CAB1E942C1C00A0C4A5 /* SkeletonCell.swift in Sources */,
 				1CB31CA11E940A0B00A0C4A5 /* Profile-TableViewController.swift in Sources */,
@@ -1175,6 +1182,7 @@
 				FBE807541F06C07C00A05292 /* JSONResponseSerializerWithData.m in Sources */,
 				FB1A340F1EE1B661003B5A73 /* RadarViewController.swift in Sources */,
 				FB90A8BC1F27AC1600E67B1E /* PrivacyViewController.swift in Sources */,
+				FB6FAB101F565A5600E66508 /* ContactSocialMediaDetailViewController.swift in Sources */,
 				FB199D031F339A0F00FFFCC1 /* SocialMediaViewController.swift in Sources */,
 				1C31040E1E94B54800F4D70D /* ActivityCardTableCell.swift in Sources */,
 				FB767D361F429DD40065F46E /* UIApplication+RSKImageCropper.m in Sources */,

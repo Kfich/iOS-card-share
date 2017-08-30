@@ -244,7 +244,7 @@ class AddContactContainerViewController: FormViewController {
                                 }
             }
             
-            +++
+           /* +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "Social Media Links",
@@ -273,7 +273,7 @@ class AddContactContainerViewController: FormViewController {
                                         //$0.tag = "Add Media Info"
                                     }
                                 }
-            }
+            }*/
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -464,7 +464,7 @@ class AddContactContainerViewController: FormViewController {
                 }
             }
             
-            // Social Media Section
+            /*// Social Media Section
             let mediaValues = form.sectionBy(tag: "Media Section")
             for val in mediaValues! {
                 print(val.baseValue ?? "")
@@ -475,7 +475,8 @@ class AddContactContainerViewController: FormViewController {
                         socialLinks.append(str)
                     }
                 }
-            }
+            }*/
+            
             // Notes Section
             let noteValues = form.sectionBy(tag: "Notes Section")
             for val in noteValues! {

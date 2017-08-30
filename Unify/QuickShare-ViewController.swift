@@ -12,7 +12,7 @@ import MapKit
 import CoreLocation
 import MessageUI
 import Contacts
-
+import ACFloatingTextfield_Swift
 
 
 class QuickShareViewController: UIViewController, MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
@@ -74,23 +74,28 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     
     //@IBOutlet var recipientTextField: UITextField!
     
-    @IBOutlet var firstNameTextField: UITextField!
+    @IBOutlet var firstNameTextField: ACFloatingTextfield!
     
-    @IBOutlet var lastNameTextField: UITextField!
+    @IBOutlet var lastNameTextField: ACFloatingTextfield!
     
-    @IBOutlet var emailTextField: UITextField!
+    @IBOutlet var emailTextField: ACFloatingTextfield!
     
-    @IBOutlet var notesTextField: UITextField!
+    @IBOutlet var notesTextField: ACFloatingTextfield!
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
-    @IBOutlet var tagsTextField: UITextField!
-    @IBOutlet var locationTextField: UITextField!
+    @IBOutlet var tagsTextField: ACFloatingTextfield!
+    @IBOutlet var locationTextField: ACFloatingTextfield!
+    
     @IBOutlet var emailIcon: UIImageView!
+    
     @IBOutlet var phoneIcon: UIImageView!
-    @IBOutlet var phoneTextField: UITextField!
     
     
+    @IBOutlet var phoneTextField: ACFloatingTextfield!
+    
+    
+    @IBOutlet var badgeIcon: UIImageView!
     
     
     
@@ -122,6 +127,14 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         configureViews()
         populateCards()
         
+        // Textfield config
+        firstNameTextField.disableFloatingLabel = true
+        lastNameTextField.disableFloatingLabel = true
+        emailTextField.disableFloatingLabel = true
+        //notesTextField.disableFloatingLabel = true
+        tagsTextField.disableFloatingLabel = true
+        phoneTextField.disableFloatingLabel = true
+        locationTextField.disableFloatingLabel = true
         
 
     }
@@ -506,7 +519,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         }
         
         // Set notes to contact
-        contactToAdd.note = self.notesTextField.text ?? ""
+        contactToAdd.note = self.locationTextField.text ?? ""
         
         // **** Make a scheme for adding tags to contact **** //
         

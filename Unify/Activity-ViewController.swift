@@ -633,14 +633,49 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         // Post notification
-        if intent == "approve" {
+        /*if intent == "approve" {*/
             // Approve transaction 
-            self.approveTransaction()
-            
+        
+        print("The label text >> \(label.text ?? "")")
+        
+        
+        // Assign selected transaction
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // All
+            self.selectedTransaction = transactionListReversed[(sender.view?.tag)!]
+        }else if segmentedControl.selectedSegmentIndex == 1 {
+            // Connections
+            self.selectedTransaction = connections[(sender.view?.tag)!]
         }else{
-            // Reject transaction 
-            //self.rejectTransaction()
+            // Intro
+            self.selectedTransaction = introductions[(sender.view?.tag)!]
+            
         }
+
+        
+        // Check for user intent
+        if label.text == "Follow up" {
+            // Test 
+            print("Followup")
+            
+            // Get users in transaction
+            
+            if selectedTransaction.type == "connection" {
+                // Hit for userList
+                self.fetchUsersForTransaction()
+                
+            }else{
+                // Hit for contact list
+                self.fetchContactsForTransaction()
+            }
+
+        }else{
+            // Approve transaction call
+            print("Approve")
+            self.approveTransaction()
+        }
+        
+
     }
     
     
@@ -1260,12 +1295,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Assign user objects
         
-        //let user1 = selectedUsers[0]
-        //let user2 = selectedUsers[1]
-        
-        let name1 = "Frank Smith"
-        let name2 = "Fred Jackson"
-        
         // Config imageview
         self.configureSelectedImageView(imageView: cell.profileImage)
         
@@ -1283,9 +1312,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.descriptionLabel.text = "You introduced \(trans.recipientNames?[0] ?? "") to \(trans.recipientNames?[1] ?? "")"
             
             cell.approveButton.text = "Follow up"
-            cell.approveButton.textColor = UIColor.white
-            cell.approveButton.isEnabled = false
-            //cell.approveButton.backgroundColor = UIColor.white
+            cell.approveButton.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+            //cell.approveButton.textColor = UIColor.white
+            //cell.approveButton.isEnabled = false
+            cell.approveButton.backgroundColor = UIColor.white
             
         }else{
             cell.descriptionLabel.text = "You made an introduction"
@@ -1294,7 +1324,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set location
         cell.locationLabel.text = trans.location
         
-        cell.approveButton.isEnabled = false
+        //cell.approveButton.isEnabled = false
         //cell.approveButton.ish = false
         
         // Hide buttons if already approved
@@ -1466,7 +1496,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
             cell.connectionApproveButton.text = "Follow up"
             cell.connectionApproveButton.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-            cell.connectionApproveButton.isEnabled = false
+            //cell.connectionApproveButton.isEnabled = false
             cell.connectionApproveButton.backgroundColor = UIColor.white
                 
             // Change the label

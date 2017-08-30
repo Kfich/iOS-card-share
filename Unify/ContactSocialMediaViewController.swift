@@ -1,14 +1,14 @@
 //
-//  SocialMediaViewController.swift
+//  ContactSocialMediaViewController.swift
 //  Unify
 //
-//  Created by Kevin Fich on 8/3/17.
+//  Created by Kevin Fich on 8/29/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
 import UIKit
 
-class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource {
+class ContactSocialMediaViewController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource {
     
     // Properties
     // -------------------------------
@@ -37,7 +37,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     let img15 = UIImage(named: "Tumblr.png")
     let img16 = UIImage(named: "Quora.png")
     let img17 = UIImage(named: "Reddit.png")
-
+    
     
     
     // IBOutlets
@@ -51,7 +51,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         // Do any additional setup after loading the view.
         
-        // Assign user 
+        // Assign user
         //self.currentUser = ContactManager.sharedManager.currentUser
         //self.currentUser.printUser()
         
@@ -77,7 +77,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         //socialOptions = [, , , , , , , , , , , , , , , , , , , , , , ]
         
-        // For notifcations 
+        // For notifcations
         self.addObservers()
         
         mediaCollectionView.reloadData()
@@ -85,11 +85,11 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         mediaCollectionView.backgroundColor = UIColor.clear
         
         /*// Configure blur
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = view.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mediaCollectionView.backgroundView?.addSubview(blurEffectView)*/
+         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+         let blurEffectView = UIVisualEffectView(effect: blurEffect)
+         blurEffectView.frame = view.bounds
+         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+         mediaCollectionView.backgroundView?.addSubview(blurEffectView)*/
         
     }
     
@@ -108,7 +108,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     // ---------------------------------
     
     @IBAction func dismissView(_ sender: Any) {
-        // Dismiss view 
+        // Dismiss view
         self.dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: true)
     }
@@ -151,7 +151,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         self.selectedLink = links[indexPath.row]
         self.selectedIndex = indexPath.row
         // Hit the segue
-        performSegue(withIdentifier: "showAddSocialLink", sender: self)
+        performSegue(withIdentifier: "showContactMediaDetailSelection", sender: self)
     }
     
     
@@ -159,7 +159,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     
     func addObservers() {
         // Call to show success
-        NotificationCenter.default.addObserver(self, selector: #selector(SocialMediaViewController.showConfirmHUD), name: NSNotification.Name(rawValue: "Media Selected"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ContactSocialMediaViewController.showConfirmHUD), name: NSNotification.Name(rawValue: "Contact Media Selected"), object: nil)
         
     }
     
@@ -179,7 +179,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     
     func postSocialRefreshNotification() {
         // Notification to reload views
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: self)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactEditProfile"), object: self)
     }
     
     
@@ -205,11 +205,11 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         
         // Add radius config & border color
-         /*cell.mediaImageView.layer.cornerRadius = 12.0
+        /*cell.mediaImageView.layer.cornerRadius = 12.0
          cell.mediaImageView.clipsToBounds = true
          cell.mediaImageView.layer.borderWidth = 0.5
          cell.mediaImageView.layer.borderColor = UIColor.clear.cgColor
-        
+         
          // Set shadow on the container view
          cell.layer.shadowColor = UIColor.black.cgColor
          cell.layer.shadowOpacity = 1.5
@@ -222,33 +222,21 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         return .lightContent
     }
     
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        // Check for id 
-        if segue.identifier == "showAddSocialLink" {
-            // Set destination 
-            let nextVC = segue.destination as! SocialMediaDetailViewController
+        
+        // Check for id
+        if segue.identifier == "showContactMediaDetailSelection" {
+            // Set destination
+            let nextVC = segue.destination as! ContactSocialMediaDetailViewController
             // Pass selected link
             nextVC.selectedMediaLink = self.selectedLink
             nextVC.selectedImage = self.thumbnailImageList[self.selectedIndex]
         }
-     }
+    }
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -13,8 +13,9 @@ import PopupDialog
 import Contacts
 import MBPhotoPicker
 import Alamofire
+import ACFloatingTextfield_Swift
 
-class CreateAccountViewController: UIViewController, RSKImageCropViewControllerDelegate {
+class CreateAccountViewController: UIViewController, RSKImageCropViewControllerDelegate, UITextFieldDelegate{
     
     // Properties
     // -----------------------------------------------
@@ -36,11 +37,11 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
     // IBOutlets
     // -----------------------------------------------
     
-    @IBOutlet weak var firstName: UITextField!
+    @IBOutlet weak var firstName: ACFloatingTextfield!
     
-    @IBOutlet weak var lastName: UITextField!
+    @IBOutlet weak var lastName: ACFloatingTextfield!
     
-    @IBOutlet weak var email: UITextField!
+    @IBOutlet weak var email: ACFloatingTextfield!
     
     @IBOutlet weak var addProfilePictureBtn: UIButton!
     
@@ -67,6 +68,11 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         // error here
         //firstName.becomeFirstResponder()
         
+        // Set textfield delegates
+        firstName.delegate = self
+        lastName.delegate = self
+        email.delegate = self
+        
         // Config Photo Picker
         configurePhotoPicker()
         
@@ -85,6 +91,10 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
         KVNProgress.setConfiguration(conf)
         
+        // Config textfields
+        firstName.disableFloatingLabel = true
+        lastName.disableFloatingLabel = true
+        email.disableFloatingLabel = true
         
         // Notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -129,7 +139,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
             print("Selected image")
             
             // Change button text
-            self.addProfilePictureBtn.titleLabel?.text = "Change"
+            self.addProfilePictureBtn.titleLabel?.text = "  change"
             
             
             // Previous location for image assignment to user object
@@ -248,10 +258,10 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         let urls = ImageURLS()
             
         // Create URL For Prod
-        let prodURL = urls.uploadToStagingURL
+        //let prodURL = urls.uploadToStagingURL
         
         // Create URL For Test
-        //let testURL = urls.uploadToDevelopmentURL
+        let testURL = urls.uploadToDevelopmentURL
         
         
         // Show progress HUD
@@ -267,7 +277,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
             }*/
             
             // Currently Set to point to Prod Server
-        }, to:prodURL)
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):
@@ -314,6 +324,25 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
     }
     
+    // Text Field Delegates
+    func textFieldDidBeginEditing(_ textField: UITextField) {    //delegate method
+        //
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+        // Kill placeholders
+        /*if textField == firstName {
+            // Execute
+            firstName.label = ""
+        }*/
+        
+        
+        
+    }
+    
+    
+    // Custom Methods
+    // --------------------------
     
     func createFirstCard() {
         // Create the card
@@ -686,10 +715,10 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         //imageView.layer.borderColor = UIColor.blue.cgColor
         imageView.layer.borderWidth = 1.0
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 59    // Create container for image and name
+        imageView.layer.cornerRadius = 45    // Create container for image and name
         
         // Changed the image rendering size
-        imageView.frame = CGRect(x: 0, y: 0 , width: 125, height: 125)
+        imageView.frame = CGRect(x: 0, y: 0 , width: 90, height: 90)
         
         return imageView
     }
@@ -699,8 +728,9 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
         // Configure borders
         imageView.layer.borderWidth = 1.0
+        //imageView.layer.borderColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0) as! CGColor
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 60// Create container for image and name
+        imageView.layer.cornerRadius = 45// Create container for image and name
         
     }
 

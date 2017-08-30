@@ -494,6 +494,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Add image to the end of list
         let image = UIImage(named: "Green-1")
         self.socialBadges.append(image!)
+       
         // Get images
         parseAccountForImges()
         
@@ -555,10 +556,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let urls = ImageURLS()
         
         // Create URL For Prod
-        let prodURL = urls.uploadToStagingURL
+        //let prodURL = urls.uploadToStagingURL
         
         // Create URL For Test
-        //let testURL = urls.uploadToDevelopmentURL
+        let testURL = urls.uploadToDevelopmentURL
         
         
         // Show progress HUD
@@ -574,7 +575,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
              }*/
             
             // Currently Set to point to Prod Server
-        }, to:prodURL)
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):
@@ -665,12 +666,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
         
-        
     }
     
-    
-    
-    
+
     func updateCurrentUser() {
         // Configure to send to server 
         if firstNameTextField.text != "" && lastNameTextField.text != "" {
@@ -798,18 +796,20 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
         var cell = UICollectionViewCell()
         
         if collectionView == self.profileImageCollectionView {
-           
+           // Init cell
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath)
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-            let image = self.profileImages[indexPath.row]
-            imageView.layer.masksToBounds = true
-            // Set image to view 
-            imageView.image = image
-            // Add to collection
-            cell.contentView.addSubview(imageView)
-            //cell.backgroundColor = UIColor.red
             
             if indexPath.row != self.profileImages.count - 1 {
+                
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+                let image = self.profileImages[indexPath.row]
+                imageView.layer.masksToBounds = true
+                // Set image to view
+                imageView.image = image
+                // Add to collection
+                cell.contentView.addSubview(imageView)
+                //cell.backgroundColor = UIColor.red
+                
                 // Delete
                 let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
                 let deleteImage = UIImage(named: "icn-minus-red")
@@ -823,6 +823,15 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
                 print("Last image index")
                 // Badge icon
                 //image = self.userBadges[indexPath.row]
+                let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
+                let image = self.profileImages[indexPath.row]
+                imageView.layer.masksToBounds = true
+                // Set image to view
+                imageView.image = image
+                // Add to collection
+                cell.contentView.addSubview(imageView)
+
+                
             }
             
             
@@ -832,14 +841,14 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
             
             //configureViews(cell: cell)
             
-            // Configure badge image
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-            var image = UIImage()
-            image = self.socialBadges[indexPath.row]
-            // Set image
-            imageView.image = image
-            
             if indexPath.row != self.socialBadges.count - 1 {
+                // Configure badge image
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+                var image = UIImage()
+                image = self.socialBadges[indexPath.row]
+                // Set image
+                imageView.image = image
+                
                 // Delete
                 let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
                 let deleteImage = UIImage(named: "icn-minus-red")
@@ -851,14 +860,18 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
             }else{
                 
                 print("Last image index")
-                // Badge icon
-                //image = self.userBadges[indexPath.row]
+                
+                // Configure badge image
+                let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
+                var image = UIImage()
+                image = self.socialBadges[indexPath.row]
+                // Set image
+                imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
             }
             
-            //cell.contentView.addSubview(deleteImageView)
-            
-            // Add subview
-            cell.contentView.addSubview(imageView)
         }
         
         configureViews(cell: cell)
