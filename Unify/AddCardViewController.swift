@@ -458,6 +458,10 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.cardHeaderView.layer.borderWidth = 1
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
+        // Config shadow
+        cell.shadowView.shadowRadius = 2
+        cell.shadowView.shadowMask = YIInnerShadowMaskTop
+        
         // Assign media buttons
         /*cell.mediaButton1.image = UIImage(named: "social-blank")
         cell.mediaButton2.image = UIImage(named: "social-blank")

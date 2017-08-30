@@ -159,8 +159,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.cardOptionsTableView.tableFooterView = self.profileImageCollectionView
         
         // Set shadow 
-        //self.shadowView.shadowRadius = 3
-        //self.shadowView.shadowMask = YIInnerShadowMaskTop
+        self.shadowView.shadowRadius = 3
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Do any additional setup after loading the view.
         

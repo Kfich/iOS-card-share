@@ -45,6 +45,7 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
     
     @IBOutlet weak var cardEmail: UILabel!
     
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     @IBOutlet var mediaButton1: UIBarButtonItem!
     @IBOutlet var mediaButton2: UIBarButtonItem!

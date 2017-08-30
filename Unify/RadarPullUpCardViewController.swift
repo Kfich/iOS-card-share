@@ -880,6 +880,14 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.clipsToBounds = true
         cell.cardHeaderView.layer.borderWidth = 1.5
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
+        
+        // Config shadow
+        cell.shadowView.shadowRadius = 2
+        cell.shadowView.shadowMask = YIInnerShadowMaskTop
+        
+        // Set shadow
+        //self.shadowView.shadowRadius = 2
+        //self.shadowView.shadowMask = YIInnerShadowMaskTop
         /*
         let shawdow = YIInnerShadowView()
         shawdow.frame = CGRect(x: 0, y: 0, width: cell.cardHeaderView.frame.width, height: cell.cardHeaderView.frame.height)

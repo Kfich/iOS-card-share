@@ -39,8 +39,6 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     var sections = [String]()
     var tableData = [String: [String]]()
-
-    @IBOutlet var shadowView: YIInnerShadowView!
     
 
     
@@ -79,6 +77,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     @IBOutlet var socialCollectionView: UICollectionView!
     
     @IBOutlet var editCardButton: UIButton!
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     
     
@@ -156,6 +155,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Set shadow
         //self.shadowView.shadowRadius = 3.0
         //self.shadowView.shadowMask = YIInnerShadowMaskTop
+        
+        // Set shadow
+        self.shadowView.shadowRadius = 2
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Register
         //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"Cell")
