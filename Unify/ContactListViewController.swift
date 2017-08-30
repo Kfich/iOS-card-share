@@ -75,6 +75,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Set delegate for empty state
         tblSearchResults.emptyDataSetSource = self
         tblSearchResults.emptyDataSetDelegate = self
+        
+        tblSearchResults.sectionIndexBackgroundColor = UIColor.clear
+        tblSearchResults.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
         // View to remove separators
         tblSearchResults.tableFooterView = UIView()
         

@@ -141,6 +141,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         firstNameLabel.disableFloatingLabel = true
         lastNameLabel.disableFloatingLabel = true
         
+        // Config index style
+        self.tableView.sectionIndexBackgroundColor = UIColor.clear
+        self.tableView.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
 
     }
@@ -409,7 +412,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Init blue color
         let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.tableView.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: self.tableView.frame.size.width, height: 35.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
         
         customSearchController.customSearchBar.placeholder = "Search"
         customSearchController.customSearchBar.tintColor = blue

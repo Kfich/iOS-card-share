@@ -255,6 +255,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         var cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
         
+        
             // Init transaction
         if shouldShowSearchResults {
             
@@ -333,6 +334,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         }
         
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
 
         return cell
     }

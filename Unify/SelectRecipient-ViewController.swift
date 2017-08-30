@@ -22,6 +22,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     // IBOutlets
     // --------------------------------------
     @IBOutlet weak var contactListTableView: UITableView!
+    @IBOutlet var seachBarWrapperView: UIView!
     
     
     // Properties
@@ -67,6 +68,10 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         contactListTableView.delegate = self
         contactListTableView.dataSource = self
+        
+        // Config index style
+        contactListTableView.sectionIndexBackgroundColor = UIColor.clear
+        contactListTableView.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         //loadListOfCountries()
         
@@ -586,11 +591,13 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         // Init blue color
         let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
-        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: contactListTableView.frame.size.width, height: 50.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0.0, y: 0.0, width: contactListTableView.frame.size.width, height: 35.0), searchBarFont: UIFont(name: "Avenir", size: 16.0)!, searchBarTextColor: blue, searchBarTintColor: UIColor.white)
         
         customSearchController.customSearchBar.placeholder = "Search"
         customSearchController.customSearchBar.tintColor = blue
-        contactListTableView.tableHeaderView = customSearchController.customSearchBar
+        //contactListTableView.tableHeaderView = customSearchController.customSearchBar
+        // Add bar to view
+        self.seachBarWrapperView.addSubview(customSearchController.customSearchBar)
         
         customSearchController.customDelegate = self
     }
