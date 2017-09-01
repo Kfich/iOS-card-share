@@ -29,7 +29,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     // --------------------------------------
     var dataArray = [String]()
     
-    
+    var formatter = CNContactFormatter()
     var filteredArray = [String]()
     
     var shouldShowSearchResults = false
@@ -43,8 +43,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     var timer = Timer()
     
     // Sorted contact list
-    var letters: [Character] = []
-    var contacts = [Character: [String]]()
+    var letters: [String] = []
+    var contacts = [String: [String]]()
     
     var contactObjectTable = [[String: Any]]()
     var contactNamesHashTable = [String: CNContact]()
@@ -55,7 +55,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     
     var selectedContact = CNContact()
     var contactObjectList = [Contact]()
-    
+    var contactsHashTable = [String: [CNContact]]()
     var phoneContacts = [CNContact]()
     
     
@@ -70,8 +70,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         contactListTableView.dataSource = self
         
         // Config index style
-        contactListTableView.sectionIndexBackgroundColor = UIColor.clear
-        contactListTableView.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        contactListTableView.sectionIndexBackgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)//UIColor.clear
+        contactListTableView.sectionIndexColor = UIColor.white//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         //loadListOfCountries()
         
@@ -126,7 +126,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
+        return letters
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -138,18 +138,36 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
         
         if shouldShowSearchResults {
+            // Set text
             cell.contactNameLabel?.text = filteredArray[indexPath.row]
+            // Set image
+            cell.contactImageView.image = UIImage(named: "profile")
         }
         else {
             // Assign contact object
             
             //let contact
             cell.contactNameLabel?.text = contacts[letters[indexPath.section]]?[indexPath.row]//dataArray[indexPath.row]
+            /*let contact = ContactManager.sharedManager.contactsHashTable[letters[indexPath.section]]?[indexPath.row]
+            
+            if (contact?.imageDataAvailable)! {
+                
+                if let imageData = contact?.imageData{
+                    print(imageData)
+                    
+                    // Set image for cell
+                    cell.contactImageView.image = UIImage(data: imageData)
+                    
+                }
+            }else{
+                // Set image
+                cell.contactImageView.image = UIImage(named: "profile")
+            }*/
+
             
         }
         
-        // Set cell image
-        cell.contactImageView.image = UIImage(named: "profile")
+       cell.contactImageView.image = UIImage(named: "profile")
         
         // Configure imageviews
         self.configureSelectedImageView(imageView: cell.contactImageView)
@@ -308,9 +326,9 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 23    // Create container for image and name
+        imageView.layer.cornerRadius = 15    // Create container for image and name
         
     }
     
@@ -714,19 +732,22 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         
         
-        letters = dataArray.map { (name) -> Character in
-            print(name[name.startIndex])
-            return name[name.startIndex]
+        letters = dataArray.map { (name) -> String in
+            //print("UPPER CASE HERE")
+            let nameToUpper = name.uppercased()
+            //print(nameToUpper[nameToUpper.startIndex])
+            return String(nameToUpper[nameToUpper.startIndex])
         }
         
         letters = letters.sorted()
         // Print letters array
         //print("\n\nLETTERS >>>> \(letters)")
         
-        letters = letters.reduce([], { (list, name) -> [Character] in
+        // Reduce letters to single count for each
+        letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
-                print("\n\nAdded >>>> \(list + [name])")
+                //print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
@@ -740,19 +761,61 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         
         
-        
         // Iterate over contact list
-        for entry in dataArray {
+        for name in dataArray {
             
-            if contacts[entry[entry.startIndex]] == nil {
+            if contacts[String(name[name.startIndex])] == nil {
                 // Set index if doesn't exist
-                contacts[entry[entry.startIndex]] = [String]()
+                contacts[String(name[name.startIndex])] = [String]()
             }
             
             // Add entry to section
-            contacts[entry[entry.startIndex]]!.append(entry)
+            contacts[String(name[name.startIndex])]!.append(name)
             
         }
+        
+        // Apple contacts
+        for contact in self.phoneContacts{
+            // Init contact name
+            var contactName : String = self.formatter.string(from: contact) ?? "No Name"
+            // Uppercase the name
+            contactName = contactName.uppercased()
+            print("Contact Name: \(contactName)")
+            
+            // Check if section exists
+            if contactsHashTable[String(describing: contactName.characters.first!)] == nil{
+                //print("Hash Section Empty!")
+                // If empty, initialize list
+                contactsHashTable[String(describing: contactName.characters.first!)] = []
+            }
+            // Add contact to list
+            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+            let startIndex = String(describing: contactName.characters.first!)
+            print("Start Index: >> \(startIndex)")
+            
+            contactsHashTable[startIndex]!.append(contact)
+            print("Section count + added >> \(contactName)")
+            print(contactsHashTable[startIndex]!.count)
+            //print("Section count for added item")
+            //print(contactsHashTable[startIndex]?.count)
+        }
+        
+        // Sort list
+        for (section, list) in contactsHashTable {
+            
+            // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
+            
+            let array = list.sorted(by: { (object1, object2) -> Bool in
+                object1.givenName < object2.givenName
+            })
+            
+            // Set sorted array
+            contactsHashTable[section] = array
+            
+            print("The count for each section")
+            
+        }
+        
         
         // Sort list
         for (letter, list) in contacts {
@@ -760,6 +823,18 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             // Test output
             print(contacts[letter])
         }
+        
+        //print("The Table Count >> ", contactObjectTable.count)
+        
+        DispatchQueue.main.async {
+            
+            // Reload data
+            self.contactListTableView.reloadData()
+        }
+
+        
+        
+        
     }
     
     func addGestureToImage(image: UIImageView, index: IndexPath) {

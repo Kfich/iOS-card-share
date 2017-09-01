@@ -77,6 +77,70 @@ class EditProfileContainerViewController: FormViewController {
             
             //title = "Multivalued Examples"
             form +++
+                
+
+                    
+                    MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                                       header: "Titles",
+                                       footer: "") {
+                                        $0.tag = "Title Section"
+                                        $0.addButtonProvider = { section in
+                                            return ButtonRow(){
+                                                $0.title = "Add Title"
+                                                //$0.tag = "Add Titles"
+                                                }.cellUpdate { cell, row in
+                                                    cell.textLabel?.textAlignment = .left
+                                            }
+                                        }
+                                        
+                                        $0.multivaluedRowToInsertAt = { index in
+                                            return NameRow("titlesRow_\(index)") {
+                                                $0.placeholder = "Title"
+                                            }
+                                        }
+                                        // Iterate through array and set val
+                                        for val in titles{
+                                            $0 <<< NameRow() {
+                                                $0.placeholder = "Title"
+                                                $0.value = val
+                                            }
+                                        }
+            }
+            
+            +++
+                    MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                                       header: "Company",
+                                       footer: "") {
+                                        $0.tag = "Organization Section"
+                                        $0.addButtonProvider = { section in
+                                            return ButtonRow(){
+                                                $0.title = "Add Organizations"
+                                                //$0.tag = "Add Organizations"
+                                                }.cellUpdate { cell, row in
+                                                    cell.textLabel?.textAlignment = .left
+                                            }
+                                        }
+                                        $0.multivaluedRowToInsertAt = { index in
+                                            return NameRow("organizationRow_\(index)") {
+                                                $0.placeholder = "Name"
+                                                //$0.tag = "Add Organizations"
+                                            }
+                                        }
+                                        
+                                        // Iterate through array and set val
+                                        for val in organizations{
+                                            $0 <<< NameRow() {
+                                                $0.placeholder = "Name"
+                                                $0.value = val
+                                                //$0.tag = "Add Organizations"
+                                                
+                                            }
+                                        }
+                                        
+            }
+            
+            +++
+                
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "Bio Information", footer: "") {
                     $0.tag = "Bio Section"
                     $0.addButtonProvider = { section in
@@ -119,35 +183,6 @@ class EditProfileContainerViewController: FormViewController {
                                      pictureUrl: URL(string: "http://lh4.ggpht.com/VpeucXbRtK2pmVY6At76vU45Q7YWXB6kz25Sm_JKW1tgfmJDP3gSAlDwowjGEORSM-EW=w300"))
                 }*/
                 
-                
-                +++
-                
-                MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                                   header: "Titles",
-                                   footer: "") {
-                                    $0.tag = "Title Section"
-                                    $0.addButtonProvider = { section in
-                                        return ButtonRow(){
-                                            $0.title = "Add Title"
-                                            //$0.tag = "Add Titles"
-                                            }.cellUpdate { cell, row in
-                                                cell.textLabel?.textAlignment = .left
-                                        }
-                                    }
-                                    
-                                    $0.multivaluedRowToInsertAt = { index in
-                                        return NameRow("titlesRow_\(index)") {
-                                            $0.placeholder = "Title"
-                                        }
-                                    }
-                                    // Iterate through array and set val
-                                    for val in titles{
-                                        $0 <<< NameRow() {
-                                            $0.placeholder = "Title"
-                                            $0.value = val
-                                        }
-                                    }
-                }
                 +++
                 
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -208,7 +243,7 @@ class EditProfileContainerViewController: FormViewController {
                                         }
                                     }
                 }
-                
+               /*
                 +++
                 
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -237,7 +272,7 @@ class EditProfileContainerViewController: FormViewController {
                                             //$0.tag = "Add Work Info"
                                         }
                                     }
-                }
+                }*/
                 +++
                 
                 MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -331,38 +366,7 @@ class EditProfileContainerViewController: FormViewController {
                                     }
                 }
 
-                +++
-                
-                MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                                   header: "Organizations",
-                                   footer: "") {
-                                    $0.tag = "Organization Section"
-                                    $0.addButtonProvider = { section in
-                                        return ButtonRow(){
-                                            $0.title = "Add Organizations"
-                                            //$0.tag = "Add Organizations"
-                                            }.cellUpdate { cell, row in
-                                                cell.textLabel?.textAlignment = .left
-                                        }
-                                    }
-                                    $0.multivaluedRowToInsertAt = { index in
-                                        return NameRow("organizationRow_\(index)") {
-                                            $0.placeholder = "Name"
-                                            //$0.tag = "Add Organizations"
-                                        }
-                                    }
-                                    
-                                    // Iterate through array and set val
-                                    for val in organizations{
-                                        $0 <<< NameRow() {
-                                            $0.placeholder = "Name"
-                                            $0.value = val
-                                            //$0.tag = "Add Organizations"
-                                            
-                                        }
-                        }
-                                    
-            }
+ 
         }
         
         
@@ -472,7 +476,7 @@ class EditProfileContainerViewController: FormViewController {
                     }
                 }
             }
-            
+            /*
             // Work Info Section
             let workValues = form.sectionBy(tag: "Work Section")
             for val in workValues! {
@@ -483,7 +487,7 @@ class EditProfileContainerViewController: FormViewController {
                         workInformation.append(str)
                     }
                 }
-            }
+            }*/
             
             // Website Section
             let websiteValues = form.sectionBy(tag: "Website Section")

@@ -89,6 +89,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             //in case we need callback
         }
         
+    
+        UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+        
         
         
     }
@@ -431,7 +434,7 @@ func format(phoneNumber sourcePhoneNumber: String) -> String? {
     let hasLeadingOne = numbersOnly.hasPrefix("1")
     
     // Check for supported phone number length
-    guard length == 7 || length == 10 || (length == 11 && hasLeadingOne) else {
+    guard /*length == 7 ||*/ length == 10 || (length == 11 && hasLeadingOne) else {
         return nil
     }
     

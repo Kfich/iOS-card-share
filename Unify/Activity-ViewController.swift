@@ -41,6 +41,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     var selectedUserPhones = [String]()
     var searchTransactionList = [Transaction]()
     
+    var senderPhone = ""
+    var senderEmail = ""
+    
     
     @IBOutlet var navigationBar: UINavigationItem!
     // IBOutlets
@@ -177,8 +180,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Hit for userList
             self.fetchUsersForTransaction()
             
+        }else if self.selectedTransaction.type == "introduction" && self.selectedTransaction.senderId == self.currentUser.userId{
+            // Get values from transaction
+            self.selectedUserEmails = self.selectedTransaction.recipientEmails ?? [String]()
+            self.selectedUserPhones = self.selectedTransaction.recipientPhones ?? [String]()
+            
+            print("Selected Tranny >> \(self.selectedTransaction.recipientPhones), \(self.selectedTransaction.recipientEmails)")
+            
+            // Show alert
+            self.showActionAlert(phones: selectedUserPhones, emails: selectedUserEmails)
+            
         }else{
-            // Hit for contact list
+            // Get contact list
             self.fetchContactsForTransaction()
         }
         
@@ -541,13 +554,25 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // Get call ready
             // Set phone val
+            var phone: String = ""
             
+            //print(self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"])
             
-            print(self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"])
+            if self.selectedTransaction.senderId == self.currentUser.userId{
+                 phone = (self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"]!)!
+            }else if self.selectedTransaction.type == ""{
+                phone = self.senderPhone
+            }
             
-            let phone: String = (self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"]!)!
-            print(phone)
+            let result = String(phone.characters.filter { "01234567890.".characters.contains($0) })
             
+            print(result)
+            
+            if let url = NSURL(string: "tel://\(result)"), UIApplication.shared.canOpenURL(url as URL) {
+                UIApplication.shared.openURL(url as URL)
+            }
+            
+            /*
             // configure call
             if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 10, *) {
@@ -555,7 +580,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 } else {
                     UIApplication.shared.openURL(url)
                 }
-            }
+            }*/
 
         }
     
@@ -589,6 +614,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Purple")
             self.tableView.reloadData()
         }
+        
+        // Refresh
+        self.tableView.reloadData()
     }
 
     
@@ -993,6 +1021,60 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.introductions = self.introductions.reversed()
     }
     
+    func fetchTransactionCard() {
+        // Fetch cards from server
+        let parameters = ["uuid" : selectedTransaction.senderCardId]
+        
+        print("\n\nTHE CARD TO ANY - PARAMS")
+        print(parameters)
+        
+        
+        // Connect to server
+        Connection(configuration: nil).getSingleCardCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSDictionary = response as! NSDictionary
+                print("\n\nCard List")
+                print(dictionary)
+                
+                // Init card
+                let card = ContactCard(snapshot: dictionary)
+                
+                // Parse for phone
+                if card.cardProfile.phoneNumbers.count > 0{
+                    // Set selected phone
+                    self.senderPhone = card.cardProfile.phoneNumbers[0]["phone"]!
+                }
+                // Parse for email
+                if card.cardProfile.emails.count > 0{
+                    // Set selected phone
+                    self.senderEmail = card.cardProfile.emails[0]["email"]!
+                }
+                
+                // Set lists
+                self.selectedUserEmails = [self.senderEmail]
+                self.selectedUserPhones = [self.senderPhone]
+                
+                // Show alert
+                self.showActionAlert(phones: self.selectedUserPhones, emails: self.selectedUserEmails)
+
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
+    
+    
+    
+    
     func fetchContactsForTransaction() {
         // Fetch the user data associated with users
         
@@ -1109,21 +1191,30 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     
     func parseAndSend() {
-        // Get PhoneNumbers
-        self.selectedUserPhones = self.retrievePhoneForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
-        self.selectedUserEmails = self.retrieveEmailForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
         
-        if selectedUserEmails.count > 0 && selectedUserPhones.count > 0{
-            // Show option message
-            showActionAlert(phones: selectedUserPhones, emails: selectedUserEmails)
-        }else if selectedUserEmails.count > 0 && selectedUserPhones.count == 0{
-            // Show email client
-            self.showEmailCard()
-        }else if selectedUserPhones.count > 0{
-            // Show the message client
-            self.showSMSCard(recipientList: selectedUserPhones)
+        if self.selectedTransaction.senderId == self.currentUser.userId {
+            // User is sender
+            // Get PhoneNumbers
+            self.selectedUserPhones = self.retrievePhoneForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
+            self.selectedUserEmails = self.retrieveEmailForUsers(contactsArray: self.selectedUsers, contacts: self.selectedContacts)
+            
+            if selectedUserEmails.count > 0 && selectedUserPhones.count > 0{
+                // Show option message
+                showActionAlert(phones: selectedUserPhones, emails: selectedUserEmails)
+            }else if selectedUserEmails.count > 0 && selectedUserPhones.count == 0{
+                // Show email client
+                self.showEmailCard()
+            }else if selectedUserPhones.count > 0{
+                // Show the message client
+                self.showSMSCard(recipientList: selectedUserPhones)
+            }
+
+        }else{
+            // Fetch card from network
+            self.fetchTransactionCard()
+            
         }
-    
+        
     }
     
     
@@ -1711,8 +1802,22 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Configure message
         let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
+        var mail = [String]()
+        
+        if (self.selectedTransaction.senderId == self.currentUser.userId) && self.selectedTransaction.type == "connection"{
+            // Radar recipient
+            mail = [(self.selectedTransaction.recipientCard?.cardProfile.emails[0]["email"]!)!]
+        }else if self.selectedTransaction.type == "introduction"{
+            // Intro with multiple users
+            mail = selectedUserEmails
+        }else{
+            //
+            mail = [self.senderEmail]
+        }
+
+        
         // Create Message
-        mailComposerVC.setToRecipients([(self.selectedTransaction.recipientCard?.cardProfile.emails[0]["email"])!])
+        mailComposerVC.setToRecipients(mail)
         mailComposerVC.setSubject("Unify Follow-Up")
         mailComposerVC.setMessageBody(str, isHTML: false)
         

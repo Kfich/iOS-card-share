@@ -221,7 +221,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.addObservers()
         
         // Get profile info
-        //self.fetchCurrentUser()
+        self.fetchCurrentUser()
         
         // Fetch cards
         //self.fetchUserCards()
@@ -650,6 +650,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                     print("Count for corp ", ContactManager.sharedManager.currentUser.userProfile.badgeList.count)
                 }
                 
+                // Set global badge list
+                ContactManager.sharedManager.badgeList =  ContactManager.sharedManager.currentUser.userProfile.badgeList
+                
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
@@ -818,15 +821,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let urls = ImageURLS()
         
         // Create URL For Prod
-        //let prodURL = urls.getFromStagingURL
+        let prodURL = urls.getFromStagingURL
         
         // Create URL For Test
-        let testURL = urls.getFromDevelopmentURL
+        //let testURL = urls.getFromDevelopmentURL
         let id = user.publicProfile?.imageId
         
         if user.userIsIncognito == true {
             // Show incognito data
-            let url = URL(string: "\(testURL)\(id ?? "").jpg")!
+            let url = URL(string: "\(prodURL)\(id ?? "").jpg")!
             let placeholderImage = UIImage(named: "user")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)
@@ -838,7 +841,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Grab image ref using alamo
                 
                 // ** Currently Set to Test URL
-                let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+                let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
                 let placeholderImage = UIImage(named: "user")!
                 // Set image
                 imageView.setImageWith(url, placeholderImage: placeholderImage)
@@ -1436,8 +1439,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             //user.printUser()
                             // Add to list of users on radar
                             self.radarUsers.append(user)
-                            self.radarUsers.append(user)
-                            self.radarUsers.append(user)
+                            /*self.radarUsers.append(user)
+                            self.radarUsers.append(user)*/
                             
                             // Create selected index
                             let selectedIndex = Check(arrayIndex: self.counter, selected: false)
@@ -1483,13 +1486,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             
                             
-                            // Update counter
+                           /* // Update counter
                             self.counter = self.counter + 1
                             
                             self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
                         
                             
-                            self.counter = self.counter + 1
+                            self.counter = self.counter + 1*/
                             
                             self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
                             

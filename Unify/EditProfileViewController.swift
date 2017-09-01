@@ -90,16 +90,18 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
             
             // Change button text
             //self.selectProfileImageButton.titleLabel?.text = "Change"
-            
-            // Set image to view
-            self.profileImageView.image = image
+        
+            // Set selected
             self.selectedImage = image!
             
-            self.profileImages.insert(self.selectedImage, at: 0)
-            self.profileImageCollectionView.reloadData()
+            // Show cropper view
             
-            // Set image to profile
-            self.setImageData()
+            //self.profileImageContainerView.layer.borderColor = UIColor.clear as! CGColor
+            
+            self.dismiss(animated: true, completion: {
+                self.showCropper(withImage: self.selectedImage)
+            })
+
             
             // Previous location for image assignment to user object
             
@@ -324,14 +326,23 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
         
         // Set image to view
+        self.profileImageView.image = croppedImage
+        
+        // Set selected
         self.selectedImage = croppedImage
         
-        // Test
-        print("Cropped Image >> \n\(croppedImage)")
+        // Insert photo into list
+        self.profileImages.insert(croppedImage, at: 0)
         
-        //self.profileImageContainerView.addSubview(self.configureSelectedImageView(selectedImage: croppedImage))
+        // Reload data
+        self.profileImageCollectionView.reloadData()
+        
+        // Set image to profile
+        self.setImageData()
+        
         // Dismiss vc
         dismiss(animated: true, completion: nil)
+        
         
     }
     
@@ -556,10 +567,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let urls = ImageURLS()
         
         // Create URL For Prod
-        //let prodURL = urls.uploadToStagingURL
+        let prodURL = urls.uploadToStagingURL
         
         // Create URL For Test
-        let testURL = urls.uploadToDevelopmentURL
+        //let testURL = urls.uploadToDevelopmentURL
         
         
         // Show progress HUD
@@ -575,7 +586,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
              }*/
             
             // Currently Set to point to Prod Server
-        }, to:testURL)
+        }, to:prodURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):
@@ -799,15 +810,13 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
            // Init cell
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath)
             
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            let image = self.profileImages[indexPath.row]
+            imageView.layer.masksToBounds = true
+            // Set image to view
+            imageView.image = image
+            
             if indexPath.row != self.profileImages.count - 1 {
-                
-                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-                let image = self.profileImages[indexPath.row]
-                imageView.layer.masksToBounds = true
-                // Set image to view
-                imageView.image = image
-                // Add to collection
-                cell.contentView.addSubview(imageView)
                 //cell.backgroundColor = UIColor.red
                 
                 // Delete
@@ -817,6 +826,9 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
                 
                 // Add to imageview
                 imageView.addSubview(deleteIconView)
+                
+                // Add to collection
+                cell.contentView.addSubview(imageView)
                 
             }else{
                 
@@ -840,14 +852,14 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             
             //configureViews(cell: cell)
+            // Configure badge image
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+            var image = UIImage()
+            image = self.socialBadges[indexPath.row]
+            // Set image
+            imageView.image = image
             
             if indexPath.row != self.socialBadges.count - 1 {
-                // Configure badge image
-                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-                var image = UIImage()
-                image = self.socialBadges[indexPath.row]
-                // Set image
-                imageView.image = image
                 
                 // Delete
                 let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
@@ -856,6 +868,9 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
                 
                 // Add to imageview
                 imageView.addSubview(deleteIconView)
+                
+                // Add to cell
+                cell.contentView.addSubview(imageView)
                 
             }else{
                 

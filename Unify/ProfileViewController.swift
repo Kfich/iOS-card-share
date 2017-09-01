@@ -312,7 +312,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            let fileUrl = NSURL(string:ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl /*ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -679,6 +679,29 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Parse bio info
         //currentUser = ContactManager.sharedManager.currentUser
         
+        // Parse work info
+        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+            // Add section
+            sections.append("Titles")
+            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
+                titles.append((info["title"])!)
+                print(info["title"])
+            }
+            // Create section data
+            self.tableData["Titles"] = titles
+        }
+
+        // Parse organizations
+        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            // Add section
+            sections.append("Company")
+            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
+                organizations.append(org["organization"]!)
+            }
+            // Create section data
+            self.tableData["Company"] = organizations
+        }
+        
         if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
             // Add section
             sections.append("Bios")
@@ -690,30 +713,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             
             // Create section data 
             self.tableData["Bios"] = bios
-        }
-        
-        // Parse work info
-        
-        if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
-            // Add section
-            sections.append("Work")
-            // Iterate and parse
-            for info in ContactManager.sharedManager.currentUser.userProfile.workInformationList{
-                workInformation.append((info["work"])!)
-            }
-            // Create section data
-            self.tableData["Work"] = workInformation
-        }
-        // Parse work info
-        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
-            // Add section
-            sections.append("Titles")
-            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
-                titles.append((info["title"])!)
-                print(info["title"])
-            }
-            // Create section data
-            self.tableData["Titles"] = titles
         }
         
          if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
@@ -737,6 +736,18 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             // Create section data
             self.tableData["Emails"] = emails
         }
+        // Parse work info
+        
+        if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
+            // Add section
+            sections.append("Work")
+            // Iterate and parse
+            for info in ContactManager.sharedManager.currentUser.userProfile.workInformationList{
+                workInformation.append((info["work"])!)
+            }
+            // Create section data
+            self.tableData["Work"] = workInformation
+        }
         
         // Parse websites
         if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
@@ -748,16 +759,6 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             // Create section data
             self.tableData["Websites"] = websites
          
-        }
-         // Parse organizations
-        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
-            // Add section
-            sections.append("Organizations")
-            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
-                organizations.append(org["organization"]!)
-            }
-            // Create section data
-            self.tableData["Organizations"] = organizations
         }
          // Parse Tags
         if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{

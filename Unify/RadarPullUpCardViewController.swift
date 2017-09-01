@@ -238,7 +238,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Clear card arrays 
         ContactManager.sharedManager.currentUserCards.removeAll()
+        ContactManager.sharedManager.viewableUserCards.removeAll()
         ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        
         
         // Get cards again 
         self.parseForCards()
@@ -277,8 +279,18 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 //print(profile)
                 print("PROFILE PRINTING")
                 ContactManager.sharedManager.currentUserCards.append(contactCard)
-                contactCard.printCard()
+                //contactCard.printCard()
+                
+                let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: contactCard)
+                ContactManager.sharedManager.cardBagdeLists["\(contactCard.cardId!)"] = list
+                
             }
+            
+            // Add dummy card to array for 'Add Card' Cell
+            let addCardView = ContactCard()
+            
+            // Append to current user
+            ContactManager.sharedManager.currentUserCards.append(addCardView)
             
             // Sync up with main queue
             DispatchQueue.main.async {
@@ -288,8 +300,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             }
             
             // Set Selected card
-            if ContactManager.sharedManager.currentUserCards.count > 0 {
-                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
+            if ContactManager.sharedManager.viewableUserCards.count > 0 {
+                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[0]
             }
             
             print("User has cards!")
@@ -297,6 +309,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }else{
             print("User has no cards")
         }
+        
+        // Fetch cards for missing values
+        self.fetchUserCards()
         
     }
     

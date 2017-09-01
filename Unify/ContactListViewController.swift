@@ -76,8 +76,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         tblSearchResults.emptyDataSetSource = self
         tblSearchResults.emptyDataSetDelegate = self
         
-        tblSearchResults.sectionIndexBackgroundColor = UIColor.clear
-        tblSearchResults.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        tblSearchResults.sectionIndexBackgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)//UIColor.clear
+        tblSearchResults.sectionIndexColor = UIColor.white//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         // View to remove separators
         tblSearchResults.tableFooterView = UIView()
@@ -889,12 +889,37 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Sort list
         for (section, list) in contactObjectTable {
-           // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
+            
+            // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
+            
+            let array = list.sorted(by: { (object1, object2) -> Bool in
+                object1.name < object2.name
+            })
+            
+            // Set sorted array
+            contactObjectTable[section] = array
+            
             // Test output
             print("THE unify contacts hash table section list count")
             print(contacts[section]?.count)
             print(list)
         }
+        
+        // Sort list
+        for (section, list) in contactsHashTable {
+            
+            // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
+            
+            let array = list.sorted(by: { (object1, object2) -> Bool in
+                object1.givenName < object2.givenName
+            })
+            
+            // Set sorted array
+            contactsHashTable[section] = array
+            
+        }
+
+        
         
         // Assign table data 
         //self.tableData = contactsHashTable
@@ -910,6 +935,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Reload data
             self.tblSearchResults.reloadData()
         }
+        
+        // Set hash to contact manager
+        ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
 
     }
     
@@ -1254,7 +1282,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         print("The Button Was tapped")
         
         // Sync contact list
-        ContactManager.sharedManager.getContacts()
+        self.getContacts()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

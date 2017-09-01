@@ -94,9 +94,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     
     @IBOutlet var phoneTextField: ACFloatingTextfield!
     
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     @IBOutlet var badgeIcon: UIImageView!
     
+    @IBOutlet var cardNameLabel: UILabel!
     
     
     // Page configuration
@@ -135,6 +137,10 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         tagsTextField.disableFloatingLabel = true
         phoneTextField.disableFloatingLabel = true
         locationTextField.disableFloatingLabel = true
+        
+        // Set shadow
+        self.shadowView.shadowRadius = 2
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
         
 
     }
@@ -395,6 +401,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         // Populate image view
         if selectedCard.cardProfile.images.count > 0{
             profileImageView.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
+        }
+        
+        // Populate label fields
+        if let name = selectedCard.cardName{
+            cardNameLabel.text = name
         }
         // Populate label fields
         if let name = selectedCard.cardHolderName{

@@ -28,6 +28,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     var corpBadges : [CardProfile.Bagde] = []
 
     // Profile pics
@@ -44,6 +45,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var selectedSocialLinks = [String]()
     var selectedNotes = [String]()
     var selectedTags = [String]()
+    var selectedAddress = [String]()
     var selectedCorpBadges: [CardProfile.Bagde] = []
     var selectedCorpLinks = [String]()
     
@@ -579,7 +581,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let fileUrl = NSURL(string: self.card.cardProfile.badgeList[indexPath.row].pictureUrl)
+             let fileUrl = NSURL(string:ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl /*ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
+
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -925,6 +928,20 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.accessoryType = .checkmark
             }
             return cell
+            
+        case "Addresses":
+            //cell.titleLabel.text = "Organization \(indexPath.row)"
+            cell.descriptionLabel.text = addresses[indexPath.row]
+            
+            // Check if in list
+            if selectedAddress.contains(addresses[indexPath.row]) {
+                // Set to selected cells list
+                selectedCells.append(indexPath as NSIndexPath)
+                // Set cell accessory type
+                cell.accessoryType = .checkmark
+            }
+            return cell
+
         default:
             return cell
         }
@@ -1095,6 +1112,18 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 // Print for test
                 print(card.cardProfile.notes as Any)
             }
+        case "Addresses":
+            if self.selectedAddress.contains(addresses[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedAddress.remove(at: indexPath.row)
+                self.addresses.remove(at: indexPath.row)
+            }else{
+                // Append to array
+                card.cardProfile.addresses.append(["address" : addresses[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.addresses as Any)
+            }
 
         default:
             print("Nothing doing here..")
@@ -1260,6 +1289,12 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
 
+        if card.cardProfile.addresses.count > 0{
+            for add in card.cardProfile.addresses{
+                selectedAddress.append(add["address"]!)
+            }
+        }
+
     }
     
     
@@ -1275,8 +1310,31 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.websites = [String]()
         self.workInformation = [String]()
         self.corpBadges.removeAll()
+        self.addresses.removeAll()
         self.sections.removeAll()
         self.tableData.removeAll()
+        
+        // Parse work info
+        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+            // Add section
+            sections.append("Titles")
+            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
+                titles.append((info["title"])!)
+            }
+            // Create section data
+            self.tableData["Titles"] = titles
+        }
+        
+        // Parse organizations
+        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            // Add section
+            sections.append("Company")
+            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
+                organizations.append(org["organization"]!)
+            }
+            // Create section data
+            self.tableData["Company"] = organizations
+        }
         
         // Parse bio info
         if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
@@ -1300,17 +1358,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             // Create section data
             self.tableData["Work"] = workInformation
-        }
-        
-        // Parse work info
-        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
-            // Add section
-            sections.append("Titles")
-            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
-                titles.append((info["title"])!)
-            }
-            // Create section data
-            self.tableData["Titles"] = titles
         }
         
         if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
@@ -1345,16 +1392,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             // Create section data
             self.tableData["Websites"] = websites
         }
-        // Parse organizations
-        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
-            // Add section
-            sections.append("Organizations")
-            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
-                organizations.append(org["organization"]!)
-            }
-            // Create section data
-            self.tableData["Organizations"] = organizations
-        }
         // Parse Tags
         if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
             // Add section
@@ -1380,6 +1417,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             // Create section data
             self.tableData["Notes"] = notes
         }
+
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
             
@@ -1398,8 +1436,20 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Executing parse call from edit card")
             }
         }
-
         
+        // Parse notes
+        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
+            // Add section
+            sections.append("Addresses")
+            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
+                
+                addresses.append(add["address"]!)
+                
+            }
+            // Create section data
+            self.tableData["Addresses"] = addresses
+        }
+
         // Parse for social badges 
         self.parseForSocialIcons()
         

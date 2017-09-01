@@ -182,7 +182,7 @@
     _zoomView = nil;
     
     // reset our zoomScale to 1.0 before doing any further calculations
-    self.zoomScale = 0.5;
+    self.zoomScale = 1.0;
     
     // make views to display the new image
     _zoomView = [[UIImageView alloc] initWithImage:image];
@@ -229,7 +229,7 @@
         minScale = maxScale;
     }
         
-    self.maximumZoomScale = maxScale;
+    self.maximumZoomScale = maxScale + 400;
     self.minimumZoomScale = minScale;
 }
 

@@ -97,8 +97,8 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             // Grab image ref using alamo
             
             // ** Currently Set to Test URL
-            let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
-            //let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
+            //let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
+            let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
             let placeholderImage = UIImage(named: "contact")!
             // Set image
             cell.contactImageView.setImageWith(url, placeholderImage: placeholderImage)

@@ -19,6 +19,8 @@ class ContactManager{
     
     static let sharedManager = ContactManager()
     
+    var application = UIApplication.shared
+    
     // Contact store
     var store: CNContactStore = CNContactStore()
     var deviceToken : String = ""
@@ -66,6 +68,7 @@ class ContactManager{
     var contactToIntro = CNContact()
     var recipientToIntro = CNContact()
     var contactToInvite = Contact()
+    var contactsHashTable = [String: [CNContact]]()
     
     // Contact for sending cards
     var contactForCardShare = CNContact()
@@ -94,6 +97,10 @@ class ContactManager{
     var socialLinks = [String]()
     var selectedSocialMediaLink : String = ""
     var cardBagdeLists = [String : [UIImage]]()
+    // Global badges
+    var badgeList: [CardProfile.Bagde] = []
+    
+    
     //var cardDesigns[]
     
     // Indexing the contact records for upload

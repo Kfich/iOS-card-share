@@ -9,8 +9,9 @@
 import UIKit
 import Contacts
 import MessageUI
+import EventKitUI
 
-class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, EKEventEditViewDelegate {
     
     // Properties
     // --------------------------------------------
@@ -151,17 +152,40 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     @IBAction func calendarSelected(_ sender: Any) {
         
+        // Check status
+        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
         
+        switch (status) {
+        case EKAuthorizationStatus.notDetermined:
+            // This happens on first-run
+            requestAccessToCalendar()
+            print("Undecided")
+        case EKAuthorizationStatus.authorized:
+            
+            let vc = EKEventEditViewController()
+            // Event
+            vc.editViewDelegate = self
+            let eventStore = EKEventStore()
+            // Init new event
+            let newEvent = EKEvent(eventStore: eventStore)
+            // Init new event
+            vc.event = newEvent
+            // Create store
+            vc.eventStore = eventStore
+            // Present view
+            self.present(vc, animated: true, completion: nil)
+            
+            break
+            
+        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
+            // We need to help them give us permission
+            //needPermissionView.fadeIn()
+            print("Restricted")
+            break
+        }
         
-        // Configure calendar
-        //UIApplication.shared.openURL(NSURL(string: "calshow://")! as URL)
-        
-        //performSegue(withIdentifier: "showCreateAppointment", sender: self)
-        // Typical usage
-        self.open(scheme: "calshow://")
     }
     
-
     
     
     
@@ -216,7 +240,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         self.shadowView.shadowRadius = 2
         self.shadowView.shadowMask = YIInnerShadowMaskTop
         
-        // reload table data
+        // Check status
+        checkCalendarAuthorizationStatus()
+        
         
     }
     
@@ -279,7 +305,6 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     func configureBadges(cell: UICollectionViewCell){
         // Add radius config & border color
-        
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
@@ -350,6 +375,13 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         return 20
     }
     
+    // Event delegate
+    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        // 
+        print("The calendar is done")
+        dismiss(animated: true, completion: nil)
+    }
+    
 
     
     // Custom Methods
@@ -366,27 +398,68 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     }
     
     
+    
     func initializeBadgeList() {
         // Image config
-        let img1 = UIImage(named: "icn-social-facebook.png")
-        let img2 = UIImage(named: "icn-social-twitter.png")
-        let img3 = UIImage(named: "icn-social-instagram.png")
-        let img4 = UIImage(named: "icn-social-harvard.png")
-        let img5 = UIImage(named: "icn-social-pinterest.png")
-        let img6 = UIImage(named: "icn-social-pinterest.png")
-        let img7 = UIImage(named: "icn-social-facebook.png")
-        let img8 = UIImage(named: "icn-social-facebook.png")
-        let img9 = UIImage(named: "icn-social-facebook.png")
-        let img10 = UIImage(named: "icn-social-facebook.png")
-        
+        // Test data config
+        let img1 = UIImage(named: "Facebook.png")
+        let img2 = UIImage(named: "Twitter.png")
+        let img3 = UIImage(named: "instagram.png")
+        let img4 = UIImage(named: "Pinterest.png")
+        let img5 = UIImage(named: "Linkedin.png")
+        let img6 = UIImage(named: "GooglePlus.png")
+        let img7 = UIImage(named: "Crunchbase.png")
+        let img8 = UIImage(named: "Youtube.png")
+        let img9 = UIImage(named: "Soundcloud.png")
+        let img10 = UIImage(named: "Flickr.png")
+        let img11 = UIImage(named: "AboutMe.png")
+        let img12 = UIImage(named: "Angellist.png")
+        let img13 = UIImage(named: "Foursquare.png")
+        let img14 = UIImage(named: "Medium.png")
+        let img15 = UIImage(named: "Tumblr.png")
+        let img16 = UIImage(named: "Quora.png")
+        let img17 = UIImage(named: "Reddit.png")
         // Hash images
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["harvard" : img4!], ["pinterest" : img5!]]/*, ["pinterest" : img6!], ["reddit" : img7!], ["tumblr" : img8!], ["myspace" : img9!], ["googleplus" : img10!]]*/
+        
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
         
         
-        // let fb : NSDictionary = ["facebook" : img1!]
-        // self.socialLinkBadges.append([fb])
+    }
+    
+    func checkCalendarAuthorizationStatus() {
+        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
         
-        
+        switch (status) {
+        case EKAuthorizationStatus.notDetermined:
+            // This happens on first-run
+            requestAccessToCalendar()
+            print("Undecided")
+        case EKAuthorizationStatus.authorized: break
+            // Things are in line with being able to show the calendars in the table view
+            print("Authorized")
+            
+        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied: break
+            // We need to help them give us permission
+            //needPermissionView.fadeIn()
+            print("Restricted")
+        }
+    }
+    
+    func requestAccessToCalendar() {
+        EKEventStore().requestAccess(to: .event, completion: {
+            (accessGranted: Bool, error: Error?) in
+            
+            if accessGranted == true {
+                DispatchQueue.main.async(execute: {
+                   // self.loadCalendars()
+                    //self.refreshTableView()
+                })
+            } else {
+                DispatchQueue.main.async(execute: {
+                    //self.needPermissionView.fadeIn()
+                })
+            }
+        })
     }
     
     func parseForSocialIcons() {
@@ -498,7 +571,40 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             
             // Set name
             //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        
+        if contact.titles.count > 0 {
+            // Add section
+            sections.append("Titles")
             
+            for title in contact.titles {
+                // Print to test
+                print("Title : \(title["title"]!)")
+                
+                // Append to list
+                self.titles.append(title["title"]!)
+                print(titles.count)
+            }
+            // Set list for section
+            self.tableData["Titles"] = titles
+        }
+        
+        if contact.organizations.count > 0 {
+            // Add section
+            sections.append("Company")
+            
+            for org in contact.organizations {
+                // Print to test
+                print("Org : \(org["organization"]!)")
+                
+                // Append to list
+                self.organizations.append(org["organization"]!)
+                print(organizations.count)
+            }
+            // Set list for section
+            self.tableData["Company"] = organizations
+        }
+        
             // Check for count
             if contact.phoneNumbers.count > 0 {
                 // Add section
@@ -562,38 +668,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 }
                 
             }
-            
-            if contact.titles.count > 0 {
-                // Add section
-                sections.append("Titles")
-                
-                for title in contact.titles {
-                    // Print to test
-                    print("Title : \(title["title"]!)")
-                    
-                    // Append to list
-                    self.titles.append(title["title"]!)
-                    print(titles.count)
-                }
-                // Set list for section
-                self.tableData["Titles"] = titles
-            }
         
-        if contact.organizations.count > 0 {
-            // Add section
-            sections.append("Organizations")
-            
-            for org in contact.organizations {
-                // Print to test
-                print("Org : \(org["organization"]!)")
-                
-                // Append to list
-                self.organizations.append(org["organization"]!)
-                print(organizations.count)
-            }
-            // Set list for section
-            self.tableData["Organizations"] = organizations
-        }
 
         if contact.notes.count > 0 {
             // Add section

@@ -6,10 +6,10 @@
 
 
 // Test Server
-#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
+//#define kAppwsServerURL @"https://project-unify-node-server.herokuapp.com/%@"
 
 // Production Server
-//#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
+#define kAppwsServerURL @"https://project-unify-node-server-stag.herokuapp.com/%@"
 
 // User
 #define kCreateUser           kServerURL(kAppwsServerURL, @"user/create")
@@ -23,7 +23,7 @@
 #define kUpdateCard           kServerURL(kAppwsServerURL, @"card/update/")
 #define kDeleteCard           kServerURL(kAppwsServerURL, @"card/delete")
 // * Test
-#define kGetSingleCard        kServerURL(kAppwsServerURL, @"card/getSingleCard")
+#define kGetSingleCard        kServerURL(kAppwsServerURL, @"card/getOne")
 
 // Transactions
 #define kCreateTransaction    kServerURL(kAppwsServerURL, @"transaction/create")

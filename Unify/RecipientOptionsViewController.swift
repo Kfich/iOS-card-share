@@ -48,8 +48,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var customSearchController: CustomSearchController!
     
     // Sorted contact list
-    var letters: [Character] = []
-    var contacts = [Character: [String]]()
+    var letters: [String] = []
+    var contacts = [String: [String]]()
     
     var contactObjectTable = [[String: Any]]()
     var contactNamesHashTable = [String: CNContact]()
@@ -142,12 +142,30 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         lastNameLabel.disableFloatingLabel = true
         
         // Config index style
-        self.tableView.sectionIndexBackgroundColor = UIColor.clear
-        self.tableView.sectionIndexColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        self.tableView.sectionIndexBackgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)//UIColor.clear
+        self.tableView.sectionIndexColor = UIColor.white//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
         
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        // Fix tableview hight
+        //tableView.frame = CGRect(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.frame.size.height)
+    }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        // Fix tableview hight
+        tableView.frame = CGRect(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.frame.size.height - 50)
+        
+        // Lay out views again
+        self.view.layoutSubviews()
+        self.view.layoutIfNeeded()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -213,6 +231,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 let contactEmail = contact.emailAddresses[0].value as String
                 let recipientEmail = recipient.emailAddresses[0].value as String
                 
+                // Add to transaction
+                self.transaction.recipientEmails = []
+                self.transaction.recipientEmails?.append(contactEmail)
+                self.transaction.recipientEmails?.append(recipientEmail)
                 
                 // Launch Email client
                 showEmailCard()
@@ -221,6 +243,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 
                 let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
                 let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                
+                // Add to transaction
+                self.transaction.recipientPhones = []
+                self.transaction.recipientPhones?.append(contactPhone!)
+                self.transaction.recipientPhones?.append(recipientPhone!)
                 
                 // Launch text client
                 showSMSCard()
@@ -265,7 +292,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
+        return letters//["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -533,43 +560,38 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         
         
-        letters = dataArray.map { (name) -> Character in
-            print(name[name.startIndex])
-            return name[name.startIndex]
+        letters = dataArray.map { (name) -> String in
+            //print("UPPER CASE HERE")
+            let nameToUpper = name.uppercased()
+            //print(nameToUpper[nameToUpper.startIndex])
+            return String(nameToUpper[nameToUpper.startIndex])
         }
         
         letters = letters.sorted()
         // Print letters array
         //print("\n\nLETTERS >>>> \(letters)")
         
-        letters = letters.reduce([], { (list, name) -> [Character] in
+        // Reduce letters to single count for each
+        letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
-                print("\n\nAdded >>>> \(list + [name])")
+                //print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
         })
         
         
-        // Build contacts array:
-        
-        // Init sorted contacts array
-        //var contacts = [Character: [String]]()
-        
-        
-        
-        
         // Iterate over contact list
-        for entry in dataArray {
+        for name in dataArray {
             
-            if contacts[entry[entry.startIndex]] == nil {
+            if contacts[String(name[name.startIndex])] == nil {
                 // Set index if doesn't exist
-                contacts[entry[entry.startIndex]] = [String]()
+                contacts[String(name[name.startIndex])] = [String]()
             }
             
             // Add entry to section
-            contacts[entry[entry.startIndex]]!.append(entry)
+            contacts[String(name[name.startIndex])]!.append(name)
             
         }
         
@@ -760,7 +782,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         print("The Button Was tapped")
         
         // Sync contact list
-        ContactManager.sharedManager.getContacts()
+        self.getContacts()
     }
 
 
@@ -949,7 +971,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
                 
                 // Launch text client
-                composeVC.recipients = [contactPhone!, recipientPhone!]
+                //composeVC.recipients = [contactPhone!, recipientPhone!]
             }
             
             if contact.emailAddresses.count > 0 {
@@ -960,6 +982,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             // Configure message
             let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            
+            // Set selected phone 
+            self.selectedContactPhone = self.phoneLabel.text ?? ""
+            composeVC.recipients = [selectedContactPhone]
+
             
             composeVC.body = str
             
@@ -1004,7 +1031,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             let recipientEmail = recipient.emailAddresses[0].value as String
             
             // Set variable
-            emailContact = contactEmail
+           // emailContact = contactEmail
             emailRecipient = recipientEmail
             
             print("Emails :: \(emailContact) \(emailRecipient)")
@@ -1021,8 +1048,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
+        emailContact = self.emailLabel.text ?? ""
+        
         // Create Message
-        mailComposerVC.setToRecipients([emailContact, emailRecipient])
+        mailComposerVC.setToRecipients([emailContact])
         mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")
         mailComposerVC.setMessageBody(str, isHTML: false)
         
@@ -1041,9 +1070,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Config imageview
         
         // Configure borders
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 23    // Create container for image and name
+        imageView.layer.cornerRadius = 15    // Create container for image and name
         
     }
     
@@ -1450,6 +1479,36 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         transaction.scope = "transaction"
         // Attach card id
         transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+        
+        // CNContact Objects
+        let contact = ContactManager.sharedManager.contactToIntro
+        let recipient = ContactManager.sharedManager.recipientToIntro
+        
+        // Check if they both have email
+        
+        if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+            
+            let contactEmail = contact.emailAddresses[0].value as String
+            let recipientEmail = recipient.emailAddresses[0].value as String
+            
+            // Add to transaction
+            self.transaction.recipientEmails = []
+            self.transaction.recipientEmails?.append(contactEmail)
+            self.transaction.recipientEmails?.append(recipientEmail)
+        
+        }
+        
+        if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+            
+            let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+            let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+            
+            // Add to transaction
+            self.transaction.recipientPhones = []
+            self.transaction.recipientPhones?.append(contactPhone!)
+            self.transaction.recipientPhones?.append(recipientPhone!)
+            
+        }
         
         
         if self.tableView.isHidden == false {

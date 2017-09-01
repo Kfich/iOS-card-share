@@ -117,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
  
       
-        
+       /*
         
         // iOS 10 support
         
@@ -155,7 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
             
-        }
+        }*/
 
         
         

@@ -19,6 +19,8 @@ public class Transaction{
     var type : String = ""
     var senderName : String = ""
     var recipientNames : [String]?
+    var recipientPhones : [String]?
+    var recipientEmails : [String]?
     var senderImageId = ""
     
     // Lat and Long for location
@@ -121,6 +123,8 @@ public class Transaction{
         
         senderName = snapshot["sender_name"] as! String
         recipientNames = snapshot["recipient_names"] as? [String]
+        recipientPhones = snapshot["recipient_phones"] as? [String]
+        recipientEmails = snapshot["recipient_emails"] as? [String]
         
         // Testing to see if populated
         printTransaction()
@@ -143,6 +147,8 @@ public class Transaction{
             "recipient_list": recipientList,
             "rejected" : rejected,
             "recipient_names" : recipientNames,
+            "recipient_phones" : recipientPhones,
+            "recipient_emails" : recipientEmails,
             "approved" : approved,
             "sender_image_id": senderImageId
             

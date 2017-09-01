@@ -30,6 +30,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     var corpBadges = [CardProfile.Bagde()]
     
     // Profile pics
@@ -60,6 +61,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     var selectedSocialLinkList = [Check]()
+    
+    var selectedCorpBadgeList = [Check]()
 
     
     // IBOutlets
@@ -97,6 +100,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet var addImageButton: UIButton!
     @IBOutlet var addCardNameButton: UIButton!
     
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,6 +116,10 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Add name off jump 
         showAlertWithTextField(description: "Add Card Name", placeholder: "Enter Name", actionType: "Add Name")
+        
+        // Set shadow
+        self.shadowView.shadowRadius = 3
+        self.shadowView.shadowMask = YIInnerShadowMaskTop
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -147,6 +155,28 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Parse card for profile info
         
+        // Parse title info
+        if currentUser.userProfile.titles.count > 0{
+            // Add section
+            sections.append("Titles")
+            for info in currentUser.userProfile.titles{
+                titles.append((info["title"])!)
+            }
+            // Create section data
+            self.tableData["Titles"] = titles
+        }
+        
+        // Parse organizations
+        if currentUser.userProfile.organizations.count > 0{
+            // Add section
+            sections.append("Company")
+            for org in currentUser.userProfile.organizations{
+                organizations.append(org["organization"]!)
+            }
+            // Create section data
+            self.tableData["Company"] = organizations
+        }
+        
         if currentUser.userProfile.bios.count > 0{
             // Add section
             sections.append("Bios")
@@ -157,6 +187,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Create section data
             self.tableData["Bios"] = bios
         }
+        /*
         // Parse work info
         if currentUser.userProfile.workInformationList.count > 0{
             // Add section
@@ -166,18 +197,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             // Create section data
             self.tableData["Work"] = workInformation
-        }
-    
-        // Parse work info
-        if currentUser.userProfile.titles.count > 0{
-            // Add section
-            sections.append("Titles")
-            for info in currentUser.userProfile.titles{
-                titles.append((info["title"])!)
-                }
-            // Create section data
-            self.tableData["Titles"] = titles
-        }
+        }*/
     
         if currentUser.userProfile.phoneNumbers.count > 0{
             // Add section
@@ -208,16 +228,6 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Create section data
             self.tableData["Websites"] = websites
         }
-        // Parse organizations
-        if currentUser.userProfile.organizations.count > 0{
-            // Add section
-            sections.append("Organizations")
-            for org in currentUser.userProfile.organizations{
-                organizations.append(org["organization"]!)
-            }
-            // Create section data
-            self.tableData["Organizations"] = organizations
-        }
         // Parse Tags
         if currentUser.userProfile.tags.count > 0{
             // Add section
@@ -238,6 +248,21 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Create section data
             self.tableData["Notes"] = notes
         }
+        
+        // Parse notes
+        if currentUser.userProfile.addresses.count > 0{
+            
+            // Add section
+            sections.append("Addresses")
+            for add in currentUser.userProfile.addresses{
+                addresses.append(add["address"]!)
+            }
+            // Create section data
+            self.tableData["Addresses"] = addresses
+        }
+        
+
+        
         // Parse socials links
         if currentUser.userProfile.socialLinks.count > 0{
             for link in currentUser.userProfile.socialLinks{
@@ -479,12 +504,14 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Profile collection view
             return self.profileImagelist.count
         }
+        //return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
-        var cell = UICollectionViewCell()
+        var cell = UICollectionViewCell()//collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        //cell.backgroundColor = UIColor.red
+        self.configureBadges(cell: cell)
         
         if collectionView == self.badgeCollectionView {
             // Badge config
@@ -495,7 +522,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+             let fileUrl = NSURL(string:ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl /*ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -508,7 +535,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
         }else if collectionView == self.socialBadgeCollectionView{
             
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
             //cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
@@ -546,7 +573,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         }else{
             
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
             
             ///cell.contentView.backgroundColor = UIColor.red
             self.configurePhoto(cell: cell)
@@ -563,7 +590,6 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
             
         }
-
         
         return cell
     }
@@ -571,7 +597,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Init cell
         
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBadgeCell", for: indexPath)
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
         
         if collectionView == self.badgeCollectionView {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
@@ -580,6 +606,18 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Highlight cell
             print("Badge Card List >> \(card.cardProfile.badgeList)")
             
+            if self.selectedCorpBadgeList[indexPath.row].isSelected == true {
+                // Remove
+                self.selectedCorpBadgeList[indexPath.row].isSelected = false
+                // Add social to card
+                card.cardProfile.badgeList.remove(at: indexPath.row)
+            }else{
+                // Set selected index
+                self.selectedCorpBadgeList[indexPath.row].isSelected = true
+                // Add social to card
+                card.cardProfile.badgeList.append(corpBadges[indexPath.row])
+                
+            }
         
         }else if collectionView == self.socialBadgeCollectionView{
 
@@ -785,6 +823,12 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             card.cardProfile.notes.append(["note" : notes[indexPath.row]])
             // Print for test
             print(card.cardProfile.notes as Any)
+            
+        case "Addresses":
+            // Append to array
+            card.cardProfile.addresses.append(["address" : addresses[indexPath.row]])
+            // Print for test
+            print(card.cardProfile.addresses as Any)
 
         default:
             print("Nothing doing here..")
@@ -925,7 +969,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
             
             // Reload table
-            self.socialBadgeCollectionView.reloadData()
+            //self.socialBadgeCollectionView.reloadData()
         }
         
         // Add image to the end of list
@@ -933,7 +977,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         //self.socialBadges.append(image!)
         
         // Reload table
-        self.socialBadgeCollectionView.reloadData()
+        //self.socialBadgeCollectionView.reloadData()
         
     }
     

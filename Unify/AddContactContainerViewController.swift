@@ -153,6 +153,40 @@ class AddContactContainerViewController: FormViewController {
                                     }
                                 }
             }
+            
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "Company",
+                               footer: "") {
+                                $0.tag = "Organization Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Organizations"
+                                        //$0.tag = "Add Organizations"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("organizationRow_\(index)") {
+                                        $0.placeholder = "Name"
+                                        //$0.tag = "Add Organizations"
+                                    }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in organizations{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Name"
+                                        $0.value = val
+                                        //$0.tag = "Add Organizations"
+                                        
+                                    }
+                                }
+                                
+            }
+            
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -366,38 +400,6 @@ class AddContactContainerViewController: FormViewController {
                                 }
             }
 
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Organizations",
-                               footer: "") {
-                                $0.tag = "Organization Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Organizations"
-                                        //$0.tag = "Add Organizations"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("organizationRow_\(index)") {
-                                        $0.placeholder = "Name"
-                                        //$0.tag = "Add Organizations"
-                                    }
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in organizations{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Name"
-                                        $0.value = val
-                                        //$0.tag = "Add Organizations"
-                                        
-                                    }
-                                }
-                                
-        }
         
         
         

@@ -30,12 +30,14 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
+    var addresses = [String]()
     
     // Store image icons
     var socialLinkBadges = [[String : Any]]()
     var links = [String]()
     var socialBadges = [UIImage]()
     
+    var selectedBadgeIndex = Int()
     
     var sections = [String]()
     var tableData = [String: [String]]()
@@ -230,6 +232,27 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.sections.removeAll()
         self.tableData.removeAll()
         
+        // Parse work info
+        if selectedCard.cardProfile.titles.count > 0{
+            // Add section
+            sections.append("Titles")
+            for info in selectedCard.cardProfile.titles{
+                titles.append((info["title"])!)
+            }
+            // Create section data
+            self.tableData["Titles"] = titles
+        }
+        
+        if selectedCard.cardProfile.organizations.count > 0{
+            // Add section
+            sections.append("Company")
+            for org in selectedCard.cardProfile.organizations{
+                organizations.append(org["organization"]! )
+            }
+            // Create section data
+            self.tableData["Company"] = organizations
+        }
+        
         // Parse card for profile info
         if selectedCard.cardProfile.bios.count > 0{
             // Add section
@@ -242,28 +265,6 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             self.tableData["Bios"] = bios
             
         }
-        // Parse work info
-        if selectedCard.cardProfile.workInformationList.count > 0{
-            // Add section
-            sections.append("Work")
-            for info in selectedCard.cardProfile.workInformationList{
-                workInformation.append(info["work"]!)
-            }
-            // Create section data
-            self.tableData["Work"] = workInformation
-        }
-        
-        // Parse work info
-        if selectedCard.cardProfile.titles.count > 0{
-            // Add section
-            sections.append("Titles")
-            for info in selectedCard.cardProfile.titles{
-                titles.append((info["title"])!)
-            }
-            // Create section data
-            self.tableData["Titles"] = titles
-        }
-        
         if selectedCard.cardProfile.phoneNumbers.count > 0{
             // Add section
             sections.append("Phone Numbers")
@@ -283,6 +284,19 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Create section data
             self.tableData["Emails"] = emails
         }
+        
+        /*
+        // Parse work info
+        if selectedCard.cardProfile.workInformationList.count > 0{
+            // Add section
+            sections.append("Work")
+            for info in selectedCard.cardProfile.workInformationList{
+                workInformation.append(info["work"]!)
+            }
+            // Create section data
+            self.tableData["Work"] = workInformation
+        }*/
+        
         if selectedCard.cardProfile.websites.count > 0{
             // Add section
             sections.append("Websites")
@@ -291,15 +305,6 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             }
             // Create section data
             self.tableData["Websites"] = websites
-        }
-        if selectedCard.cardProfile.organizations.count > 0{
-            // Add section
-            sections.append("Organizations")
-            for org in selectedCard.cardProfile.organizations{
-                organizations.append(org["organization"]! )
-            }
-            // Create section data
-            self.tableData["Organizations"] = organizations
         }
         if selectedCard.cardProfile.tags.count > 0{
             // Add section
@@ -319,6 +324,20 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Create section data
             self.tableData["Notes"] = notes
         }
+        
+        // Parse notes
+        if selectedCard.cardProfile.addresses.count > 0{
+            
+            // Add section
+            sections.append("Addresses")
+            for add in selectedCard.cardProfile.addresses{
+                addresses.append(add["address"]!)
+            }
+            // Create section data
+            self.tableData["Addresses"] = addresses
+        }
+
+        
         if selectedCard.cardProfile.socialLinks.count > 0{
             for link in selectedCard.cardProfile.socialLinks{
                // notes.append(link["link"]! )
@@ -404,10 +423,14 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Social link badges
+        // Set selected index
+        self.selectedBadgeIndex = indexPath.row
+        // Config the social link webVC
+        ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
         
-        performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
-        
-        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+        // Show WebVC
+        self.launchMediaWebView()
     }
     
     func configureBadges(cell: UICollectionViewCell){
@@ -590,6 +613,16 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     // Custom Methods
     // -------------------------------------------
+    
+    func launchMediaWebView() {
+        // Config the social link webVC
+        //ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
+        self.present(controller, animated: true, completion: nil)
+    }
     
     func initializeBadgeList() {
         // Image config
