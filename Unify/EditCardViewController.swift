@@ -76,6 +76,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     var selectedSocialLinkList = [Check]()
     
+    var selectedCorpBadgeList = [Check]()
     
     // IBOutlets
     // ----------------------------
@@ -588,8 +589,27 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
             imageView.setImageWith(fileUrl! as URL)
             
-            // Check if in array
+            // Init add image
+            let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
             
+            if self.selectedCorpBadgeList[indexPath.row].isSelected {
+                // Add minus sign
+                
+                let addImage = UIImage(named: "icn-minus-red")
+                addView.image = addImage
+                
+            }else{
+                // Add plus sign
+                let addImage = UIImage(named: "icn-plus-green")
+                addView.image = addImage
+                
+            }
+            
+            // Add to imageview
+            imageView.addSubview(addView)
+            
+            // Check if in array
+            /*
             if self.selectedCorpLinks.contains(corpBadges[indexPath.row].website) {
                 // Already in list
                 print("Item already in list")
@@ -608,7 +628,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 // Add to imageview
                 imageView.addSubview(plusIconView)
-            }
+            }*/
             
             // Add subview
             cell.contentView.addSubview(imageView)
@@ -675,8 +695,26 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         if collectionView == self.badgeCollectionView {
             
+            // Badge cell
+            card.cardProfile.badgeList.append(corpBadges[indexPath.row])
+            // Highlight cell
+            print("Badge Card List >> \(card.cardProfile.badgeList)")
+            
+            if self.selectedCorpBadgeList[indexPath.row].isSelected == true {
+                // Remove
+                self.selectedCorpBadgeList[indexPath.row].isSelected = false
+                // Add social to card
+                card.cardProfile.badgeList.remove(at: indexPath.row)
+            }else{
+                // Set selected index
+                self.selectedCorpBadgeList[indexPath.row].isSelected = true
+                // Add social to card
+                card.cardProfile.badgeList.append(corpBadges[indexPath.row])
+                
+            }
+            
             // Check if in array
-            if self.selectedCorpLinks.contains(corpBadges[indexPath.row].website) {
+            /*if self.selectedCorpLinks.contains(corpBadges[indexPath.row].website) {
                 // Already in list
                 print("Item already in list")
                 self.selectedCorpBadges.remove(at: indexPath.row)
@@ -687,7 +725,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 card.cardProfile.badgeList.append(corpBadges[indexPath.row])
                 // Print for test
                 print(card.cardProfile.badgeList as Any)
-            }
+            }*/
 
         }else if collectionView == self.socialBadgeCollectionView{
             
@@ -1540,6 +1578,33 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    func parseForCorpBadges() {
+        // Test
+        print("Looking for corp icons on card edit view")
+        
+        // Index for selection
+        var counter = 0
+        
+        // Parse socials links
+        if card.cardProfile.badgeList.count > 0{
+            for badge in card.cardProfile.badgeList{
+                
+                // Create selected index
+                let selectedIndex = Check(arrayIndex: counter, selected: false)
+                // Set Selected index
+                self.selectedCorpBadgeList.append(selectedIndex)
+                
+                // Append to selected list
+                selectedCorpBadges.append(badge)
+                // Test
+                print("Count >> \(socialLinks.count)")
+                
+                // Increment
+                counter = counter + 1
+            }
+        }
+
+    }
     
     
     func parseForSocialIcons() {

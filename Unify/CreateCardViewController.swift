@@ -527,8 +527,25 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
             imageView.setImageWith(fileUrl! as URL)
-            // Set image
-            //imageView.image = image
+            
+            // Init add image
+            let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+            
+            if self.selectedCorpBadgeList[indexPath.row].isSelected {
+                // Add minus sign
+                
+                let addImage = UIImage(named: "icn-minus-red")
+                addView.image = addImage
+                
+            }else{
+                // Add plus sign
+                let addImage = UIImage(named: "icn-plus-green")
+                addView.image = addImage
+                
+            }
+            
+            // Add to imageview
+            imageView.addSubview(addView)
             
             // Add subview
             cell.contentView.addSubview(imageView)
@@ -864,6 +881,10 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Create section data
             //self.tableData["Photos"] = profileImagelist
         }
+        
+        // Refresh table
+        //self.profileImageCollectionView.reloadData()
+        
         
     }
     

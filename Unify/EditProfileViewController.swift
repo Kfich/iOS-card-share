@@ -331,6 +331,11 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Set selected
         self.selectedImage = croppedImage
         
+        self.profileImages.removeAll()
+        
+        // Refresh account images
+        self.parseAccountForImges()
+        
         // Insert photo into list
         self.profileImages.insert(croppedImage, at: 0)
         
@@ -518,6 +523,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Clear all from list
         self.profileImages.removeAll()
+        
+        // Set current user
+        self.currentUser = ContactManager.sharedManager.currentUser
         
         // Check for image, set to imageview
         if currentUser.profileImages.count > 0{
@@ -836,7 +844,6 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
                 // Badge icon
                 //image = self.userBadges[indexPath.row]
                 let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
-                let image = self.profileImages[indexPath.row]
                 imageView.layer.masksToBounds = true
                 // Set image to view
                 imageView.image = image

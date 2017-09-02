@@ -28,6 +28,7 @@ public class CardProfile{
     // Badges
     var badges = [String]()
     var badgeList = [Bagde]()
+    var badgeDictionaryList = [NSDictionary]()
     
     // For user profiles
     var bios = [[String : String]]()
@@ -85,6 +86,8 @@ public class CardProfile{
         badges = snapshot["badges"] as? [String] ?? [String]()
         badgeList = snapshot["badgeList"] as? [Bagde] ?? [Bagde]()
         
+        badgeDictionaryList = fromDefaultsWithDictionary["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
+        
         // Testing to see if populated
     
     }
@@ -120,6 +123,7 @@ public class CardProfile{
         
         images = fromDefaultsWithDictionary["images"] as! [[String : Any]]
         badges = fromDefaultsWithDictionary["badges"] as? [String] ?? [String]()
+        badgeDictionaryList = fromDefaultsWithDictionary["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
         
         
         // Testing to see if populated
@@ -130,7 +134,16 @@ public class CardProfile{
     // Exporting the object
     func toAnyObject() -> NSDictionary {
         
+        
        // var tempBadgeList[]
+        for badge in badgeList {
+            // Create dictionary
+            let dict = badge.toAnyObject()
+            // Append to dict
+            badgeDictionaryList.append(dict)
+            // Test
+            print(badgeDictionaryList)
+        }
         
         
         return [
@@ -146,11 +159,24 @@ public class CardProfile{
             "organizations" : organizations,
             "addresses" : addresses,
             "image_ids": imageIds,
-            "badges" : badges
+            "badges" : badges,
+            "badge_list" : badgeDictionaryList
         ]
     }
 
     func toAnyObjectWithImage() -> NSDictionary {
+        
+        // Iterate through list
+        for badge in badgeList {
+            // Create dictionary
+            let dict = badge.toAnyObject()
+            // Append to dict
+            badgeDictionaryList.append(dict)
+            // Test
+            print(badgeDictionaryList)
+        }
+
+        
         return [
             "bios": bios,
             "work_info": workInformationList,
@@ -165,7 +191,8 @@ public class CardProfile{
             "addresses" : addresses,
             "image_ids": imageIds,
             "images" : images,
-            "badges" : badges
+            "badges" : badges,
+            "badge_list" : badgeDictionaryList
         ]
     }
 
