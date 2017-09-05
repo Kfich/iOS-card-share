@@ -31,6 +31,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // Profile pics 
     var profileImagelist = [UIImage]()
 
+    // Badge list
+    var badges : [CardProfile.Bagde] = []
     
     // Store image icons
     var socialLinkBadges = [[String : Any]]()
@@ -206,6 +208,23 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Assign profile values
        // self.parseDataFromProfile()*/
         
+        // Clear list
+        self.badges.removeAll()
+        
+        // Check for visible badges
+        for badge in ContactManager.sharedManager.badgeList {
+            // Check if visible
+            if badge.isHidden == false {
+                // Append to list
+                self.badges.append(badge)
+                print("The bagde acount on append \(badge.pictureUrl ?? "Empty URL")")
+                print(self.badges.count)
+            }
+        }
+        
+        // Test
+        print("Done getting badges")
+        
         
         // View Config
         configureViews()
@@ -289,7 +308,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         if collectionView == self.badgeCollectionView {
             // Return count
-            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+            return self.badges.count//ContactManager.sharedManager.currentUser.userProfile.badgeList.count
         }else if collectionView == self.socialBadgeCollectionView{
             
             return self.socialBadges.count
@@ -312,7 +331,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let fileUrl = NSURL(string:ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl /*ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
+            let fileUrl = NSURL(string: self.badges[indexPath.row].pictureUrl /*ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))

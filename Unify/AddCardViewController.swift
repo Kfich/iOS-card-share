@@ -88,8 +88,8 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.cards.count
-        if ContactManager.sharedManager.currentUserCards.count > 0{
-            return ContactManager.sharedManager.currentUserCards.count
+        if ContactManager.sharedManager.viewableUserCards.count > 0{
+            return ContactManager.sharedManager.viewableUserCards.count
         }else{
             emptyMessage(collectionView: self.collectionView)
             return 0
@@ -103,7 +103,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         //self.contactPageControl.currentPage = indexPath.row
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
-        if indexPath.row == ContactManager.sharedManager.currentUserCards.count{
+        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count - 1{
             
             // AddNewCardCell
             // get a reference to our storyboard cell
@@ -118,11 +118,11 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             //cell.backgroundColor = UIColor.clear
             
             // Find current card index
-            let currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            let currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             
             if currentCard.isVerified{
-                cell.cardWrapperView.layer.borderWidth = 1.5
-                cell.cardWrapperView.layer.borderColor = UIColor.yellow as! CGColor
+                //cell.cardWrapperView.layer.borderWidth = 1.5
+                //cell.cardWrapperView.layer.borderColor = UIColor.yellow as! CGColor
             }
             
             // Populate text field data
@@ -222,6 +222,10 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     // ------------------------------------
     
     func addObservers() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.refreshViewableCards), name: NSNotification.Name(rawValue: "RefreshViewable"), object: nil)
+
+        
         NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.refreshCollectionView), name: NSNotification.Name(rawValue: "AddNewCardFinished"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.cardUpdated), name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: nil)
@@ -235,6 +239,54 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         NotificationCenter.default.addObserver(self, selector: #selector(AddCardViewController.showSMSCard), name: NSNotification.Name(rawValue: "SMSCardFromProfile"), object: nil)
         
     }
+    
+    // Selector for observer function
+    func refreshViewableCards() {
+        
+        
+        // Remove all from viewable
+        ContactManager.sharedManager.viewableUserCards.removeAll()
+        
+        var viewableIndex = 0
+        
+        // Viewable cards
+        for viewable in 0..<ContactManager.sharedManager.currentUserCards.count - 1{
+            
+            let viewableCard = ContactManager.sharedManager.currentUserCards[viewableIndex]
+            
+            print(viewableCard.cardName ?? "")
+            print("Hidden = \(viewableCard.isHidden)")
+            
+            if viewableCard.isHidden != true{
+                
+                // Add to viewable
+                ContactManager.sharedManager.viewableUserCards.append(viewableCard)
+                
+                
+                print("Card To Add To Visbile -> \(viewableCard.cardName ?? "No Name") with count \(ContactManager.sharedManager.viewableUserCards.count)")
+                print(viewableCard.cardName ?? "")
+                
+            }
+            
+            // Increment index
+            viewableIndex = viewableIndex + 1
+            
+        }
+        
+        self.collectionView.reloadData()
+        
+        // Add dummy card back to end
+        ContactManager.sharedManager.viewableUserCards.append(ContactCard())
+        
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            
+            print("Refreshing collectionview")
+            // Reload table
+            self.collectionView.reloadData()
+        }
+    }
+
     
     func cardDeleted() {
         

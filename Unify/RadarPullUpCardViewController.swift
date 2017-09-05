@@ -155,6 +155,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     // Custom Methods
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.refreshViewableCards), name: NSNotification.Name(rawValue: "RefreshViewable"), object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.newCardAdded), name: NSNotification.Name(rawValue: "CardCreated"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(RadarPullUpCardViewController.cardDeleted), name: NSNotification.Name(rawValue: "CardDeleted"), object: nil)
@@ -169,6 +171,54 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     }
     
     // Selector for observer function
+    func refreshViewableCards() {
+       
+        
+        // Remove all from viewable
+        ContactManager.sharedManager.viewableUserCards.removeAll()
+        
+        var viewableIndex = 0
+        
+        // Viewable cards
+        for viewable in 0..<ContactManager.sharedManager.currentUserCards.count - 1{
+            
+            let viewableCard = ContactManager.sharedManager.currentUserCards[viewableIndex]
+            
+            print(viewableCard.cardName ?? "")
+            print("Hidden = \(viewableCard.isHidden)")
+            
+            if viewableCard.isHidden != true{
+                
+                // Add to viewable
+                ContactManager.sharedManager.viewableUserCards.append(viewableCard)
+                
+                
+                print("Card To Add To Visbile -> \(viewableCard.cardName ?? "No Name") with count \(ContactManager.sharedManager.viewableUserCards.count)")
+                print(viewableCard.cardName ?? "")
+                
+            }
+            
+            // Increment index
+            viewableIndex = viewableIndex + 1
+            
+        }
+
+        self.cardCollectionView.reloadData()
+        
+        // Add dummy card back to end
+        ContactManager.sharedManager.viewableUserCards.append(ContactCard())
+        
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            
+            print("Refreshing collectionview")
+            // Reload table
+            self.cardCollectionView.reloadData()
+        }
+    }
+
+    
+    
     func newCardAdded() {
         
         DispatchQueue.main.async {
@@ -430,6 +480,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
 
             }
             
+            
             // Populate text field data
             
             if currentCard.cardHolderName != nil {
@@ -451,6 +502,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             }
             if currentCard.cardName != nil{
                 cell.cardName.text = currentCard.cardName
+            }
+            
+            // Test to see if hidden working
+            if currentCard.isHidden {
+                cell.backgroundColor = UIColor.green
             }
             
             // Configure the card view
@@ -750,10 +806,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 for item in dictionary{
                     let card = ContactCard(snapshot: item as! NSDictionary)
                     
+                    
+                    
                     //print("Printing the card from the call")
                     card.printCard()
                     if card.isVerified{
-                        //ContactManager.sharedManager.currentUserCards.append(card)
+                        ContactManager.sharedManager.currentUserCards.append(card)
                         ContactManager.sharedManager.viewableUserCards.append(card)
                     }
                     tempCardList.append(card)

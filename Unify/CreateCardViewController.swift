@@ -271,12 +271,26 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         
+        // Init counter
+        var index = 0
+        
+        // Iterate over list
         if currentUser.userProfile.badgeList.count > 0{
             
             for badge in ContactManager.sharedManager.currentUser.userProfile.badgeList{
-                // Append badges from proile
-                corpBadges.append(badge)
-                print("Executing parse call from edit card")
+                // Check if visible
+                if badge.isHidden == false{
+                    // Append badges from proile
+                    corpBadges.append(badge)
+                    print("Creating badge list on create card >> \(corpBadges.count)")
+                    
+                    // Create selected index
+                    let selectedIndex = Check(arrayIndex: index, selected: false)
+                    // Set Selected index
+                    self.selectedCorpBadgeList.append(selectedIndex)
+                }
+                
+                index = index + 1
             }
         }
         
@@ -496,7 +510,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.badgeCollectionView {
             // Return count
-            return ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+            return self.corpBadges.count//ContactManager.sharedManager.currentUser.userProfile.badgeList.count
         }else if collectionView == self.socialBadgeCollectionView{
             
             return self.socialBadges.count
@@ -522,7 +536,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-             let fileUrl = NSURL(string:ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl /*ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
+             let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl/*ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -831,7 +845,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             card.cardProfile.websites.append(["website" : websites[indexPath.row]])
             // Print for test
             print(card.cardProfile.websites as Any)
-        case "Organizations":
+        case "Company":
             card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
             // Print for test
             print(card.cardProfile.organizations as Any)

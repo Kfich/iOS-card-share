@@ -31,6 +31,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
+    var corpBadges: [CardProfile.Bagde] = []
     
     // Store image icons
     var socialLinkBadges = [[String : Any]]()
@@ -167,6 +168,21 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"BadgeCell")
         
         //self.socialBadgeCollectionView
+        
+        print("The card badge list on selection")
+        //print(selectedCard.cardProfile.badgeList)
+        print(selectedCard.cardProfile.badgeDictionaryList)
+        
+        for corp in selectedCard.cardProfile.badgeDictionaryList {
+            // Init badge
+            let badge = CardProfile.Bagde(snapshot: corp)
+            
+            // Add to list
+            self.corpBadges.append(badge)
+        }
+        
+        // Refresh table
+        self.badgeCollectionView.reloadData()
     }
 
     // Page Setup
@@ -370,7 +386,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         if collectionView == self.badgeCollectionView {
             // Return count
-            return self.selectedCard.cardProfile.badges.count//ContactManager.sharedManager.currentUser.userProfile.badgeList.count
+            return self.corpBadges.count//self.selectedCard.cardProfile.badges.count//ContactManager.sharedManager.currentUser.userProfile.badgeList.count
         }else{
             
             return self.socialBadges.count
@@ -391,7 +407,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl)
+            let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl/*selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl*/)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))

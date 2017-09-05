@@ -97,8 +97,10 @@ class ContactManager{
     var socialLinks = [String]()
     var selectedSocialMediaLink : String = ""
     var cardBagdeLists = [String : [UIImage]]()
+    
     // Global badges
     var badgeList: [CardProfile.Bagde] = []
+    var viewableBadgeList: [CardProfile.Bagde] = []
     
     
     //var cardDesigns[]
@@ -363,6 +365,136 @@ class ContactManager{
         
     }
     
+    func setBadgeToVisible(websiteString : String, status: Bool) {
+        //  Iterate over cards
+        var index = 0
+        var selectedCardId = ""
+        
+        for item in 0..<badgeList.count - 1 {
+            // Find id match
+            let badge = badgeList[index]
+            
+            if badge.website == websiteString {
+                
+                // Set card ID
+                //selectedCardId = card.cardId!
+                
+                print(index)
+                //card.printCard()
+                // Remove index
+                badge.isHidden = status
+                // Test
+                print("Current User Card Hidden Status \(badge.isHidden) at index: \(index)")
+                
+                // Exit loop
+                break
+            }
+            // increment index
+            index = index + 1
+        }
+        
+        
+        
+        // Remove all from viewable
+        //viewableUserCards.removeAll()
+        
+        var viewableIndex = 0
+        
+        // Viewable cards
+        for viewable in 0..<ContactManager.sharedManager.badgeList.count{
+            
+            let viewableBadge = ContactManager.sharedManager.badgeList[viewableIndex]
+            
+            if viewableBadge.isHidden == true{
+                
+                // Add to viewable
+                //ContactManager.sharedManager.viewableUserCards.append(viewableCard)
+                
+                print("Contact Manager Card Viewable On Toggle -> \(viewableBadge.website)")
+                // Exit loop
+                break
+            }
+            
+        }
+        
+        // Post refresh
+        
+        print("Where the refresh would post for viewable \(viewableUserCards.count)")
+        print("Where the refresh would post for current array \(currentUserCards.count)")
+
+    }
+    
+    func setCardToVisible(cardIdString : String, status: Bool) {
+        //  Iterate over cards
+        var index = 0
+        var selectedCardId = ""
+        
+        for card in 0..<currentUserCards.count - 1 {
+            // Find id match
+            let card = currentUserCards[index]
+            
+            if card.cardId == cardIdString {
+                
+                // Set card ID
+                selectedCardId = card.cardId!
+                
+                print(index)
+                //card.printCard()
+                // Remove index
+                card.isHidden = status
+                // Test
+                print("Current User Card Hidden Status \(card.isHidden) at index: \(index)")
+                // Exit loop
+                break
+            }
+            // increment index
+            index = index + 1
+        }
+        
+        
+        
+        // Remove all from viewable
+        //viewableUserCards.removeAll()
+        
+        var viewableIndex = 0
+        
+        // Viewable cards
+        for viewable in 0..<ContactManager.sharedManager.currentUserCards.count - 1{
+            
+            let viewableCard = ContactManager.sharedManager.currentUserCards[viewableIndex]
+            
+            if viewableCard.isHidden == true{
+                
+                // Add to viewable
+                //ContactManager.sharedManager.viewableUserCards.append(viewableCard)
+                
+                print("Contact Manager Card Viewable On Toggle -> \(viewableCard.cardId)")
+                print(viewableCard.cardName ?? "")
+                // Exit loop
+                break
+            }
+            
+        }
+        
+        // Post refresh
+        
+        print("Where the refresh would post for viewable \(viewableUserCards.count)")
+        print("Where the refresh would post for current array \(currentUserCards.count)")
+        
+        postNotificationForCardRefresh()
+        
+    }
+    
+    func postNotificationForCardRefresh() {
+        // Notify other VC's to update cardviews
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshViewable"), object: self)
+        
+        
+        //RefreshViewable
+    }
+
+
+    
     // Card Handling 
     func deleteCardFromArray(cardIdString : String) {
         //  Iterate over cards 
@@ -395,14 +527,14 @@ class ContactManager{
         }
         
         // Remove all from viewable
-        // viewableUserCards.removeAll()
+        viewableUserCards.removeAll()
         
         var viewableIndex = 0
         
         // Viewable cards
-        for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count{
+        for viewable in 0..<ContactManager.sharedManager.currentUserCards.count{
             
-            let viewableCard = ContactManager.sharedManager.viewableUserCards[viewableIndex]
+            let viewableCard = ContactManager.sharedManager.currentUserCards[viewableIndex]
             
             if viewableCard.isHidden != true{
                 

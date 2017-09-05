@@ -652,6 +652,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 
                 // Set global badge list
                 ContactManager.sharedManager.badgeList =  ContactManager.sharedManager.currentUser.userProfile.badgeList
+                // Add to viewable
+                ContactManager.sharedManager.viewableBadgeList = ContactManager.sharedManager.currentUser.userProfile.badgeList
                 
                 
             } else {

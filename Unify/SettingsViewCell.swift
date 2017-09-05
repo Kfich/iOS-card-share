@@ -13,7 +13,8 @@ class SettingsViewCell: UITableViewCell {
     // Properties 
     // ------------------------ 
     var currentCard = ContactCard()
-    
+    var currentBadge = CardProfile.Bagde()
+    var cardIndex = 0
     
     
     // IBOutlets
@@ -81,6 +82,8 @@ class SettingsViewCell: UITableViewCell {
         // Init status
         var boolStatus = Bool()
         
+        print("View tag >> \(String(describing: (sender as AnyObject).view?.tag))")
+        
         // Check for swicth
         if badgeToggleSwitch.isOn == false {
             // Test
@@ -88,16 +91,33 @@ class SettingsViewCell: UITableViewCell {
             // Set bool
             boolStatus = false
             
+            // Toggle card value
+            //currentCard.isHidden = false
+            
+            //print("Current Card Hidden? : \(currentCard.isHidden)")
+            
         }else{
             // Test
             print("Toggled on")
             
             // Set status 
             boolStatus = true
+            
+            // Toggle card value
+            //currentCard.isHidden = true
+            
+            //print("Current Card Hidden? : \(currentCard.isHidden)")
         }
         
-        // Update card & Send to server
-        self.toggleCardVisibility(card: currentCard, status: boolStatus)
+        if ContactManager.sharedManager.hideCardsSelected {
+            // Follow hide card flow
+            // Update card & Send to server
+            self.toggleCardVisibility(card: currentCard, status: boolStatus)
+        }else{
+            // Follow badge flow
+            self.toggleBadgeVisibility(badge: currentBadge, status: boolStatus)
+            
+        }
         
     }
     
@@ -114,6 +134,40 @@ class SettingsViewCell: UITableViewCell {
         }
 
     }
+
+    func toggleBadgeVisibility(badge: CardProfile.Bagde, status: Bool) {
+        // Check original status
+        print("Badge Toggle Original >> \(badge.isHidden)")
+        
+        // Set status
+        badge.isHidden = status
+        
+        // Check post status
+        print("Badge Toggle Changed >> \(badge.isHidden)")
+        
+        // Post Refresh
+        postNotificationForBadgeRefresh()
+       
+       /*
+        var viewableIndex = 0
+        
+        // Viewable cards
+        for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count{
+            
+            let viewableCard = ContactManager.sharedManager.viewableUserCards[viewableIndex]
+            
+            print("Viewable card List isHidden: \(viewableCard.cardId) \(viewableCard.isHidden)")
+            
+            
+            // Increment
+            viewableIndex = viewableIndex + 1
+        }
+        
+        // Contact manager set status
+        ContactManager.sharedManager.setCardToVisible(cardIdString: currentCard.cardId!, status: status)*/
+        
+    }
+    
     
     func toggleCardVisibility(card: ContactCard, status: Bool) {
         // Check original status
@@ -125,10 +179,27 @@ class SettingsViewCell: UITableViewCell {
         // Check post status
         print("Card Toggle Changed >> \(card.isHidden)")
         
-        // Save editied card
-        //self.updateSelectedCard(card: card)
         
+        var viewableIndex = 0
+        
+        // Viewable cards
+        for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count{
+            
+            let viewableCard = ContactManager.sharedManager.viewableUserCards[viewableIndex]
+            
+            print("Viewable card List isHidden: \(viewableCard.cardId) \(viewableCard.isHidden)")
+            
+            
+            // Increment
+            viewableIndex = viewableIndex + 1
+        }
+        
+        // Contact manager set status
+        ContactManager.sharedManager.setCardToVisible(cardIdString: currentCard.cardId!, status: status)
+
     }
+    
+    
     
     func updateSelectedCard(card: ContactCard) {
         
@@ -181,9 +252,19 @@ class SettingsViewCell: UITableViewCell {
     
     func postNotificationForCardRefresh() {
         // Notify other VC's to update cardviews
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: self)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshViewable"), object: self)
         
         
+        //RefreshViewable
+    }
+    
+    func postNotificationForBadgeRefresh() {
+        print("Refresh badges!")
+        // Notify other VC's to update cardviews
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshBadges"), object: self)
+        
+        
+        //RefreshViewable
     }
     
     func addObservers() {

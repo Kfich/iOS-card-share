@@ -40,10 +40,10 @@ public class CardProfile{
     var imageIds = [[String : Any]]()
     
     // Badge struct
-    struct Bagde {
+    public class Bagde {
         var pictureUrl: String
         var website: String
-        var isHidden: Bool?
+        var isHidden: Bool = false
         
         init(snapshot: NSDictionary) {
             pictureUrl = snapshot["image"] as? String ?? ""
@@ -86,7 +86,7 @@ public class CardProfile{
         badges = snapshot["badges"] as? [String] ?? [String]()
         badgeList = snapshot["badgeList"] as? [Bagde] ?? [Bagde]()
         
-        badgeDictionaryList = fromDefaultsWithDictionary["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
+        badgeDictionaryList = snapshot["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
         
         // Testing to see if populated
     

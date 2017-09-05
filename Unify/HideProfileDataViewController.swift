@@ -91,7 +91,24 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
     
     @IBAction func doneHidingCards(_ sender: Any) {
         
-    
+    /*
+        for i in 0 ..< ContactManager.sharedManager.viewableUserCards.count - 1{
+            // Init card
+            let card = ContactManager.sharedManager.viewableUserCards[i]
+            // Check if hidden
+            if card.isHidden == true{
+                // Append to hidden list
+                //hiddenCards.append(card.cardId!)
+                print("This card is hidden >> \(card.cardId) \n\(card.profileDictionary)")
+            }else{
+                print("Card is visible >> \(card.cardId)")
+            }
+        }
+
+        
+        
+        
+        
         // Init temp
         var hiddenCards = [String]()
         // Set hidden cards array
@@ -108,7 +125,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         }
         
         // Set hidden list
-        UDWrapper.setArray("hidden_cards", value: hiddenCards as NSArray)
+        //UDWrapper.setArray("hidden_cards", value: hiddenCards as NSArray)*/
         
         // Drop vc
         dismiss(animated: true, completion: nil)
@@ -122,7 +139,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Return count
-             return ContactManager.sharedManager.viewableUserCards.count - 1
+             return ContactManager.sharedManager.currentUserCards.count - 1
             
         }else{
             // Set titleview
@@ -140,14 +157,20 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         // Set text
         
         if ContactManager.sharedManager.hideCardsSelected {
+            // Set current card
+            cell.currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            
+            // Toggle switch based on value
+            //cell.toggleSwitchOnInit()
+            
             // Return count
-            cell.badgeName.text = ContactManager.sharedManager.viewableUserCards[indexPath.row].cardName
-            cell.badgeToggleSwitch.isOn = ContactManager.sharedManager.viewableUserCards[indexPath.row].isHidden
+            cell.badgeName.text = cell.currentCard.cardName//ContactManager.sharedManager.viewableUserCards[indexPath.row].cardName
+            cell.badgeToggleSwitch.isOn = cell.currentCard.isHidden//ContactManager.sharedManager.viewableUserCards[indexPath.row].isHidden
             
             
-            if ContactManager.sharedManager.viewableUserCards[indexPath.row].cardProfile.images.count > 0{
+            if ContactManager.sharedManager.currentUserCards[indexPath.row].cardProfile.images.count > 0{
                 // Add card image
-                cell.badgeImageView.image =  UIImage(data:ContactManager.sharedManager.viewableUserCards[indexPath.row].cardProfile.images[0]["image_data"] as! Data)
+                cell.badgeImageView.image =  UIImage(data:ContactManager.sharedManager.currentUserCards[indexPath.row].cardProfile.images[0]["image_data"] as! Data)
             }else{
                 // Set user prof image
                 if ContactManager.sharedManager.currentUser.profileImages.count > 0{
@@ -159,14 +182,13 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
             
         }else{
             // Set titleview
-            cell.badgeName.text = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].website
-            let fileUrl = NSURL(string: ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl)
+            cell.currentBadge = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row]
+            cell.badgeName.text = cell.currentBadge.website
+            let fileUrl = NSURL(string: cell.currentBadge.pictureUrl)
             cell.badgeImageView.setImageWith(fileUrl! as URL)
-            cell.badgeToggleSwitch.isOn = true//ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
+            cell.badgeToggleSwitch.isOn = cell.currentBadge.isHidden ?? false//ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
             
         }
-        //cell.swict
-        cell.badgeToggleSwitch.isOn = true
         
         return cell
     }
