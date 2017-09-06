@@ -638,6 +638,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Clear manager
         ContactManager.sharedManager.currentUserCards.removeAll()
         ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        ContactManager.sharedManager.viewableUserCards.removeAll()
         //ContactManager.sharedManager.currentUser = User()
         
         // Store user to device

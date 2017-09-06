@@ -103,7 +103,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         //self.contactPageControl.currentPage = indexPath.row
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CardCollectionViewCell
         
-        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count - 1{
+        if indexPath.row == ContactManager.sharedManager.viewableUserCards.count{
             
             // AddNewCardCell
             // get a reference to our storyboard cell

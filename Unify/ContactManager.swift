@@ -39,6 +39,10 @@ class ContactManager{
     var userSelectedRecipient = false
     var userSentCardFromRadarList = false
     
+    // Check if user from network
+    var userIsRemoteUser = false
+    var userNeedsRemoteImage = false
+    
     // Settings toggle
     var hideBadgesSelected = false
     var hideCardsSelected = true

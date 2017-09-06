@@ -424,12 +424,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return self.cards.count
-        if ContactManager.sharedManager.currentUserCards.count > 0{
+        /*if ContactManager.sharedManager.currentUserCards.count > 0{
             return ContactManager.sharedManager.viewableUserCards.count
         }else{
             emptyMessage(collectionView: cardCollectionView)
             return 0
-        }
+        }*/
+        return ContactManager.sharedManager.viewableUserCards.count
     }
     
     // make a cell for each cell index path
@@ -804,12 +805,23 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 print(dictionary)
                 
                 for item in dictionary{
+                    
                     let card = ContactCard(snapshot: item as! NSDictionary)
                     
-                    
-                    
                     //print("Printing the card from the call")
-                    card.printCard()
+                    //card.printCard()
+                    if ContactManager.sharedManager.userIsRemoteUser == true{
+                        // If user remote, cards need to be parsed and added to manager
+                        ContactManager.sharedManager.currentUserCards.append(card)
+                        
+                        // Add dictionary to dictionary cards array
+                        ContactManager.sharedManager.currentUserCardsDictionaryArray.append([item as! NSDictionary])
+                        
+                        print("Current User Cards Count From PullUP \(ContactManager.sharedManager.currentUserCards.count)")
+                        print("Current User Dictionary Cards Count From PullUP \(ContactManager.sharedManager.currentUserCardsDictionaryArray.count)")
+                    }
+                    
+                    
                     if card.isVerified{
                         ContactManager.sharedManager.currentUserCards.append(card)
                         ContactManager.sharedManager.viewableUserCards.append(card)

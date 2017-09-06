@@ -103,6 +103,11 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         print("PHONE verification USER")
         currentUser.printUser()
         
+        print("PHONE verification ContactManagerUser")
+        ContactManager.sharedManager.currentUser.printUser()
+        
+        
+        
         // Set accessory view 
         self.phoneNumberInput.inputAccessoryView = self.sendCodeButton
         
@@ -251,8 +256,12 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         
         // Assign phone number to currentUser Object
-        currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone": phoneNumberInput.text!])
-        currentUser.setVerificationPhone(phone: phoneNumberInput.text!)
+        
+        let result = String(phoneNumberInput.text!.characters.filter { "01234567890.".characters.contains($0) })
+        print("Filtered Phone String >> \(result)")
+        
+        currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone": result])
+        currentUser.setVerificationPhone(phone: result)
 
         
         // Assign phone to card
@@ -298,6 +307,12 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                     if let user = UDWrapper.getDictionary("user"){
                         // Init &  Set to manager
                         self.currentUser =  User(withDefaultsSnapshot:user)
+                        
+                        // Test logic
+                        print("The Call Says Current User")
+                        print(self.currentUser.toAnyObject())
+                        
+                        
                         // Set to manager
                         ContactManager.sharedManager.currentUser = self.currentUser
                     
@@ -310,16 +325,28 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                     
                     // Print to test
                     self.currentUser.printUser()
-                }else{
+                }else if self.isCurrentUser{
                     // Send to create account
                     
+                    print("IsCurrentUser >> \(self.isCurrentUser) && The user dictionary >> Nil")
+                    
+                    // Init the user here from the dictionary response
+                    self.currentUser = User(snapshot: dictionary["user"] as! NSDictionary)
+                    
+                    // Set user to manager object
+                    ContactManager.sharedManager.currentUser = self.currentUser
+                    
+                }else{
+                    // Set user to manager object for the phone #
+                    ContactManager.sharedManager.currentUser = self.currentUser
+                    print("The new user object > \(ContactManager.sharedManager.currentUser.toAnyObject())")
                 }
                 
-                // Set user to manager object
-                ContactManager.sharedManager.currentUser = self.currentUser
+                
+                print("The current user is set to manager here \n\(self.currentUser.toAnyObject())")
                                 
                 // Show success
-                KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                KVNProgress.showSuccess(withStatus: "The Code Has Been Sent")
                 
                 
                 DispatchQueue.main.async {
@@ -414,7 +441,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             nextScene.currentUser = self.currentUser
             nextScene.isCurrentUser = self.isCurrentUser
             // Test the object has proper values
-            currentUser.printUser()
+            //currentUser.printUser()
+            print("Is Current User \n\(isCurrentUser)")
+            print("Current User on PhoneVerifVC \n\(currentUser.toAnyObject())")
             
             
         }

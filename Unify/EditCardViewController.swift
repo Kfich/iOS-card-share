@@ -583,7 +583,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             ///cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
             
-             let fileUrl = NSURL(string:ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl /*ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
+             let fileUrl = NSURL(string:self.corpBadges[indexPath.row].pictureUrl /*ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
 
             
             // Configure corner radius
@@ -648,7 +648,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
             
             // Init add image
-            let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+           /* let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
             
             if self.selectedSocialLinkList[indexPath.row].isSelected {
                 // Add minus sign
@@ -661,13 +661,32 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 let addImage = UIImage(named: "icn-plus-green")
                 addView.image = addImage
                 
-            }
+            }*/
             
             // Set image
             imageView.image = image
             // Add to imageview
-            imageView.addSubview(addView)
+            //imageView.addSubview(addView)
             
+            if self.selectedSocialLinks.contains(socialLinks[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                // Delete
+                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteImage = UIImage(named: "icn-minus-red")
+                deleteIconView.image = deleteImage
+                
+                // Add to imageview
+                imageView.addSubview(deleteIconView)
+            }else{
+                // Show plus
+                let plusIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let plusImage = UIImage(named: "icn-plus-green")
+                plusIconView.image = plusImage
+                
+                // Add to imageview
+                imageView.addSubview(plusIconView)
+            }
             
             // Add subview
             cell.contentView.addSubview(imageView)
@@ -1316,17 +1335,41 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 selectedNotes.append(note["note"]! )
             }
         }
+        
+        // Iterate using index to set selected
+        var socialIndex = 0
+        
         if card.cardProfile.socialLinks.count > 0{
+            
             for link in card.cardProfile.socialLinks{
+                // Append link to list
                 selectedSocialLinks.append(link["link"]! )
+                // Set bool on selected list to true
+                selectedSocialLinkList[socialIndex].isSelected = true
+                // Increment
+                socialIndex = socialIndex + 1
             }
         }
         
-        if card.cardProfile.badgeList.count > 0{
-            for badge in card.cardProfile.badgeList{
+        
+        
+        if card.cardProfile.badgeDictionaryList.count > 0{
+            
+            for corp in card.cardProfile.badgeDictionaryList {
+                // Init badge
+                let badge = CardProfile.Bagde(snapshot: corp)
+                
+                // Add to list
+                self.corpBadges.append(badge)
+                
+                self.selectedCorpLinks.append(badge.website)
+            }
+
+            
+            /*for badge in card.cardProfile.badgeList{
                 selectedCorpBadges.append(badge)
                 selectedCorpLinks.append(badge.website)
-            }
+            }*/
         }
 
         if card.cardProfile.addresses.count > 0{
@@ -1649,26 +1692,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         // Index for selection
         var counter = 0
         
-        
-        /*
-        // Parse socials links
-        if card.cardProfile.socialLinks.count > 0{
-            for link in card.cardProfile.socialLinks{
-                
-                // Create selected index
-                let selectedIndex = Check(arrayIndex: counter, selected: false)
-                // Set Selected index
-                self.selectedSocialLinkList.append(selectedIndex)
-                
-                socialLinks.append(link["link"]!)
-                // Test
-                print("Count >> \(socialLinks.count)")
-                
-                // Increment
-                counter = counter + 1
-            }
-        }*/
-        
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
             for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
@@ -1682,6 +1705,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 self.selectedSocialLinkList.append(selectedIndex)
             }
         }
+        
+    
 
         
         // Add plus icon to list

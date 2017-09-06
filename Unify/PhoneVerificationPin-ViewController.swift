@@ -385,6 +385,86 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                 print("\n\nUser from get call")
                 print(dictionary)
                 
+                print("\n\nIs Current User >> \(self.isCurrentUser)")
+                
+                if self.isCurrentUser && UDWrapper.getDictionary("user") != nil {
+                    
+                    // Init user object
+                    if let user = UDWrapper.getDictionary("user"){
+                        // Init &  Set to manager
+                        self.currentUser =  User(withDefaultsSnapshot:user)
+                        // Set to manager
+                        ContactManager.sharedManager.currentUser = self.currentUser
+                        
+                        print("Contact Manager Found User On PinVC \n\(self.currentUser.toAnyObjectWithImage())")
+                        
+                    }
+                    // Set status to true
+                    self.currentUser.setVerificationPhoneStatus(status: true)
+                    
+                    // Store user to device
+                    UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
+                    
+                    // Print to test
+                    //self.currentUser.printUser()
+                    
+                    // Show homepage
+                    DispatchQueue.main.async {
+                        // Update UI
+                        // Show Home Tab
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                        TabBarViewController
+                        self.view.window?.rootViewController = homeViewController
+                    }
+
+                    
+                    
+                }else if self.isCurrentUser{
+                    // Send to create account
+                    print("PhonePinVerifVC \nIsCurrentUser >> \(self.isCurrentUser) && The user dictionary >> Nil")
+                    
+                    // Test current user manager object
+                    print("ContactManager On PinVC \n>> >> \(ContactManager.sharedManager.currentUser.toAnyObject()) ")
+                    
+                    
+                    // Set Manager navigation path
+                    ContactManager.sharedManager.userIsRemoteUser = true
+                    
+                    // Show homepage
+                    DispatchQueue.main.async {
+                        // Update UI
+                        // Show Home Tab
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                        TabBarViewController
+                        self.view.window?.rootViewController = homeViewController
+                    }
+                    
+                    
+                }else{
+                    
+                    // Send user to create profile
+                    DispatchQueue.main.async {
+                        // Update UI
+                        // Send to create profile
+                        self.performSegue(withIdentifier: "createProfileSegue", sender: self)
+                     
+                    }
+                }
+                
+                // Set user to manager object
+                //ContactManager.sharedManager.currentUser = self.currentUser
+                
+                // Show success
+                //KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
+                
+                
+
+                
+                
+                /*
+                
                 let profileDict = dictionary["data"]
                 
                 let user = User(snapshot: profileDict as! NSDictionary)
@@ -404,7 +484,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                     let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
                     TabBarViewController
                     self.view.window?.rootViewController = homeViewController
-                }
+                }*/
 
                 
                 // Fetch cards
@@ -483,14 +563,20 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                 // Check if current user bool set
                 let check = dictionary["isUser"] as! Bool
                 
+                
+                
                 // Set bool with result
                 if check == false{
                     // False
                     self.isCurrentUser = false
+                    print("")
                 }else{
                     // True
                     self.isCurrentUser = true
                 }
+                
+                 print("Is CurrentUser On Phone Pin VC > \(self.isCurrentUser)")
+                
                 
                 // Check if user needs to be set
                 if self.isCurrentUser && UDWrapper.getDictionary("user") != nil {
@@ -513,11 +599,12 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                     self.currentUser.printUser()
                 }else{
                     // Send to create account
+                   print("PhonePinVerifVC \nIsCurrentUser >> False && The user dictionary >> Nil")
                     
                 }
                 
                 // Set user to manager object
-                ContactManager.sharedManager.currentUser = self.currentUser
+                //ContactManager.sharedManager.currentUser = self.currentUser
                 
                 // Show success
                 KVNProgress.showSuccess(withStatus: "The Code Has Been Sent.")
