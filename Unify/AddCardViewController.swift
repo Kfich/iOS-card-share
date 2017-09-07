@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddCardViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class AddCardViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     
     // Properties
@@ -64,7 +64,12 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         addObservers()
         
         // Set page control count 
-        contactPageControl.numberOfPages = ContactManager.sharedManager.currentUserCards.count
+        contactPageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count
+        
+        // Set decelerate rate 
+        self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        
+        
             
     }
     
@@ -121,10 +126,28 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
             let currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             
             if currentCard.isVerified{
-                //cell.cardWrapperView.layer.borderWidth = 1.5
-                //cell.cardWrapperView.layer.borderColor = UIColor.yellow as! CGColor
-            }
-            
+                cell.cardWrapperView.layer.borderWidth = 1.5
+                
+                //let str = currentCard.cardDesign.color
+                //let data = str.data(using: .utf8)!
+                //let hexString = data.map{ String(format:"%02x", $0) }.joined()
+                
+                print("\(currentCard.cardDesign.logo) The company logo link")
+                
+                // Set logo
+                //cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo))
+                
+                /*if currentCard.cardDesign.logo != "" {
+                    cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo)!, placeholderImage: UIImage(named: "social-blank"))
+                }*/
+                //cell.cardWrapperView.backgroundColor = UIColor.yellow
+                //cell.cardWrapperView.backgroundColor = UIColor(rgb: hexString)
+                
+                if ContactManager.sharedManager.currentUser.profileImages.count > 0{
+                    cell.cardImage.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+                }
+                
+            }            
             // Populate text field data
             
             if currentCard.cardHolderName != nil {
@@ -168,7 +191,7 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        self.contactPageControl.currentPage = indexPath.row
+        //self.contactPageControl.currentPage = indexPath.row
         
         if indexPath.row == ContactManager.sharedManager.viewableUserCards.count - 1{
             
@@ -216,6 +239,55 @@ class AddCardViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
     }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        snapToNearestCell(scrollView as! UICollectionView)
+        /*if !decelerate {
+         scrollToNearestVisibleCollectionViewCell()
+         }*/
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        snapToNearestCell(scrollView as! UICollectionView)
+        //scrollToNearestVisibleCollectionViewCell()
+    }
+    
+    func snapToNearestCell(_ collectionView: UICollectionView) {
+        for i in 0..<collectionView.numberOfItems(inSection: 0) {
+            
+            let itemWithSpaceWidth = collectionView.frame.width
+            let itemWidth = collectionView.frame.width
+            
+            if collectionView.contentOffset.x <= CGFloat(i) * itemWithSpaceWidth + itemWidth / 2 {
+                let indexPath = IndexPath(item: i, section: 0)
+                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                self.contactPageControl.currentPage = indexPath.row
+                break
+            }
+        }
+    }
+    
+    func scrollToNearestVisibleCollectionViewCell() {
+        let visibleCenterPositionOfScrollView = Float(collectionView.contentOffset.x + (self.collectionView!.bounds.size.width / 2))
+        var closestCellIndex = -1
+        var closestDistance: Float = .greatestFiniteMagnitude
+        for i in 0..<collectionView.visibleCells.count {
+            let cell = collectionView.visibleCells[i]
+            let cellWidth = cell.bounds.size.width
+            let cellCenter = Float(cell.frame.origin.x + cellWidth / 2)
+            
+            // Now calculate closest cell
+            let distance: Float = fabsf(visibleCenterPositionOfScrollView - cellCenter)
+            if distance < closestDistance {
+                closestDistance = distance
+                closestCellIndex = collectionView.indexPath(for: cell)!.row
+            }
+        }
+        if closestCellIndex != -1 {
+            self.collectionView!.scrollToItem(at: IndexPath(row: closestCellIndex, section: 0), at: .centeredHorizontally, animated: true)
+        }
+    }
+
     
 
     

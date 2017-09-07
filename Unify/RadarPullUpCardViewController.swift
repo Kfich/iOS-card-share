@@ -10,7 +10,7 @@ import UIKit
 import MessageUI
 
 
-class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, ISHPullUpStateDelegate, UICollectionViewDelegate, UICollectionViewDataSource{
+class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, ISHPullUpStateDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     // Properties
     // ---------------------------------------
@@ -143,8 +143,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Set page control count
         pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count
         
+        // Register cell
         cardCollectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: "AddNewCardCell")
         
+        // Set deselerate rate
+        self.cardCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -526,7 +529,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        self.pageControl.currentPage = indexPath.row
+        //self.pageControl.currentPage = indexPath.row
         
         if indexPath.row == ContactManager.sharedManager.viewableUserCards.count - 1{
             
@@ -547,13 +550,63 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
         
     }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        snapToNearestCell(scrollView as! UICollectionView)
+        /*if !decelerate {
+            scrollToNearestVisibleCollectionViewCell()
+        }*/
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        snapToNearestCell(scrollView as! UICollectionView)
+        //scrollToNearestVisibleCollectionViewCell()
+    }
+    
+    func snapToNearestCell(_ collectionView: UICollectionView) {
+        for i in 0..<collectionView.numberOfItems(inSection: 0) {
+            
+            let itemWithSpaceWidth = cardCollectionView.frame.width
+            let itemWidth = cardCollectionView.frame.width
+            
+            if collectionView.contentOffset.x <= CGFloat(i) * itemWithSpaceWidth + itemWidth / 2 {
+                let indexPath = IndexPath(item: i, section: 0)
+                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                self.pageControl.currentPage = indexPath.row
+                break
+            }
+        }
+    }
+    
+    func scrollToNearestVisibleCollectionViewCell() {
+        let visibleCenterPositionOfScrollView = Float(cardCollectionView.contentOffset.x + (self.cardCollectionView!.bounds.size.width / 2))
+        var closestCellIndex = -1
+        var closestDistance: Float = .greatestFiniteMagnitude
+        for i in 0..<cardCollectionView.visibleCells.count {
+            let cell = cardCollectionView.visibleCells[i]
+            let cellWidth = cell.bounds.size.width
+            let cellCenter = Float(cell.frame.origin.x + cellWidth / 2)
+            
+            // Now calculate closest cell
+            let distance: Float = fabsf(visibleCenterPositionOfScrollView - cellCenter)
+            if distance < closestDistance {
+                closestDistance = distance
+                closestCellIndex = cardCollectionView.indexPath(for: cell)!.row
+            }
+        }
+        if closestCellIndex != -1 {
+            self.cardCollectionView!.scrollToItem(at: IndexPath(row: closestCellIndex, section: 0), at: .centeredHorizontally, animated: true)
+        }
+    }
+    
     // center content 
     
+    /*
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         //Where elements_count is the count of all your items in that
         //Collection view...
-        let cellCount = CGFloat(ContactManager.sharedManager.currentUserCards.count)
+        let cellCount = CGFloat(ContactManager.sharedManager.viewableUserCards.count)
         
         //If the cell count is zero, there is no point in calculating anything.
         if cellCount > 0 {
@@ -580,13 +633,14 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
         
         return UIEdgeInsets.zero
-    }
+    }*/
     
+    /*
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let thisWidth = CGFloat(self.view.frame.width)
         return CGSize(width: thisWidth, height: 240)
-    }
+    }*/
     
     
     
