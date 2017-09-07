@@ -1467,7 +1467,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             // Radar showing so plot people
                             // plot person on map
                             // The tag is used to tag images to identify their index in the array
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                            //self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
                             
                             //print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
                         /*

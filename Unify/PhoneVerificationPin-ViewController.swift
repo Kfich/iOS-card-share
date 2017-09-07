@@ -79,6 +79,9 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         }
 
         
+        // Notifications for keyboard delegate
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
         /*
         //hide the assets
@@ -148,6 +151,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
          print("pin done")*/
         
         
+        
     }
 
 
@@ -196,6 +200,10 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         
         // Drop keyboard
         self.view.endEditing(true)
+        
+        
+        NotificationCenter.default.removeObserver(self)
+
     }
     
     
