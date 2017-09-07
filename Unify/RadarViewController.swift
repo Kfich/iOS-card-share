@@ -1052,7 +1052,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         transaction.type = type
         // Show progress hud
         
-        let conf = KVNProgressConfiguration.default()
+        /*let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -1062,7 +1062,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf)
+        KVNProgress.setConfiguration(conf)*/
         
         KVNProgress.show(withStatus: "Sending your card...")
         

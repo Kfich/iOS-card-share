@@ -60,7 +60,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     var contactList = [Contact]()
     
     var phoneContacts = [CNContact]()
-    
+    var synced = false
     
     
     // Page setup
@@ -104,8 +104,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // ------------------------
     
     @IBAction func importContacts(_ sender: Any) {
+        // Clear arrays and get contacts
+        print("Hey!")
+        
+        self.refreshTable()
+        
         // Get contacts
-        self.getContacts()
+        //self.getContacts()
     }
     
     
@@ -132,11 +137,17 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        
         return letters//["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return letters[section]
+        if shouldShowSearchResults {
+            print("Should show results >> \(shouldShowSearchResults)")
+            return " "
+        }else{
+            return letters[section]
+        }
     }
     
     
@@ -227,9 +238,16 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(10, 3, 15, 15))
-        lbl.text = String(letters[section])
-        lbl.textAlignment = .left
         
+        // Empty header if searching
+        if shouldShowSearchResults {
+            // Empty header
+            lbl.text = ""
+        }else{
+            lbl.text = String(letters[section])
+        }
+        
+        lbl.textAlignment = .left
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(16))
         containerView.addSubview(lbl)
@@ -318,7 +336,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func getContacts() {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
-            //presentSettingsActionSheet()
+            
+            print("Permission status >> \(status)")
+            // Send them to the setting page
+            self.presentSettingsActionSheet()
             return
         }
         
@@ -328,7 +349,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         store.requestAccess(for: .contacts) { granted, error in
             guard granted else {
                 DispatchQueue.main.async {
-                    //self.presentSettingsActionSheet()
+                    self.presentSettingsActionSheet()
                 }
                 return
             }
@@ -406,8 +427,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             
             // Find out if contacts synced
-            var synced = UDWrapper.getBool("contacts_synced")
-            print("Contacts sync value!! >> \(synced)")
+            self.synced = UDWrapper.getBool("contacts_synced")
+            print("Contacts sync value!! >> \(self.synced)")
             //synced = false
             //print("Contacts overwrite sync value!! >> \(synced)")
             
@@ -420,9 +441,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Reload the tableview.
                 self.tblSearchResults.reloadData()
                 
-                if  synced{
+                if  self.synced{
                     
-                    print("Contacts synced!! >> \(synced)")
+                    print("Contacts synced!! >> \(self.synced)")
                     //Set bool to indicate contacts have been synced
                     //UDWrapper.setBool("contacts_synced", value: true)
                     
@@ -513,8 +534,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     contactObject.setContactImageId(id: idString)
                     contactObject.imageDictionary = imageDict
                     
-                    // Upload Record
-                    ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
+                    if self.synced != true {
+                        // Upload Record
+                        ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
+                    }else{
+                        //
+                        print("The users image has been uploaded already")
+                    }
                     
                 }
                 
@@ -582,6 +608,21 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         return contactObjectList
     }
+    
+    func presentSettingsActionSheet() {
+        let alert = UIAlertController(title: "Permission to Contacts", message: "This app needs access to contacts in order to ...", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Go to Settings", style: .default) { _ in
+            let url = URL(string: UIApplicationOpenSettingsURLString)!
+            UIApplication.shared.open(url)
+        })
+        
+        // Add action
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        // Show the alert
+        present(alert, animated: true)
+    }
+
     
     // Search Bar Configuration & Delegates
     

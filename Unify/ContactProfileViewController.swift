@@ -23,7 +23,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     var contact = Contact()
     var cardLink = "https://project-unify-node-server.herokuapp.com/card/render/"
     
-   // var selectedCard = ContactCard()
+    // Check if verified
+    var isVerified = false
+    
     
     // This contact card is really a transaction object
     var card = ContactCard()
@@ -66,6 +68,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     var sections = [String]()
     var tableData = [String: [String]]()
+    // For verified user badges
+    var corpBadges: [CardProfile.Bagde] = []
     
     // IBOutlets
     // --------------------------------------------
@@ -99,6 +103,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBOutlet var phoneImageView: UIImageView!
     @IBOutlet var emailImageView: UIImageView!
     
+    @IBOutlet var badgeImageView: UIImageView!
+    
     // Buttons
     
     @IBOutlet var mediaButton1: UIBarButtonItem!
@@ -111,6 +117,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     @IBOutlet var mediaButton7: UIBarButtonItem!
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    @IBOutlet var badgeCollectionView: UICollectionView!
     
     @IBOutlet var shadowView: YIInnerShadowView!
     
@@ -278,15 +285,31 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         //cell.contentView.backgroundColor = UIColor.red
         self.configureBadges(cell: cell)
         
-        // Configure corner radius
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = self.socialBadges[indexPath.row]
-        
-        // Set image
-        imageView.image = image
-        
-        // Add subview
-        cell.contentView.addSubview(imageView)
+        if collectionView == self.socialBadgeCollectionView {
+            // Config social badges
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+        }else{
+            // Init url
+            let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            imageView.setImageWith(fileUrl! as URL)
+            // Set image
+            //imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            
+        }
         
         return cell
     }
@@ -460,6 +483,16 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
                 })
             }
         })
+    }
+    
+    func parseForCorpBadges() {
+        // Hit endpoint to search for verified
+        
+        // Iterate over the array list
+        
+        // Append items to corpBadgeList 
+        
+        // Reload table
     }
     
     func parseForSocialIcons() {
@@ -724,6 +757,9 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         
         // Parse for badges 
         self.parseForSocialIcons()
+        
+        // Parse for crop
+        self.parseForCorpBadges()
         
         // Reload table data
         self.profileInfoTableView.reloadData()

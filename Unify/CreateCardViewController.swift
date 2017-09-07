@@ -114,12 +114,17 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
         }
         
-        // Add name off jump 
-        showAlertWithTextField(description: "Add Card Name", placeholder: "Enter Name", actionType: "Add Name")
         
         // Set shadow
         self.shadowView.shadowRadius = 3
         self.shadowView.shadowMask = YIInnerShadowMaskTop
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        // Add name off jump
+        showAlertWithTextField(description: "Add Card Name", placeholder: "Enter Name", actionType: "Add Name")
     }
 
     override func viewWillAppear(_ animated: Bool) {

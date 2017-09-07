@@ -143,6 +143,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("titlesRow_\(index)") {
                                         $0.placeholder = "Title"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                     }
                                 }
                                 // Iterate through array and set val
@@ -171,6 +173,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("organizationRow_\(index)") {
                                         $0.placeholder = "Name"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Organizations"
                                     }
                                 }
@@ -204,6 +208,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("numbersRow_\(index)") {
                                         $0.placeholder = "Number"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Phone Numbers"
                                     }
                                 }
@@ -234,6 +240,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("emailsRow_\(index)") {
                                         $0.placeholder = "Address"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Emails"
                                     }
                                 }
@@ -264,6 +272,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("websitesRow_\(index)") {
                                         $0.placeholder = "Site"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Websites"
                                     }
                                 }
@@ -325,6 +335,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("tagRow_\(index)") {
                                         $0.placeholder = "Tag"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Media Info"
                                     }
                                 }
@@ -355,6 +367,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("notesRow_\(index)") {
                                         $0.placeholder = "Note"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Media Info"
                                     }
                                 }
@@ -386,6 +400,8 @@ class AddContactContainerViewController: FormViewController {
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("addressRow_\(index)") {
                                         $0.placeholder = "Address"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Media Info"
                                     }
                                 }

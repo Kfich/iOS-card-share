@@ -216,7 +216,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(30, 9, 100, 15))
-        lbl.text = "Recents"
+        // Empty header if searching
+        if shouldShowSearchResults {
+            // Empty header
+            lbl.text = ""
+        }else{
+            lbl.text = "Recents"
+        }
+
         lbl.textAlignment = .left
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
@@ -614,6 +621,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Purple")
             self.tableView.reloadData()
         }
+        
+        // Reload views
+        self.view.layoutSubviews()
+        self.view.layoutIfNeeded()
         
         // Refresh
         self.tableView.reloadData()

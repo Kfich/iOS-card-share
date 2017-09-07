@@ -311,21 +311,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                     // Append link to list
                     self.socialBadges.append(item.first?.value as! UIImage)
                     
-                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
-                     print("NOT IN LIST")
-                     // Append link to list
-                     self.socialBadges.append(item.first?.value as! UIImage)
-                     }else{
-                     print("ALREADY IN LIST")
-                     }*/
-                    // Append link to list
-                    //self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    
-                    
-                    //print("THE IMAGE IS PRINTING")
                     //print(item.first?.value as! UIImage)
-                    print("SOCIAL BADGES COUNT")
+                    print("Social Count from Quick Share")
                     print(self.socialBadges.count)
                     
                     
@@ -459,7 +446,19 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             
             // Set notes
             if tagsTextField.text != nil{
-                contact.setTags(tag: tagsTextField.text!)
+                
+                let fullString = tagsTextField.text!
+                
+                let tokenArray = fullString.components(separatedBy: " ")
+                
+                print("Token Array\n\(tokenArray)")
+                
+                for item in tokenArray {
+                    // Iterate and set
+                    contact.setTags(tag: item)
+                }
+
+                //contact.setTags(tag: tagsTextField.text!)
             }
             
             // Execute send actions
@@ -585,7 +584,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         
         // Show progress hud
         
-        let conf = KVNProgressConfiguration.default()
+        /*let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -595,7 +594,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf)
+        KVNProgress.setConfiguration(conf)*/
         
         KVNProgress.show(withStatus: "Sending your card...")
         
@@ -615,7 +614,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "Card send succesfully")
                 
                 // Dismiss VC
                 self.dismiss(animated: true, completion: nil)
@@ -638,7 +637,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         
         // Show progress hud
         
-        let conf = KVNProgressConfiguration.default()
+        /*let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -648,7 +647,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf!)
+        KVNProgress.setConfiguration(conf!)*/
         
         // Set text to HUD
         KVNProgress.show(withStatus: "Saving to your contacts...")
@@ -689,7 +688,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 
                 
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "Contact saved")
                 
             } else {
                 // Error occured

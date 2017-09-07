@@ -100,10 +100,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             }
             
             // Add dummy card to array for 'Add Card' Cell
-            let addCardView = ContactCard()
+            //let addCardView = ContactCard()
             
             // Append to current user
-            ContactManager.sharedManager.currentUserCards.append(addCardView)
+            //ContactManager.sharedManager.currentUserCards.append(addCardView)
             
             // Sync up with main queue
             DispatchQueue.main.async {
@@ -824,7 +824,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                     
                     if card.isVerified{
                         ContactManager.sharedManager.currentUserCards.append(card)
-                        ContactManager.sharedManager.viewableUserCards.append(card)
+                        //ContactManager.sharedManager.viewableUserCards.append(card)
                     }
                     tempCardList.append(card)
                 }

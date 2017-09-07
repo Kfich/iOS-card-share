@@ -79,7 +79,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         // Configure views 
         configureViews()
         
-        let conf = KVNProgressConfiguration.default()
+        /*let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -89,7 +89,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf)
+        KVNProgress.setConfiguration(conf)*/
         
         // Config textfields
         firstName.disableFloatingLabel = true
@@ -297,7 +297,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
                     print(response.result.value ?? "Successful upload")
                     
                     // Dismiss hud
-                    KVNProgress.dismiss()
+                    //KVNProgress.dismiss()
                 }
                 
             case .failure(let encodingError):
@@ -390,7 +390,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
                 
                 
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess()
                 
                 // Update user
                 self.updateCurrentUser()
@@ -404,7 +404,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
                 
             }
             // Hide indicator
-            KVNProgress.dismiss()
+            //KVNProgress.dismiss()
         }
     }
     
@@ -477,7 +477,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
                 UDWrapper.setDictionary("user", value: self.newUser.toAnyObjectWithImage())
                 
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess()
                 
                 // Show homepage
                 DispatchQueue.main.async {
@@ -496,7 +496,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
                 KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
             }
             // Hide indicator
-            KVNProgress.dismiss()
+            //KVNProgress.dismiss()
         }
     }
 

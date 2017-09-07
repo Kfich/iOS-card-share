@@ -675,6 +675,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Show incognito cell
             let incognitoCell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
             incognitoCell.incongnitoSwitch.isOn = self.hidden
+            // Hide and disable switch
+            incognitoCell.incongnitoSwitch.isHidden = true
+            incognitoCell.incongnitoSwitch.isEnabled = false
+            
+            // Set accessory view
+            incognitoCell.accessoryType = .disclosureIndicator
             
         }else if indexPath.row == 1 {
             // Show incognito cell
@@ -714,7 +720,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         //Change the selected background view of the cell.
         settingsTableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath.row == 2  {
+        if indexPath.row == 0 {
+            // Show incognito options
+            self.showIncognitoOptions()
+            
+        }else if indexPath.row == 2  {
             // Set nav status
             ContactManager.sharedManager.hideCardsSelected = true
             // Show contact us segue

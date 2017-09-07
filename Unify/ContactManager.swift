@@ -42,6 +42,7 @@ class ContactManager{
     // Check if user from network
     var userIsRemoteUser = false
     var userNeedsRemoteImage = false
+    var userCancelledPinEntry = false
     
     // Settings toggle
     var hideBadgesSelected = false

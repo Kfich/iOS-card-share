@@ -140,7 +140,7 @@ open class MBPhotoPicker: NSObject {
     
     alert.addAction(actionTakePhoto)
     alert.addAction(actionLibrary)
-    alert.addAction(actionLast)
+    //alert.addAction(actionLast)
     alert.addAction(actionCancel)
     
     if !self.disableEntitlements {

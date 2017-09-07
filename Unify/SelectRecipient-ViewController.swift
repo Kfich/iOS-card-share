@@ -190,9 +190,16 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(8, 3, 15, 15))
-        lbl.text = String(letters[section])
-        lbl.textAlignment = .left
         
+        // Empty header if searching
+        if shouldShowSearchResults {
+            // Empty header
+            lbl.text = ""
+        }else{
+            lbl.text = String(letters[section])
+        }
+        
+        lbl.textAlignment = .left
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(16))
         containerView.addSubview(lbl)

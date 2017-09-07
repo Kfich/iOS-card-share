@@ -452,7 +452,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
         
         // Show progress hud
         
-        let conf = KVNProgressConfiguration.default()
+        /*let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -462,7 +462,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf)
+        KVNProgress.setConfiguration(conf)*/
         
         KVNProgress.show(withStatus: "Sending your card...")
         
@@ -482,7 +482,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
                 self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
                 
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "Card sent successfully")
                 
                 // Dismiss VC
                 self.dismiss(animated: true, completion: nil)

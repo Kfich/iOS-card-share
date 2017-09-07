@@ -89,8 +89,23 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             //in case we need callback
         }
         
-    
+        // Request for push
         UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+        
+        // Present keyboard everytime page loads
+        phoneNumberInput.becomeFirstResponder()
+        
+        // Add Oberservers for keyboard notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
+        if ContactManager.sharedManager.userCancelledPinEntry {
+            print("User was set to manager")
+            // Set current user to manager
+            self.currentUser = ContactManager.sharedManager.currentUser
+        }else{
+            print("Current user stays blank")
+        }
         
         
         
@@ -126,7 +141,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         // Add Action to textfield
         phoneNumberInput.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
-        let conf = KVNProgressConfiguration.default()
+        /*let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -136,7 +151,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf)
+        KVNProgress.setConfiguration(conf)*/
         
         // Add Oberservers for keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -220,7 +235,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
        {
             retryAttempts = 0
         
-            sendConfirmationBtn.isEnabled = false
+            //sendConfirmationBtn.isEnabled = false
         
             Countly.sharedInstance().recordEvent("send phone number for verification")
         
@@ -273,6 +288,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         // Create user dictionary to store to DB
         let parameters = ["data": currentUser.toAnyObject()]
         
+        print("Issue Pin Params\n\(parameters)")
         
         KVNProgress.show(withStatus: "Sending Confirmation Code...")
         

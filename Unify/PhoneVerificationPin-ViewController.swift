@@ -40,6 +40,8 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         case Restart
         
     }
+    // Handle nav
+    var userCancelledEntry = false
     
     
     // Bool check for user existance
@@ -204,6 +206,18 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         // Return user to previous screen
         self.navigationController?.popViewController(animated: true)
         
+        // Set bool
+        self.userCancelledEntry = true
+        
+        ContactManager.sharedManager.userCancelledPinEntry = true
+        
+        print("Contact Manager Verify Tap \n\(ContactManager.sharedManager.currentUser.toAnyObject())")
+        
+        self.dismiss(animated: true) {
+            // Print   
+            print("Drop the vc")
+        }
+        
         // Execute issue pin call
         //self.issuePin()
         
@@ -268,7 +282,13 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         // Process pin
         
         
-        processPin()
+        if userCancelledEntry != true {
+            // Execute verification
+            processPin()
+        }else{
+            // The user needed to resend
+            print("User cancelled entry")
+        }
        
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y != 0 {
@@ -300,33 +320,66 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         let parameters = ["pin": userPin, "token": currentUser.userId]
         
         // Show Progress HUD
-        //KVNProgress.show(withStatus: "Creating your account...")
+        KVNProgress.show(withStatus: "Processing your account...")
         
         Connection(configuration: nil).verifyPinCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                print("\n\nConnection - Create User Response: \(String(describing: response))\n\n")
+                print("\n\nConnection - Pin Processing Response: \(String(describing: response))\n\n")
                 
-                Countly.sharedInstance().recordEvent("phone verification successful")
+                
+                let successDict = response as! NSDictionary
+                
+                let success = successDict["success"] as! Bool
+                print("Success status \(success)")
+                
+                if success{
+                    // Pin successful
+                    
+                    Countly.sharedInstance().recordEvent("phone verification successful")
+                    
+                    // If here, that means we matched
+                    
+                    // Show indicator
+                    //KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
+                    
+                    
+                    self.currentUser.setVerificationPhoneStatus(status: true)
+                    
+                    
+                    // Assign current user to manager object
+                    //ContactManager.sharedManager.currentUser = self.currentUser
+                    
+                    // Store user to device
+                    //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+                    
+                    // Show success
+                    KVNProgress.showSuccess()
+                    
+                    // Check if current user 
+                    self.checkForExisitingAccount()
+                    
+                }else{
+                    
+                    // Show user popup of error message
+                    print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")
+                    KVNProgress.showError(withStatus: "Your pin is incorrect. Please try again")
+                    
+                    // Clear pin values
+                    self.userPin = ""
+                    // Clear pin text area
+                    self.pinCodeArea.text = ""
+                    // Reenable button
+                    self.verifyBtn.isEnabled = true
+                    self.verifyBtn.isHidden = false
+                    
+                    // Relaunch keyboard
+                    DispatchQueue.main.async {
+                        self.pinCodeArea.becomeFirstResponder()
+                    }
 
-                // If here, that means we matched
-        
-                // Show indicator
-                //KVNProgress.showSuccess(withStatus: "Preparing profile.. ")
-
-                
-                self.currentUser.setVerificationPhoneStatus(status: true)
-
-                
-                // Assign current user to manager object
-                //ContactManager.sharedManager.currentUser = self.currentUser
-
-                // Store user to device
-                //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
-                
-                
-                // Check if current user 
-                self.checkForExisitingAccount()
+                    
+                }
                 
                 
                 
@@ -335,11 +388,12 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                 
                 self.verifyBtn.isEnabled = true
                 self.verifyBtn.isHidden = false
-         
-         
+                
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")
-                KVNProgress.showError(withStatus: "Your pin is incorrect. Please try again")
+                KVNProgress.showError(withStatus: "An error with the connection occured. Please try again")
+         
+               
             }
             
         })
@@ -349,12 +403,26 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     func checkForExisitingAccount()  {
         // Bool check 
-        if isCurrentUser {
+        if isCurrentUser && UDWrapper.getDictionary("user") == nil{
             // Set to manager 
             //ContactManager.sharedManager.currentUser = self.currentUser
             
             // Fetch data 
             self.fetchCurrentUser()
+            
+        }else if self.isCurrentUser && UDWrapper.getDictionary("user") != nil{
+            // User should be set in manager already
+            print("Should be set in manager >> \n\(ContactManager.sharedManager.currentUser.toAnyObjectWithImage())")
+            
+            // Show homepage
+            DispatchQueue.main.async {
+                // Update UI
+                // Show Home Tab
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                TabBarViewController
+                self.view.window?.rootViewController = homeViewController
+            }
             
         }else{
             // Send to create profile

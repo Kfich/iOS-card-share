@@ -228,6 +228,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
                 
+                print("Contact Object 1 \n\n\(contact.emailAddresses)")
+                print("\n\nContact Object 2 \n\n\(recipient.emailAddresses)")
+                
+                
                 let contactEmail = contact.emailAddresses[0].value as String
                 let recipientEmail = recipient.emailAddresses[0].value as String
                 
@@ -338,9 +342,16 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(8, 3, 15, 15))
-        lbl.text = String(letters[section])
-        lbl.textAlignment = .left
         
+        // Empty header if searching
+        if shouldShowSearchResults {
+            // Empty header
+            lbl.text = ""
+        }else{
+            lbl.text = String(letters[section])
+        }
+
+        lbl.textAlignment = .left
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(16))
         containerView.addSubview(lbl)
@@ -1023,7 +1034,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Check if they both have email
         name = formatter.string(from: contact) ?? "No Name"
-        recipientName = formatter.string(from: recipient) ?? "No Name"
+        
+        if self.tableView.isHidden == false{
+            // Recipient name from the contact object
+            recipientName = formatter.string(from: recipient) ?? "No Name"
+        }else{
+            recipientName = "\(self.firstNameLabel.text ?? "") \(self.lastNameLabel.text ?? "")"
+        }
         
         if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
             
@@ -1031,7 +1048,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             let recipientEmail = recipient.emailAddresses[0].value as String
             
             // Set variable
-           // emailContact = contactEmail
+            emailContact = contactEmail
             emailRecipient = recipientEmail
             
             print("Emails :: \(emailContact) \(emailRecipient)")
@@ -1048,10 +1065,23 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
-        emailContact = self.emailLabel.text ?? ""
         
-        // Create Message
-        mailComposerVC.setToRecipients([emailContact])
+        if self.tableView.isHidden {
+            print("Table hidden")
+            // Default to form
+            emailContact = self.emailLabel.text ?? ""
+            
+            // Create Message
+            mailComposerVC.setToRecipients([emailContact])
+        }else{
+            print("Table showing")
+            // Create Message
+            mailComposerVC.setToRecipients([emailContact, emailRecipient])
+            
+        }
+        
+        
+        
         mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")
         mailComposerVC.setMessageBody(str, isHTML: false)
         
@@ -1114,8 +1144,18 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             // Set notes
             if tagsLabel.text != nil{
-                // Add tag to object
-                contact.setTags(tag: tagsLabel.text!)
+                
+                var fullString = tagsLabel.text!
+                
+                let tokenArray = fullString.components(separatedBy: " ")//split(fullString) {$0 == " "}
+                
+                print("Token Array\n\(tokenArray)")
+                
+                for item in tokenArray {
+                    // Iterate and set
+                    contact.setTags(tag: item)
+                }
+                
                 
             }
             
@@ -1228,7 +1268,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Show progress hud
         
-        let conf = KVNProgressConfiguration.default()
+        /*let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -1238,7 +1278,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf!)
+        KVNProgress.setConfiguration(conf!)*/
         
         // Set text to HUD
         KVNProgress.show(withStatus: "Saving to your contacts...")
@@ -1549,7 +1589,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Show progress hud
         
-        let conf = KVNProgressConfiguration.default()
+       /* let conf = KVNProgressConfiguration.default()
         conf?.isFullScreen = true
         conf?.statusColor = UIColor.white
         conf?.successColor = UIColor.white
@@ -1559,7 +1599,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         conf?.circleStrokeBackgroundColor = UIColor.white
         conf?.circleStrokeForegroundColor = UIColor.white
         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf)
+        KVNProgress.setConfiguration(conf)*/
         
         KVNProgress.show(withStatus: "Sending your card...")
         

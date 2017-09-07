@@ -75,6 +75,7 @@ class EditProfileContainerViewController: FormViewController {
             
             self.tableView.backgroundColor = UIColor.white
             
+            
             //title = "Multivalued Examples"
             form +++
                 
@@ -96,6 +97,9 @@ class EditProfileContainerViewController: FormViewController {
                                         $0.multivaluedRowToInsertAt = { index in
                                             return NameRow("titlesRow_\(index)") {
                                                 $0.placeholder = "Title"
+                                                $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                                $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                                
                                             }
                                         }
                                         // Iterate through array and set val
@@ -123,6 +127,8 @@ class EditProfileContainerViewController: FormViewController {
                                         $0.multivaluedRowToInsertAt = { index in
                                             return NameRow("organizationRow_\(index)") {
                                                 $0.placeholder = "Name"
+                                                $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                                $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                                 //$0.tag = "Add Organizations"
                                             }
                                         }
@@ -154,6 +160,8 @@ class EditProfileContainerViewController: FormViewController {
                     $0.multivaluedRowToInsertAt = { index in
                         return NameRow("bioRow_\(index)") {
                             $0.placeholder = "Bio"
+                            $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                            $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                             self.count = self.count + 1
                             //$0.tag = "Add Bio"
                             
@@ -200,6 +208,8 @@ class EditProfileContainerViewController: FormViewController {
                                     $0.multivaluedRowToInsertAt = { index in
                                         return NameRow("numbersRow_\(index)") {
                                             $0.placeholder = "Number"
+                                            $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                            $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             //$0.tag = "Phone Numbers"
                                         }
                                     }
@@ -230,6 +240,8 @@ class EditProfileContainerViewController: FormViewController {
                                     $0.multivaluedRowToInsertAt = { index in
                                         return NameRow("emailsRow_\(index)") {
                                             $0.placeholder = "Address"
+                                            $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                            $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             //$0.tag = "Add Emails"
                                         }
                                     }
@@ -290,6 +302,8 @@ class EditProfileContainerViewController: FormViewController {
                                     $0.multivaluedRowToInsertAt = { index in
                                         return NameRow("websitesRow_\(index)") {
                                             $0.placeholder = "Site"
+                                            $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                            $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             //$0.tag = "Add Websites"
                                         }
                                     }
@@ -321,6 +335,8 @@ class EditProfileContainerViewController: FormViewController {
                                     $0.multivaluedRowToInsertAt = { index in
                                         return NameRow("tagRow_\(index)") {
                                             $0.placeholder = "Tag"
+                                            $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                            $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             //$0.tag = "Add Media Info"
                                         }
                                     }
@@ -352,6 +368,8 @@ class EditProfileContainerViewController: FormViewController {
                                     $0.multivaluedRowToInsertAt = { index in
                                         return NameRow("addRow_\(index)") {
                                             $0.placeholder = "Address"
+                                            $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                            $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             //$0.tag = "Add Media Info"
                                         }
                                     }

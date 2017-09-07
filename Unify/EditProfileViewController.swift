@@ -654,10 +654,12 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         photo.cameraFlashMode = .auto
         
         photo.actionTitleLibrary = "Photo Library"
-        photo.actionTitleLastPhoto = "Last Photo"
+        //photo.actionTitleLastPhoto = nil
         photo.actionTitleTakePhoto = "Take Photo"
         photo.actionTitleCancel = "Cancel"
         photo.actionTitleOther = "Import From..."
+        
+        
     }
 
     

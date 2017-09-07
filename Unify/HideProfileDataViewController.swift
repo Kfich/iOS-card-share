@@ -139,7 +139,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Return count
-             return ContactManager.sharedManager.currentUserCards.count - 1
+             return ContactManager.sharedManager.currentUserCards.count
             
         }else{
             // Set titleview
@@ -165,7 +165,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
             
             // Return count
             cell.badgeName.text = cell.currentCard.cardName//ContactManager.sharedManager.viewableUserCards[indexPath.row].cardName
-            cell.badgeToggleSwitch.isOn = cell.currentCard.isHidden//ContactManager.sharedManager.viewableUserCards[indexPath.row].isHidden
+            cell.badgeToggleSwitch.isOn = !(cell.currentCard.isHidden)//ContactManager.sharedManager.viewableUserCards[indexPath.row].isHidden
             
             
             if ContactManager.sharedManager.currentUserCards[indexPath.row].cardProfile.images.count > 0{
@@ -186,7 +186,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
             cell.badgeName.text = cell.currentBadge.website
             let fileUrl = NSURL(string: cell.currentBadge.pictureUrl)
             cell.badgeImageView.setImageWith(fileUrl! as URL)
-            cell.badgeToggleSwitch.isOn = cell.currentBadge.isHidden ?? false//ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
+            cell.badgeToggleSwitch.isOn = !(cell.currentBadge.isHidden ?? false)//ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].isHidden ?? false
             
         }
         
