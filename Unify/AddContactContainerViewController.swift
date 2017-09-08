@@ -164,7 +164,7 @@ class AddContactContainerViewController: FormViewController {
                                 $0.tag = "Organization Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
-                                        $0.title = "Add Organizations"
+                                        $0.title = "Add Company"
                                         //$0.tag = "Add Organizations"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left

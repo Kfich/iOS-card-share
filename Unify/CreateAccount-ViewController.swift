@@ -120,6 +120,9 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
         //application.registerForRemoteNotifications()
         
+        // Det image to default to acoid crash on no select 
+        self.selectedImage = self.profileImageContainerView.image!
+        
     }
     
     

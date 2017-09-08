@@ -115,6 +115,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet var badgeCollectionView: UICollectionView!
     @IBOutlet var profileImageCollectionView: UICollectionView!
     @IBOutlet var shadowView: YIInnerShadowView!
+    @IBOutlet var pencilIcon: UIImageView!
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -182,6 +183,12 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Set button 
         //self.cardNameButton.setTitle(card.cardName ?? "", for: .normal)
+        
+        // Add gesture tp pencil icon 
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        self.pencilIcon.isUserInteractionEnabled = true
+        self.pencilIcon.addGestureRecognizer(tapGestureRecognizer)
         
     }
     
@@ -1602,6 +1609,13 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Custom Methods
     // -------------------------------------------
+    
+    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+        // Set action to set name for card 
+        self.addCardName(self)
+    }
     
     func initializeBadgeList() {
         // Image config

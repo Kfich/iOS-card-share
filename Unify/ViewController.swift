@@ -67,7 +67,7 @@ class ViewController: UIViewController {
                 
                 //onboardingVC?.backgroundImage = UIImage(named: "onboard-second")
                 
-                
+            
                 //onboardingVC?.performSegue(withIdentifier: "createProfileSegue", sender: self)
                 
             }
