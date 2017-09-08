@@ -182,7 +182,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneEditingProfile))
         
         links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.pinterest.com/", "https://www.linkedin.com/", "https://www.plus.google.com/", "https://www.crunchbase.com/", "https://www.youtube.com/",
-                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.quora.com/", "https://www.reddit.com/"]
+                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.quora.com/", "https://www.reddit.com/", "https://www.snapchat.com/"]
         
         // Create list for parsing values
         self.initializeBadgeList()
@@ -683,9 +683,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let img15 = UIImage(named: "Tumblr.png")
         let img16 = UIImage(named: "Quora.png")
         let img17 = UIImage(named: "Reddit.png")
+        let img18 = UIImage(named: "Snapchat.png")
         // Hash images
         
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!], ["snapchat" : img18!]]
         
     }
     

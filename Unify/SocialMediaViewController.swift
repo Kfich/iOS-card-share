@@ -37,6 +37,8 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     let img15 = UIImage(named: "Tumblr.png")
     let img16 = UIImage(named: "Quora.png")
     let img17 = UIImage(named: "Reddit.png")
+    let img18 = UIImage(named: "Snapchat.png")
+    //let img19 = UIImage(named: "green-plus-big.png")
 
     
     
@@ -73,7 +75,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         //links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pinterest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
         
         links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.pinterest.com/", "https://www.linkedin.com/", "https://www.plus.google.com/", "https://www.crunchbase.com/", "https://www.youtube.com/",
-                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.quora.com/", "https://www.reddit.com/"]
+                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.quora.com/", "https://www.reddit.com/", "https://www.snapchat.com/"]
         
         //socialOptions = [, , , , , , , , , , , , , , , , , , , , , , ]
         
@@ -96,7 +98,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!, img14!, img15!, img16!, img17!]
+        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!, img14!, img15!, img16!, img17!, img18!]
     }
     
     override func didReceiveMemoryWarning() {
@@ -184,24 +186,52 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     
     
     func configureViews(cell: MediaThumbnailCell, index: Int){
-        // Add radius config & border color
         
-        cell.contentView.layer.cornerRadius = 45.0
-        cell.contentView.clipsToBounds = true
-        //cell.contentView.layer.borderWidth = 0.5
-        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        if index != 18 {
+            
+            // Add radius config & border color
+            cell.contentView.layer.cornerRadius = 45.0
+            cell.contentView.clipsToBounds = true
+            //cell.contentView.layer.borderWidth = 0.5
+            //cell.contentView.layer.borderColor = UIColor.blue.cgColor
+            
+            // Set shadow on the container view
+            cell.layer.shadowColor = UIColor.black.cgColor
+            cell.layer.shadowOpacity = 1.0
+            cell.layer.shadowOffset = CGSize.zero
+            cell.layer.shadowRadius = 0.5
+            
+            let imageView = UIImageView()
+            imageView.frame = CGRect(x: 0, y: 0 , width: 90, height: 90)
+            //let image = thumbnailImageList[]
+            imageView.image = thumbnailImageList[index]
+            cell.contentView.addSubview(imageView)
+            
+        }else{
+            
+            // Add radius config & border color
+            cell.contentView.layer.cornerRadius = 20
+            cell.contentView.clipsToBounds = true
+            //cell.contentView.layer.borderWidth = 0.5
+            //cell.contentView.layer.borderColor = UIColor.blue.cgColor
+            
+            // Set shadow on the container view
+            cell.layer.shadowColor = UIColor.black.cgColor
+            cell.layer.shadowOpacity = 1.0
+            cell.layer.shadowOffset = CGSize.zero
+            cell.layer.shadowRadius = 0.5
+            
+            let imageView = UIImageView()
+            imageView.frame = CGRect(x: 22, y: 10 , width: 40, height: 40)
+            
+            
+            //let image = thumbnailImageList[]
+            imageView.image = thumbnailImageList[index]
+            cell.contentView.addSubview(imageView)
+        }
+       
         
-        // Set shadow on the container view
-        cell.layer.shadowColor = UIColor.black.cgColor
-        cell.layer.shadowOpacity = 1.0
-        cell.layer.shadowOffset = CGSize.zero
-        cell.layer.shadowRadius = 0.5
         
-        let imageView = UIImageView()
-        imageView.frame = CGRect(x: 0, y: 0 , width: 90, height: 90)
-        //let image = thumbnailImageList[]
-        imageView.image = thumbnailImageList[index]
-        cell.contentView.addSubview(imageView)
         
         
         // Add radius config & border color

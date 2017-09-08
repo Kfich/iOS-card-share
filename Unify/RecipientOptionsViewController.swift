@@ -992,9 +992,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
             
             // Configure message
-            //let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            let str = "\n\n\n\(cardLink)"
             
-            let str = ""
+            //let str = ""
             
             // Check here if logic needed
             if self.tableView.isHidden {
@@ -1069,7 +1069,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Set card link from cardID
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
         
-        let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "\n\n\n\(cardLink)"
         
         
         if self.tableView.isHidden {

@@ -564,7 +564,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
             // Set card link from cardID
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
             
-            composeVC.body = "Hi, I'd like to connect with you. Here's my information \n\n\(cardLink)"
+            composeVC.body = "\n\n\n\(cardLink)"
             
             // Present the view controller modally.
             self.present(composeVC, animated: true, completion: nil)
@@ -612,7 +612,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
         // Create Message
         mailComposerVC.setToRecipients(["kfich7@gmail.com"])
         mailComposerVC.setSubject("Greetings - Let's Connect")
-        mailComposerVC.setMessageBody("Hi, I'd like to connect with you. Here's my information \n\n\(cardLink)", isHTML: false)
+        mailComposerVC.setMessageBody("\n\n\n\(cardLink)", isHTML: false)
         
         return mailComposerVC
     }

@@ -585,10 +585,12 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         let img15 = UIImage(named: "Tumblr.png")
         let img16 = UIImage(named: "Quora.png")
         let img17 = UIImage(named: "Reddit.png")
+        let img18 = UIImage(named: "Snapchat.png")
+        let img19 = UIImage(named: "social-blank")
         // Hash images
         
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
-        
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!], ["snapchat" : img18!], ["other" : img19!]]
+
         
     }
 
@@ -635,12 +637,20 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
         // Remove all items from badges
         self.socialBadges.removeAll()
-        // Add plus icon to list
+        // Init map of all keys
+        let array = self.socialLinkBadges.flatMap({$0.keys})
+        print("Map Array", array)
+        
+        //
+        var knownSocialList : [String] = []
         
         // Iterate over links[]
         for link in self.socialLinks {
+            
             // Check if link is a key
             print("Link >> \(link)")
+            
+            
             for item in self.socialLinkBadges {
                 // Test
                 //print("Item >> \(item.first?.key)")
@@ -650,23 +660,44 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
                 // Check if key in link
                 if link.lowercased().range(of:str!) != nil {
                     print("exists")
-                    
+                   
+                    /*
                     // Append link to list
                     self.socialBadges.append(item.first?.value as! UIImage)
 
                     //print("THE IMAGE IS PRINTING")
                     //print(item.first?.value as! UIImage)
                     print("SOCIAL BADGES COUNT")
-                    print(self.socialBadges.count)
+                    print(self.socialBadges.count)*/
                     
+                    // Add to known social list
+                    knownSocialList.append(link)
+                    print("Known list ", knownSocialList)
                     
+                }else{
+                    print("The link was not in range")
                 }
             }
-            
             
             // Reload table
             self.socialBadgeCollectionView.reloadData()
         }
+        
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            print("Link In Social .. \(link)")
+            
+            if knownSocialList.contains(link) {
+                // The item is known
+                print("The link is contained here > \(link)")
+            }else{
+                // The item is known
+                print("This link is not in the known list > \(link)")
+            }
+            
+        }
+        
         
         // Add image to the end of list
         //let image = UIImage(named: "icn-plus-blue")

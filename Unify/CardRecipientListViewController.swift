@@ -361,8 +361,12 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
                 composeVC.recipients = [contactPhone!]
             }
             
+            // Set card link from cardID
+            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedUserCard.cardId!)"
+            
             // Test String
-            let str = "Hi \(name), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n"
+            let str = "\n\n\n\(cardLink)"
+
             
             // Set string as message body
             composeVC.body = str
@@ -408,7 +412,7 @@ class CardRecipientListViewController: UIViewController, UITableViewDataSource, 
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedUserCard.cardId!)"
         
         // Test String
-        let str = "Hi \(name), I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "\n\n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact])

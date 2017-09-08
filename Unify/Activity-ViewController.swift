@@ -1784,7 +1784,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
             
             // Configure message
-            let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            let str = "\n\n\n\(cardLink)"
             
             // Set message string
             composeVC.body = str
@@ -1811,7 +1811,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
         
         // Configure message
-        let str = "Hi,\n\nIt was a pleasure connecting with you. Looking to continuing our conversation.\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "\n\n\n\(cardLink)"
         
         var mail = [String]()
         

@@ -758,7 +758,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
             
             // Test String
-            let str = "Hi \(name), I'd like to connect with you. Here's my information: \(String(describing: currentUser.getName()))\nBest, \n\(currentUser.fullName) \n\n\(cardLink)"
+            let str = "\n\n\n\(cardLink)"
             
             // Set string as message body
             composeVC.body = str
@@ -801,7 +801,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
         
         // Test String
-        let str = "Hi \(contactName), I'd like to connect with you. Here's my information \n\(String(describing: currentUser.getName()))\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "\n\n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([self.selectedEmail])

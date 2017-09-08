@@ -1100,7 +1100,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
             
             // Test String
-            let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n \(cardLink)"
+            let str = "\n\n\n \(cardLink)"
             
             // Set string as message body
             composeVC.body = str
@@ -1151,7 +1151,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(card.cardId!)"
         
         // Test String
-        let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: currentUser.getName()))\n\n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "\n\n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([emailContact])

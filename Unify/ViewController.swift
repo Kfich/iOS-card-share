@@ -64,13 +64,18 @@ class ViewController: UIViewController {
                 // Notification for radar screen
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CreateProfileNotification"), object: self)
 
-                
+
+
                 //onboardingVC?.backgroundImage = UIImage(named: "onboard-second")
                 
             
                 //onboardingVC?.performSegue(withIdentifier: "createProfileSegue", sender: self)
                 
             }
+            
+            secondPage.actionButton.layer.cornerRadius = secondPage.actionButton.frame.height / 2
+            secondPage.actionButton.backgroundColor = UIColor.white
+            secondPage.actionButton.setTitleColor(UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0), for: .normal)
             
             // Add Content controller to the main VC
             onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "backgroundGradient"), contents: [firstPage, secondPage])

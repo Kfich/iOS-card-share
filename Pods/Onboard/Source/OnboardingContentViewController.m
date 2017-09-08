@@ -23,7 +23,7 @@ static CGFloat const kDefaultBottomPadding = 50;
 static CGFloat const kDefaultUnderPageControlPadding = 25;
 static CGFloat const kDefaultTitleFontSize = 0;
 static CGFloat const kDefaultBodyFontSize = 0;
-static CGFloat const kDefaultButtonFontSize = 20;
+static CGFloat const kDefaultButtonFontSize = 18;
 
 static CGFloat const kActionButtonHeight = 80;
 static CGFloat const kMainPageControlHeight = 25;
@@ -303,7 +303,17 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     [self.bodyLabel sizeToFit];
     self.bodyLabel.frame = CGRectMake(xPadding, bodyYOrigin, contentWidth, CGRectGetHeight(self.bodyLabel.frame));
 
-    self.actionButton.frame = CGRectMake((CGRectGetMaxX(self.view.frame) / 2) - (contentWidth / 2), CGRectGetMaxY(self.view.frame) - self.underPageControlPadding - kMainPageControlHeight - kActionButtonHeight - self.bottomPadding, contentWidth, kActionButtonHeight);
+   // self.actionButton.frame = CGRectMake((CGRectGetMaxX(self.view.frame) / 2) - (contentWidth / 2), CGRectGetMaxY(self.view.frame) - self.underPageControlPadding - kMainPageControlHeight - kActionButtonHeight - self.bottomPadding, 150, kActionButtonHeight);
+    
+     self.actionButton.frame = CGRectMake(self.view.center.x - 75, CGRectGetMaxY(self.view.frame) - self.underPageControlPadding - kMainPageControlHeight - kActionButtonHeight - self.bottomPadding, 150, 30);
+    
+    //half of the width
+    self.actionButton.layer.cornerRadius = self.actionButton.frame.size.height/2.0f;
+    //self.actionButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    //self.actionButton.layer.borderWidth=1.0f;
+    
+    // Set view center alignment
+    //self.actionButton.center.x = self.view.center.x;
 }
 
 #pragma mark - Custom Methods
