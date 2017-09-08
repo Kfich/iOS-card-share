@@ -992,8 +992,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
             
             // Configure message
-            let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            //let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
             
+            let str = ""
+            
+            // Check here if logic needed
+            if self.tableView.isHidden {
+                // Take selected phone from form
+            }
             // Set selected phone 
             self.selectedContactPhone = self.phoneLabel.text ?? ""
             composeVC.recipients = [selectedContactPhone]

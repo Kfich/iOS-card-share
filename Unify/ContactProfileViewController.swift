@@ -276,7 +276,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             
             return 1
          }*/
-        return self.socialBadges.count
+        if collectionView == self.socialBadgeCollectionView {
+            return self.socialBadges.count
+        }else{
+            return self.corpBadges.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -298,7 +302,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             cell.contentView.addSubview(imageView)
         }else{
             // Init url
-            let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl)
+            /*let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl)
             
             // Configure corner radius
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -307,7 +311,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             //imageView.image = image
             
             // Add subview
-            cell.contentView.addSubview(imageView)
+            cell.contentView.addSubview(imageView)*/
+            print("Hey")
             
         }
         
