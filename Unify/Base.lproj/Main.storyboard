@@ -5744,7 +5744,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zYt-ls-esq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5959" y="2220"/>
+            <point key="canvasLocation" x="4382" y="2578"/>
         </scene>
         <!--Buisness Detail View Controller-->
         <scene sceneID="JaG-Nb-tsB">
@@ -7149,6 +7149,14 @@
                                                     <segue destination="w6v-Tq-eZw" kind="embed" id="fys-NY-3se"/>
                                                 </connections>
                                             </containerView>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VyX-MS-T4o">
+                                                <rect key="frame" x="236" y="168" width="46" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <segue destination="7T2-Rs-jbT" kind="show" id="dOC-Cd-SvM"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="reK-k5-yI2" firstAttribute="top" secondItem="oqB-lr-BSg" secondAttribute="top" constant="14" id="3Ew-CC-eXh"/>

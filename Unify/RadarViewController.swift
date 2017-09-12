@@ -60,6 +60,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // Array for storing plotted coordinates
     var plotLocations = [[String: CGFloat]]()
     
+    // Status bar view
+    var barView = UIView()
     
     // Halo
     let halo2 = PulsingHaloLayer()
@@ -233,6 +235,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Test cropper
         //self.showCropper()
+        
+        // Update user interface to check for connection 
+        self.updateUserInterface()
 
   
     }
@@ -733,6 +738,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Update send card button
         NotificationCenter.default.addObserver(self, selector: #selector(RadarViewController.updateSendCardButton), name: NSNotification.Name(rawValue: "UpdateSendCard"), object: nil)
         
+        // Notification for network connection
+        NotificationCenter.default.addObserver(self, selector: #selector(statusManager), name: .flagsChanged, object: Network.reachability)
+    
     }
     
     func toggleRadar() {
@@ -1766,9 +1774,109 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
     }
     
+    // Update interface if no service available
+    
+    func updateUserInterface() {
+        guard let status = Network.reachability?.status else { return }
+        switch status {
+        case .unreachable:
+            // Show view 
+            print("Unreachable")
+            // Hide bar
+            self.barView.isHidden = false
+            
+            // Hide status bar
+            var prefersStatusBarHidden: Bool {
+                return true
+            }
+            // Show message
+            showNetworkConnectionNotification()
+            //view.backgroundColor = .red
+        case .wifi:
+            //view.backgroundColor = .green
+            print("Wifi")
+            // Hide bar
+            self.barView.isHidden = true
+            // Show status
+            var prefersStatusBarHidden: Bool {
+                return false
+            }
+            
+        case .wwan:
+            print("WWAN")
+            // Hide barview
+            self.barView.isHidden = true
+            // Show status bar
+            var prefersStatusBarHidden: Bool {
+                return false
+            }
+        }
+        print("Reachability Summary")
+        print("Status:", status)
+        print("HostName:", Network.reachability?.hostname ?? "nil")
+        print("Reachable:", Network.reachability?.isReachable ?? "nil")
+        print("Wifi:", Network.reachability?.isReachableViaWiFi ?? "nil")
+    }
+    
+    
+    func statusManager(_ notification: NSNotification) {
+        updateUserInterface()
+    }
+
+    func showNetworkConnectionNotification(){
+        
+        // Init view to mount
+        barView = UIView(frame: CGRect(x:0, y:0, width:view.frame.width, height:25))
+        barView.backgroundColor=UIColor.white // set any colour you want..
+        
+        // Add view to main view
+        self.view.addSubview(barView)
+ 
+        
+        let notifyLabel = UILabel()
+        notifyLabel.frame = CGRect(x:0, y:0, width:view.frame.width, height:25)
+        notifyLabel.backgroundColor=UIColor.clear
+        notifyLabel.text = "No network connection. Checking again..."
+        notifyLabel.textAlignment = .center
+        notifyLabel.textColor = UIColor.blue
+        notifyLabel.alpha = 0.8
+        barView.addSubview(notifyLabel)
+        
+        
+        
+        // To achive animation
+        //barView.center.y -= (navigationController?.navigationBar.bounds.height)!
+        
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.6, options: UIViewAnimationOptions.curveEaseIn, animations:{
+            
+            UIApplication.shared.isStatusBarHidden = true
+            UINavigationController().navigationBar.isHidden = true
+            self.barView.center.y += (45)
+            
+            
+        }, completion:{ finished in
+            
+            
+            
+            UIView.animate(withDuration: 1.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.9, options: UIViewAnimationOptions.curveEaseOut, animations:{
+                // notifyLabel.alpha = 0...1
+                UIApplication.shared.isStatusBarHidden = false
+                //UINavigationController().navigationBar.isHidden = false
+                self.barView.center.y -= ((25) + UIApplication.shared.statusBarFrame.height)
+                
+                
+            }, completion: nil)
+            
+        })
+        
+        
+    }
+    
+    
+    
     
     // Function called to retrieve contacts and sort to find user
-    
     // Deprecate this method once conatcts settled in
     
     func retrieveContactsWithStore(store: CNContactStore) {

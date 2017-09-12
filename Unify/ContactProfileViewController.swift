@@ -513,9 +513,11 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         let img15 = UIImage(named: "Tumblr.png")
         let img16 = UIImage(named: "Quora.png")
         let img17 = UIImage(named: "Reddit.png")
+        let img18 = UIImage(named: "Snapchat.png")
+        let img19 = UIImage(named: "social-blank")
         // Hash images
         
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!], ["snapchat" : img18!], ["other" : img19!]]
         
         
     }
@@ -662,6 +664,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         addresses.removeAll()
         self.sections.removeAll()
         self.tableData.removeAll()
+        self.notes.removeAll()
         
         
         // Init formatter
@@ -910,8 +913,8 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             smsButton.tintColor = UIColor.gray
             
             // Toggle image
-            callButton.image = UIImage(named: "btn-call-gray")
-            smsButton.image = UIImage(named: "btn-chat-gray")
+            callButton.image = UIImage(named: "btn-call-white")
+            smsButton.image = UIImage(named: "btn-chat-white")
             
         }
         if contact.emails.count > 0 {
@@ -927,7 +930,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
             // Set tint
             emailButton.tintColor = UIColor.gray
             // Toggle image
-            emailButton.image = UIImage(named: "btn-message-gray")
+            emailButton.image = UIImage(named: "btn-message-white")
         }
         // Check if image data available
         

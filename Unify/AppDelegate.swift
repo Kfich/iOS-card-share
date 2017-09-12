@@ -50,6 +50,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Crash reporting with fabric 
         Fabric.with([Crashlytics.self])
         
+        
+        do {
+            Network.reachability = try Reachability(hostname: "www.google.com")
+            do {
+                try Network.reachability?.start()
+            } catch let error as Network.Error {
+                print(error)
+            } catch {
+                print(error)
+            }
+        } catch {
+            print(error)
+        }
+        
+        /*
         // Listen for network reachability changes.
         
         self.reachability = Reachability.forInternetConnection()
@@ -62,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Nothing to do
         }
         self.reachability.startNotifier()
-        
+        */
         // Set up an on-disk URL cache.
         let urlCache = URLCache(memoryCapacity: 0, diskCapacity:50 * 1024 * 1024, diskPath:nil)
         URLCache.shared = urlCache

@@ -150,8 +150,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.socialLinks = [String]()
         self.organizations = [String]()
         self.websites = [String]()
+        self.addresses.removeAll()
+        self.notes.removeAll()
         self.workInformation = [String]()
         self.corpBadges.removeAll()
+        self.tags.removeAll()
         
         // Set name as default value
         if currentUser.fullName != ""{
@@ -419,7 +422,38 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Add image to contact card profile images
         self.card.cardProfile.setImages(imageRecords: imageDict)
         print(imageDict)
-    
+        
+        // Counter to iterate
+        var index = 0
+        // Iterate over list and append selected badges
+        for item in self.selectedCorpBadgeList {
+            // Check if selected
+            if item.isSelected {
+                // Append to card badge list
+                self.card.cardProfile.badgeDictionaryList.append(self.corpBadges[index].toAnyObject())
+                print("Badge Added :: > :: \(self.corpBadges[index].toAnyObject())")
+            }
+            // Incremement index
+            index = index + 1
+        }
+
+        
+        // Counter to iterate
+        var socialIndex = 0
+        // Iterate over list and append selected badges
+        for item in self.selectedSocialLinkList {
+            // Check if selected
+            if item.isSelected {
+                // Append to card badge list
+                self.card.cardProfile.socialLinks.append(["link": self.socialLinks[socialIndex]])
+                print("Social Added :: > :: \(self.socialLinks[socialIndex])")
+            }
+            // Incremement index
+            socialIndex = socialIndex + 1
+        }
+
+        
+        
         // Set user name to card
         card.cardHolderName = currentUser.fullName
         // Assign card image id
@@ -646,14 +680,14 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 // Remove
                 self.selectedCorpBadgeList[indexPath.row].isSelected = false
                 // Add social to card
-                card.cardProfile.badgeList.remove(at: indexPath.row)
+                print("Badge to be removed \(corpBadges[indexPath.row].toAnyObject())")
             }else{
                 // Set selected index
                 self.selectedCorpBadgeList[indexPath.row].isSelected = true
                 // Add social to card
-                card.cardProfile.badgeList.append(corpBadges[indexPath.row])
+                //card.cardProfile.badgeList.append(corpBadges[indexPath.row])
                 
-                print("The corp badge to any!")
+                print("The corp badge to any to be added!")
                 print(corpBadges[indexPath.row].toAnyObject())
                 
             }
@@ -664,12 +698,12 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 // Remove
                 self.selectedSocialLinkList[indexPath.row].isSelected = false
                 // Add social to card
-                card.cardProfile.socialLinks.remove(at: indexPath.row)
+                //card.cardProfile.socialLinks.remove(at: indexPath.row)
             }else{
                 // Set selected index
                 self.selectedSocialLinkList[indexPath.row].isSelected = true
                 // Add social to card
-                card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+                //card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
                 
             }
             
@@ -981,9 +1015,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         let img15 = UIImage(named: "Tumblr.png")
         let img16 = UIImage(named: "Quora.png")
         let img17 = UIImage(named: "Reddit.png")
+        let img18 = UIImage(named: "Snapchat.png")
+        let img19 = UIImage(named: "social-blank")
         // Hash images
         
-        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!]]
+        self.socialLinkBadges = [["facebook" : img1!], ["twitter" : img2!], ["instagram" : img3!], ["pinterest" : img4!], ["linkedin" : img5!], ["plus.google" : img6!], ["crunchbase" : img7!], ["youtube" : img8!], ["soundcloud" : img9!], ["flickr" : img10!], ["about.me" : img11!], ["angel.co" : img12!], ["foursquare" : img13!], ["medium" : img14!], ["tumblr" : img15!], ["quora" : img16!], ["reddit" : img17!], ["snapchat" : img18!], ["other" : img19!]]
         
         
     }
@@ -1039,23 +1075,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                     
                     // Append link to list
                     self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
-                     print("NOT IN LIST")
-                     // Append link to list
-                     self.socialBadges.append(item.first?.value as! UIImage)
-                     }else{
-                     print("ALREADY IN LIST")
-                     }*/
-                    // Append link to list
-                    //self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    
-                    
-                    //print("THE IMAGE IS PRINTING")
-                    //print(item.first?.value as! UIImage)
-                    //print("SOCIAL BADGES COUNT")
-                    //print(self.socialBadges.count)
+
                     
                     
                 }
@@ -1071,7 +1091,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         //self.socialBadges.append(image!)
         
         // Reload table
-        //self.socialBadgeCollectionView.reloadData()
+        self.socialBadgeCollectionView.reloadData()
         
     }
     

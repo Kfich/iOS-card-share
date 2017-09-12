@@ -74,8 +74,8 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         
         //links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.snapchat.com/", "https://www.linkedin.com/", "https://www.pinterest.com/", "https://www.tumblr.com/", "https://www.reddit.com/", "https://www.myspace.com/", "https://www.googleplus.com/"]
         
-        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.pinterest.com/", "https://www.linkedin.com/", "https://www.plus.google.com/", "https://www.crunchbase.com/", "https://www.youtube.com/",
-                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.quora.com/", "https://www.reddit.com/", "https://www.snapchat.com/"]
+        links = ["https://www.facebook.com/", "https://www.twitter.com/", "https://www.instagram.com/", "https://www.pinterest.com/", "https://www.linkedin.com/", "https://www.snapchat.com/", "https://www.plus.google.com/", "https://www.crunchbase.com/", "https://www.youtube.com/",
+                 "https://www.soundcloud.com/", "https://www.flickr.com/", "https://www.about.me/", "https://www.angel.co/", "https://www.foursquare.com/", "https://www.medium.com/", "https://www.tumblr.com/", "https://www.quora.com/", "https://www.reddit.com/"]
         
         //socialOptions = [, , , , , , , , , , , , , , , , , , , , , , ]
         
@@ -98,7 +98,7 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!, img14!, img15!, img16!, img17!, img18!]
+        thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img18!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!,img14!, img15!, img16!, img17!]
     }
     
     override func didReceiveMemoryWarning() {

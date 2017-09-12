@@ -617,7 +617,71 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.profileImageCollectionView.reloadData()
         
     }
+   
+
+    func parseForSocialIcons() {
+        
+        
+        print("Looking for social icons on profile view")
+        
+        // Assign currentuser
+        //self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Parse socials links
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
+                socialLinks.append(link["link"]!)
+                // Test
+                print("Count >> \(socialLinks.count)")
+            }
+        }
+        
+        // Remove all items from badges
+        self.socialBadges.removeAll()
+        // Add plus icon to list
+        
+        // Iterate over links[]
+        for link in self.socialLinks {
+            // Check if link is a key
+            print("Link >> \(link)")
+            for item in self.socialLinkBadges {
+                // Test
+                //print("Item >> \(item.first?.key)")
+                // temp string
+                let str = item.first?.key
+                //print("String >> \(str)")
+                // Check if key in link
+                if link.lowercased().range(of:str!) != nil {
+                    print("exists")
+                    
+                    // Append link to list
+                    self.socialBadges.append(item.first?.value as! UIImage)
+                    
+                    //print("THE IMAGE IS PRINTING")
+                    //print(item.first?.value as! UIImage)
+                    print("SOCIAL BADGES COUNT")
+                    print(self.socialBadges.count)
+                    
+                    
+                }
+            }
+            
+            
+            // Reload table
+            self.socialBadgeCollectionView.reloadData()
+        }
+        
+        // Add image to the end of list
+        //let image = UIImage(named: "icn-plus-blue")
+        //self.socialBadges.append(image!)
+        
+        // Reload table
+        self.socialBadgeCollectionView.reloadData()
+        
+    }
+
     
+    /*
     func parseForSocialIcons() {
         
         
@@ -706,7 +770,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         // Reload table
         self.socialBadgeCollectionView.reloadData()
         
-    }
+    }*/
 
     
     func parseDataFromProfile() {
@@ -724,6 +788,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.tableData.removeAll()
         self.tags.removeAll()
         self.addresses.removeAll()
+        self.notes.removeAll()
         
         // Call to populate cards
         self.populateCards()

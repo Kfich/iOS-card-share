@@ -7,16 +7,17 @@
 //
 
 import Foundation
+import Contacts
 
 
 public class Contact: Fuseable{
     // Properties
     var contactId : String = ""
-    var name : String = ""
-    var first = ""
-    var last = ""
+    dynamic var name : String = ""
+    dynamic var first = ""
+    dynamic var last = ""
     var emails = [[String : String]]()
-    var phoneNumbers = [[String : String]]()
+    dynamic var phoneNumbers = [[String : String]]()
     var titles = [[String : String]]()
     var organizations  = [[String : String]]()
     var socialLinks = [[String : String]]()
@@ -25,6 +26,19 @@ public class Contact: Fuseable{
     var tags = [[String : String]]()
     var addresses = [[String : String]]()
     
+    // Parsed profile arrays
+    dynamic var bioList = [String]()
+    dynamic var workInformationList = [String]()
+    dynamic var organizationList = [String]()
+    dynamic var titleList = [String]()
+    dynamic var phoneNumberList = [String]()
+    dynamic var emailList = [String]()
+    dynamic var websiteList = [String]()
+    dynamic var socialLinkList = [String]()
+    dynamic var noteList = [String]()
+    dynamic var tagList = [String]()
+    dynamic var addressList = [String]()
+    
     var origin : String = ""
     var verified = false
     var isVerified : String = "0"
@@ -32,6 +46,9 @@ public class Contact: Fuseable{
     // For image storage
     var imageId : String = ""
     var imageDictionary = [String : Any]()
+    var sections = [String]()
+    var tableData = [String: [String]]()
+    var formatter = CNContactFormatter()
     
     // Initializers
     init(){}
@@ -40,7 +57,17 @@ public class Contact: Fuseable{
         return [
             FuseProperty(name: "first", weight: 0.5),
             FuseProperty(name: "last", weight: 0.5),
-            FuseProperty(name: "name", weight: 0.5)
+            FuseProperty(name: "name", weight: 0.5),
+            FuseProperty(name: "phoneNumberList", weight: 0.5),
+            FuseProperty(name: "workInformationList", weight: 0.5),
+            FuseProperty(name: "organizationList", weight: 0.5),
+            FuseProperty(name: "titleList", weight: 0.5),
+            FuseProperty(name: "emailList", weight: 0.5),
+            FuseProperty(name: "websiteList", weight: 0.5),
+            FuseProperty(name: "socialLinkList", weight: 0.5),
+            FuseProperty(name: "noteList", weight: 0.5),
+            FuseProperty(name: "tagList", weight: 0.5),
+            FuseProperty(name: "addressList", weight: 0.5)
         ]
     }
     
@@ -81,6 +108,8 @@ public class Contact: Fuseable{
         isVerified = snapshot["isVerified"] as? String ?? "0"
         
         //images = snapshot["images"] as! [[String : Any]]
+        
+        //parseContactRecord()
         
         
         // Testing to see if populated
@@ -225,6 +254,183 @@ public class Contact: Fuseable{
         }
         
         return randomString
+    }
+    
+    func parseContactRecord(){
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        
+        // Init temp contact object
+        //let contactObject = Contact()
+        
+        // Set name
+        //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        
+        if titles.count > 0 {
+            // Add section
+            sections.append("Titles")
+            
+            for title in titles {
+                // Print to test
+                print("Title : \(title["title"]!)")
+                
+                // Append to list
+                self.titleList.append(title["title"]!)
+                print(titleList.count)
+            }
+            // Set list for section
+            self.tableData["Titles"] = titleList
+        }
+        
+        if organizations.count > 0 {
+            // Add section
+            sections.append("Company")
+            
+            for org in organizations {
+                // Print to test
+                print("Org : \(org["organization"]!)")
+                
+                // Append to list
+                self.organizationList.append(org["organization"]!)
+                print(organizationList.count)
+            }
+            // Set list for section
+            self.tableData["Company"] = organizationList
+        }
+        
+        // Check for count
+        if phoneNumbers.count > 0 {
+            // Add section
+            sections.append("Phone Numbers")
+            // Iterate over items
+            for number in phoneNumbers{
+                // print to test
+                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                
+                // Init the number with formatting
+                //let digits = self.format(phoneNumber: number["phone"]!)
+                let digits = number["phone"]!
+                
+                self.phoneNumberList.append(digits)
+                print(phoneNumberList.count)
+            }
+            // Create section data
+            self.tableData["Phone Numbers"] = phoneNumberList
+            
+        }
+        if emails.count > 0 {
+            // Add section
+            sections.append("Emails")
+            // Iterate over array and pull value
+            for address in emails {
+                // Print to test
+                print("Email : \(address["email"])")
+                
+                // Append to array
+                self.emailList.append(address["email"]!)
+                print(emailList.count)
+            }
+            // Create section data
+            self.tableData["Emails"] = emailList
+        }
+        
+        if websites.count > 0{
+            // Add section
+            sections.append("Websites")
+            // Iterate over items
+            for address in websites {
+                // Print to test
+                print("Website : \(address["website"]!)")
+                
+                // Append to list
+                self.websiteList.append(address["website"]!)
+                print(websiteList.count)
+            }
+            // Create section data
+            self.tableData["Websites"] = websiteList
+            
+        }
+        if socialLinks.count > 0{
+            // Iterate over items
+            for profile in socialLinks {
+                // Print to test
+                print("Social Profile : \(profile["link"]!)")
+                
+                // Append to list
+                self.socialLinkList.append(profile["link"]!)
+                print(socialLinkList.count)
+            }
+            
+        }
+        
+        
+        if notes.count > 0 {
+            // Add section
+            sections.append("Notes")
+            
+            for note in notes {
+                // Print to test
+                print("Note : \(note["note"]!)")
+                
+                // Append to list
+                self.noteList.append(note["note"]!)
+                print(noteList.count)
+            }
+            // Set list for section
+            self.tableData["Notes"] = noteList
+        }
+        
+        
+        if tags.count > 0 {
+            // Add section
+            sections.append("Tags")
+            
+            for tag in tags {
+                // Print to test
+                print("Title : \(tag["tag"]!)")
+                
+                // Append to list
+                self.tagList.append(tag["tag"]!)
+                print(tagList.count)
+            }
+            // Set list for section
+            self.tableData["Tags"] = tagList
+        }
+        
+        if addresses.count > 0 {
+            // Add section
+            sections.append("Addresses")
+            for add in addresses {
+                // Print to test
+                print("Address : \(add["address"]!)")
+                
+                // Append to list
+                self.addressList.append(add["address"]!)
+                print(addressList.count)
+            }
+            // Set list for section
+            self.tableData["Addresses"] = addressList
+        }
+        
+        
+        // Test object
+        print("Contact >> \n\(toAnyObject()))")
+        
+       /* // Parse for badges
+        self.parseForSocialIcons()
+        
+        // Parse for crop
+        self.parseForCorpBadges()
+        
+        // Reload table data
+        self.profileInfoTableView.reloadData()*/
+        
+        
     }
     
     
