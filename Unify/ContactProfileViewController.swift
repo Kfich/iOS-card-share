@@ -346,7 +346,7 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor

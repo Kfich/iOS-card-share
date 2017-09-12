@@ -510,6 +510,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             // Get badge list
             cell.badgeList = self.parseCardForBagdes(card: currentCard)
+            cell.corpList = currentCard.cardProfile.badgeDictionaryList
+            
+            //cell.badgeList += self.parseCardForCorpBagdes(card: currentCard)
             
             if currentCard.isVerified{
                 cell.cardWrapperView.layer.borderWidth = 1.5
@@ -994,6 +997,15 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         return list
     }
+
+    func parseCardForCorpBagdes(card: ContactCard) -> [UIImage] {
+        // Execute from manager
+        let list = ContactManager.sharedManager.parseForCorpBadges(card: card)
+        //print("The Badge List >> \(list)")
+        
+        return list
+    }
+
     
     func createAddNewCell(cell: UICollectionViewCell) -> UIView{
         

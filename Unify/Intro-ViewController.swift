@@ -471,7 +471,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         let imageView = UIImageView(image: selectedImage)
         
         // Configure borders
-        imageView.layer.borderColor = UIColor.blue.cgColor
+        //imageView.layer.borderColor = UIColor.blue.cgColor
         imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 75    // Create container for image and name

@@ -15,6 +15,7 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
     // ----------------------------------
     var selectedCard = ContactCard()
     var badgeList = [UIImage]()
+    var corpList : [NSDictionary] = []
     
     // IBOutlets
     // ----------------------------------
@@ -122,8 +123,8 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
          }else{
          return 1
          }*/
-        print("Combined count for badges >> \(badgeList.count + selectedCard.cardProfile.badgeDictionaryList.count)")
-        return badgeList.count + selectedCard.cardProfile.badgeDictionaryList.count
+        print("Badge count \(badgeList.count)\nCorpCount \(corpList.count)\nCombined count for badges >> \(badgeList.count + corpList.count)")
+        return (badgeList.count + corpList.count)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -138,7 +139,8 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
         // Configure corner radius
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         
-        if indexPath.row < badgeList.count {
+        if indexPath.row < badgeList.count{
+            print("This index is before the count \(indexPath.row)")
             // Init image from
             let image = badgeList[indexPath.row]
             
@@ -146,8 +148,10 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
             imageView.image = image
             
         }else{
+            
+            print("THIS IS WHERE THE URL GOES \(indexPath.row)")
             // Init image from
-            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl)
+            let fileUrl = NSURL(string: corpList[indexPath.row - badgeList.count].value(forKey: "image") as! String)
             imageView.setImageWith(fileUrl! as URL)
         }
         

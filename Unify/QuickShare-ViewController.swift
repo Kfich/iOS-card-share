@@ -160,7 +160,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
          }else{
          return 1
          }*/
-        return self.socialBadges.count
+        return self.socialBadges.count + selectedCard.cardProfile.badgeDictionaryList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -171,10 +171,20 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         
         // Configure corner radius
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = self.socialBadges[indexPath.row]
         
-        // Set image
-        imageView.image = image
+        if indexPath.row < socialBadges.count {
+            // Init media badge
+            let image = self.socialBadges[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+        }else{
+            
+            print("THIS IS WHERE THE URL GOES \(indexPath.row)")
+            // Init image from
+            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeDictionaryList[indexPath.row - selectedCard.cardProfile.badgeDictionaryList.count].value(forKey: "image") as! String)
+            imageView.setImageWith(fileUrl! as URL)
+        }
         
         // Add subview
         cell.contentView.addSubview(imageView)
@@ -195,7 +205,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
