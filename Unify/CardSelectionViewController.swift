@@ -173,19 +173,12 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         //print(selectedCard.cardProfile.badgeList)
         print(selectedCard.cardProfile.badgeDictionaryList)
         
-        for corp in selectedCard.cardProfile.badgeDictionaryList {
-            // Init badge
-            let badge = CardProfile.Bagde(snapshot: corp)
-            
-            // Add to list
-            self.corpBadges.append(badge)
-        }
-        
-        // Refresh table
-        self.badgeCollectionView.reloadData()
         
         
         print("Current Card In SelectionVC >> \n\(selectedCard.toAnyObject())")
+        
+        print("Parsing card for corps")
+        ContactManager.sharedManager.parseForCorpBadges(card: self.selectedCard)
     }
 
     // Page Setup
@@ -254,6 +247,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.sections.removeAll()
         self.tableData.removeAll()
         // Corp badges?
+        self.corpBadges.removeAll()
         
         
         // Parse work info
@@ -370,6 +364,18 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             }
         }
         
+        // Parse for corp
+        for corp in selectedCard.cardProfile.badgeDictionaryList {
+            // Init badge
+            let badge = CardProfile.Bagde(snapshot: corp)
+            
+            // Add to list
+            self.corpBadges.append(badge)
+        }
+        
+        // Refresh table
+        self.badgeCollectionView.reloadData()
+        
         // Look for social badges 
         self.parseForSocialIcons()
         
@@ -448,14 +454,30 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Social link badges
-        // Set selected index
-        self.selectedBadgeIndex = indexPath.row
-        // Config the social link webVC
-        ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
         
-        // Show WebVC
-        self.launchMediaWebView()
+        if collectionView == self.badgeCollectionView {
+            // Set index
+            self.selectedBadgeIndex = indexPath.row
+            // Config the social link webVC
+            ContactManager.sharedManager.selectedSocialMediaLink = corpBadges[indexPath.row].pictureUrl
+            
+            // Show WebVC
+            self.launchMediaWebView()
+            
+        }else{
+            
+            // Social link badges
+            // Set selected index
+            self.selectedBadgeIndex = indexPath.row
+            // Config the social link webVC
+            ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
+            
+            // Show WebVC
+            self.launchMediaWebView()
+
+            
+        }
+        
     }
     
     func configureBadges(cell: UICollectionViewCell){

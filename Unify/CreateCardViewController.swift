@@ -284,7 +284,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         var index = 0
         
         // Iterate over list
-        if currentUser.userProfile.badgeList.count > 0{
+        if ContactManager.sharedManager.currentUser.userProfile.badgeList.count > 0{
             
             for badge in ContactManager.sharedManager.currentUser.userProfile.badgeList{
                 // Check if visible

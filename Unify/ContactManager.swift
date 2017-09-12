@@ -223,8 +223,47 @@ class ContactManager{
         
     }
     
-    /*func fetchVerifiedContactCardDesign(card: ContactCard){
+    
+    func parseForCorpBadges(card: ContactCard) -> [UIImage]{
         
+        var imageList = [UIImage]()
+        
+        // Parse card for selected badges
+        if card.cardProfile.badgeDictionaryList.count > 0{
+            
+            for corp in card.cardProfile.badgeDictionaryList {
+                // Init badge
+                let badge = CardProfile.Bagde(snapshot: corp)
+                
+                let image = self.load_image(urlString: badge.pictureUrl)
+                imageList.append(image)
+                print("Image list from Manager Corp Parse: \(imageList)")
+            }
+            
+        }
+        return imageList
+    }
+    
+    func load_image(urlString:String) -> UIImage{
+        
+        var returnImage = UIImage()
+        
+        var imgURL: NSURL = NSURL(string: urlString)!
+        let request: URLRequest = URLRequest(url: imgURL as URL)
+        NSURLConnection.sendAsynchronousRequest(
+            request as URLRequest, queue: OperationQueue.main,
+            completionHandler: {(response: URLResponse!,data: Data!,error: Error!) -> Void in
+                if error == nil {
+                    returnImage = UIImage(data: data)!
+                }
+        })
+        
+        return returnImage
+    }
+    
+    
+    /*func fetchVerifiedContactCardDesign(card: ContactCard){
+     
         for card in viewableUserCards {
             
             // Save card to DB

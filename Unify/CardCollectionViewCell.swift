@@ -122,11 +122,13 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
          }else{
          return 1
          }*/
-        return badgeList.count
+        print("Combined count for badges >> \(badgeList.count + selectedCard.cardProfile.badgeDictionaryList.count)")
+        return badgeList.count + selectedCard.cardProfile.badgeDictionaryList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardBadgeCell", for: indexPath)
+        
         
         //cell.contentView.backgroundColor = UIColor.red
         self.configureBadges(cell: cell)
@@ -135,10 +137,19 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
         
         // Configure corner radius
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        let image = badgeList[indexPath.row]
         
-        // Set image
-        imageView.image = image
+        if indexPath.row < badgeList.count {
+            // Init image from
+            let image = badgeList[indexPath.row]
+            
+            // Set image
+            imageView.image = image
+            
+        }else{
+            // Init image from
+            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl)
+            imageView.setImageWith(fileUrl! as URL)
+        }
         
         // Add subview
         cell.contentView.addSubview(imageView)
