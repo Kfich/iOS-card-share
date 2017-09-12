@@ -95,9 +95,11 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
             self.selectedImage = image!
             
             // Show cropper view
+            ContactManager.sharedManager.userArrivedFromSocial = true
             
             //self.profileImageContainerView.layer.borderColor = UIColor.clear as! CGColor
             
+            // Show cropper view
             self.dismiss(animated: true, completion: {
                 self.showCropper(withImage: self.selectedImage)
             })
@@ -331,25 +333,19 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Set selected
         self.selectedImage = croppedImage
         
-        self.profileImages.removeAll()
-        
-        // Refresh account images
-        self.parseAccountForImges()
-        
-        // Insert photo into list
-        self.profileImages.insert(croppedImage, at: 0)
-        
-        // Reload data
-        self.profileImageCollectionView.reloadData()
-        
         // Set image to profile
         self.setImageData()
         
-        // Dismiss vc
+        //self.profileImages.append(self.selectedImage)
+        // Refresh account images
+        //self.parseAccountForImges()
+        
         dismiss(animated: true, completion: nil)
         
         
     }
+    
+    
     
     func imageCropViewController(_ controller: RSKImageCropViewController, willCropImage originalImage: UIImage) {
         
@@ -436,10 +432,14 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         print("Initial list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
         // Remove item at index
         ContactManager.sharedManager.currentUser.profileImages.remove(at: index)
+        // Remove image from local list
+        self.profileImages.remove(at: index)
+        
         print("Post delete list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
         
-        // Reload table data
-        parseAccountForImges()
+        self.profileImageCollectionView.reloadData()
+        
+        //self.parseAccountForImges()
     }
     
     func parseForSocialIcons() {
@@ -520,9 +520,14 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func parseAccountForImges() {
+        print("Parse account for images Executing")
+        print("Parse account images count >> \(self.profileImages.count)")
         
         // Clear all from list
         self.profileImages.removeAll()
+        
+        print("Parse account images count post delete >> \(self.profileImages.count)")
+        print("Profile images count for current user >> \(ContactManager.sharedManager.currentUser.profileImages.count)")
         
         // Set current user
         self.currentUser = ContactManager.sharedManager.currentUser
@@ -540,6 +545,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Add image to the end of list
         let image = UIImage(named: "Green-1")
         self.profileImages.append(image!)
+        
+        print("Refreshing table of photos")
         
         // Refresh
         self.profileImageCollectionView.reloadData()
@@ -565,6 +572,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         // Add image to user profile images
         ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
         
+        print("Contact Manager total images count: >> \(ContactManager.sharedManager.currentUser.profileImages.count)")
         
         // Upload to Server
         // Save card to DB
@@ -582,7 +590,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         
         // Show progress HUD
-        KVNProgress.show(withStatus: "Adding image to profile..")
+        //KVNProgress.show(withStatus: "Adding image to profile..")
         
         // Upload image with Alamo
         Alamofire.upload(multipartFormData: { multipartFormData in
@@ -608,10 +616,13 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
                     print(response.result.value ?? "Successful upload")
                     
                     // Dismiss hud
-                    KVNProgress.showSuccess()
+                    //KVNProgress.showSuccess()
                     
                     // Reload table
-                    self.profileImageCollectionView.reloadData()
+                    self.parseAccountForImges()
+                    
+                    
+                    //self.profileImageCollectionView.reloadData()
                 }
                 
             case .failure(let encodingError):
@@ -697,6 +708,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
             // Fields not empty
             ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
             ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
+            // Combine to make full name
+            ContactManager.sharedManager.currentUser.fullName = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
         }
         
         // Assign current user object
@@ -821,13 +834,15 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
            // Init cell
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath)
             
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-            let image = self.profileImages[indexPath.row]
-            imageView.layer.masksToBounds = true
-            // Set image to view
-            imageView.image = image
+        
             
             if indexPath.row != self.profileImages.count - 1 {
+                
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+                var image = self.profileImages[indexPath.row]
+                imageView.layer.masksToBounds = true
+                // Set image to view
+                imageView.image = image
                 //cell.backgroundColor = UIColor.red
                 
                 // Delete
@@ -843,9 +858,10 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
                 
             }else{
                 
-                print("Last image index")
+                print("Last image index on Photo collection")
                 // Badge icon
-                //image = self.userBadges[indexPath.row]
+                var image = UIImage()
+                image = self.profileImages[indexPath.row]
                 let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
                 imageView.layer.masksToBounds = true
                 // Set image to view
@@ -853,7 +869,6 @@ extension EditProfileViewController: UICollectionViewDelegate, UICollectionViewD
                 // Add to collection
                 cell.contentView.addSubview(imageView)
 
-                
             }
             
             

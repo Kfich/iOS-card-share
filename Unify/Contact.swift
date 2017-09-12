@@ -8,7 +8,8 @@
 
 import Foundation
 
-public class Contact{
+
+public class Contact: Fuseable{
     // Properties
     var contactId : String = ""
     var name : String = ""
@@ -35,6 +36,13 @@ public class Contact{
     // Initializers
     init(){}
     
+    public var properties: [FuseProperty] {
+        return [
+            FuseProperty(name: "first", weight: 0.5),
+            FuseProperty(name: "last", weight: 0.5),
+            FuseProperty(name: "name", weight: 0.5)
+        ]
+    }
     
     // Exporting the object
     func toAnyObject() -> NSDictionary {

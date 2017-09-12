@@ -203,21 +203,24 @@ class EditProfileContainerViewController: FormViewController {
                                             //$0.tag = "Phone Numbers"
                                             }.cellUpdate { cell, row in
                                                 cell.textLabel?.textAlignment = .left
+                                                
                                         }
                                     }
+                                    
                                     $0.multivaluedRowToInsertAt = { index in
-                                        return NameRow("numbersRow_\(index)") {
+                                        return PhoneRow("numbersRow_\(index)") {
                                             $0.placeholder = "Number"
                                             $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                             $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                            $0.cell.textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
                                             //$0.tag = "Phone Numbers"
                                         }
                                     }
                                     // Iterate through array and set val
                                     for val in phoneNumbers{
-                                        $0 <<< NameRow() {
+                                        $0 <<< PhoneRow() {
                                             $0.placeholder = "Number"
-                                            $0.value = val
+                                            $0.value = self.format(phoneNumber: val)//val
                                             //$0.tag = "Phone Numbers"
                                         }
                                     }
@@ -479,6 +482,10 @@ class EditProfileContainerViewController: FormViewController {
                     if str != "nil" && str != "" {
                         ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
                         phoneNumbers.append(str)
+                        
+                       // Func for stripping phone numbers
+                       // let result = String(phoneNumberInput.text!.characters.filter { "01234567890.".characters.contains($0) })
+                       // print("Filtered Phone String >> \(result)")
                     }
                 }
             }
@@ -691,6 +698,66 @@ class EditProfileContainerViewController: FormViewController {
         
     }
     
+    // Format textfield for phone numbers
+    func format(phoneNumber sourcePhoneNumber: String) -> String? {
+        
+        // Remove any character that is not a number
+        let numbersOnly = sourcePhoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let length = numbersOnly.characters.count
+        let hasLeadingOne = numbersOnly.hasPrefix("1")
+        
+        // Check for supported phone number length
+        guard /*length == 7 ||*/ length == 10 || (length == 11 && hasLeadingOne) else {
+            return nil
+        }
+        
+        let hasAreaCode = (length >= 10)
+        var sourceIndex = 0
+        
+        // Leading 1
+        var leadingOne = ""
+        if hasLeadingOne {
+            leadingOne = "1 "
+            sourceIndex += 1
+        }
+        
+        // Area code
+        var areaCode = ""
+        if hasAreaCode {
+            let areaCodeLength = 3
+            guard let areaCodeSubstring = numbersOnly.characters.substring(start: sourceIndex, offsetBy: areaCodeLength) else {
+                return nil
+            }
+            areaCode = String(format: "(%@) ", areaCodeSubstring)
+            sourceIndex += areaCodeLength
+        }
+        
+        // Prefix, 3 characters
+        let prefixLength = 3
+        guard let prefix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: prefixLength) else {
+            return nil
+        }
+        sourceIndex += prefixLength
+        
+        // Suffix, 4 characters
+        let suffixLength = 4
+        guard let suffix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: suffixLength) else {
+            return nil
+        }
+        
+        return leadingOne + areaCode + prefix + "-" + suffix
+    }
+    
+    // Add formatting action to textfield
+    func textFieldDidChange(_ textField: UITextField) {
+        
+        
+        if format(phoneNumber: textField.text! ) != nil
+        {
+            textField.text = format(phoneNumber: textField.text! )!
+        }
+        
+    }
     
     func updateCurrentUser() {
         // Configure to send to server

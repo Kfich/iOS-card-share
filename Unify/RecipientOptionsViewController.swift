@@ -973,17 +973,6 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             name = formatter.string(from: contact) ?? "No Name"
             recipientName = formatter.string(from: recipient) ?? ""
             
-            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
-                
-                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-                // Set contact phone number
-                phone = contactPhone!
-                
-                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
-                
-                // Launch text client
-                //composeVC.recipients = [contactPhone!, recipientPhone!]
-            }
             
             if contact.emailAddresses.count > 0 {
                 email = (contact.emailAddresses[0].value as String)
@@ -999,10 +988,26 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Check here if logic needed
             if self.tableView.isHidden {
                 // Take selected phone from form
+                // Set selected phone
+                self.selectedContactPhone = self.phoneLabel.text ?? ""
+                composeVC.recipients = [selectedContactPhone]
+            }else{
+                
+                if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                    
+                    let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                    // Set contact phone number
+                   // phone = contactPhone!
+                    
+                    let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                    
+                    // Launch text client
+                    composeVC.recipients = [contactPhone!, recipientPhone!]
+                }
+
+                
             }
-            // Set selected phone 
-            self.selectedContactPhone = self.phoneLabel.text ?? ""
-            composeVC.recipients = [selectedContactPhone]
+            
 
             
             composeVC.body = str

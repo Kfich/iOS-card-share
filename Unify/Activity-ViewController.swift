@@ -940,6 +940,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                     // Sort list
                     self.sortTransactionList(list: self.transactions)
                     
+                    // Reload views
+                    self.view.layoutSubviews()
+                    self.view.layoutIfNeeded()
                     
                     // Update the table values
                     self.tableView.reloadData()
@@ -989,8 +992,22 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.transactionList.sort(by: { $0.sortDate!.compare($1.sortDate! as Date) == ComparisonResult.orderedAscending })
         
         
+        // Handle sorting into buckets here by date
          for trans in self.transactionList{
-            print(trans.sortDate)
+            print(trans.sortDate!)
+            
+            let elapsedTime = NSDate().timeIntervalSince(trans.sortDate!)
+            print("Right Nows DateTime: > \(Date())")
+            let duration = Double(elapsedTime) / (60.0 * 60.0)
+            print("The Elapsed Time Since Transaction >>> \(duration)")
+            
+            if duration > 5.6 {
+                // Send to recents
+            }else{
+                // Send to the old trans list
+            }
+            
+            //print(trans.sortDate)
          }
         
         //Reverse list and set
@@ -999,6 +1016,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Update the table values
         self.tableView.reloadData()
     }
+    
+    // ----------------------------- Test -------------------
+    
+    
+    
+    // ----------------------------- Test --------------------
     
     // Retrieve lists from all transactions
     func parseTransactionList(transactionList : [Transaction]) {

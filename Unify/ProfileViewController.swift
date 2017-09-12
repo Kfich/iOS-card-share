@@ -496,7 +496,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
     // Set row height
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return 45.0
+        return 35.0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -725,6 +725,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         self.tags.removeAll()
         self.addresses.removeAll()
         
+        // Call to populate cards
+        self.populateCards()
         
         // Parse bio info
         //currentUser = ContactManager.sharedManager.currentUser
@@ -769,7 +771,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             // Add section
             sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
-                phoneNumbers.append((number["phone"])!)
+                phoneNumbers.append(self.format(phoneNumber:(number["phone"]!))!)
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
@@ -974,6 +976,56 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         
     }
     
+    // Format textfield for phone numbers
+    func format(phoneNumber sourcePhoneNumber: String) -> String? {
+        
+        // Remove any character that is not a number
+        let numbersOnly = sourcePhoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let length = numbersOnly.characters.count
+        let hasLeadingOne = numbersOnly.hasPrefix("1")
+        
+        // Check for supported phone number length
+        guard /*length == 7 ||*/ length == 10 || (length == 11 && hasLeadingOne) else {
+            return nil
+        }
+        
+        let hasAreaCode = (length >= 10)
+        var sourceIndex = 0
+        
+        // Leading 1
+        var leadingOne = ""
+        if hasLeadingOne {
+            leadingOne = "1 "
+            sourceIndex += 1
+        }
+        
+        // Area code
+        var areaCode = ""
+        if hasAreaCode {
+            let areaCodeLength = 3
+            guard let areaCodeSubstring = numbersOnly.characters.substring(start: sourceIndex, offsetBy: areaCodeLength) else {
+                return nil
+            }
+            areaCode = String(format: "(%@) ", areaCodeSubstring)
+            sourceIndex += areaCodeLength
+        }
+        
+        // Prefix, 3 characters
+        let prefixLength = 3
+        guard let prefix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: prefixLength) else {
+            return nil
+        }
+        sourceIndex += prefixLength
+        
+        // Suffix, 4 characters
+        let suffixLength = 4
+        guard let suffix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: suffixLength) else {
+            return nil
+        }
+        
+        return leadingOne + areaCode + prefix + "-" + suffix
+    }
+    
     func checkForEmptyData() -> Bool {
         if bios.count == 0 && titles.count == 0 && workInformation.count == 0 && socialLinks.count == 0 && websites.count == 0 && emails.count == 0 && phoneNumbers.count == 0 && organizations.count == 0{
             // Everything is empty
@@ -1031,7 +1083,8 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
             nameLabel.text = currentUser.fullName
         }
         if currentUser.userProfile.phoneNumbers.count > 0{
-            numberLabel.text = currentUser.userProfile.phoneNumbers[0]["phone"]
+            // Format text labels
+            numberLabel.text = self.format(phoneNumber: currentUser.userProfile.phoneNumbers[0]["phone"]!)
         }
         if currentUser.userProfile.emails.count > 0{
             emailLabel.text = currentUser.userProfile.emails[0]["email"]

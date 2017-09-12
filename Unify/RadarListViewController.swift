@@ -149,7 +149,10 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
             if selectedUserList[indexPath.row].isSelected == true {
                 // Set to true
                 selectedUserList[indexPath.row].isSelected = false
+                
             }
+            
+            
 
             
         } else {
@@ -161,20 +164,20 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                 selectedUserList[indexPath.row].isSelected = true
             }
             
-                // Append to list
-                //self.selectedContactList.append(radarContactList[indexPath.row])
-            
-            print("User Added")
-            print("Selected Count >> \(selectedContactList.count)")
-            
             // Show send card
             self.postShowSendCard()
-            
-            // Append id to selectedList
-            //self.selectedUserIds.append(radarContactList[indexPath.row].userId)
 
         }
         
+        // Filter out list of selected users
+        let selectedListCounter = selectedUserList.filter { $0.isSelected == true }
+        print("Selected List filtered \(selectedListCounter.count)")
+        
+        // Set number to manager
+        ContactManager.sharedManager.radarUserCount = selectedListCounter.count
+        
+        // Update card
+        self.postUpdateSendCard()
         
     }
     
@@ -400,6 +403,13 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     
+    func postUpdateSendCard() {
+        
+        // Post notification
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateSendCard"), object: self)
+        
+    }
+    
     func sendCardSelected() {
         
         // Test uuid
@@ -434,6 +444,8 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
         
         Countly.sharedInstance().recordEvent("shared contacts from radar")
+        
+        //self.selectedUserList.removeAll()
         
     }
 
@@ -491,6 +503,26 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                 //KVNProgress.dismiss()
                 KVNProgress.showSuccess(withStatus: "You are now connected!")
                 
+                // Clear List of recipients
+                //self.radarContactList.removeAll()
+                
+                // Remove all ids
+                self.selectedUserIds.removeAll()
+                // Remove selected indecies
+                self.selectedUserList.removeAll()
+                
+                var count = 0
+                for item in self.selectedUserList{
+                    // Set bool to false
+                    self.selectedUserList[count].isSelected = false
+                    // Update count
+                    count = count + 1
+                    // Reload table
+                    self.tableView.reloadData()
+                }
+                
+                // Reload table
+                self.tableView.reloadData()
                 
                 
             } else {
@@ -500,9 +532,6 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                 
             }
             
-            
-            // Clear List of recipients
-            self.radarContactList.removeAll()
         }
     }
     

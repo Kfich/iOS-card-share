@@ -134,7 +134,7 @@ public class CardProfile{
     // Exporting the object
     func toAnyObject() -> NSDictionary {
         
-        
+       /*
        // var tempBadgeList[]
         for badge in badgeList {
             // Create dictionary
@@ -143,7 +143,7 @@ public class CardProfile{
             badgeDictionaryList.append(dict)
             // Test
             print(badgeDictionaryList)
-        }
+        }*/
         
         
         return [
@@ -166,6 +166,7 @@ public class CardProfile{
 
     func toAnyObjectWithImage() -> NSDictionary {
         
+        /*
         // Iterate through list
         for badge in badgeList {
             // Create dictionary
@@ -174,7 +175,7 @@ public class CardProfile{
             badgeDictionaryList.append(dict)
             // Test
             print(badgeDictionaryList)
-        }
+        }*/
 
         
         return [

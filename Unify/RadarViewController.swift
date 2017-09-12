@@ -730,6 +730,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Toggle send card button
         NotificationCenter.default.addObserver(self, selector: #selector(RadarViewController.hideSendCard), name: NSNotification.Name(rawValue: "HideSendCard"), object: nil)
         
+        // Update send card button
+        NotificationCenter.default.addObserver(self, selector: #selector(RadarViewController.updateSendCardButton), name: NSNotification.Name(rawValue: "UpdateSendCard"), object: nil)
+        
     }
     
     func toggleRadar() {
@@ -764,6 +767,41 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         // Toggle button on
         //self.sendCardButton.isHidden = true
         self.sendCardButton.isEnabled = false
+    }
+    
+    func updateSendCardButton() {
+        // Update text
+        
+        if ContactManager.sharedManager.radarUserCount > 0 {
+            // Show button for send
+            sendCardButton.isHidden = false
+            sendCardButton.isEnabled = true
+            
+            if ContactManager.sharedManager.radarUserCount == 1 {
+                // Grammar check
+                // Set card text
+                sendCardButton.setTitle("Tap to send to \(ContactManager.sharedManager.radarUserCount) person", for: .normal)
+            }else{
+                // Set card text
+                sendCardButton.setTitle("Tap to send to \(ContactManager.sharedManager.radarUserCount) people", for: .normal)
+            }
+            
+            // Set button color
+            self.sendCardButton.backgroundColor = UIColor.white
+        }else{
+            // Hide button
+            sendCardButton.isHidden = true
+            // Set button to origial settings
+            sendCardButton.isEnabled = false
+            
+            // Set text
+            sendCardButton.setTitle("Select people on the radar", for: .normal)
+            // Set color for bg
+            self.sendCardButton.backgroundColor = UIColor.lightGray
+            
+        }
+
+        
     }
     
     
@@ -1140,9 +1178,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             //sender.view?.tintColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1.0)
             
             // Add to selected user list
-            selectedUsers.append(radarUsers[(sender.view?.tag)!])
+            //selectedUsers.append(radarUsers[(sender.view?.tag)!])
             // Test count
-            print("Selected User List Count --> \(selectedUsers.count)")
+            //print("Selected User List Count --> \(selectedUsers.count)")
             
         } else{
             // Set to false
@@ -1171,22 +1209,28 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 sender.view?.subviews[0].frame = CGRect(x: (sender.view?.subviews[0].frame.origin.x)!, y: (sender.view?.subviews[0].frame.origin.y)! - 10, width: 60, height: 15)
             })
             
+            // Remove object from selected user list
+            //selectedUsers.remove(at:(sender.view?.tag)!)
+            
         }
         
-        // Toggle send button if list empty
+        // Filter out list of selected users
+        let selectedListCounter = selectedUserList.filter { $0.isSelected == true }
+        print("Selected List filtered \(selectedListCounter.count)")
         
-        if selectedUsers.count > 0 {
+        // Toggle send button if list empty
+        if selectedListCounter.count > 0 {
             // Show button for send
             sendCardButton.isHidden = false
             sendCardButton.isEnabled = true
             
-            if selectedUsers.count == 1 {
+            if selectedListCounter.count == 1 {
                 // Grammar check
                 // Set card text
-                sendCardButton.setTitle("Tap to send to \(selectedUsers.count) person", for: .normal)
+                sendCardButton.setTitle("Tap to send to \(selectedListCounter.count) person", for: .normal)
             }else{
                 // Set card text
-                sendCardButton.setTitle("Tap to send to \(selectedUsers.count) people", for: .normal)
+                sendCardButton.setTitle("Tap to send to \(selectedListCounter.count) people", for: .normal)
             }
             
             // Set button color
@@ -1203,6 +1247,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.sendCardButton.backgroundColor = UIColor.lightGray
             
         }
+        
         
         
     }
@@ -1500,6 +1545,16 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             
                             
                             self.counter = self.counter + 1
+                            
+                            /*self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                            
+                            
+                            self.counter = self.counter + 1
+                            
+                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                            
+                            
+                            self.counter = self.counter + 1*/
                             
                         }
                         

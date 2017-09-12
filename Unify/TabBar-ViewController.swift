@@ -46,7 +46,7 @@ class TabBarViewController: UITabBarController{
         self.tabBar.items?[0].selectedImage = UIImage(named: "contact-full")
         self.tabBar.items?[0].image = UIImage(named: "contact")
         
-        //self.tabBar.items?[1].selectedImage = UIImage(named: "intro-full")
+        self.tabBar.items?[1].selectedImage = UIImage(named: "intro-full")
         self.tabBar.items?[1].image = UIImage(named: "intro-full")
         
         /*self.tabBar.items?[1].selectedImage = resizeImage(image: UIImage(named: "introicon")!, newWidth: 20)?.withRenderingMode(.automatic)
@@ -55,8 +55,8 @@ class TabBarViewController: UITabBarController{
         self.tabBar.items?[2].selectedImage = resizeImage(image: UIImage(named: "icn-location")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)
         self.tabBar.items?[2].image = resizeImage(image: UIImage(named: "icn-location")!, newWidth: 20)?.withRenderingMode(.alwaysOriginal)*/
         
-        //self.tabBar.items?[2].selectedImage = UIImage(named: "home-full")
-        self.tabBar.items?[2].image = UIImage(named: "home")
+        self.tabBar.items?[2].selectedImage = UIImage(named: "home")
+        self.tabBar.items?[2].image = UIImage(named: "home-full")
         
         //self.tabBar.items?[2].selectedImage = UIImage(named: "icn-location")
         //self.tabBar.items?[2].image = UIImage(named: "icn-location")

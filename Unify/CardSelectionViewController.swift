@@ -285,7 +285,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add section
             sections.append("Phone Numbers")
             for number in selectedCard.cardProfile.phoneNumbers{
-                phoneNumbers.append(number["phone"]! )
+                // Phone number with format style
+                phoneNumbers.append(self.format(phoneNumber:number["phone"]!)!)
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
@@ -624,11 +625,60 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     
     
     
-    
-    
-    
     // Custom Methods
     // -------------------------------------------
+    
+    // Format textfield for phone numbers
+    func format(phoneNumber sourcePhoneNumber: String) -> String? {
+        
+        // Remove any character that is not a number
+        let numbersOnly = sourcePhoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let length = numbersOnly.characters.count
+        let hasLeadingOne = numbersOnly.hasPrefix("1")
+        
+        // Check for supported phone number length
+        guard /*length == 7 ||*/ length == 10 || (length == 11 && hasLeadingOne) else {
+            return nil
+        }
+        
+        let hasAreaCode = (length >= 10)
+        var sourceIndex = 0
+        
+        // Leading 1
+        var leadingOne = ""
+        if hasLeadingOne {
+            leadingOne = "1 "
+            sourceIndex += 1
+        }
+        
+        // Area code
+        var areaCode = ""
+        if hasAreaCode {
+            let areaCodeLength = 3
+            guard let areaCodeSubstring = numbersOnly.characters.substring(start: sourceIndex, offsetBy: areaCodeLength) else {
+                return nil
+            }
+            areaCode = String(format: "(%@) ", areaCodeSubstring)
+            sourceIndex += areaCodeLength
+        }
+        
+        // Prefix, 3 characters
+        let prefixLength = 3
+        guard let prefix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: prefixLength) else {
+            return nil
+        }
+        sourceIndex += prefixLength
+        
+        // Suffix, 4 characters
+        let suffixLength = 4
+        guard let suffix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: suffixLength) else {
+            return nil
+        }
+        
+        return leadingOne + areaCode + prefix + "-" + suffix
+    }
+
+    
     
     func launchMediaWebView() {
         // Config the social link webVC
@@ -826,7 +876,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             cardNameLabel.text = name
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
-            phoneLabel.text = selectedCard.cardProfile.phoneNumbers[0]["phone"]!
+            // Format number 
+            phoneLabel.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0]["phone"]!)
         }
         if selectedCard.cardProfile.emails.count > 0{
             emailLabel.text = selectedCard.cardProfile.emails[0]["email"]

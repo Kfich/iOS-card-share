@@ -11,6 +11,7 @@ import Contacts
 
 
 
+
 class ContactManager{
     
     
@@ -107,7 +108,6 @@ class ContactManager{
     var badgeList: [CardProfile.Bagde] = []
     var viewableBadgeList: [CardProfile.Bagde] = []
     
-    
     //var cardDesigns[]
     
     // Indexing the contact records for upload
@@ -119,13 +119,15 @@ class ContactManager{
     var userLong : Double = 0.0
     var userAddress : String = ""
     
+    // For radar list
+    var radarUserCount = 0
+    
     
     // Initialize class
     init() {
     }
     
     
-    // Custom methods
     
     func reset(){
         
