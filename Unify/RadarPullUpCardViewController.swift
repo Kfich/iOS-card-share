@@ -255,22 +255,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             KVNProgress.showSuccess(withStatus: "Card Removed Successfully")
         }
         
-        
-        print("New Card Added")
-        print("\(ContactManager.sharedManager.currentUserCards.count)")
-        
-        // Set background image on collectionview
-        let bgImage = UIImageView();
-        bgImage.image = UIImage(named: "backgroundGradient");
-        bgImage.contentMode = .scaleToFill
-        self.cardCollectionView.backgroundView = bgImage
-        
-        // Sync up with main queue
-        DispatchQueue.main.async {
-            
-            // Reload table
-            self.cardCollectionView.reloadData()
-        }
+        // Rerun logics for parsing cards from scratch
+        self.cardUpdated()
     }
     
     func cardUpdated() {
@@ -507,6 +493,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             // Find current card index
             let currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
+            self.pageControl.currentPage = indexPath.row
             
             // Get badge list
             cell.badgeList = self.parseCardForBagdes(card: currentCard)
@@ -1171,7 +1158,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         print("EMAIL CARD SELECTED")
         // Set selected card
-        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
+        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[pageControl.currentPage]
         
         // Set toggle nav to true
         ContactManager.sharedManager.userEmailCard = true
@@ -1185,7 +1172,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func showSMSCard(_ sender: Any) {
         // Set selected card
-        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[pageControl.currentPage]
+        ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[pageControl.currentPage]
         
         // Set toggle nav to true
         ContactManager.sharedManager.userSMSCard = true

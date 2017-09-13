@@ -160,7 +160,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
          }else{
          return 1
          }*/
-        return self.socialBadges.count + selectedCard.cardProfile.badgeDictionaryList.count
+        return (self.socialBadges.count + selectedCard.cardProfile.badgeDictionaryList.count)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -182,7 +182,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             
             print("THIS IS WHERE THE URL GOES \(indexPath.row)")
             // Init image from
-            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeDictionaryList[indexPath.row - selectedCard.cardProfile.badgeDictionaryList.count].value(forKey: "image") as! String)
+            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeDictionaryList[abs(indexPath.row - selectedCard.cardProfile.badgeDictionaryList.count)].value(forKey: "image") as! String)
             imageView.setImageWith(fileUrl! as URL)
         }
         

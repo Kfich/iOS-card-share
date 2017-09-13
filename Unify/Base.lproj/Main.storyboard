@@ -25,9 +25,6 @@
         <array key="SanFranciscoDisplayBold.ttf">
             <string>.HelveticaNeueDeskInterface-Bold</string>
         </array>
-        <array key="SanFranciscoDisplayMedium.ttf">
-            <string>.HelveticaNeueDeskInterface-MediumP4</string>
-        </array>
         <array key="SanFranciscoDisplayThin.ttf">
             <string>.HelveticaNeueDeskInterface-Thin</string>
         </array>
@@ -36,6 +33,9 @@
         </array>
         <array key="SanFranciscoTextHeavy.ttf">
             <string>.HelveticaNeueDeskInterface-Heavy</string>
+        </array>
+        <array key="SanFranciscoTextMedium.ttf">
+            <string>.HelveticaNeueDeskInterface-MediumP4</string>
         </array>
         <array key="SanFranciscoTextRegular.ttf">
             <string>.HelveticaNeueDeskInterface-Regular</string>
@@ -2093,7 +2093,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pjd-fv-Z7k">
-                                        <rect key="frame" x="137.5" y="29" width="100" height="24"/>
+                                        <rect key="frame" x="138" y="29" width="99.5" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -3275,7 +3275,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Cards" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aiq-CP-kgO">
-                                        <rect key="frame" x="141.5" y="43" width="92" height="24"/>
+                                        <rect key="frame" x="142" y="43" width="92" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -3647,7 +3647,7 @@
                                         <rect key="frame" x="0.0" y="-5" width="375" height="65"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egw-m4-NkQ">
-                                                <rect key="frame" x="113.5" y="41" width="149" height="24"/>
+                                                <rect key="frame" x="113" y="41" width="149" height="24"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -3666,7 +3666,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2jh-2E-YZN">
-                                                <rect key="frame" x="307.5" y="41" width="59.5" height="27"/>
+                                                <rect key="frame" x="307" y="41" width="60" height="27"/>
                                                 <state key="normal" title="Done">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -4212,7 +4212,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follow Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUv-sN-bN5">
-                                        <rect key="frame" x="140.5" y="37" width="95" height="24"/>
+                                        <rect key="frame" x="140" y="37" width="95" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -7149,12 +7149,12 @@
                                                     <segue destination="w6v-Tq-eZw" kind="embed" id="fys-NY-3se"/>
                                                 </connections>
                                             </containerView>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VyX-MS-T4o">
-                                                <rect key="frame" x="236" y="168" width="46" height="30"/>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Csq-rU-8Nw">
+                                                <rect key="frame" x="247" y="177" width="46" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
-                                                    <segue destination="7T2-Rs-jbT" kind="show" id="dOC-Cd-SvM"/>
+                                                    <segue destination="7T2-Rs-jbT" kind="show" id="S6d-MO-9ZK"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -10134,7 +10134,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khy-R3-ag1">
-                                        <rect key="frame" x="133.5" y="41" width="109" height="24"/>
+                                        <rect key="frame" x="133" y="41" width="109" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>

@@ -27,17 +27,17 @@ public class Contact: Fuseable{
     var addresses = [[String : String]]()
     
     // Parsed profile arrays
-    dynamic var bioList = [String]()
-    dynamic var workInformationList = [String]()
-    dynamic var organizationList = [String]()
-    dynamic var titleList = [String]()
-    dynamic var phoneNumberList = [String]()
-    dynamic var emailList = [String]()
-    dynamic var websiteList = [String]()
-    dynamic var socialLinkList = [String]()
-    dynamic var noteList = [String]()
-    dynamic var tagList = [String]()
-    dynamic var addressList = [String]()
+    dynamic var bioList = String()
+    dynamic var workInformation = String()
+    dynamic var organization = String()
+    dynamic var title = String()
+    dynamic var phoneNumber = String()
+    dynamic var email = String()
+    dynamic var website = String()
+    dynamic var socialLink = String()
+    dynamic var note = String()
+    dynamic var tag = String()
+    dynamic var address = String()
     
     var origin : String = ""
     var verified = false
@@ -55,19 +55,19 @@ public class Contact: Fuseable{
     
     public var properties: [FuseProperty] {
         return [
-            FuseProperty(name: "first", weight: 0.5),
-            FuseProperty(name: "last", weight: 0.5),
-            FuseProperty(name: "name", weight: 0.5),
-            FuseProperty(name: "phoneNumberList", weight: 0.5),
-            FuseProperty(name: "workInformationList", weight: 0.5),
-            FuseProperty(name: "organizationList", weight: 0.5),
-            FuseProperty(name: "titleList", weight: 0.5),
-            FuseProperty(name: "emailList", weight: 0.5),
-            FuseProperty(name: "websiteList", weight: 0.5),
-            FuseProperty(name: "socialLinkList", weight: 0.5),
-            FuseProperty(name: "noteList", weight: 0.5),
-            FuseProperty(name: "tagList", weight: 0.5),
-            FuseProperty(name: "addressList", weight: 0.5)
+            FuseProperty(name: "first", weight: 1.0),
+            FuseProperty(name: "last", weight: 1.0),
+            FuseProperty(name: "name", weight: 1.0),
+            FuseProperty(name: "phoneNumber", weight: 1.0),
+            FuseProperty(name: "workInformation", weight: 1.0),
+            FuseProperty(name: "organization", weight: 1.0),
+            FuseProperty(name: "title", weight: 1.0),
+            FuseProperty(name: "email", weight: 1.0),
+            FuseProperty(name: "website", weight: 1.0),
+            FuseProperty(name: "socialLink", weight: 1.0),
+            FuseProperty(name: "note", weight: 1.0),
+            FuseProperty(name: "tag", weight: 1.0),
+            FuseProperty(name: "address", weight: 1.0)
         ]
     }
     
@@ -274,8 +274,10 @@ public class Contact: Fuseable{
         if titles.count > 0 {
             // Add section
             sections.append("Titles")
+    
+            title = titles[0]["title"]!
             
-            for title in titles {
+           /* for title in titles {
                 // Print to test
                 print("Title : \(title["title"]!)")
                 
@@ -284,14 +286,14 @@ public class Contact: Fuseable{
                 print(titleList.count)
             }
             // Set list for section
-            self.tableData["Titles"] = titleList
+            self.tableData["Titles"] = titleList */
         }
         
         if organizations.count > 0 {
             // Add section
             sections.append("Company")
-            
-            for org in organizations {
+            organization = organizations[0]["organization"]!
+            /*for org in organizations {
                 // Print to test
                 print("Org : \(org["organization"]!)")
                 
@@ -300,15 +302,20 @@ public class Contact: Fuseable{
                 print(organizationList.count)
             }
             // Set list for section
-            self.tableData["Company"] = organizationList
+            self.tableData["Company"] = organizationList*/
         }
         
         // Check for count
         if phoneNumbers.count > 0 {
             // Add section
             sections.append("Phone Numbers")
+            
+            let digits = phoneNumbers[0]["phone"]!
+            // Set phone number
+            self.phoneNumber = digits
+            
             // Iterate over items
-            for number in phoneNumbers{
+            /*for number in phoneNumbers{
                 // print to test
                 //print("Number: \((number.value.value(forKey: "digits" )!))")
                 
@@ -318,32 +325,38 @@ public class Contact: Fuseable{
                 
                 self.phoneNumberList.append(digits)
                 print(phoneNumberList.count)
-            }
+            }*/
             // Create section data
-            self.tableData["Phone Numbers"] = phoneNumberList
+            //self.tableData["Phone Numbers"] = phoneNumberList
             
         }
         if emails.count > 0 {
             // Add section
             sections.append("Emails")
+            
+            email = emails[0]["email"]!
+            
             // Iterate over array and pull value
-            for address in emails {
+            /*for address in emails {
                 // Print to test
                 print("Email : \(address["email"])")
                 
                 // Append to array
                 self.emailList.append(address["email"]!)
                 print(emailList.count)
-            }
+            }*/
             // Create section data
-            self.tableData["Emails"] = emailList
+            //self.tableData["Emails"] = emailList
         }
         
         if websites.count > 0{
+            
+            website = websites[0]["website"]!
+            
             // Add section
             sections.append("Websites")
             // Iterate over items
-            for address in websites {
+            /*for address in websites {
                 // Print to test
                 print("Website : \(address["website"]!)")
                 
@@ -352,19 +365,22 @@ public class Contact: Fuseable{
                 print(websiteList.count)
             }
             // Create section data
-            self.tableData["Websites"] = websiteList
+            self.tableData["Websites"] = websiteList*/
             
         }
         if socialLinks.count > 0{
+            
+            socialLink = socialLinks[0]["link"]!
+            
             // Iterate over items
-            for profile in socialLinks {
+            /*for profile in socialLinks {
                 // Print to test
                 print("Social Profile : \(profile["link"]!)")
-                
+             
                 // Append to list
                 self.socialLinkList.append(profile["link"]!)
                 print(socialLinkList.count)
-            }
+            }*/
             
         }
         
@@ -373,7 +389,9 @@ public class Contact: Fuseable{
             // Add section
             sections.append("Notes")
             
-            for note in notes {
+            note = notes[0]["note"]!
+            
+           /* for note in notes {
                 // Print to test
                 print("Note : \(note["note"]!)")
                 
@@ -382,15 +400,16 @@ public class Contact: Fuseable{
                 print(noteList.count)
             }
             // Set list for section
-            self.tableData["Notes"] = noteList
+            self.tableData["Notes"] = noteList*/
         }
         
         
         if tags.count > 0 {
             // Add section
             sections.append("Tags")
+            tag = tags[0]["tag"]!
             
-            for tag in tags {
+            /*for tag in tags {
                 // Print to test
                 print("Title : \(tag["tag"]!)")
                 
@@ -399,13 +418,16 @@ public class Contact: Fuseable{
                 print(tagList.count)
             }
             // Set list for section
-            self.tableData["Tags"] = tagList
+            self.tableData["Tags"] = tagList*/
         }
         
         if addresses.count > 0 {
+            
+            address = addresses[0]["address"]!
+            
             // Add section
             sections.append("Addresses")
-            for add in addresses {
+            /*for add in addresses {
                 // Print to test
                 print("Address : \(add["address"]!)")
                 
@@ -414,12 +436,14 @@ public class Contact: Fuseable{
                 print(addressList.count)
             }
             // Set list for section
-            self.tableData["Addresses"] = addressList
+            self.tableData["Addresses"] = addressList*/
         }
         
         
         // Test object
-        print("Contact >> \n\(toAnyObject()))")
+        //print("Contact >> \n\(toAnyObject()))")
+        
+        printParsedContact()
         
        /* // Parse for badges
         self.parseForSocialIcons()
@@ -465,6 +489,32 @@ public class Contact: Fuseable{
         print("--------------------")
         print("Images : ")
         print(imageDictionary)
+        
+    }
+
+    func printParsedContact(){
+        print("\n")
+        print("Name :")
+        print(name)
+        print("Titles :")
+        print(title)
+        print("Email : ")
+        print(email)
+        print("Phone : ")
+        print(phoneNumber)
+        print("Social Link : ")
+        print(socialLink)
+        print("Note : ")
+        print(note)
+        print("Tag : ")
+        print(tag)
+        print("Address : ")
+        print(address)
+        print("Website : ")
+        print(website)
+        print("Organization : ")
+        print(organization)
+        
         
     }
 

@@ -929,7 +929,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         
         // Sort list
-        /*for (section, list) in contactObjectTable {
+        for (section, list) in contactObjectTable {
             
             // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
             
@@ -958,7 +958,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Set sorted array
             contactsHashTable[section] = array
             
-        }*/
+        }
 
         
         

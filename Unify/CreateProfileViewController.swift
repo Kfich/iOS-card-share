@@ -13,7 +13,7 @@ class CreateProfileViewController: UITableViewController {
     
     // MARK: - Properties
     var books = [String]()
-    var filteredBooks = [NSAttributedString]()
+    var filteredBooks = [Contact]()
     let fuse = Fuse()
     
     var formatter = CNContactFormatter()
@@ -96,17 +96,28 @@ class CreateProfileViewController: UITableViewController {
         return contactObjectList.count
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let selected = filteredBooks[indexPath.row].toAnyObject()
+        print(selected)
+        
+        
+        
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let item: NSAttributedString
+        let item: String
         
         if searchController.isActive && searchController.searchBar.text != "" {
-            item = filteredBooks[indexPath.row]
+            item = filteredBooks[indexPath.row].name
         } else {
-            item = NSAttributedString(string: contactObjectList[indexPath.row].name)
+            item =  contactObjectList[indexPath.row].name
         }
         
-        cell.textLabel!.attributedText = item
+        cell.textLabel!.text = item
         
         return cell
     }
@@ -120,12 +131,16 @@ class CreateProfileViewController: UITableViewController {
         
         let results = fuse.search(searchText, in: contactObjectList)
         
+        //print("Results >> \(results)")
+        
         filteredBooks = results.map { (index, _, matchedRanges) in
             let book = contactObjectList[index]
             
+            //print("Contact Object >> \(book.toAnyObject())")
+            
             let attributedString = NSMutableAttributedString(string: book.name)
             
-            return attributedString
+            return book
     
         }
         

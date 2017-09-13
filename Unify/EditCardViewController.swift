@@ -418,11 +418,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             // Delete card from local storage
             ContactManager.sharedManager.deleteCardFromArray(cardIdString: self.card.cardId!)
             
-            
-            
             // Set array to defualts
             UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
-            
             
             // Delete card
             
