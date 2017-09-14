@@ -58,13 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/FollowUp-ViewController.swift"
-            timestampString = "522349001.26448"
+            timestampString = "527049268.081391"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "FollowUpViewController"
-            landmarkType = "3">
+            startingLineNumber = "897"
+            endingLineNumber = "897">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -170,13 +168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/FollowUp-ViewController.swift"
-            timestampString = "524080239.388299"
+            timestampString = "527049268.081391"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
-            landmarkName = "getCardForTransaction(type:)"
-            landmarkType = "7">
+            startingLineNumber = "1090"
+            endingLineNumber = "1090">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -186,13 +182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/FollowUp-ViewController.swift"
-            timestampString = "524080239.388299"
+            timestampString = "527049268.081391"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "327"
-            endingLineNumber = "327"
-            landmarkName = "fetchUsersForTransaction()"
-            landmarkType = "7">
+            startingLineNumber = "1159"
+            endingLineNumber = "1159">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

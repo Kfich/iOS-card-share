@@ -17,7 +17,7 @@ public class Contact: Fuseable{
     dynamic var first = ""
     dynamic var last = ""
     var emails = [[String : String]]()
-    dynamic var phoneNumbers = [[String : String]]()
+    var phoneNumbers = [[String : String]]()
     var titles = [[String : String]]()
     var organizations  = [[String : String]]()
     var socialLinks = [[String : String]]()

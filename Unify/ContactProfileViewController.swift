@@ -205,7 +205,6 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
     
     
     
-    
     // Page Setup
 
     override func viewWillAppear(_ animated: Bool) {

@@ -285,9 +285,11 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Set selected contact
             self.selectedContactObject = contactSearchResults[indexPath.row]
             
+            
         }else{
             // Set selected contact
             self.selectedContactObject = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
+            ContactManager.sharedManager.newContact = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
         
         }
         

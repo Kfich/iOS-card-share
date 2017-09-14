@@ -1,27 +1,25 @@
 //
-//  SingleActivity-ViewController.swift
+//  ProfileEditViewController.swift
 //  Unify
 //
-//  Created by Ryan Hickman on 4/5/17.
+//  Created by Kevin Fich on 9/14/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
 import UIKit
-import PopupDialog
-import UIDropDown
 import Eureka
-import Contacts
-import EventKitUI
+import MBPhotoPicker
+import Alamofire
 
-
-class SingleActivityViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource,  EKEventEditViewDelegate{
+class ProfileEditViewController: FormViewController, UICollectionViewDelegate, UICollectionViewDataSource, RSKImageCropViewControllerDelegate{
     
     // Properties
     // ----------------------------------
     
     var currentUser = User()
     var contact = Contact()
-    let formatter = CNContactFormatter()
+    var photo = MBPhotoPicker()
+    var profileImage = UIImage()
     
     // Parsed profile arrays
     var bios = [String]()
@@ -35,10 +33,6 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
-    
-    // Selected items
-    var selectedUserPhone = ""
-    var selectedUserEmail = ""
     
     var socialBadges = [UIImage]()
     var profileImages = [UIImage()]
@@ -54,21 +48,12 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     // Selected image
     var selectedImage = UIImage()
     
-    var sections = [String]()
-    var tableData = [String: [String]]()
-    // For verified user badges
-    var corpBadges: [CardProfile.Bagde] = []
-    
     var count = 0
     
     @IBOutlet var cardWrapperView: UIView!
     
     @IBOutlet var profileImageCollectionView: UICollectionView!
-    @IBOutlet var socialBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
-    
-    // Tableview
-    @IBOutlet var profileInfoTableView: UITableView!
     
     // IBOutlets
     // ----------------------------------
@@ -83,113 +68,20 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet var calendarButton: UIBarButtonItem!
     
     
-    // Outreach toolbar
-    @IBOutlet var outreachChatButton: UIBarButtonItem!
-    @IBOutlet var outreachCallButton: UIBarButtonItem!
-    @IBOutlet var outreachMailButton: UIBarButtonItem!
-    @IBOutlet var outreachCalendarButton: UIBarButtonItem!
-    
-    
-    @IBOutlet var phoneImageView: UIImageView!
-    @IBOutlet var emailImageView: UIImageView!
-    @IBOutlet var badgeImageView: UIImageView!
-    
-   @IBOutlet var shadowView: YIInnerShadowView!
-    
-    // IBActions / Buttons Pressed
-    // --------------------------------------------
-    
-    @IBAction func backButtonPressed(_ sender: AnyObject) {
-        
-        //dismiss(animated: true, completion: nil)
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func smsSelected(_ sender: AnyObject) {
-        // Call sms function
-        //self.showSMSCard()
-        
-    }
-    
-    @IBAction func emailSelected(_ sender: AnyObject) {
-        // Call email function
-        //self.showEmailCard()
-        
-    }
-    @IBAction func callSelected(_ sender: AnyObject) {
-        
-        if contact.phoneNumbers.count < 2 {
-            
-            // Set phone val
-            let phone = selectedUserPhone
-            
-            // configure call
-            if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
-                if #available(iOS 10, *) {
-                    UIApplication.shared.open(url)
-                } else {
-                    UIApplication.shared.openURL(url)
-                }
-            }
-            
-        }else{
-            // Show alert with multiples
-            self.showActionAlert()
-        }
-        
-        
-        
-        
-    }
-    
-    @IBAction func calendarSelected(_ sender: Any) {
-        
-       /* // Check status
-        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
-        
-        switch (status) {
-        case EKAuthorizationStatus.notDetermined:
-            // This happens on first-run
-            //requestAccessToCalendar()
-            print("Undecided")
-        case EKAuthorizationStatus.authorized:
-            
-            let vc = EKEventEditViewController()
-            // Event
-            vc.editViewDelegate = self
-            let eventStore = EKEventStore()
-            // Init new event
-            let newEvent = EKEvent(eventStore: eventStore)
-            // Init new event
-            vc.event = newEvent
-            // Create store
-            vc.eventStore = eventStore
-            // Present view
-            self.present(vc, animated: true, completion: nil)
-            
-            break
-            
-        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
-            // We need to help them give us permission
-            //needPermissionView.fadeIn()
-            print("Restricted")
-            break
-        }*/
-        
-    }
-    
-    
+    @IBOutlet var firstNameTextField: UITextField!
+    @IBOutlet var lastNameTextField: UITextField!
+
     
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == self.socialBadgeCollectionView {
+        if collectionView == self.profileImageCollectionView {
             // Config images
-            return self.socialBadges.count
+            return self.profileImages.count
         }else{
             // Badge config
-            return corpBadges.count
+            return socialBadges.count
         }
-
+        
         
         //return 4//self.socialBadges.count
         
@@ -200,20 +92,98 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         //cell.backgroundColor = UIColor.blue
         
-        //cell.contentView.backgroundColor = UIColor.red
-        self.configureBadges(cell: cell)
+        if collectionView == self.profileImageCollectionView {
+            // Config images
+            //self.configurePhoto(cell: cell)
+        }else{
+            // Badge config
+            //self.configureBadges(cell: cell)
+        }
         
-        if collectionView == self.socialBadgeCollectionView {
-            // Config social badges
-            // Configure corner radius
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            let image = self.socialBadges[indexPath.row]
+        if collectionView == self.profileImageCollectionView {
+            // Init cell
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             
+            if indexPath.row != self.profileImages.count - 1 {
+                
+                // Image config
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
+                let image = self.profileImages[indexPath.row]
+                imageView.layer.masksToBounds = true
+                // Set image to view
+                imageView.image = image
+                
+                // Delete
+                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteImage = UIImage(named: "icn-minus-red")
+                deleteIconView.image = deleteImage
+                
+                // Add to imageview
+                imageView.addSubview(deleteIconView)
+                
+                // Config cell
+                self.configurePhoto(cell: cell)
+                
+                // Add to collection
+                cell.contentView.addSubview(imageView)
+                
+            }else{
+                
+                print("Last image index on Photo collection")
+                // Badge icon
+                var image = UIImage()
+                image = self.profileImages[indexPath.row]
+                let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
+                imageView.layer.masksToBounds = true
+                // Set image to view
+                imageView.image = image
+                // Add to collection
+                cell.contentView.addSubview(imageView)
+                
+            }
+            
+            
+        }else{
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            
+            //configureViews(cell: cell)
+            // Configure badge image
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            var image = UIImage()
+            image = self.socialBadges[indexPath.row]
             // Set image
             imageView.image = image
             
-            // Add subview
-            cell.contentView.addSubview(imageView)
+            if indexPath.row != self.socialBadges.count - 1 {
+                
+                // Delete
+                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteImage = UIImage(named: "icn-minus-red")
+                deleteIconView.image = deleteImage
+                
+                // Add to imageview
+                imageView.addSubview(deleteIconView)
+                
+                // Add to cell
+                cell.contentView.addSubview(imageView)
+                
+            }else{
+                
+                print("Last image index")
+                
+                // Configure badge image
+                let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
+                var image = UIImage()
+                image = self.socialBadges[indexPath.row]
+                // Set image
+                imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+            }
+            
+            
         }
         
         return cell
@@ -221,10 +191,33 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        if collectionView == self.profileImageCollectionView {
+            
+            if indexPath.row !=  self.profileImages.count - 1{
+                // Delete the card
+                self.removeImageFromProfile(index: indexPath.row)
+            }else{
+                // Add new badge
+                //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+                self.selectProfilePicture(self)
+            }
+            //cell.backgroundColor = UIColor.red
+            
+        }else{
+            
+            if indexPath.row !=  self.socialBadges.count - 1{
+                // Delete the card
+                self.removeBadgeFromProfile(index: indexPath.row)
+            }else{
+                // Add new badge
+                performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+            }
+            
+            
+        }
+        // Remove icon from list
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
-        
     }
-    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         // Init view
@@ -235,80 +228,6 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     
-    // MARK: - Table view data source
-    
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return sections.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData[sections[section]]!.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        return sections[section]
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
-        
-        //cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
-        cell.textLabel?.text = sections[indexPath.section]
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
-        cell.detailTextLabel?.text = tableData[sections[indexPath.section]]?[indexPath.row]
-        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
-        
-        return cell
-        
-    }
-    // Set row height
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return 45.0
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
-        containerView.backgroundColor = UIColor.white
-        
-        // Add label to the view
-        var lbl = UILabel(frame: CGRect(8, 3, 180, 15))
-        lbl.text = ""//sections[section]
-        lbl.textAlignment = .left
-        lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-        lbl.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium) //UIFont(name: "Avenir", size: CGFloat(14))
-        
-        // Init line view
-        let lineView = UIView(frame: CGRect(x: 5, y: lbl.frame.height + 4, width: self.view.frame.width, height: 0.5))
-        
-        lineView.backgroundColor = UIColor.lightGray
-        
-        // Add subviews
-        containerView.addSubview(lbl)
-        containerView.addSubview(lineView)
-        
-        return containerView
-        
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
-    }
-    
-    // Event delegate
-    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-        //
-        print("The calendar is done")
-        dismiss(animated: true, completion: nil)
-    }
-
-
     
     
     
@@ -321,14 +240,9 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Fill profile with example info
         currentUser = ContactManager.sharedManager.currentUser
         
-        // Contact
-        self.contact = ContactManager.sharedManager.newContact
+        configureViews()
         
-        // Config image
         self.configureSelectedImageView(imageView: self.contactImageView)
-        
-        // Parse contact 
-        self.parseContactRecord()
         
         // Parse for images
         self.parseAccountForImges()
@@ -336,16 +250,22 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Parse prof for social info
         self.parseForSocialIcons()
         
-        // View config
-        configureViews()
-        self.populateCards()
+        // Config photo picker
+        self.configurePhotoPicker()
         
+        // Set profile image
+        if ContactManager.sharedManager.currentUser.profileImages.count > 0 {
+            contactImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+        }
         
+        // Set names
+        if ContactManager.sharedManager.currentUser.firstName != ""{
+            firstNameTextField.text = ContactManager.sharedManager.currentUser.firstName
+        }
         
-        profileInfoTableView.tableHeaderView = self.cardWrapperView
-        //tableView.tableFooterView = self.profileImageCollectionView
-        
-        
+        if ContactManager.sharedManager.currentUser.lastName != ""{
+            lastNameTextField.text = ContactManager.sharedManager.currentUser.lastName
+        }
         
         // Parse bio info
         
@@ -363,7 +283,6 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
          }
          }*/
         
-        /*
         // Parse work info
         if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
             for info in ContactManager.sharedManager.currentUser.userProfile.titles{
@@ -374,61 +293,60 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
         
         // Parse phone numbers
-        if contact.phoneNumbers.count > 0{
-            for number in contact.phoneNumbers{
+        if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
+            for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 phoneNumbers.append(number["phone"]!)
             }
         }
         // Parse emails
-        if contact.emails.count > 0{
-            for email in contact.emails{
+        if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
+            for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
             }
         }
         // Parse websites
-        if contact.websites.count > 0{
-            for site in contact.websites{
+        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
                 websites.append(site["website"]!)
             }
         }
         // Parse organizations
-        if contact.organizations.count > 0{
-            for org in contact.organizations{
+        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
                 organizations.append(org["organization"]!)
             }
         }
         
         // Parse notes
-        if contact.notes.count > 0{
-            for note in contact.notes{
+        if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
+            for note in ContactManager.sharedManager.currentUser.userProfile.notes{
                 notes.append(note["note"]!)
             }
         }
         // Parse socials links
-        if contact.socialLinks.count > 0{
-            for link in contact.socialLinks{
+        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
                 socialLinks.append(link["link"]!)
             }
         }
         // Parse socials links
-        if contact.tags.count > 0{
-            for link in contact.tags{
+        if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
+            for link in ContactManager.sharedManager.currentUser.userProfile.tags{
                 tags.append(link["tag"]!)
             }
         }
         // Parse addresses
-        if contact.addresses.count > 0{
-            for add in contact.addresses{
+        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
+            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
                 addresses.append(add["address"]!)
             }
-        }*/
+        }
         
-        /*
         print("Testing Current User")
         
         
         
-        // Create 
+        // Create
         
         //let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height:365))
         
@@ -446,101 +364,16 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         //self.profileImageCollectionView.backgroundColor = UIColor.blue
         
         tableView.tableHeaderView = self.cardWrapperView
-        //tableView.tableFooterView = self.profileImageCollectionView
+        tableView.tableFooterView = self.profileImageCollectionView
         
         
         // Set bg
         tableView.backgroundColor = UIColor.white
         
         //title = "Multivalued Examples"
-        
         form +++
-            Section("Section 1")
-        
-            let sectionValue = form.sectionBy(tag: "Section 1")
-            if titles.count > 0 {
-            
-                for val in titles{
-                    sectionValue! <<< NameRow() {
-                        $0.placeholder = "Title"
-                        $0.value = val
-                    }
-                
-                }
-            
-        }
-        
-        // Iterate through array and set val
-        for val in organizations{
-            form +++
-                Section("Section 2")
-                <<< NameRow() {
-                    $0.placeholder = "Title"
-                    $0.value = val
-            }
-        }
-
-        // Iterate through array and set val
-        for val in phoneNumbers{
-            form +++
-                Section("Section 3")
-                <<< NameRow() {
-                    $0.placeholder = "Phone"
-                    $0.value = self.format(phoneNumber: val)
-            }
-        }
-
-        // Iterate through array and set val
-        for val in emails{
-            form +++
-                Section("Section 4")
-                <<< NameRow() {
-                    $0.placeholder = "Email"
-                    $0.value = val
-            }
-        }
-        
-        for val in websites{
-            form +++
-                Section("Section 5")
-                <<< NameRow() {
-                    $0.placeholder = "Site"
-                    $0.value = val
-            }
-        }
-        
-        for val in tags{
-            form +++
-                Section("Section 6")
-                <<< NameRow() {
-                    $0.placeholder = "Tag"
-                    $0.value = val
-            }
-        }
-        
-        for val in notes{
-            form +++
-                Section("Section 6")
-                <<< NameRow() {
-                    $0.placeholder = "Note"
-                    $0.value = val
-            }
-        }
-        
-        // Iterate through array and set val
-        for val in addresses{
-            form +++
-                Section("Section 7")
-                <<< NameRow() {
-                    $0.placeholder = "Address"
-                    $0.value = val
-            }
-        }
-        
-        
-        /*
-         MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Titles",
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "  ",
                                footer: "") {
                                 $0.tag = "Title Section"
                                 $0.addButtonProvider = { section in
@@ -555,7 +388,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow() {
                                         $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = UIColor.blue
+                                        $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
                                         self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         
@@ -563,69 +396,45 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = UIColor.red
-                                           /*
-                                            // Init line view
-                                            let headerView = UIImageView()
-                                            
-                                            headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                            headerView.image = UIImage(named: "arrow-left")
-                                            headerView.backgroundColor = UIColor.gray
-                                            headerView.tintColor = UIColor.gray
-                                            
-                                            // Add seperator to label
-                                            cell.titleLabel?.addSubview(headerView)*/
+                                            cell.titleLabel?.textColor = self.view.tintColor
+                                            /*
+                                             // Init line view
+                                             let headerView = UIImageView()
+                                             
+                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
+                                             headerView.image = UIImage(named: "arrow-left")
+                                             headerView.backgroundColor = UIColor.gray
+                                             headerView.tintColor = UIColor.gray
+                                             
+                                             // Add seperator to label
+                                             cell.titleLabel?.addSubview(headerView)*/
                                             
                                             print("Cell updating !!")
                                             
-                                        }
-                                }
-
-                                /*$0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("titlesRow_\(index)") {
-                                        $0.placeholder = "Title"
-                                        
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                     }
-                                }*/
+                                }
+                                
+                                /*$0.multivaluedRowToInsertAt = { index in
+                                 return NameRow("titlesRow_\(index)") {
+                                 $0.placeholder = "Title"
+                                 
+                                 $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                 $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                 }
+                                 }*/
                                 // Iterate through array and set val
-                               // titles = ["hi", "hi", "hi", "hi", "hi", "hi"]
                                 for val in titles{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Title"
-                                        $0.value = val
-                                    }
-                                }
-            }*/
-            
-            ///+++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Company",
-                               footer: "") {
-                                $0.tag = "Organization Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Company"
-                                        //$0.tag = "Add Organizations"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                   
-                                    return NameRow() {
                                         $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = UIColor.blue
-                                        // Create headerview
+                                        $0.value = val
                                         self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = UIColor.red
+                                            cell.titleLabel?.textColor = self.view.tintColor
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -642,12 +451,50 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                     }
 
-                                    /*return NameRow("organizationRow_\(index)") {
-                                        $0.placeholder = "Name"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                }
+            }
+            
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Organization Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Company"
                                         //$0.tag = "Add Organizations"
-                                    }*/
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow() {
+                                        $0.title = "home "
+                                        $0.cell.titleLabel?.textColor = self.view.tintColor
+                                        // Create headerview
+                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        
+                                        }.cellUpdate { cell, row in
+                                            
+                                            cell.textField.textAlignment = .left
+                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.titleLabel?.textColor = self.view.tintColor
+                                            /*
+                                             // Init line view
+                                             let headerView = UIImageView()
+                                             
+                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
+                                             headerView.image = UIImage(named: "arrow-left")
+                                             headerView.backgroundColor = UIColor.gray
+                                             headerView.tintColor = UIColor.gray
+                                             
+                                             // Add seperator to label
+                                             cell.titleLabel?.addSubview(headerView)*/
+                                            
+                                            print("Cell updating !!")
+                                            
+                                    }
                                 }
                                 
                                 // Iterate through array and set val
@@ -655,9 +502,31 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Name"
                                         $0.value = val
+                                        $0.title = "home "
+                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         //$0.tag = "Add Organizations"
                                         
+                                        }.cellUpdate { cell, row in
+                                            
+                                            cell.textField.textAlignment = .left
+                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.titleLabel?.textColor = self.view.tintColor
+                                            /*
+                                             // Init line view
+                                             let headerView = UIImageView()
+                                             
+                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
+                                             headerView.image = UIImage(named: "arrow-left")
+                                             headerView.backgroundColor = UIColor.gray
+                                             headerView.tintColor = UIColor.gray
+                                             
+                                             // Add seperator to label
+                                             cell.titleLabel?.addSubview(headerView)*/
+                                            
+                                            print("Cell updating !!")
+                                            
                                     }
+
                                 }
                                 
             }
@@ -665,7 +534,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Phone Numbers",
+                               header: "",
                                footer: "") {
                                 $0.tag = "Phone Section"
                                 $0.addButtonProvider = { section in
@@ -680,7 +549,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                     
                                     return NameRow() {
                                         $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = UIColor.blue
+                                        $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
                                         self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         
@@ -688,7 +557,46 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = UIColor.red
+                                            cell.titleLabel?.textColor = self.view.tintColor
+                                            /*
+                                             // Init line view
+                                             let headerView = UIImageView()
+                                             
+                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
+                                             headerView.image = UIImage(named: "arrow-left")
+                                             headerView.backgroundColor = UIColor.gray
+                                             headerView.tintColor = UIColor.gray
+                                             
+                                             // Add seperator to label
+                                             cell.titleLabel?.addSubview(headerView)*/
+                                            
+                                            print("Cell updating !!")
+                                            
+                                    }
+                                    
+                                    
+                                    /*return PhoneRow("numbersRow_\(index)") {
+                                     $0.placeholder = "Number"
+                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                     //$0.tag = "Phone Numbers"
+                                     $0.cell.textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+                                     }*/
+                                }
+                                // Iterate through array and set val
+                                for val in phoneNumbers{
+                                    $0 <<< PhoneRow() {
+                                        $0.placeholder = "Number"
+                                        $0.value = self.format(phoneNumber: val)//val
+                                        $0.title = "home "
+                                        // Add gesture
+                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        //$0.tag = "Phone Numbers"
+                                        }.cellUpdate { cell, row in
+                                            
+                                            cell.textField.textAlignment = .left
+                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.titleLabel?.textColor = self.view.tintColor
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -705,29 +613,13 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                     }
 
-                                    
-                                    /*return PhoneRow("numbersRow_\(index)") {
-                                        $0.placeholder = "Number"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                        //$0.tag = "Phone Numbers"
-                                        $0.cell.textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
-                                    }*/
-                                }
-                                // Iterate through array and set val
-                                for val in phoneNumbers{
-                                    $0 <<< PhoneRow() {
-                                        $0.placeholder = "Number"
-                                        $0.value = self.format(phoneNumber: val)//val
-                                        //$0.tag = "Phone Numbers"
-                                    }
                                 }
                                 
             }
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Email Addresses",
+                               header: "",
                                footer: "") {
                                 $0.tag = "Email Section"
                                 $0.addButtonProvider = { section in
@@ -741,7 +633,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow() {
                                         $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = UIColor.blue
+                                        $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
                                         self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         
@@ -749,7 +641,45 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = UIColor.red
+                                            cell.titleLabel?.textColor = self.view.tintColor
+                                            /*
+                                             // Init line view
+                                             let headerView = UIImageView()
+                                             
+                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
+                                             headerView.image = UIImage(named: "arrow-left")
+                                             headerView.backgroundColor = UIColor.gray
+                                             headerView.tintColor = UIColor.gray
+                                             
+                                             // Add seperator to label
+                                             cell.titleLabel?.addSubview(headerView)*/
+                                            
+                                            print("Cell updating !!")
+                                            
+                                    }
+                                    
+                                    /*return NameRow("emailsRow_\(index)") {
+                                     $0.placeholder = "Address"
+                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                     //$0.tag = "Add Emails"
+                                     }*/
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in emails{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Address"
+                                        //$0.tag = "Add Emails"
+                                        $0.value = val
+                                        $0.title = "home "
+                                        // Add gesture to label
+                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        }.cellUpdate { cell, row in
+                                            
+                                            cell.textField.textAlignment = .left
+                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.titleLabel?.textColor = self.view.tintColor
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -766,27 +696,12 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                     }
 
-                                    /*return NameRow("emailsRow_\(index)") {
-                                        $0.placeholder = "Address"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                        //$0.tag = "Add Emails"
-                                    }*/
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in emails{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Address"
-                                        //$0.tag = "Add Emails"
-                                        $0.value = val
-                                    }
                                 }
             }
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Websites",
+                               header: "",
                                footer: "") {
                                 $0.tag = "Website Section"
                                 $0.addButtonProvider = { section in
@@ -800,7 +715,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow() {
                                         $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = UIColor.blue
+                                        $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
                                         self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         
@@ -808,7 +723,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = UIColor.red
+                                            cell.titleLabel?.textColor = self.view.tintColor
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -825,11 +740,11 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                     }
                                     /*return NameRow("websitesRow_\(index)") {
-                                        $0.placeholder = "Site"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                        //$0.tag = "Add Websites"
-                                    }*/
+                                     $0.placeholder = "Site"
+                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                     //$0.tag = "Add Websites"
+                                     }*/
                                 }
                                 // Iterate through array and set val
                                 
@@ -837,8 +752,30 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Site"
                                         $0.value = val
-                                        //$0.tag = "Add Websites"
+                                        $0.title = "home "
+                                        // Add gesture to label
+                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        }.cellUpdate { cell, row in
+                                            
+                                            cell.textField.textAlignment = .left
+                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.titleLabel?.textColor = self.view.tintColor
+                                            /*
+                                             // Init line view
+                                             let headerView = UIImageView()
+                                             
+                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
+                                             headerView.image = UIImage(named: "arrow-left")
+                                             headerView.backgroundColor = UIColor.gray
+                                             headerView.tintColor = UIColor.gray
+                                             
+                                             // Add seperator to label
+                                             cell.titleLabel?.addSubview(headerView)*/
+                                            
+                                            print("Cell updating !!")
+                                            
                                     }
+
                                 }
             }
             
@@ -875,7 +812,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Tags",
+                               header: "",
                                footer: "") {
                                 $0.tag = "Tag Section"
                                 $0.addButtonProvider = { section in
@@ -887,9 +824,74 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("tagRow_\(index)") {
+                                     $0.placeholder = "Tag"
+                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                     //$0.tag = "Add Media Info"
+                                     }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in tags{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Tag"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                        }
+                                }
+            }
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Notes Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Notes"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("notesRow_\(index)") {
+                                     $0.placeholder = "Note"
+                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                     //$0.tag = "Add Media Info"
+                                     }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in notes{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Note"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+            }
+            
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Address Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Address"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
                                     return NameRow() {
                                         $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = UIColor.blue
+                                        $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
                                         self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         
@@ -897,7 +899,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = UIColor.red
+                                            cell.titleLabel?.textColor = self.view.tintColor
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -914,8 +916,9 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             
                                     }
                                     
-                                    /*return NameRow("tagRow_\(index)") {
-                                        $0.placeholder = "Tag"
+                                    
+                                    /*return NameRow("addressRow_\(index)") {
+                                        $0.placeholder = "Address"
                                         $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                         $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Media Info"
@@ -923,40 +926,18 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                 }
                                 
                                 // Iterate through array and set val
-                                for val in tags{
+                                for val in addresses{
                                     $0 <<< NameRow() {
-                                        $0.placeholder = "Tag"
-                                        $0.value = val
-                                        //$0.tag = "Add Media Info"
-                                    }
-                                }
-            }
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Notes",
-                               footer: "") {
-                                $0.tag = "Notes Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Notes"
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow() {
+                                        $0.placeholder = "Address"
                                         $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = UIColor.blue
-                                        // Create headerview
+                                        $0.value = val
                                         self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
-                                        
+                                        //$0.tag = "Add Media Info"
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = UIColor.red
+                                            cell.titleLabel?.textColor = self.view.tintColor
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -972,68 +953,20 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                                             print("Cell updating !!")
                                             
                                     }
-                                    /*return NameRow("notesRow_\(index)") {
-                                        $0.placeholder = "Note"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                        //$0.tag = "Add Media Info"
-                                    }*/
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in notes{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Link"
-                                        $0.value = val
-                                        //$0.tag = "Add Media Info"
-                                    }
-                                }
-            }
-            
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "Addresses",
-                               footer: "") {
-                                $0.tag = "Address Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Address"
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("addressRow_\(index)") {
-                                        $0.placeholder = "Address"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                        //$0.tag = "Add Media Info"
-                                    }
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in addresses{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Address"
-                                        $0.value = val
-                                        //$0.tag = "Add Media Info"
-                                    }
+
                                 }
         }
-        */
+        
         
         
         
     }
     
     
-    /*
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
-        
+        /*
         // Assign all the items in each list to the contact profile on manager
         // Parse table section vals
         
@@ -1173,202 +1106,212 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             
         }else{
             print("They cancelled")
-        }
+        }*/
         
-    }*/
+    }
+    
+    // Image Cropper Delegates
+    
+    func showCropper(withImage: UIImage) {
+        // Show image cropper
+        let cropper = RSKImageCropViewController()
+        // Set Cropper Image
+        cropper.originalImage = withImage
+        // Set mode
+        cropper.cropMode = RSKImageCropMode.circle
+        // Set Delegate
+        cropper.delegate = self
+        
+        self.present(cropper, animated: true, completion: nil)
+    }
+    
+    /*
+     func imageCropViewControllerCustomMaskRect(_ controller: RSKImageCropViewController) -> CGRect {
+     // Configure custom rect
+     var size = CGSize()
+     // Set size
+     size.height = 150
+     size.width = 150
+     
+     // Config view size
+     let viewWidth = self.view.frame.width
+     let viewHeight = self.view.frame.height
+     
+     // Make rect
+     let rect = CGRect(x: (viewWidth - size.width) * 0.5, y: (viewHeight - size.height) * 0.5, width: size.width, height: size.height)
+     
+     return rect
+     
+     }*/
+    
+    func imageCropViewControllerDidCancelCrop(_ controller: RSKImageCropViewController) {
+        // Drop vc
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
+        
+        // Set image to view
+        self.contactImageView.image = croppedImage
+        
+        // Set selected
+        self.selectedImage = croppedImage
+        
+        // Set image to profile
+        self.setImageData()
+        
+        //self.profileImages.append(self.selectedImage)
+        // Refresh account images
+        //self.parseAccountForImges()
+        
+        dismiss(animated: true, completion: nil)
+        
+        
+    }
+    
+    func imageCropViewController(_ controller: RSKImageCropViewController, willCropImage originalImage: UIImage) {
+        
+        // Set image to view
+        //self.profileImageContainerView.image = originalImage
+        
+        // Test
+        print("Selected Image >> \n\(originalImage)")
+    }
+    
+    
     
     // Custom methods
     
-    // Initialize contact objects for upload
     
-    func parseContactRecord(){
-        // Clear all profile info to prepare for override
-        bios.removeAll()
-        titles.removeAll()
-        emails.removeAll()
-        phoneNumbers.removeAll()
-        websites.removeAll()
-        organizations.removeAll()
-        socialLinks.removeAll()
-        workInformation.removeAll()
-        tags.removeAll()
-        addresses.removeAll()
-        self.sections.removeAll()
-        self.tableData.removeAll()
-        self.notes.removeAll()
+    func configurePhotoPicker() {
+        //Initial setup
+        photo.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
+        photo.alertTitle = "Select Profile Image"
+        photo.alertMessage = ""
+        photo.resizeImage = CGSize(width: 150, height: 150)
+        photo.allowDestructive = false
+        photo.allowEditing = false
+        // Set front facing camera
+        photo.cameraDevice = .front
+        photo.cameraFlashMode = .auto
+        
+        photo.actionTitleLibrary = "Photo Library"
+        //photo.actionTitleLastPhoto = nil
+        photo.actionTitleTakePhoto = "Take Photo"
+        photo.actionTitleCancel = "Cancel"
+        photo.actionTitleOther = "Import From..."
         
         
-        // Init formatter
-        let formatter = CNContactFormatter()
-        formatter.style = .fullName
+    }
+    
+    func selectProfilePicture(_ sender: AnyObject) {
         
-        // Iterate over list and itialize contact objects
-        
-        // Init temp contact object
-        //let contactObject = Contact()
-        
-        // Set name
-        //contactObject.name = formatter.string(from: contact) ?? "No Name"
-        
-        
-        if contact.titles.count > 0 {
-            // Add section
-            sections.append("Titles")
+        // Add code to edit photo here
+        photo.onPhoto = { (image: UIImage?) -> Void in
+            print("Selected image")
             
-            for title in contact.titles {
-                // Print to test
-                print("Title : \(title["title"]!)")
-                
-                // Append to list
-                self.titles.append(title["title"]!)
-                print(titles.count)
-            }
-            // Set list for section
-            self.tableData["Titles"] = titles
-        }
-        
-        if contact.organizations.count > 0 {
-            // Add section
-            sections.append("Company")
+            /*
+             self.firstName.becomeFirstResponder()
+             
+             self.hasProfilePic = true
+             
+             
+             self.profileImageContainerView.image = image
+             global_image = image*/
             
-            for org in contact.organizations {
-                // Print to test
-                print("Org : \(org["organization"]!)")
-                
-                // Append to list
-                self.organizations.append(org["organization"]!)
-                print(organizations.count)
-            }
-            // Set list for section
-            self.tableData["Company"] = organizations
-        }
-        
-        // Check for count
-        if contact.phoneNumbers.count > 0 {
-            // Add section
-            sections.append("Phone Numbers")
-            // Iterate over items
-            for number in contact.phoneNumbers{
-                // print to test
-                //print("Number: \((number.value.value(forKey: "digits" )!))")
-                
-                // Init the number with formatting
-                let digits = self.format(phoneNumber: number["phone"]!)
-                
-                self.phoneNumbers.append(digits!)
-                print(phoneNumbers.count)
-            }
-            // Create section data
-            self.tableData["Phone Numbers"] = phoneNumbers
+            print("Selected image")
             
-        }
-        if contact.emails.count > 0 {
-            // Add section
-            sections.append("Emails")
-            // Iterate over array and pull value
-            for address in contact.emails {
-                // Print to test
-                print("Email : \(address["email"])")
-                
-                // Append to array
-                self.emails.append(address["email"]!)
-                print(emails.count)
-            }
-            // Create section data
-            self.tableData["Emails"] = emails
-        }
-        
-        if contact.websites.count > 0{
-            // Add section
-            sections.append("Websites")
-            // Iterate over items
-            for address in contact.websites {
-                // Print to test
-                print("Website : \(address["website"]!)")
-                
-                // Append to list
-                self.websites.append(address["website"]!)
-                print(websites.count)
-            }
-            // Create section data
-            self.tableData["Websites"] = websites
+            // Change button text
+            //self.selectProfileImageButton.titleLabel?.text = "Change"
             
-        }
-        if contact.socialLinks.count > 0{
-            // Iterate over items
-            for profile in contact.socialLinks {
-                // Print to test
-                print("Social Profile : \(profile["link"]!)")
-                
-                // Append to list
-                self.socialLinks.append(profile["link"]!)
-                print(socialLinks.count)
-            }
+            // Set selected
+            self.selectedImage = image!
+            
+            // Show cropper view
+            ContactManager.sharedManager.userArrivedFromSocial = true
+            
+            //self.profileImageContainerView.layer.borderColor = UIColor.clear as! CGColor
+            
+            // Show cropper view
+            self.dismiss(animated: true, completion: {
+                self.showCropper(withImage: self.selectedImage)
+            })
+            
+            
+            // Previous location for image assignment to user object
+            
+            
+            //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
             
         }
         
-        
-        if contact.notes.count > 0 {
-            // Add section
-            sections.append("Notes")
-            
-            for note in contact.notes {
-                // Print to test
-                print("Note : \(note["note"]!)")
-                
-                // Append to list
-                self.notes.append(note["note"]!)
-                print(notes.count)
-            }
-            // Set list for section
-            self.tableData["Notes"] = notes
+        photo.onCancel = {
+            print("Cancel Pressed")
         }
-        
-        
-        if contact.tags.count > 0 {
-            // Add section
-            sections.append("Tags")
-            
-            for tag in contact.tags {
-                // Print to test
-                print("Title : \(tag["tag"]!)")
-                
-                // Append to list
-                self.tags.append(tag["tag"]!)
-                print(tags.count)
-            }
-            // Set list for section
-            self.tableData["Tags"] = tags
+        photo.onError = { (error) -> Void in
+            print("Photo selection Error")
+            print("Error: \(error.rawValue)")
         }
+        photo.present(self)
         
-        if contact.addresses.count > 0 {
-            // Add section
-            sections.append("Addresses")
-            for add in contact.addresses {
-                // Print to test
-                print("Address : \(add["address"]!)")
+    }
+
+    
+    func updateCurrentUser() {
+        // Configure to send to server
+       /* if firstNameTextField.text != "" && lastNameTextField.text != "" {
+            // Fields not empty
+            ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
+            ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
+            // Combine to make full name
+            ContactManager.sharedManager.currentUser.fullName = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
+        }*/
+        
+        // Assign current user object
+        
+        // Send to server
+        let parameters = ["data" : ContactManager.sharedManager.currentUser.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
+        print("\n\nThe user update")
+        print(parameters)
+        
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Updating profile...")
+        
+        // Save card to DB
+        //let parameters = ["data": card.toAnyObject()]
+        
+        
+        Connection(configuration: nil).updateUserCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("User updated Response ---> \(String(describing: response))")
                 
-                // Append to list
-                self.addresses.append(add["address"]!)
-                print(addresses.count)
+                // Set card uuid with response from network
+                let dictionary : Dictionary = response as! [String : Any]
+                print(dictionary)
+                
+                
+                // Store user to device
+                //UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
+                
+                // Refresh profile
+                //self.postNotificationForRefresh()
+                
+                // Hide HUD
+                KVNProgress.showSuccess(withStatus: "Profile updated successfully!")
+                
+                // Nav out the view
+                //self.navigationController?.popViewController(animated: true)
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
             }
-            // Set list for section
-            self.tableData["Addresses"] = addresses
+            // Hide indicator
+            KVNProgress.dismiss()
         }
-        
-        
-        // Test object
-        print("Contact >> \n\(contact.toAnyObject()))")
-        
-        // Parse for badges
-        self.parseForSocialIcons()
-        
-        // Parse for crop
-        //self.parseForCorpBadges()
-        
-        // Reload table data
-        self.profileInfoTableView.reloadData()
-        
         
     }
 
@@ -1400,87 +1343,46 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
     }
     
+    func removeCorpBadgeFromProfile(index: Int) {
+        
+        print("Initial badge count \(ContactManager.sharedManager.currentUser.userProfile.badgeList.count)")
+        // Remove item at index
+        ContactManager.sharedManager.currentUser.userProfile.badgeList.remove(at: index)
+        print("Post delete badge count \(ContactManager.sharedManager.currentUser.userProfile.socialLinks.count)")
+        // Reload table data
+        self.badgeCollectionView.reloadData()
+    }
     
-    func parseForSocialIcons() {
+    func removeBadgeFromProfile(index: Int) {
         
-        // Init icon list
-        self.initializeBadgeList()
+        print("Initial list count \(ContactManager.sharedManager.currentUser.userProfile.socialLinks.count)")
+        // Remove item at index
+        ContactManager.sharedManager.currentUser.userProfile.socialLinks.remove(at: index)
+        print("Post delete list count \(ContactManager.sharedManager.currentUser.userProfile.socialLinks.count)")
+        // Reload table data
+        parseForSocialIcons()
+    }
+    
+    func removeImageFromProfile(index: Int) {
         
-        print("Looking for social icons on profile view")
+        print("Initial list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
+        // Remove item at index
+        ContactManager.sharedManager.currentUser.profileImages.remove(at: index)
+        // Remove image from local list
+        self.profileImages.remove(at: index)
         
-        // Assign currentuser
-        //self.currentUser = ContactManager.sharedManager.currentUser
+        print("Post delete list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
         
-        // Parse socials links
-        /*if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-         for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
-         socialLinks.append(link["link"]!)
-         // Test
-         print("Count >> \(socialLinks.count)")
-         }
-         }*/
+        self.profileImageCollectionView.reloadData()
         
-        // Remove all items from badges
-        self.socialBadges.removeAll()
-        // Add plus icon to list
-        
-        // Iterate over links[]
-        for link in self.socialLinks {
-            // Check if link is a key
-            print("Link >> \(link)")
-            for item in self.socialLinkBadges {
-                // Test
-                //print("Item >> \(item.first?.key)")
-                // temp string
-                let str = item.first?.key
-                //print("String >> \(str)")
-                // Check if key in link
-                if link.lowercased().range(of:str!) != nil {
-                    print("exists")
-                    
-                    // Append link to list
-                    self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
-                     print("NOT IN LIST")
-                     // Append link to list
-                     self.socialBadges.append(item.first?.value as! UIImage)
-                     }else{
-                     print("ALREADY IN LIST")
-                     }*/
-                    // Append link to list
-                    //self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    
-                    
-                    //print("THE IMAGE IS PRINTING")
-                    //print(item.first?.value as! UIImage)
-                    print("SOCIAL BADGES COUNT")
-                    print(self.socialBadges.count)
-                    
-                    
-                }
-            }
-            
-            
-            // Reload table
-            //self.socialBadgeCollectionView.reloadData()
-        }
-        
-        // Add image to the end of list
-        //let image = UIImage(named: "icn-plus-blue")
-        //self.socialBadges.append(image!)
-        
-        // Reload table
-        //self.socialBadgeCollectionView.reloadData()
-        
+        //self.parseAccountForImges()
     }
 
     
-    /*
+    
     func parseForSocialIcons() {
         
-        // Badge List 
+        // Badge List
         self.initializeBadgeList()
         
         print("PARSING for icons from edit profile vc")
@@ -1557,7 +1459,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         //self..reloadData()
         
     }
-    */
+    
     
     
     func parseAccountForImges() {
@@ -1593,7 +1495,94 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         self.profileImageCollectionView.reloadData()
         
     }
+    
+    func setImageData() {
+        // Image data png
+        //let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!, 0.5)
+        let imageData = UIImageJPEGRepresentation(self.selectedImage, 0.5)
+        print(imageData!)
+        
+        // Generate id string for image
+        let idString = currentUser.randomString(length: 20)
+        
+        // Assign asset name and type
+        let fname = idString
+        let mimetype = "image/png"
+        
+        // Create image dictionary
+        let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
+        // Add image to user profile images
+        ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
+        
+        print("Contact Manager total images count: >> \(ContactManager.sharedManager.currentUser.profileImages.count)")
+        
+        // Upload to Server
+        // Save card to DB
+        let parameters = imageDict
+        print(parameters)
+        
+        // Init imageURLS
+        let urls = ImageURLS()
+        
+        // Create URL For Prod
+        let prodURL = urls.uploadToStagingURL
+        
+        // Create URL For Test
+        //let testURL = urls.uploadToDevelopmentURL
+        
+        
+        // Show progress HUD
+        //KVNProgress.show(withStatus: "Adding image to profile..")
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+             }*/
+            
+            // Currently Set to point to Prod Server
+        }, to:prodURL)
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n success...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                    // Dismiss hud
+                    //KVNProgress.showSuccess()
+                    
+                    // Reload table
+                    self.parseAccountForImges()
+                    
+                    
+                    //self.profileImageCollectionView.reloadData()
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
+        
+        
+        // Test if image stored
+        //print(self.newUser.profileImages)
+        
+    }
 
+    
     
     func addGestureToLabel(label: UILabel, intent: String) {
         // Init tap gesture
@@ -1604,7 +1593,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Set description to view based on intent
         
     }
-
+    
     
     func showSelectionOptions() {
         // Call the viewController
@@ -1639,7 +1628,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Make
         let textAction = UIAlertAction(title: "Text", style: .default)
         { _ in
-        
+            
             print("Text")
         }
         // Add Buttoin
@@ -1657,76 +1646,48 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
         self.present(actionSheetController, animated: true, completion: nil)
     }
-
+    
     
     
     
     // Page styling
     func populateCards(){
         
+        var currentUser = ContactManager.sharedManager.currentUser
         
-        //nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
-        nameLabel.text = self.contact.name
+        // Senders card
+        // Assign current user from manager
+        currentUser = ContactManager.sharedManager.currentUser
+        
+        if currentUser.profileImages.count > 0 {
+            contactImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+        }
+        if currentUser.fullName != ""{
+            nameLabel.text = currentUser.fullName
+        }
+        if currentUser.userProfile.phoneNumbers.count > 0{
+            // Format text labels
+            phoneLabel.text = self.format(phoneNumber: currentUser.userProfile.phoneNumbers[0]["phone"]!)
+        }
+        if currentUser.userProfile.emails.count > 0{
+            emailLabel.text = currentUser.userProfile.emails[0]["email"]
+        }
+        
+        if currentUser.userProfile.titles.count > 0{
+            titleLabel.text = currentUser.userProfile.titles[0]["title"]
+        }
+        
+        //titleLabel.text = "Founder & CEO, CleanSwipe"
         
         /*
-        if self.contact.phoneNumbers.count > 0 {
-            // Set label text
-            //phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
-            //phoneLabel.text = self.format(phoneNumber: self.contact.phoneNumbers[0]["phone"]!)
-            
-            // Set global phone val
-            self.selectedUserPhone = self.contact.phoneNumbers[0]["phone"]!
-        }else{
-            // Hide phone icon image
-            phoneImageView.isHidden = true
-            // Disable buttons
-            callButton.isEnabled = false
-            smsButton.isEnabled = false
-            
-            // Set tint for buttons
-            callButton.tintColor = UIColor.gray
-            smsButton.tintColor = UIColor.gray
-            
-            // Toggle image
-            callButton.image = UIImage(named: "btn-call-white")
-            smsButton.image = UIImage(named: "btn-chat-white")
-            
-        }
-        if contact.emails.count > 0 {
-            // Set label text
-            //emailLabel.text = self.contact.emails[0]["email"]
-            // Set global email
-            self.selectedUserEmail = self.contact.emails[0]["email"]!
-        }else{
-            // Hide email icon
-            emailImageView.isHidden = true
-            // Disable button
-            emailButton.isEnabled = false
-            // Set tint
-            emailButton.tintColor = UIColor.gray
-            // Toggle image
-            emailButton.image = UIImage(named: "btn-message-white")
-        }
-        // Check if image data available
-        
-        */
-        if contact.imageId != "" {
-            print("Has IMAGE")
-            // Set id
-            let id = contact.imageId
-            
-            // Set image for contact
-            let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
-            let placeholderImage = UIImage(named: "profile")!
-            // Set image
-            //contactImageView?.setImageWith(url)
-            self.contactImageView.setImageWith(url)
-            
-        }else{
-            contactImageView.image = UIImage(named: "profile")
-        }
-
-        
+         // Assign media buttons
+         mediaButton1.image = UIImage(named: "social-blank")
+         mediaButton2.image = UIImage(named: "social-blank")
+         mediaButton3.image = UIImage(named: "social-blank")
+         mediaButton4.image = UIImage(named: "social-blank")
+         mediaButton5.image = UIImage(named: "social-blank")
+         mediaButton6.image = UIImage(named: "social-blank")
+         mediaButton7.image = UIImage(named: "social-blank")*/
     }
     
     func configureBadges(cell: UICollectionViewCell){
@@ -1773,7 +1734,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     
     func configureViews(){
         // Toolbar button config
-        
+        /*
         outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
         
         outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
@@ -1788,7 +1749,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         smsButton.image = UIImage(named: "btn-chat-blue")
         emailButton.image = UIImage(named: "btn-message-blue")
         callButton.image = UIImage(named: "btn-call-blue")
-        calendarButton.image = UIImage(named: "btn-calendar-blue")
+        calendarButton.image = UIImage(named: "btn-calendar-blue")*/
     }
     
     
@@ -1862,96 +1823,9 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     
 }
-
-/*: UIViewController {
- 
-    // Properties
-    // ------------------------------------------
- 
-    var active_card_unify_uuid: String?
- 
-
- 
-    // IBOutlets
-    // ------------------------------------------
- 
-    @IBOutlet var businessCardView: BusinessCardView!
- 
-    @IBOutlet var contactCardView: ContactCardView!
- 
-    override func viewDidLoad() {
-        super.viewDidLoad()
- 
- 
- 
-        // Background view configuration
- 
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
- 
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)
-        
-        // View configuration 
-        configureViews()
-        }
-    
-    
-
-    // IBOActions / Buttons Pressed
-    // ------------------------------------------
-    
-    @IBAction func followUpBtn_click(_ sender: Any) {
-        
-        
-        self.performSegue(withIdentifier: "activityFollowUpSegue", sender: self)
-
-    }
-
-    
-    // Custom Methods
-    
-    func configureViews(){
-        
-        // Configure cards
-        self.businessCardView.layer.cornerRadius = 10.0
-        self.businessCardView.clipsToBounds = true
-        self.businessCardView.layer.borderWidth = 2.0
-        self.businessCardView.layer.borderColor = UIColor.lightGray.cgColor
-        
-        self.contactCardView.layer.cornerRadius = 10.0
-        self.contactCardView.clipsToBounds = true
-        self.contactCardView.layer.borderWidth = 2.0
-        self.contactCardView.layer.borderColor = UIColor.lightGray.cgColor
-        
-        
-        
-    }
-
-    
-    // Navigation 
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        
-        print(">Passed Contact Card ID")
-        print(sender!)
-        
-        if segue.identifier == "activityFollowUpSegue"
-        {
-            
-            let nextScene =  segue.destination as! FollowUpViewController
-            
-            nextScene.active_card_unify_uuid = "\(self.active_card_unify_uuid!)" as! String?
-            
-        }
-    }
-    
-
-
-}*/

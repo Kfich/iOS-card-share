@@ -1930,10 +1930,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         if segue.identifier == "showFollowupSegue"
         {
             
-            let nextScene =  segue.destination as! FollowUpViewController
+            //let nextScene =  segue.destination as! FollowUpViewController
             // Pass the transaction object to nextVC
-            nextScene.transaction = self.selectedTransaction
-            nextScene.active_card_unify_uuid = "\(sender!)" as String?
+            //nextScene.transaction = self.selectedTransaction
+            //nextScene.active_card_unify_uuid = "\(sender!)" as String?
             
             
         }
