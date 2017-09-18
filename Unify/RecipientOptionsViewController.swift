@@ -215,7 +215,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 print("There was an error validating form")
             }
             
-        }else{
+        }
+        
+        
+        /*else{
             
             if ContactManager.sharedManager.userSelectedRecipient {
                 
@@ -264,7 +267,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 print("No Mutual Info")
             }
             
-        }
+        }*/
     
         
     }
@@ -424,6 +427,76 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 // Set contact object
                 self.selectedContact = item.1
                 
+                
+                // Print to test
+                print(self.selectedContact.givenName)
+                /*
+                // Set contact to manager
+                ContactManager.sharedManager.contactToIntro = selectedContact
+                
+                // Set navigation toggle on manager to indicate intent
+                ContactManager.sharedManager.userArrivedFromContactList = true
+                ContactManager.sharedManager.userArrivedFromIntro = true*/
+                
+                
+                // Print to test
+                print(self.selectedContact.givenName)
+                // Make conditional checks to see where user navigated from
+                if ContactManager.sharedManager.userArrivedFromIntro != true {
+                    
+                    // Set bool to true
+                    ContactManager.sharedManager.userArrivedFromIntro = true
+                    
+                    // Set bool to false
+                    ContactManager.sharedManager.userSelectedNewContactForIntro = false
+                    
+                    // Set Contact on Manager
+                    ContactManager.sharedManager.contactToIntro = selectedContact
+                    
+                    print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+                    print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+                    
+                    // Notification for intro screen
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+                    
+                    // Drop view
+                    dismiss(animated: true, completion: nil)
+                }else{
+                    // Set Contact on Manager
+                    ContactManager.sharedManager.recipientToIntro = selectedContact
+                    
+                    // Set nav bool
+                    //ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
+                    
+                    
+                    print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+                    print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+                    print("User selected recipient on second selection \(ContactManager.sharedManager.userSelectedNewRecipientForIntro)")
+                    
+                    // Post for recipient selected
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+                    
+                    // Drop View
+                    dismiss(animated: true, completion: nil)
+                }
+
+                
+                
+                // Notification for intro screen
+                //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)        // Set selected tab
+                
+                
+                // Sync up with main queue
+                DispatchQueue.main.async {
+                    // Set selected tab
+                    //self.tabBarController?.selectedIndex = 1
+                    // Drop view
+                    self.navigationController?.popViewController(animated: true)
+                }
+                
+                
+                // Original recipient logics
+                /*
                 // Print to test
                 print(self.selectedContact.givenName)
                 // Call segue
@@ -435,7 +508,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 
                 // Trigger send action
                 self.shareWithContact(self)
-                
+                */
                 
             }
         }
@@ -1173,7 +1246,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Check for phone
             if phoneLabel.text != nil {
                 // Set the number to contact
-                contact.phoneNumbers.append(["phone": emailLabel.text!])
+                contact.phoneNumbers.append(["phone": phoneLabel.text!])
             }
             // Check for email
             if emailLabel.text != nil{
@@ -1181,6 +1254,38 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 contact.emails.append(["email": emailLabel.text!])
             }
             
+            // Set manager navigation path
+            ContactManager.sharedManager.userSelectedNewContactForIntro = true
+            
+            // Set as manager contact to intro
+            ContactManager.sharedManager.contactObjectForIntro = self.contact
+            
+            // Check intent
+            if ContactManager.sharedManager.userArrivedFromIntro != true {
+                
+                // Set bool to true
+                ContactManager.sharedManager.userArrivedFromIntro = true
+                
+                // Let off notification
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+                
+            }else{
+                // Set bool to true
+                ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
+                
+                // Let off notification
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+            
+            }
+            
+            
+            
+            // Popview
+            self.navigationController?.popViewController(animated: true)
+            
+            
+            
+            /*
             // Check for match in contact info
             let introContact = ContactManager.sharedManager.contactToIntro
             
@@ -1193,14 +1298,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
  
                 
                 // Launch Email client
-                showEmailCard()
+                //showEmailCard()
                 
             }else if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
                 // Set selected phone
                 self.selectedContactPhone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
                 
                 // Launch text client
-                showSMSCard()
+                //showSMSCard()
                 
             }else{
                 // Users don't have things in common
@@ -1221,7 +1326,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 alertView.addAction(cancel)
                 self.present(alertView, animated: true, completion: nil)
             
-            }
+            }*/
             
             // Form valid
             return true

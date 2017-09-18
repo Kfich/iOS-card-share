@@ -658,6 +658,13 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     // Custom Methods
     // -------------------------------------------
     
+    // For sending notifications to the default center for other VC's that are listening
+    func addObservers() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(CardSelectionViewController.backButtonPressed(_:)), name: NSNotification.Name(rawValue: "CardDeleted"), object: nil)
+        
+    }
+    
     // Format textfield for phone numbers
     func format(phoneNumber sourcePhoneNumber: String) -> String? {
         

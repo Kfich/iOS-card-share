@@ -1628,22 +1628,17 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             //cell.connectionApproveButton.isEnabled = false
             cell.connectionApproveButton.backgroundColor = UIColor.white
                 
-            // Change the label
-            //cell.connectionApproveButton.setTitle("Follow up", for: .normal)
-                
-        }/*else if trans.rejected{
-            // Show
-            cell.connectionApproveButton.isHidden = true
-            cell.connectionApproveButton.isEnabled = false
-                
-            // Hide approve
-            cell.connectionRejectButton.text = "Rejected"
-            cell.connectionRejectButton.isEnabled = false
-                
-        }*/else{
+        }else{
             print("Waiting for confirmation")
-            // Set description text
-            cell.connectionDescriptionLabel.text = "You have a pending connection with \(String(describing: name))"
+            
+            if trans.senderId != self.currentUser.userId {
+            
+                // Set description text
+                cell.connectionDescriptionLabel.text = "You have a pending connection with \(String(describing: name))"
+            }else{
+                // Sender is current user 
+                print("Current user is sender")
+            }
             
         }
 

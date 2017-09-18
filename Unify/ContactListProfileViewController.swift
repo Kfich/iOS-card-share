@@ -1,20 +1,18 @@
 //
-//  SingleActivity-ViewController.swift
+//  ContactListProfileViewController.swift
 //  Unify
 //
-//  Created by Ryan Hickman on 4/5/17.
+//  Created by Kevin Fich on 9/15/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
 import UIKit
-import PopupDialog
-import UIDropDown
 import Eureka
 import Contacts
 import EventKitUI
 
 
-class SingleActivityViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource,  EKEventEditViewDelegate{
+class ContactListProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, EKEventEditViewDelegate{
     
     // Properties
     // ----------------------------------
@@ -22,6 +20,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     var currentUser = User()
     var contact = Contact()
     let formatter = CNContactFormatter()
+    var selectedContact = CNContact()
     
     // Parsed profile arrays
     var bios = [String]()
@@ -60,7 +59,6 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     var corpBadges: [CardProfile.Bagde] = []
     
     var count = 0
-    var selectedBadgeIndex : Int = 0
     
     @IBOutlet var cardWrapperView: UIView!
     
@@ -95,7 +93,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet var emailImageView: UIImageView!
     @IBOutlet var badgeImageView: UIImageView!
     
-   @IBOutlet var shadowView: YIInnerShadowView!
+    @IBOutlet var shadowView: YIInnerShadowView!
     
     // IBActions / Buttons Pressed
     // --------------------------------------------
@@ -145,37 +143,37 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     
     @IBAction func calendarSelected(_ sender: Any) {
         
-       /* // Check status
-        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
-        
-        switch (status) {
-        case EKAuthorizationStatus.notDetermined:
-            // This happens on first-run
-            //requestAccessToCalendar()
-            print("Undecided")
-        case EKAuthorizationStatus.authorized:
-            
-            let vc = EKEventEditViewController()
-            // Event
-            vc.editViewDelegate = self
-            let eventStore = EKEventStore()
-            // Init new event
-            let newEvent = EKEvent(eventStore: eventStore)
-            // Init new event
-            vc.event = newEvent
-            // Create store
-            vc.eventStore = eventStore
-            // Present view
-            self.present(vc, animated: true, completion: nil)
-            
-            break
-            
-        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
-            // We need to help them give us permission
-            //needPermissionView.fadeIn()
-            print("Restricted")
-            break
-        }*/
+        /* // Check status
+         let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
+         
+         switch (status) {
+         case EKAuthorizationStatus.notDetermined:
+         // This happens on first-run
+         //requestAccessToCalendar()
+         print("Undecided")
+         case EKAuthorizationStatus.authorized:
+         
+         let vc = EKEventEditViewController()
+         // Event
+         vc.editViewDelegate = self
+         let eventStore = EKEventStore()
+         // Init new event
+         let newEvent = EKEvent(eventStore: eventStore)
+         // Init new event
+         vc.event = newEvent
+         // Create store
+         vc.eventStore = eventStore
+         // Present view
+         self.present(vc, animated: true, completion: nil)
+         
+         break
+         
+         case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
+         // We need to help them give us permission
+         //needPermissionView.fadeIn()
+         print("Restricted")
+         break
+         }*/
         
     }
     
@@ -186,13 +184,13 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         if collectionView == self.socialBadgeCollectionView {
             // Config images
             return self.socialBadges.count
-        }else if collectionView == self.profileImageCollectionView{
-            // Photo config
-            return profileImages.count
         }else{
-            // Photo config
+            // Badge config
             return corpBadges.count
         }
+        
+        
+        //return 4//self.socialBadges.count
         
     }
     
@@ -200,6 +198,9 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         //cell.backgroundColor = UIColor.blue
+        
+        //cell.contentView.backgroundColor = UIColor.red
+        self.configureBadges(cell: cell)
         
         if collectionView == self.socialBadgeCollectionView {
             // Config social badges
@@ -210,47 +211,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             // Set image
             imageView.image = image
             
-            // Cell config
-            self.configureBadges(cell: cell)
-            
             // Add subview
             cell.contentView.addSubview(imageView)
-        }else if collectionView == self.badgeCollectionView {
-            // Badge config
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-            
-            self.configureBadges(cell: cell)
-            
-            ///cell.contentView.backgroundColor = UIColor.red
-            self.configureBadges(cell: cell)
-            
-            let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl)
-            
-            // Configure corner radius
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            imageView.setImageWith(fileUrl! as URL)
-            // Set image
-            //imageView.image = image
-            
-            // Add subview
-            cell.contentView.addSubview(imageView)
-            
-        }else{
-            
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-            
-            ///cell.contentView.backgroundColor = UIColor.red
-            self.configurePhoto(cell: cell)
-            
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
-            let image = self.profileImages[indexPath.row]
-            imageView.layer.masksToBounds = true
-            // Set image to view
-            imageView.image = image
-            // Add to collection
-            cell.contentView.addSubview(imageView)
-            
-            
         }
         
         return cell
@@ -258,30 +220,9 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == self.badgeCollectionView {
-            // Set index
-            self.selectedBadgeIndex = indexPath.row
-            // Config the social link webVC
-            ContactManager.sharedManager.selectedSocialMediaLink = ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl
-            
-            // Show WebVC
-            self.launchMediaWebView()
-            
-        }else if collectionView == self.socialBadgeCollectionView{
-            // Social link badges
-            // Set selected index
-            self.selectedBadgeIndex = indexPath.row
-            // Config the social link webVC
-            ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
-            
-            // Show WebVC
-            self.launchMediaWebView()
-            
-        }
-        
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+        
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
@@ -339,10 +280,10 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
         // Add label to the view
         /*var lbl = UILabel(frame: CGRect(8, 3, 180, 15))
-         lbl.text = ""//sections[section]
-         lbl.textAlignment = .left
-         lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
-         lbl.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium) //UIFont(name: "Avenir", size: CGFloat(14))*/
+        lbl.text = ""//sections[section]
+        lbl.textAlignment = .left
+        lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        lbl.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium) //UIFont(name: "Avenir", size: CGFloat(14))*/
         
         // Init line view
         let lineView = UIView(frame: CGRect(x: 5, y: containerView.frame.height + 4, width: self.view.frame.width, height: 0.5))
@@ -368,8 +309,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         print("The calendar is done")
         dismiss(animated: true, completion: nil)
     }
-
-
+    
+    
     
     
     
@@ -378,248 +319,236 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Show nav
+        self.navigationController?.navigationBar.isHidden = false
+        
         // Really, we parse the card and profile infos to extract the list
         // Fill profile with example info
         currentUser = ContactManager.sharedManager.currentUser
         
+        // Contact
+        //self.contact = ContactManager.sharedManager.newContact
+        
         // Config image
         self.configureSelectedImageView(imageView: self.contactImageView)
         
-        // Parse contact 
-        //self.parseContactRecord()
+        // Parse contact
+        self.parseContactRecord()
         
         // Parse for images
         //self.parseAccountForImges()
         
         // Parse prof for social info
-        //self.parseForSocialIcons()
-        // Get prof data
-        self.parseDataFromProfile()
+        self.parseForSocialIcons()
         
         // View config
+        configureViews()
         self.populateCards()
         
         
         
-        // Set header and footer for table
         profileInfoTableView.tableHeaderView = self.cardWrapperView
-        profileInfoTableView.tableFooterView = self.profileImageCollectionView
+        //tableView.tableFooterView = self.profileImageCollectionView
         
         
     }
     
     // Custom methods
     
-    func launchMediaWebView() {
-        // Config the social link webVC
-        //ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
-        
-        // Call the viewController
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
-        self.present(controller, animated: true, completion: nil)
-    }
     
-    func launchBadgeWebView() {
-        // Config the social link webVC
-        ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
-        
-        // Call the viewController
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
-        self.present(controller, animated: true, completion: nil)
-    }
+    // Initialize contact objects for upload
     
-    
-    func parseDataFromProfile() {
-        
-        // Reset arrays
-        self.bios = [String]()
-        self.titles = [String]()
-        self.emails = [String]()
-        self.phoneNumbers = [String]()
-        self.socialLinks = [String]()
-        self.organizations = [String]()
-        self.websites = [String]()
-        self.workInformation = [String]()
+    func parseContactRecord(){
+        // Clear all profile info to prepare for override
+        bios.removeAll()
+        titles.removeAll()
+        emails.removeAll()
+        phoneNumbers.removeAll()
+        websites.removeAll()
+        organizations.removeAll()
+        socialLinks.removeAll()
+        workInformation.removeAll()
+        tags.removeAll()
+        addresses.removeAll()
         self.sections.removeAll()
         self.tableData.removeAll()
-        self.tags.removeAll()
-        self.addresses.removeAll()
         self.notes.removeAll()
-        self.corpBadges.removeAll()
         
-        // Call to populate cards
-        self.populateCards()
         
-        // Parse bio info
-        //currentUser = ContactManager.sharedManager.currentUser
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
         
-        // Parse work info
-        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
+        // Iterate over list and itialize contact objects
+        
+        // Init temp contact object
+        //let contactObject = Contact()
+        
+        // Set name
+        //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        
+        if contact.titles.count > 0 {
             // Add section
             sections.append("Titles")
-            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
-                titles.append((info["title"])!)
-                print(info["title"])
+            
+            for title in contact.titles {
+                // Print to test
+                print("Title : \(title["title"]!)")
+                
+                // Append to list
+                self.titles.append(title["title"]!)
+                print(titles.count)
             }
-            // Create section data
+            // Set list for section
             self.tableData["Titles"] = titles
         }
         
-        // Parse organizations
-        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
+        if contact.organizations.count > 0 {
             // Add section
             sections.append("Company")
-            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
-                organizations.append(org["organization"]!)
+            
+            for org in contact.organizations {
+                // Print to test
+                print("Org : \(org["organization"]!)")
+                
+                // Append to list
+                self.organizations.append(org["organization"]!)
+                print(organizations.count)
             }
-            // Create section data
+            // Set list for section
             self.tableData["Company"] = organizations
         }
         
-        if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
-            // Add section
-            sections.append("Bios")
-            // Iterate throught array and append available content
-            for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
-                bios.append((bio["bio"])!)
-                print(bio["bio"])
-            }
-            
-            // Create section data
-            self.tableData["Bios"] = bios
-        }
-        
-        if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
             // Add section
             sections.append("Phone Numbers")
-            for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
-                phoneNumbers.append(self.format(phoneNumber:(number["phone"]!))!)
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                // print to test
+                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                
+                // Init the number with formatting
+                let digits = self.format(phoneNumber: number["phone"]!)
+                
+                self.phoneNumbers.append(digits!)
+                print(phoneNumbers.count)
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
             
         }
-        // Parse emails
-        
-        if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
+        if contact.emails.count > 0 {
             // Add section
             sections.append("Emails")
-            for email in ContactManager.sharedManager.currentUser.userProfile.emails{
-                emails.append(email["email"]!)
+            // Iterate over array and pull value
+            for address in contact.emails {
+                // Print to test
+                print("Email : \(address["email"])")
+                
+                // Append to array
+                self.emails.append(address["email"]!)
+                print(emails.count)
             }
             // Create section data
             self.tableData["Emails"] = emails
         }
-        // Parse work info
         
-        if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
-            // Add section
-            sections.append("Work")
-            // Iterate and parse
-            for info in ContactManager.sharedManager.currentUser.userProfile.workInformationList{
-                workInformation.append((info["work"])!)
-            }
-            // Create section data
-            self.tableData["Work"] = workInformation
-        }
-        
-        // Parse websites
-        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+        if contact.websites.count > 0{
             // Add section
             sections.append("Websites")
-            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
-                websites.append(site["website"]!)
+            // Iterate over items
+            for address in contact.websites {
+                // Print to test
+                print("Website : \(address["website"]!)")
+                
+                // Append to list
+                self.websites.append(address["website"]!)
+                print(websites.count)
             }
             // Create section data
             self.tableData["Websites"] = websites
             
         }
-        // Parse Tags
-        if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
+        if contact.socialLinks.count > 0{
+            // Iterate over items
+            for profile in contact.socialLinks {
+                // Print to test
+                print("Social Profile : \(profile["link"]!)")
+                
+                // Append to list
+                self.socialLinks.append(profile["link"]!)
+                print(socialLinks.count)
+            }
+            
+        }
+        
+        
+        if contact.notes.count > 0 {
+            // Add section
+            sections.append("Notes")
+            
+            for note in contact.notes {
+                // Print to test
+                print("Note : \(note["note"]!)")
+                
+                // Append to list
+                self.notes.append(note["note"]!)
+                print(notes.count)
+            }
+            // Set list for section
+            self.tableData["Notes"] = notes
+        }
+        
+        
+        if contact.tags.count > 0 {
             // Add section
             sections.append("Tags")
             
-            for hashtag in ContactManager.sharedManager.currentUser.userProfile.tags{
+            for tag in contact.tags {
+                // Print to test
+                print("Title : \(tag["tag"]!)")
                 
-                tags.append(hashtag["tag"]!)
-                
+                // Append to list
+                self.tags.append(tag["tag"]!)
+                print(tags.count)
             }
-            // Create section data
+            // Set list for section
             self.tableData["Tags"] = tags
         }
         
-        // Parse notes
-        if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
-            
-            // Add section
-            sections.append("Notes")
-            for note in ContactManager.sharedManager.currentUser.userProfile.notes{
-                
-                notes.append(note["note"]!)
-                
-            }
-            // Create section data
-            self.tableData["Notes"] = notes
-        }
-        // Parse notes
-        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
-            
+        if contact.addresses.count > 0 {
             // Add section
             sections.append("Addresses")
-            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
+            for add in contact.addresses {
+                // Print to test
+                print("Address : \(add["address"]!)")
                 
-                addresses.append(add["address"]!)
-                
+                // Append to list
+                self.addresses.append(add["address"]!)
+                print(addresses.count)
             }
-            // Create section data
+            // Set list for section
             self.tableData["Addresses"] = addresses
         }
         
-        // Parse socials links
-        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-            
-            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
-                
-                // socialLinks.append(link["link"]!)
-                print("ParseProfileData function executing")
-                
-            }
-            
-        }
         
-        // Check for visible badges
-        for badge in ContactManager.sharedManager.badgeList {
-            // Check if visible
-            if badge.isHidden == false {
-                // Append to list
-                self.corpBadges.append(badge)
-                print("The bagde acount on append \(badge.pictureUrl )")
-                print(self.corpBadges.count)
-            }
-        }
-
+        // Test object
+        print("Contact >> \n\(contact.toAnyObject()))")
         
-        print("This is the section count .. \(sections.count)")
-        
-        // Parse out social icons
+        // Parse for badges
         self.parseForSocialIcons()
         
-        // Get profile
-        self.parseAccountForImges()
+        // Parse for crop
+        //self.parseForCorpBadges()
         
-        // Refresh table
-        profileInfoTableView.reloadData()
-        socialBadgeCollectionView.reloadData()
-        profileImageCollectionView.reloadData()
+        // Reload table data
+        self.profileInfoTableView.reloadData()
         
-        print("PRINTING USER from profile view")
-        ContactManager.sharedManager.currentUser.printUser()
         
     }
-
-
+    
     
     func initializeBadgeList() {
         // Image config
@@ -660,15 +589,13 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         //self.currentUser = ContactManager.sharedManager.currentUser
         
         // Parse socials links
-        
-        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
-         
-                socialLinks.append(link["link"]!)
-                // Test
-                print("Count >> \(socialLinks.count)")
-            }
-        }
+        /*if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+         for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
+         socialLinks.append(link["link"]!)
+         // Test
+         print("Count >> \(socialLinks.count)")
+         }
+         }*/
         
         // Remove all items from badges
         self.socialBadges.removeAll()
@@ -714,7 +641,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             
             
             // Reload table
-            self.socialBadgeCollectionView.reloadData()
+            //self.socialBadgeCollectionView.reloadData()
         }
         
         // Add image to the end of list
@@ -725,89 +652,89 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         self.socialBadgeCollectionView.reloadData()
         
     }
-
+    
     
     /*
-    func parseForSocialIcons() {
-        
-        // Badge List 
-        self.initializeBadgeList()
-        
-        print("PARSING for icons from edit profile vc")
-        // Remove all items from badges
-        self.socialBadges.removeAll()
-        self.socialLinks.removeAll()
-        
-        // Assign currentuser
-        //self.currentUser = ContactManager.sharedManager.currentUser
-        
-        // Parse socials links
-        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
-                socialLinks.append(link["link"]!)
-                // Test
-                print("Count >> \(socialLinks.count)")
-            }
-        }
-        
-        // Add plus icon to list
-        
-        // Iterate over links[]
-        for link in self.socialLinks {
-            // Check if link is a key
-            print("Link >> \(link)")
-            for item in self.socialLinkBadges {
-                // Test
-                //print("Item >> \(item.first?.key)")
-                // temp string
-                let str = item.first?.key
-                //print("String >> \(str)")
-                // Check if key in link
-                if link.lowercased().range(of:str!) != nil {
-                    print("exists")
-                    
-                    // Append link to list
-                    self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
-                     print("NOT IN LIST")
-                     // Append link to list
-                     self.socialBadges.append(item.first?.value as! UIImage)
-                     }else{
-                     print("ALREADY IN LIST")
-                     }*/
-                    // Append link to list
-                    //self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    
-                    
-                    //print("THE IMAGE IS PRINTING")
-                    //print(item.first?.value as! UIImage)
-                    print("SOCIAL BADGES COUNT")
-                    print(self.socialBadges.count)
-                    
-                    
-                }
-            }
-            
-            
-            // Reload table
-            //self.collectionTableView.reloadData()
-        }
-        
-        // Add image to the end of list
-        let image = UIImage(named: "Green-1")
-        self.socialBadges.append(image!)
-        
-        // Get images
-        parseAccountForImges()
-        
-        // Reload table
-        
-        //self..reloadData()
-        
-    }
-    */
+     func parseForSocialIcons() {
+     
+     // Badge List
+     self.initializeBadgeList()
+     
+     print("PARSING for icons from edit profile vc")
+     // Remove all items from badges
+     self.socialBadges.removeAll()
+     self.socialLinks.removeAll()
+     
+     // Assign currentuser
+     //self.currentUser = ContactManager.sharedManager.currentUser
+     
+     // Parse socials links
+     if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
+     for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
+     socialLinks.append(link["link"]!)
+     // Test
+     print("Count >> \(socialLinks.count)")
+     }
+     }
+     
+     // Add plus icon to list
+     
+     // Iterate over links[]
+     for link in self.socialLinks {
+     // Check if link is a key
+     print("Link >> \(link)")
+     for item in self.socialLinkBadges {
+     // Test
+     //print("Item >> \(item.first?.key)")
+     // temp string
+     let str = item.first?.key
+     //print("String >> \(str)")
+     // Check if key in link
+     if link.lowercased().range(of:str!) != nil {
+     print("exists")
+     
+     // Append link to list
+     self.socialBadges.append(item.first?.value as! UIImage)
+     
+     /*if !socialBadges.contains(item.first?.value as! UIImage) {
+     print("NOT IN LIST")
+     // Append link to list
+     self.socialBadges.append(item.first?.value as! UIImage)
+     }else{
+     print("ALREADY IN LIST")
+     }*/
+     // Append link to list
+     //self.socialBadges.append(item.first?.value as! UIImage)
+     
+     
+     
+     //print("THE IMAGE IS PRINTING")
+     //print(item.first?.value as! UIImage)
+     print("SOCIAL BADGES COUNT")
+     print(self.socialBadges.count)
+     
+     
+     }
+     }
+     
+     
+     // Reload table
+     //self.collectionTableView.reloadData()
+     }
+     
+     // Add image to the end of list
+     let image = UIImage(named: "Green-1")
+     self.socialBadges.append(image!)
+     
+     // Get images
+     parseAccountForImges()
+     
+     // Reload table
+     
+     //self..reloadData()
+     
+     }
+     */
     
     
     func parseAccountForImges() {
@@ -832,11 +759,18 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
         
+        // Append dummy image to the end
+        // Add image to the end of list
+        let image = UIImage(named: "Green-1")
+        self.profileImages.append(image!)
+        
+        print("Refreshing table of photos")
+        
         // Refresh
-        self.profileImageCollectionView.reloadData()
+        //self.profileImageCollectionView.reloadData()
         
     }
-
+    
     
     func addGestureToLabel(label: UILabel, intent: String) {
         // Init tap gesture
@@ -847,7 +781,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Set description to view based on intent
         
     }
-
+    
     
     func showSelectionOptions() {
         // Call the viewController
@@ -882,7 +816,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Make
         let textAction = UIAlertAction(title: "Text", style: .default)
         { _ in
-        
+            
             print("Text")
         }
         // Add Buttoin
@@ -901,20 +835,74 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         self.present(actionSheetController, animated: true, completion: nil)
     }
     
+    
+    
+    
+    // Page styling
     func populateCards(){
         
-        var currentUser = ContactManager.sharedManager.currentUser
         
-        // Senders card
-        // Assign current user from manager
-        currentUser = ContactManager.sharedManager.currentUser
+        //nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
+        nameLabel.text = self.contact.name
         
-        if currentUser.profileImages.count > 0 {
-            contactImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+        /*
+         if self.contact.phoneNumbers.count > 0 {
+         // Set label text
+         //phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
+         //phoneLabel.text = self.format(phoneNumber: self.contact.phoneNumbers[0]["phone"]!)
+         
+         // Set global phone val
+         self.selectedUserPhone = self.contact.phoneNumbers[0]["phone"]!
+         }else{
+         // Hide phone icon image
+         phoneImageView.isHidden = true
+         // Disable buttons
+         callButton.isEnabled = false
+         smsButton.isEnabled = false
+         
+         // Set tint for buttons
+         callButton.tintColor = UIColor.gray
+         smsButton.tintColor = UIColor.gray
+         
+         // Toggle image
+         callButton.image = UIImage(named: "btn-call-white")
+         smsButton.image = UIImage(named: "btn-chat-white")
+         
+         }
+         if contact.emails.count > 0 {
+         // Set label text
+         //emailLabel.text = self.contact.emails[0]["email"]
+         // Set global email
+         self.selectedUserEmail = self.contact.emails[0]["email"]!
+         }else{
+         // Hide email icon
+         emailImageView.isHidden = true
+         // Disable button
+         emailButton.isEnabled = false
+         // Set tint
+         emailButton.tintColor = UIColor.gray
+         // Toggle image
+         emailButton.image = UIImage(named: "btn-message-white")
+         }
+         // Check if image data available
+         
+         */
+        if contact.imageId != "" {
+            print("Has IMAGE")
+            // Set id
+            let id = contact.imageId
+            
+            // Set image for contact
+            let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
+            let placeholderImage = UIImage(named: "profile")!
+            // Set image
+            //contactImageView?.setImageWith(url)
+            self.contactImageView.setImageWith(url)
+            
+        }else{
+            contactImageView.image = UIImage(named: "profile")
         }
-        if currentUser.fullName != ""{
-            nameLabel.text = currentUser.fullName
-        }
+        
         
     }
     
@@ -1053,94 +1041,3 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     
     
 }
-
-/*: UIViewController {
- 
-    // Properties
-    // ------------------------------------------
- 
-    var active_card_unify_uuid: String?
- 
-
- 
-    // IBOutlets
-    // ------------------------------------------
- 
-    @IBOutlet var businessCardView: BusinessCardView!
- 
-    @IBOutlet var contactCardView: ContactCardView!
- 
-    override func viewDidLoad() {
-        super.viewDidLoad()
- 
- 
- 
-        // Background view configuration
- 
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        UIImage(named: "background")?.draw(in: self.view.bounds)
- 
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        self.view.backgroundColor = UIColor(patternImage: image)
-        
-        // View configuration 
-        configureViews()
-        }
-    
-    
-
-    // IBOActions / Buttons Pressed
-    // ------------------------------------------
-    
-    @IBAction func followUpBtn_click(_ sender: Any) {
-        
-        
-        self.performSegue(withIdentifier: "activityFollowUpSegue", sender: self)
-
-    }
-
-    
-    // Custom Methods
-    
-    func configureViews(){
-        
-        // Configure cards
-        self.businessCardView.layer.cornerRadius = 10.0
-        self.businessCardView.clipsToBounds = true
-        self.businessCardView.layer.borderWidth = 2.0
-        self.businessCardView.layer.borderColor = UIColor.lightGray.cgColor
-        
-        self.contactCardView.layer.cornerRadius = 10.0
-        self.contactCardView.clipsToBounds = true
-        self.contactCardView.layer.borderWidth = 2.0
-        self.contactCardView.layer.borderColor = UIColor.lightGray.cgColor
-        
-        
-        
-    }
-
-    
-    // Navigation 
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        
-        print(">Passed Contact Card ID")
-        print(sender!)
-        
-        if segue.identifier == "activityFollowUpSegue"
-        {
-            
-            let nextScene =  segue.destination as! FollowUpViewController
-            
-            nextScene.active_card_unify_uuid = "\(self.active_card_unify_uuid!)" as! String?
-            
-        }
-    }
-    
-
-
-}*/

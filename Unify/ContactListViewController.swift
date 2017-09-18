@@ -1341,7 +1341,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         if segue.identifier == "showContactProfile"{
             // Find destination
-            let destination = segue.destination as! ContactProfileViewController
+            let destination = segue.destination as! ContactListProfileViewController
             // Assign selected contact object
             destination.selectedContact = self.selectedContact
             destination.contact = self.selectedContactObject

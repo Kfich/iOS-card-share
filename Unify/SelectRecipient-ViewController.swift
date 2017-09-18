@@ -279,8 +279,15 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                     
                     // Set bool to true
                     ContactManager.sharedManager.userArrivedFromIntro = true
+                    
+                    // Set bool to false
+                    ContactManager.sharedManager.userSelectedNewContactForIntro = false
+                    
                     // Set Contact on Manager
                     ContactManager.sharedManager.contactToIntro = selectedContact
+                    
+                    print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+                    print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
                     
                     // Notification for intro screen
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
@@ -288,9 +295,11 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                     // Drop view
                     dismiss(animated: true, completion: nil)
                 }else{
-                    
                     // Set Contact on Manager
                     ContactManager.sharedManager.recipientToIntro = selectedContact
+                    
+                    print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+                    print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
                     
                     // Post for recipient selected
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)

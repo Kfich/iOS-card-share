@@ -182,8 +182,8 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             
             print("THIS IS WHERE THE URL GOES \(indexPath.row)")
             // Init image from
-            let fileUrl = NSURL(string: selectedCard.cardProfile.badgeDictionaryList[abs(indexPath.row - selectedCard.cardProfile.badgeDictionaryList.count)].value(forKey: "image") as! String)
-            imageView.setImageWith(fileUrl! as URL)
+            //let fileUrl = NSURL(string: selectedCard.cardProfile.badgeDictionaryList[abs(indexPath.row - selectedCard.cardProfile.badgeDictionaryList.count)].value(forKey: "image") as! String)
+            //imageView.setImageWith(fileUrl! as URL)
         }
         
         // Add subview

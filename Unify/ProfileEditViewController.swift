@@ -54,6 +54,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     @IBOutlet var profileImageCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
+    @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
     // IBOutlets
     // ----------------------------------
@@ -81,8 +82,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             // Badge config
             return socialBadges.count
         }
-        
-        
         //return 4//self.socialBadges.count
         
     }
@@ -109,12 +108,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 // Image config
                 let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
                 let image = self.profileImages[indexPath.row]
-                imageView.layer.masksToBounds = true
+                //imageView.layer.masksToBounds = true
                 // Set image to view
                 imageView.image = image
                 
                 // Delete
-                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                let deleteIconView = UIImageView(frame: CGRect(x: 70, y: 5, width: 20, height: 20))
                 let deleteImage = UIImage(named: "icn-minus-red")
                 deleteIconView.image = deleteImage
                 
@@ -217,6 +216,9 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         }
         // Remove icon from list
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+        
+        // Reload data
+        collectionView.reloadData()
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
@@ -252,6 +254,9 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         // Config photo picker
         self.configurePhotoPicker()
+        
+        // For notification handling
+        self.addObservers()
         
         // Set profile image
         if ContactManager.sharedManager.currentUser.profileImages.count > 0 {
@@ -1182,6 +1187,18 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     // Custom methods
     
+    func addObservers() {
+        // Call to refresh table
+        //NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.showSocialMediaSelection), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ProfileEditViewController.parseForSocialIcons), name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: nil)
+        
+        // Update user
+       // NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.uploadEditedUser), name: NSNotification.Name(rawValue: "UpdateCurrentUserProfile"), object: nil)
+        
+    }
+    
     
     func configurePhotoPicker() {
         //Initial setup
@@ -1314,6 +1331,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         }
         
     }
+    
+    
 
     
     func initializeBadgeList() {
@@ -1375,7 +1394,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         self.profileImageCollectionView.reloadData()
         
-        //self.parseAccountForImges()
+        self.parseAccountForImges()
     }
 
     
@@ -1456,7 +1475,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         // Reload table
         
-        //self..reloadData()
+        self.socialBadgeCollectionView.reloadData()
         
     }
     

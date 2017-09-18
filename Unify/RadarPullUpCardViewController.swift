@@ -141,7 +141,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Configure page control dots
         // Set page control count
-        pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count
+        pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count - 1
         
         // Register cell
         cardCollectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: "AddNewCardCell")
@@ -494,6 +494,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Find current card index
             let currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             self.pageControl.currentPage = indexPath.row
+            print("Page control value!! \(self.pageControl.currentPage)")
             
             // Get badge list
             cell.badgeList = self.parseCardForBagdes(card: currentCard)
@@ -616,6 +617,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 let indexPath = IndexPath(item: i, section: 0)
                 collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
                 self.pageControl.currentPage = indexPath.row
+                print("Page control value on center!! \(self.pageControl.currentPage)")
                 break
             }
         }
@@ -916,6 +918,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                         
                         print("Current User Cards Count From PullUP \(ContactManager.sharedManager.currentUserCards.count)")
                         print("Current User Dictionary Cards Count From PullUP \(ContactManager.sharedManager.currentUserCardsDictionaryArray.count)")
+                        
                     }
                     
                     
@@ -951,12 +954,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 // Get designs
                 self.fetchCardDesigns(cards: ContactManager.sharedManager.viewableUserCards)
                 
-                
-                
-                
                 // Add dummy cell
                 let dummyCard = ContactCard()
                 ContactManager.sharedManager.viewableUserCards.append(dummyCard)
+                
+                // Set page control count
+                self.pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count - 1
+                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[0]
                 
                 // Sync up with main queue
                 DispatchQueue.main.async {
@@ -1157,6 +1161,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     func showEmailCard(_ sender: Any) {
         
         print("EMAIL CARD SELECTED")
+        print("Page control on show email!! \(self.pageControl.currentPage)")
         // Set selected card
         ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[pageControl.currentPage]
         
@@ -1173,6 +1178,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     func showSMSCard(_ sender: Any) {
         // Set selected card
         ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[pageControl.currentPage]
+        print("Page control valueon show sms!! \(self.pageControl.currentPage)")
         
         // Set toggle nav to true
         ContactManager.sharedManager.userSMSCard = true

@@ -30,6 +30,9 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     // Check to toggle share button
     var contactAndRecipientSelected = false
     
+    var selectedEmail = ""
+    var selectedPhone = ""
+    
     
     // Contact formatter
     let formatter = CNContactFormatter()
@@ -114,45 +117,122 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     
     @IBAction func makeIntroduction(_ sender: Any) {
         
-        // Check if both contacts selected
         
-        // CNContact Objects
-        let contact = ContactManager.sharedManager.contactToIntro
-        let recipient = ContactManager.sharedManager.recipientToIntro
+        if ContactManager.sharedManager.userSelectedNewContactForIntro || ContactManager.sharedManager.userSelectedNewRecipientForIntro{
+            
+            // Check for match in contact info
+            var introContact = CNContact()//ContactManager.sharedManager.recipientToIntro
+            let contact = ContactManager.sharedManager.contactObjectForIntro
+            
+            if ContactManager.sharedManager.userSelectedNewRecipientForIntro {
+                // Set intro contact
+                introContact = ContactManager.sharedManager.contactToIntro
+            }else{
+                // Set intro contact
+                introContact = ContactManager.sharedManager.recipientToIntro
+            }
+            
+            print("Contact Object for Intro\n\n\(contact.toAnyObject())")
+            print("CNContact Object for Intro\n\n\(introContact.phoneNumbers)")
+            
+            
+            if introContact.emailAddresses.count > 0 && contact.emails.count > 0 {
+                
+                //
+                self.selectedEmail = contact.emails[0]["email"]!//introContact.emailAddresses[0].value as String
+                
+                //let recipientEmail = recipient.emailAddresses[0].value as String
+                
+                
+                // Launch Email client
+                self.showEmailCard()
+                
+            }else if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
+                // Set selected phone
+                self.selectedPhone = contact.phoneNumbers[0]["phone"]!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                
+                // Launch text client
+                self.showSMSCard()
+                
+            }else{
+                // Users don't have things in common
+                // form invalid
+                let message = "The two people have no contact info in common make intro"
+                let title = "Unable to Connect"
+                
+                // Configure alertview
+                let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
+                    
+                    // Dismiss alert
+                    self.dismiss(animated: true, completion: nil)
+                    
+                })
+                
+                // Add action to alert
+                alertView.addAction(cancel)
+                self.present(alertView, animated: true, completion: nil)
+                
+            }
+
         
-        // Check if they both have email 
         
-        if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
-         
-            let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-            let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
-            
-            // Launch text client
-            showSMSCard()
-            
-         }else if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
-            
-            let contactEmail = contact.emailAddresses[0].value as String
-            let recipientEmail = recipient.emailAddresses[0].value as String
-            
-            
-            // Launch Email client
-            showEmailCard()
-            
         }else{
-            // No mutual way to connect
-            // Pick default based on what the contact object has populated
+            // Check if both contacts selected
             
-            // ***** Handle this off case tomorrow ****
-            print("No Mutual Info")
+            // CNContact Objects
+            let contact = ContactManager.sharedManager.contactToIntro
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            
+            // Check if they both have email
+            
+            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                
+                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                
+                // Launch text client
+                showSMSCard()
+                
+            }else if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+                
+                let contactEmail = contact.emailAddresses[0].value as String
+                let recipientEmail = recipient.emailAddresses[0].value as String
+                
+                
+                // Launch Email client
+                showEmailCard()
+                
+            }else{
+                // No mutual way to connect
+                // Pick default based on what the contact object has populated
+                
+                // ***** Handle this off case tomorrow ****
+                print("No Mutual Info")
+                
+                // Users don't have things in common
+                // form invalid
+                let message = "The two people have no contact info in common on make intro second check"
+                let title = "Unable to Connect"
+                
+                // Configure alertview
+                let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
+                    
+                    // Dismiss alert
+                    self.dismiss(animated: true, completion: nil)
+                    
+                })
+                
+                // Add action to alert
+                alertView.addAction(cancel)
+                self.present(alertView, animated: true, completion: nil)
+                
+            }
+
+            
         }
-        
-        
-        // Else check if they both have phones
-        
-        // If no match, chose a defualt method and send
-        
-        // Create Transaction and send 
+    
     }
     
     
@@ -201,39 +281,75 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             
             // Check for nil vals
             
-            var name = ""
-            var recipientName = ""
             var phone = ""
-            var email = ""
-            //var title = ""
-            
-            
-            // CNContact Objects
-            let contact = ContactManager.sharedManager.contactToIntro
-            let recipient = ContactManager.sharedManager.recipientToIntro
-            
-            // Check if they both have email
-            name = formatter.string(from: contact) ?? "No Name"
-            recipientName = formatter.string(from: recipient) ?? ""
-            
-            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+
+            if ContactManager.sharedManager.userSelectedNewContactForIntro || ContactManager.sharedManager.userSelectedNewRecipientForIntro{
                 
-                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-                // Set contact phone number
-                phone = contactPhone!
+                // Check for match in contact info
+                var introContact = CNContact()//ContactManager.sharedManager.recipientToIntro
+                let contact = ContactManager.sharedManager.contactObjectForIntro
                 
-                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
                 
-                // Launch text client
-                composeVC.recipients = [contactPhone!, recipientPhone!]
-            }
-    
-            if contact.emailAddresses.count > 0 {
-                email = (contact.emailAddresses[0].value as String)
+                if ContactManager.sharedManager.userSelectedNewRecipientForIntro {
+                    // Set intro contact
+                    introContact = ContactManager.sharedManager.contactToIntro
+                }else{
+                    // Set intro contact
+                    introContact = ContactManager.sharedManager.recipientToIntro
+                }
+                
+        
+                if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
+                    
+                    
+                    // Set selected phone
+                    self.selectedPhone = contact.phoneNumbers[0]["phone"]!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                    phone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                    
+                    // Launch text client
+                    composeVC.recipients = [phone, selectedPhone]
+                    
+                    // Launch text client
+                    //self.showSMSCard()
+                    
+                }
+                
+                
+                
+            }else{
+                
+                // CNContact Objects
+                let contact = ContactManager.sharedManager.contactToIntro
+                let recipient = ContactManager.sharedManager.recipientToIntro
+                
+                // Check if they both have email
+                //name = formatter.string(from: contact) ?? "No Name"
+                //recipientName = formatter.string(from: recipient) ?? ""
+                
+                if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                    
+                    // Set contact phone number
+                    phone = ((contact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                    
+                    
+                    // Set recipient phone
+                    let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                    
+                    // Launch text client
+                    composeVC.recipients = [phone, recipientPhone!]
+                }
+
+                
             }
             
             // Configure message
-            let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n"
+            //let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n"
+            
+            // Set card link from cardID
+            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+            
+            // Configure message
+            let str = "\n\n\n\(cardLink)"
             
             composeVC.body = str
             
@@ -286,12 +402,52 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             phone = (contact.emailAddresses[0].value as String)
         }
 
-        // Create Message
         
-        let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.fullName) \n\n"
+        // Check if user filled out the form
+        if ContactManager.sharedManager.userSelectedNewContactForIntro || ContactManager.sharedManager.userSelectedNewRecipientForIntro {
+            
+            // Check for match in contact info
+            var introContact = CNContact()//ContactManager.sharedManager.recipientToIntro
+            let contact = ContactManager.sharedManager.contactObjectForIntro
+            
+            
+            if ContactManager.sharedManager.userSelectedNewRecipientForIntro {
+                // Set intro contact
+                introContact = ContactManager.sharedManager.contactToIntro
+            }else{
+                // Set intro contact
+                introContact = ContactManager.sharedManager.recipientToIntro
+            }
+            
+            // Set recipient name
+            // Check if they both have email
+            recipientName = formatter.string(from: introContact) ?? "No Name"
+            name = contact.name
+            
+            if introContact.emailAddresses.count > 0 && contact.emails.count > 0 {
+                
+                // Set selected email
+                self.selectedEmail = contact.emails[0]["email"]!
+                let contactEmail = introContact.emailAddresses[0].value as String
+                
+                // Create Message
+                mailComposerVC.setToRecipients([selectedEmail, contactEmail])
+                
+            }
+        }else{
+            // Create Message
+            mailComposerVC.setToRecipients([emailContact, emailRecipient])
+        }
+        
+        // Create string
+        
+        // Set card link from cardID
+        let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+        
+        // Configure message
+        let str = "\n\n\n\(cardLink)"
         
         // Create Message
-        mailComposerVC.setToRecipients([emailContact, emailRecipient])
         mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")
         mailComposerVC.setMessageBody(str, isHTML: false)
         
@@ -319,6 +475,90 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Show progress hud
         KVNProgress.show(withStatus: "Making the introduction...")
+        
+        if ContactManager.sharedManager.userSelectedNewContactForIntro || ContactManager.sharedManager.userSelectedNewRecipientForIntro{
+            
+            // Check for match in contact info
+            var introContact = CNContact()//ContactManager.sharedManager.recipientToIntro
+            let contact = ContactManager.sharedManager.contactObjectForIntro
+            
+            if ContactManager.sharedManager.userSelectedNewRecipientForIntro {
+                // Set intro contact
+                introContact = ContactManager.sharedManager.contactToIntro
+            }else{
+                // Set intro contact
+                introContact = ContactManager.sharedManager.recipientToIntro
+            }
+            
+            print("Contact Object for Intro\n\n\(contact.toAnyObject())")
+            print("CNContact Object for Intro\n\n\(introContact.givenName)")
+            
+           // Get name from cncontact
+            let contactName = formatter.string(from: introContact) ?? "No Name"
+                
+            
+            // Set recipient names
+            
+            transaction.recipientNames = [String]()
+            transaction.recipientNames?.append(contact.name)
+            transaction.recipientNames?.append(contactName)
+                
+            
+            // Set location from field
+            
+            // transaction.location = self.notesLabel.text ?? ""
+                
+            
+            /*if self.syncContactSwitch.isOn == true {
+            
+             // Upload sync contact record
+             
+             self.syncContact()
+             
+             }*/
+
+        }else{
+            // CNContact Objects
+            let contact = ContactManager.sharedManager.contactToIntro
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            
+            // Check if they both have email
+            
+            if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+                
+                let contactEmail = contact.emailAddresses[0].value as String
+                let recipientEmail = recipient.emailAddresses[0].value as String
+                
+                // Add to transaction
+                self.transaction.recipientEmails = []
+                self.transaction.recipientEmails?.append(contactEmail)
+                self.transaction.recipientEmails?.append(recipientEmail)
+                
+            }
+            
+            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                
+                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                
+                // Add to transaction
+                self.transaction.recipientPhones = []
+                self.transaction.recipientPhones?.append(contactPhone!)
+                self.transaction.recipientPhones?.append(recipientPhone!)
+                
+            }
+        
+            
+            let recipientName = formatter.string(from: recipient) ?? "No Name"
+            let contactName = formatter.string(from: contact) ?? "No Name"
+            // Init list
+            transaction.recipientNames = [String]()
+            transaction.recipientNames?.append(recipientName)
+            transaction.recipientNames?.append(contactName)
+
+            
+        }
+        
         
         // Save card to DB
         let parameters = ["data": self.transaction.toAnyObject()]
@@ -367,9 +607,14 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         if ContactManager.sharedManager.userArrivedFromIntro != true{
             DispatchQueue.main.async {
                 // Set selected tab
-                self.performSegue(withIdentifier: "showIntroContactList", sender: self)
+                //self.performSegue(withIdentifier: "showIntroContactList", sender: self)
+                self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
             }
+        }else if ContactManager.sharedManager.userSelectedNewContactForIntro && ContactManager.sharedManager.userArrivedFromIntro{
+            //self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
+            self.performSegue(withIdentifier: "showIntroContactList", sender: self)
         }else{
+            // Show recipient options again bacuse they
             self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
         }
     }
@@ -387,63 +632,146 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         // Reset Contact Managers
         ContactManager.sharedManager.contactToIntro = CNContact()
         ContactManager.sharedManager.recipientToIntro = CNContact()
+        ContactManager.sharedManager.contactObjectForIntro = Contact()
         
         // Reset Navigation Bool
         ContactManager.sharedManager.userArrivedFromIntro = false
+        ContactManager.sharedManager.userSelectedNewContactForIntro = false
+        ContactManager.sharedManager.userSelectedNewRecipientForIntro = false
+        
     }
     
     func configureViewForContact(){
         
-        // Show cancel button 
-        cancelIntroButton.isHidden = false
+        // User filled out form on recipients page
+        if ContactManager.sharedManager.userSelectedNewContactForIntro{
+            
+            // Show cancel button
+            cancelIntroButton.isHidden = false
+            
+            // Set selected contact
+            let selected = ContactManager.sharedManager.contactObjectForIntro
+            // Check if image data available
+            
+            
+            if selected.imageId != "" {
+                print("Has IMAGE")
+                // Set id
+                let id = selected.imageId
+                
+                // Set image for contact
+                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
+                let placeholderImage = UIImage(named: "profile")!
+                // Set image
+                //contactImageView?.setImageWith(url)
+                self.contactImageView.setImageWith(url)
+                
+            }else{
+                contactImageView.image = UIImage(named: "contact-placeholder")
+            }
+
+            
+            // Set Label w name
+            let name = selected.name
+            self.addContactLabel.text = name
+            
+        }else{
+            
+            // Show cancel button
+            cancelIntroButton.isHidden = false
+            
+            // Set selected contact
+            let selected = ContactManager.sharedManager.contactToIntro
+            // Check if image data available
+            
+            if selected.imageDataAvailable {
+                
+                print("Has IMAGE")
+                // Create image var
+                let image = UIImage(data: selected.imageData!)
+                
+                let view = self.resizeImageView(selectedImage: image!)
+                
+                
+                // Set image for contact
+                contactImageView.image = view.image
+            }else{
+                
+                // Set to placeholder image
+                contactImageView.image = UIImage(named: "contact-placeholder")
+            }
+            
+            // Set Label w name
+            let name = formatter.string(from: selected) ?? "No Name"
+            self.addContactLabel.text = name
+            
+        }
         
-        // Set selected contact
-        let selected = ContactManager.sharedManager.contactToIntro
-        // Check if image data available
+        // Set nav on manager
+        ContactManager.sharedManager.userArrivedFromIntro = true
         
-         if selected.imageDataAvailable {
-         
-            print("Has IMAGE")
-         // Create image var
-            let image = UIImage(data: selected.imageData!)
-            
-            let view = self.resizeImageView(selectedImage: image!)
-            
-            
-            // Set image for contact
-            contactImageView.image = view.image
-         }else{
-            
-            // Set to placeholder image
-            contactImageView.image = UIImage(named: "contact-placeholder")
-         }
+        print("Configured view for contact arrival from intro call \(ContactManager.sharedManager.userArrivedFromIntro)")
+        print("Configured view for contact selected new form contact call \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
         
-        // Set Label w name
-        let name = formatter.string(from: selected) ?? "No Name"
-        self.addContactLabel.text = name
+        
         
     }
     
     func configureViewForRecipient(){
         
-        let selected = ContactManager.sharedManager.recipientToIntro
-        // Check if image data available
-        
-        if selected.imageDataAvailable {
+        // User filled out form on recipients page
+        if ContactManager.sharedManager.userSelectedNewRecipientForIntro {
             
-            print("Has IMAGE")
-            // Create image var
-            let image = UIImage(data: selected.imageData!)
-            // Set image for contact
-            recipientImageView.image = image
+            // Show cancel button
+            cancelIntroButton.isHidden = false
+            
+            // Set selected contact
+            let selected = ContactManager.sharedManager.contactObjectForIntro
+            // Check if image data available
+            
+            
+            if selected.imageId != "" {
+                print("Has IMAGE")
+                // Set id
+                let id = selected.imageId
+                
+                // Set image for contact
+                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
+                let placeholderImage = UIImage(named: "profile")!
+                // Set image
+                //contactImageView?.setImageWith(url)
+                self.recipientImageView.setImageWith(url)
+                
+            }else{
+                recipientImageView.image = UIImage(named: "contact-placeholder")
+            }
+            
+            
+            // Set Label w name
+            let name = selected.name
+            self.addRecipientLabel.text = name
+            
         }else{
-            // Set to placeholder image
-            //recipientImageView.image = UIImage(named: "profile")
+            
+            let selected = ContactManager.sharedManager.recipientToIntro
+            // Check if image data available
+            
+            if selected.imageDataAvailable {
+                
+                print("Has IMAGE")
+                // Create image var
+                let image = UIImage(data: selected.imageData!)
+                // Set image for contact
+                recipientImageView.image = image
+            }else{
+                // Set to placeholder image
+                recipientImageView.image = UIImage(named: "contact-placeholder")
+            }
+            
+            // Set Label w name
+            let name = formatter.string(from: selected) ?? "No Name"
+            self.addRecipientLabel.text = name
         }
-        
-        // Set Label w name
-        let name = formatter.string(from: selected) ?? "No Name"
-        self.addRecipientLabel.text = name
         
     }
     

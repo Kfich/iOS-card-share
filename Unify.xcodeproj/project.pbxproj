@@ -111,6 +111,7 @@
 		FB6975A61F68D33100D68C09 /* PostalAddressRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6975A31F68D33100D68C09 /* PostalAddressRow.swift */; };
 		FB6975AE1F69BF8300D68C09 /* LabelSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6975AD1F69BF8300D68C09 /* LabelSelectionViewController.swift */; };
 		FB6975B11F6AC5C100D68C09 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6975B01F6AC5C100D68C09 /* ProfileEditViewController.swift */; };
+		FB6975B41F6C50F300D68C09 /* ContactListProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6975B31F6C50F300D68C09 /* ContactListProfileViewController.swift */; };
 		FB6FAB0D1F565A2200E66508 /* ContactSocialMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */; };
 		FB6FAB101F565A5600E66508 /* ContactSocialMediaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */; };
 		FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = FB767D1F1F429DD40065F46E /* CGGeometry+RSKImageCropper.m */; };
@@ -367,6 +368,7 @@
 		FB6975A31F68D33100D68C09 /* PostalAddressRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostalAddressRow.swift; sourceTree = "<group>"; };
 		FB6975AD1F69BF8300D68C09 /* LabelSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSelectionViewController.swift; sourceTree = "<group>"; };
 		FB6975B01F6AC5C100D68C09 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
+		FB6975B31F6C50F300D68C09 /* ContactListProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListProfileViewController.swift; sourceTree = "<group>"; };
 		FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSocialMediaViewController.swift; sourceTree = "<group>"; };
 		FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSocialMediaDetailViewController.swift; sourceTree = "<group>"; };
 		FB767D1E1F429DD40065F46E /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
@@ -671,6 +673,7 @@
 				FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */,
 				FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */,
 				FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */,
+				FB6975B31F6C50F300D68C09 /* ContactListProfileViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 		FB3738211EDDBD2E0074200F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				1C3104111E9536D100F4D70D /* SingleActivity-ViewController.swift */,
 				FB6975B01F6AC5C100D68C09 /* ProfileEditViewController.swift */,
 				FBE76C801EDF395000E37E0C /* ProfileViewController.swift */,
 				1CB31CA01E940A0B00A0C4A5 /* Profile-TableViewController.swift */,
@@ -715,7 +719,6 @@
 			isa = PBXGroup;
 			children = (
 				1CB31C9E1E94092000A0C4A5 /* Activity-ViewController.swift */,
-				1C3104111E9536D100F4D70D /* SingleActivity-ViewController.swift */,
 				1C31040F1E94B7FC00F4D70D /* FollowUp-ViewController.swift */,
 			);
 			name = Activity;
@@ -1159,6 +1162,7 @@
 				FB767D421F4358750065F46E /* AddEventViewController.swift in Sources */,
 				FBD0C0941F3B8FF500BFE62C /* CollectionTableViewCell.swift in Sources */,
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
+				FB6975B41F6C50F300D68C09 /* ContactListProfileViewController.swift in Sources */,
 				FB019AA21F28EE7C00908A67 /* Contact.swift in Sources */,
 				FB90A8B61F27941600E67B1E /* ContactUsViewController.swift in Sources */,
 				FBA1F5171F38FA1300CDCB76 /* CustomSearchBar.swift in Sources */,

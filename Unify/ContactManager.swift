@@ -39,6 +39,8 @@ class ContactManager{
     var userCreatedNewContact = false
     var userSelectedRecipient = false
     var userSentCardFromRadarList = false
+    var userSelectedNewContactForIntro = false
+    var userSelectedNewRecipientForIntro = false
     
     // Check if user from network
     var userIsRemoteUser = false
@@ -74,6 +76,7 @@ class ContactManager{
     var contactToIntro = CNContact()
     var recipientToIntro = CNContact()
     var contactToInvite = Contact()
+    var contactObjectForIntro = Contact()
     var contactsHashTable = [String: [CNContact]]()
     
     // Contact for sending cards
