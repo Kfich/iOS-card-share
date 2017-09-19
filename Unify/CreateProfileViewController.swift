@@ -124,27 +124,31 @@ class CreateProfileViewController: UITableViewController {
     
     func filterContentForSearchText(_ searchText: String) {
         
-        let boldAttrs = [
-            NSFontAttributeName : UIFont.boldSystemFont(ofSize: 17),
-            NSForegroundColorAttributeName: UIColor.blue
-        ]
-        
-        let results = fuse.search(searchText, in: contactObjectList)
-        
-        //print("Results >> \(results)")
-        
-        filteredBooks = results.map { (index, _, matchedRanges) in
-            let book = contactObjectList[index]
+        DispatchQueue.main.async {
             
-            //print("Contact Object >> \(book.toAnyObject())")
+            let boldAttrs = [
+                NSFontAttributeName : UIFont.boldSystemFont(ofSize: 17),
+                NSForegroundColorAttributeName: UIColor.blue
+            ]
             
-            let attributedString = NSMutableAttributedString(string: book.name)
+            let results = self.fuse.search(searchText, in: self.contactObjectList)
             
-            return book
-    
+            //print("Results >> \(results)")
+            
+            self.filteredBooks = results.map { (index, _, matchedRanges) in
+                let book = self.contactObjectList[index]
+                
+                //print("Contact Object >> \(book.toAnyObject())")
+                
+                let attributedString = NSMutableAttributedString(string: book.name)
+                
+                return book
+                
+            }
+            
+            self.tableView.reloadData()
+            
         }
-        
-        tableView.reloadData()
     
     }
     
@@ -410,213 +414,24 @@ class CreateProfileViewController: UITableViewController {
 }
 
 extension CreateProfileViewController: UISearchBarDelegate {
+    
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        // TODO: can run this on a background queue, and then reload the tableview back on the main queue
-        filterContentForSearchText(searchBar.text!)
+        
+        DispatchQueue.main.sync {
+            // TODO: can run this on a background queue, and then reload the tableview back on the main queue
+            self.filterContentForSearchText(searchBar.text!)
+        }
     }
 }
 
 extension CreateProfileViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+        DispatchQueue.main.async {
+            //
+            self.filterContentForSearchText(searchController.searchBar.text!)
+
+        }
     }
 }
-
-/*UITableViewController {
- 
- // MARK: - Properties
- var books = [String]()
- var bookList = [[String]]()
- var filteredBooks = [NSAttributedString]()
- var filteredBookList = [[NSAttributedString]]()
- let fuse = Fuse()
- 
- let searchController = UISearchController(searchResultsController: nil)
- 
- // MARK: - View Setup
- override func viewDidLoad() {
- super.viewDidLoad()
- 
- // Setup the Search Controller
- searchController.searchResultsUpdater = self as! UISearchResultsUpdating
- searchController.searchBar.delegate = self as! UISearchBarDelegate
- definesPresentationContext = true
- searchController.dimsBackgroundDuringPresentation = false
- 
- // Setup the Scope Bar
- tableView.tableHeaderView = searchController.searchBar
- 
- books = [
- "Angels & Demons",
- "Old Man's War",
- "The Lock Artist",
- "HTML5",
- "Right Ho Jeeves",
- "The Code of the Wooster",
- "Thank You Jeeves",
- "The DaVinci Code",
- "The Silmarillion",
- "Syrup",
- "The Lost Symbol",
- "The Book of Lies",
- "Lamb",
- "Fool",
- "Incompetence",
- "Fat",
- "Colony",
- "Backwards, Red Dwarf",
- "The Grand Design",
- "The Book of Samson",
- "The Preservationist",
- "Fallen",
- "Monster 1959"
- ]
- 
- bookList = [
- ["Angels & Demons"],
- ["Old Man's War"],
- ["The Lock Artist"],
- ["HTML5"],
- ["Right Ho Jeeves"],
- ["The Code of the Wooster"],
- ["Thank You Jeeves"],
- ["The DaVinci Code"],
- ["The Silmarillion"],
- ["Syrup"],
- ["The Lost Symbol"],
- ["The Book of Lies"],
- ["Lamb"],
- ["Fool"],
- ["Incompetence"],
- ["Fat"],
- ["Colony"],
- ["Backwards, Red Dwarf"],
- ["The Grand Design"],
- ["The Book of Samson"],
- ["The Preservationist"],
- ["Fallen"],
- ["Monster 1959"]
- ]
- 
- }
- 
- override func didReceiveMemoryWarning() {
- super.didReceiveMemoryWarning()
- }
- 
- // MARK: - Table View
- override func numberOfSections(in tableView: UITableView) -> Int {
- return 2
- }
- 
- override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
- if section == 0 {
- // The original book array
- if searchController.isActive && searchController.searchBar.text != "" {
- return filteredBooks.count
- }
- return books.count
- }else{
- if searchController.isActive && searchController.searchBar.text != "" {
- return filteredBookList.count
- }
- return bookList.count
- }
- 
- }
- 
- override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
- let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
- let item: NSAttributedString
- 
- if indexPath.section == 0 {
- // The original book array
- if searchController.isActive && searchController.searchBar.text != "" {
- item = filteredBooks[indexPath.row]
- } else {
- item = NSAttributedString(string: books[indexPath.row])
- }
- 
- cell.textLabel!.attributedText = item
- }else{
- if searchController.isActive && searchController.searchBar.text != "" {
- item = filteredBookList[indexPath.section][indexPath.section]
- } else {
- item = NSAttributedString(string: bookList[indexPath.section][indexPath.row])
- }
- 
- cell.textLabel!.attributedText = item
- }
- 
- return cell
- }
- 
- func filterContentForSearchText(_ searchText: String) {
- let boldAttrs = [
- NSFontAttributeName : UIFont.boldSystemFont(ofSize: 17),
- NSForegroundColorAttributeName: UIColor.blue
- ]
- 
- let results = fuse.search(searchText, in: books)
- 
- filteredBooks = results.map { (index, _, matchedRanges) in
- let book = books[index]
- 
- let attributedString = NSMutableAttributedString(string: book)
- matchedRanges
- .map(Range.init)
- .map(NSRange.init)
- .forEach {
- attributedString.addAttributes(boldAttrs, range: $0)
- }
- 
- return attributedString
- }
- 
- /*
- 
- let boldAttrList = [
- NSFontAttributeName : UIFont.boldSystemFont(ofSize: 17),
- NSForegroundColorAttributeName: UIColor.blue
- ]
- 
- let resultList = fuse.search(searchText, in: books)
- 
- filteredBookList = results.map { (index, _, matchedRanges) in
- let book = bookList[index]
- 
- let attributedString = NSMutableAttributedString(string: book)
- matchedRanges
- .map(Range.init)
- .map(NSRange.init)
- .forEach {
- attributedString.addAttributes(boldAttrs, range: $0)
- }
- 
- return attributedString
- }*/
- 
- tableView.reloadData()
- }
- 
- }
- 
- extension CreateProfileViewController: UISearchBarDelegate {
- // MARK: - UISearchBar Delegate
- func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
- // TODO: can run this on a background queue, and then reload the tableview back on the main queue
- filterContentForSearchText(searchBar.text!)
- }
- }
- 
- extension CreateProfileViewController: UISearchResultsUpdating {
- // MARK: - UISearchResultsUpdating Delegate
- func updateSearchResults(for searchController: UISearchController) {
- filterContentForSearchText(searchController.searchBar.text!)
- }
- }
- 
- 
- */

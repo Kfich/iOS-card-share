@@ -502,11 +502,39 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             transaction.recipientNames = [String]()
             transaction.recipientNames?.append(contact.name)
             transaction.recipientNames?.append(contactName)
+            
+            
+            // Parse for emails
+            if introContact.emailAddresses.count > 0 && contact.emails.count > 0 {
                 
+                // Set selected email
+                self.selectedEmail = contact.emails[0]["email"]!
+                let contactEmail = introContact.emailAddresses[0].value as String
+                
+                // Add to transaction
+                self.transaction.recipientEmails = []
+                self.transaction.recipientEmails?.append(contactEmail)
+                self.transaction.recipientEmails?.append(selectedEmail)
+                
+            }
             
-            // Set location from field
+            if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
+                
+                
+                // Set selected phone
+                self.selectedPhone = contact.phoneNumbers[0]["phone"]!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                let phone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                
+                // Add to transaction
+                self.transaction.recipientPhones = []
+                self.transaction.recipientPhones?.append(phone)
+                self.transaction.recipientPhones?.append(selectedPhone)
+                
+            }
             
-            // transaction.location = self.notesLabel.text ?? ""
+            
+            // Set location from contact object
+            transaction.location = contact.notes[0]["note"] ?? ""
                 
             
             /*if self.syncContactSwitch.isOn == true {
@@ -570,15 +598,11 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             if error == nil {
                 print("Card Created Response ---> \(response)")
                 
-                // Set card uuid with response from network
-                /*let dictionary : Dictionary = response as! [String : Any]
-                self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
-                
-                // Insert to manager card array
-                //ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
-                
                 // Hide HUD
-                KVNProgress.dismiss()
+                KVNProgress.showSuccess(withStatus: "Introduction made successfully!")
+                
+                // Clear
+                self.resetViews()
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")

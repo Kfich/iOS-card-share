@@ -320,7 +320,14 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         //cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
-        
+       
+        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses"{
+            
+            // Set tint on text field
+            cell.descriptionLabel.textColor = self.view.tintColor
+            
+        }
+       
         return cell
         
     }
@@ -405,10 +412,20 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         profileInfoTableView.tableHeaderView = self.cardWrapperView
         profileInfoTableView.tableFooterView = self.profileImageCollectionView
         
+        // Observer for notifs
+        addObservers()
+        
         
     }
     
     // Custom methods
+    
+    func addObservers() {
+        // Call to refresh table
+        NotificationCenter.default.addObserver(self, selector: #selector(SingleActivityViewController.parseDataFromProfile), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
+        
+        
+    }
     
     func launchMediaWebView() {
         // Config the social link webVC
@@ -588,7 +605,6 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             }
             
         }
-        
         // Check for visible badges
         for badge in ContactManager.sharedManager.badgeList {
             // Check if visible

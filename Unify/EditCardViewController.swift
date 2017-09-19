@@ -1038,7 +1038,11 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
         case "Addresses":
             //cell.titleLabel.text = "Organization \(indexPath.row)"
-            cell.descriptionLabel.text = addresses[indexPath.row]
+            
+            if addresses.count > 0{
+                // Set addy
+                cell.descriptionLabel.text = addresses[indexPath.row]
+            }
             
             // Check if in list
             if selectedAddress.contains(addresses[indexPath.row]) {

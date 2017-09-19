@@ -539,8 +539,18 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             print("Email")
         }
-        // Add Buttoin
-        actionSheetController.addAction(emailAction)
+        
+        
+        if self.selectedTransaction.type == "introduction"{
+            if selectedUserEmails.count > 0{
+                // Add action
+                actionSheetController.addAction(emailAction)
+            }
+        }else{
+            // Add action
+            actionSheetController.addAction(emailAction)
+            
+        }
         
         // Make
         let textAction = UIAlertAction(title: "Text", style: .default)
@@ -551,8 +561,17 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             print("Text")
         }
-        // Add Buttoin
-        actionSheetController.addAction(textAction)
+        
+        if self.selectedTransaction.type == "introduction"{
+            if selectedUserPhones.count > 0{
+                // Add action
+                actionSheetController.addAction(textAction)
+            }
+        }else{
+            // Add action
+            actionSheetController.addAction(textAction)
+            
+        }
 
         // Add
         let callAction = UIAlertAction(title: "Call", style: .default)
@@ -591,8 +610,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
 
         }
     
+        if self.selectedTransaction.type != "introduction"{
+        
             //  Add action
-        actionSheetController.addAction(callAction)
+            actionSheetController.addAction(callAction)
+        }
         
         self.present(actionSheetController, animated: true, completion: nil)
     }
@@ -609,15 +631,15 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         switch sender.selectedSegmentIndex {
         case 1:
-            self.view.backgroundColor = UIColor.green
+            //self.view.backgroundColor = UIColor.green
             print("Green")
             self.tableView.reloadData()
         case 2:
-            self.view.backgroundColor = UIColor.blue
+            //self.view.backgroundColor = UIColor.blue
             print("Blue")
             self.tableView.reloadData()
         default:
-            self.view.backgroundColor = UIColor.purple
+            //self.view.backgroundColor = UIColor.purple
             print("Purple")
             self.tableView.reloadData()
         }

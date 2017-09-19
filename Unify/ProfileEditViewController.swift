@@ -71,7 +71,37 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     @IBOutlet var firstNameTextField: UITextField!
     @IBOutlet var lastNameTextField: UITextField!
+    
+    
+    // IBActions
+    // ----------------------------------
+    @IBAction func doneButtonPressed(_ sender: AnyObject) {
+       
+        // Execute call to parse profile from form
+        self.parseEditedProfile()
+        
+    }
 
+    @IBAction func backButtonPressed(_ sender: AnyObject) {
+        
+        // Reassign to the OG user object
+        if let user = UDWrapper.getDictionary("user"){
+            // Assign current user to manager object from phone
+            // Print to test
+            print("USER DICTIONARY")
+            print(user)
+            
+            print("User has profile!")
+            ContactManager.sharedManager.currentUser = User(withDefaultsSnapshot:user)
+            
+            print("CURRENT USER from edit profile cancel action ")
+            ContactManager.sharedManager.currentUser.printUser()
+        }
+        
+        // Dismiss VC
+        navigationController?.popViewController(animated: true)
+        
+    }
     
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -391,7 +421,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 
                                 $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow() {
+                                    return NameRow("titlesRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
@@ -474,7 +504,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow() {
+                                    return NameRow("organizationRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
@@ -535,6 +565,45 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 
             }
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "Bio Information", footer: "") {
+                $0.tag = "Bio Section"
+                $0.addButtonProvider = { section in
+                    return ButtonRow(){
+                        $0.title = "Add Bio Info"
+                        //$0.tag = "Add Bio"
+                        }.cellUpdate { cell, row in
+                            cell.textLabel?.textAlignment = .left
+                    }
+                }
+                $0.multivaluedRowToInsertAt = { index in
+                    return NameRow("bioRow_\(index)") {
+                        $0.placeholder = "Bio"
+                        //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                        $0.cell.textField.autocapitalizationType = .sentences //UITextAutocapitalizationType.none
+                        self.count = self.count + 1
+                        //$0.tag = "Add Bio"
+                        
+                    }
+                }
+                //$0.footer?.height = 100.0 as CGFloat
+                
+                // Iterate through array and set val
+                
+                for val in bios{
+                    print(val)
+                    $0 <<< NameRow() {
+                        $0.placeholder = "Bio"
+                        $0.value = val
+                        //$0.tag = "b_row\(IndexPath())"
+                    }
+                }
+                
+                
+                
+            }
+
             
             +++
             
@@ -552,7 +621,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
                                     
-                                    return NameRow() {
+                                    return NameRow("numbersRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
@@ -636,7 +705,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow() {
+                                    return NameRow("emailsRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
@@ -718,7 +787,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow() {
+                                    return NameRow("websitesRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
@@ -729,6 +798,10 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            // Config auto correct
+                                            cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                            cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -831,8 +904,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("tagRow_\(index)") {
                                      $0.placeholder = "Tag"
-                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                     //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                     //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                      //$0.tag = "Add Media Info"
                                      }
                                 }
@@ -864,7 +937,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     return NameRow("notesRow_\(index)") {
                                      $0.placeholder = "Note"
                                      $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
                                      //$0.tag = "Add Media Info"
                                      }
                                 }
@@ -894,7 +967,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow() {
+                                    return NameRow("addressRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         // Create headerview
@@ -966,6 +1039,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         
     }
+    
+    
     
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -1276,13 +1351,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     func updateCurrentUser() {
         // Configure to send to server
-       /* if firstNameTextField.text != "" && lastNameTextField.text != "" {
-            // Fields not empty
-            ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
-            ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
-            // Combine to make full name
-            ContactManager.sharedManager.currentUser.fullName = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
-        }*/
         
         // Assign current user object
         
@@ -1309,16 +1377,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 
                 
                 // Store user to device
-                //UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
+                UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
                 
                 // Refresh profile
-                //self.postNotificationForRefresh()
+                self.postNotificationForUpdate()
                 
                 // Hide HUD
                 KVNProgress.showSuccess(withStatus: "Profile updated successfully!")
                 
                 // Nav out the view
-                //self.navigationController?.popViewController(animated: true)
+                self.navigationController?.popViewController(animated: true)
                 
                 
             } else {
@@ -1600,7 +1668,216 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         //print(self.newUser.profileImages)
         
     }
+    
+    func clearCurrentUserArrays() {
+        // Clear all profile info to prepare for override
+        ContactManager.sharedManager.currentUser.userProfile.bios.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.titles.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.emails.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.websites.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
+        //ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.tags.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.addresses.removeAll()
+        
+    }
+    
+    func removeAllFromArrays() {
+        // Clear all profile info to prepare for override
+        /*ContactManager.sharedManager.currentUser.userProfile.bios.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.titles.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.emails.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.websites.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.organizations.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.socialLinks.removeAll()
+         ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()*/
+        
+        // Clear all profile info to prepare for override
+        bios.removeAll()
+        titles.removeAll()
+        emails.removeAll()
+        phoneNumbers.removeAll()
+        websites.removeAll()
+        organizations.removeAll()
+        //socialLinks.removeAll()
+        workInformation.removeAll()
+        tags.removeAll()
+        addresses.removeAll()
+        
+        
+    }
+    
+    func postNotificationForUpdate() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshProfile"), object: self)
+        
+        //UpdateCurrentUserProfile
+        
+    }
 
+    func parseEditedProfile() {
+        // Parse form
+        print("Hello!")
+        
+        // Clear manager arrays
+        self.clearCurrentUserArrays()
+        
+            
+            // Configure to send to server
+            if firstNameTextField.text != "" && lastNameTextField.text != "" {
+                // Fields not empty
+                ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
+                ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
+                // Combine to make full name
+                ContactManager.sharedManager.currentUser.fullName = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
+            }
+
+            
+            
+            // Clear the arrays
+            self.removeAllFromArrays()
+            
+            // Assign all the items in each list to the contact profile on manager
+            // Parse table section vals
+            
+            // Bios Section
+            let bioValues = form.sectionBy(tag: "Bio Section")
+            for val in bioValues! {
+                
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String {
+                    // Append to user profile
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setBioRecords(emailRecords: ["bio": str])
+                        bios.append(str)
+                    }
+                }
+            }
+            
+            // Titles Section
+            let titleValues = form.sectionBy(tag: "Title Section")
+            for val in titleValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.titles.append(["title" : str])
+                        titles.append(str)
+                    }
+                }
+            }
+            
+            // Phone Number section
+            let phoneValues = form.sectionBy(tag: "Phone Section")
+            for val in phoneValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
+                        phoneNumbers.append(str)
+                        
+                        // Func for stripping phone numbers
+                        // let result = String(phoneNumberInput.text!.characters.filter { "01234567890.".characters.contains($0) })
+                        // print("Filtered Phone String >> \(result)")
+                    }
+                }
+            }
+            
+            // Email Section
+            let emailValues = form.sectionBy(tag: "Email Section")
+            for val in emailValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.emails.append(["email" : str])
+                        emails.append(str)
+                    }
+                }
+            }
+            /*
+             // Work Info Section
+             let workValues = form.sectionBy(tag: "Work Section")
+             for val in workValues! {
+             print(val.baseValue ?? "")
+             if let str = "\(val.baseValue ?? "")" as? String{
+             if str != "nil" && str != "" {
+             ContactManager.sharedManager.currentUser.userProfile.workInformationList.append(["work" :str])
+             workInformation.append(str)
+             }
+             }
+             }*/
+            
+            // Website Section
+            let websiteValues = form.sectionBy(tag: "Website Section")
+            for val in websiteValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
+                    }
+                }
+            }
+            
+            // Social Media Section
+            let mediaValues = form.sectionBy(tag: "Tag Section")
+            for val in mediaValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setTags(tagRecords: ["tag": str])
+                        tags.append(str)
+                        
+                        //print("Social links not needed here anymore")
+                    }
+                }
+            }
+            
+            // Organization section
+            let organizationValues = form.sectionBy(tag: "Organization Section")
+            for val in organizationValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
+                        organizations.append(str)
+                    }
+                }
+            }
+            
+            // Organization section
+            let addressValues = form.sectionBy(tag: "Address Section")
+            for val in addressValues! {
+                print(val.baseValue ?? "")
+                if let str = "\(val.baseValue ?? "")" as? String{
+                    if str != "nil" && str != "" {
+                        ContactManager.sharedManager.currentUser.userProfile.setAddresses(addressRecords: ["address": str])
+                        addresses.append(str)
+                    }
+                }
+            }
+            
+            // Set current user
+            //ContactManager.sharedManager.currentUser = self.currentUser
+            
+            // Test to print profile
+            print("PRINTING FROM CONTAINER CURRENT USER")
+            ContactManager.sharedManager.currentUser.printUser()
+            
+            // Post notification
+            //self.postNotificationForUpdate()
+        
+            // Call to update
+            self.updateCurrentUser()
+            
+            // Store user to device
+            //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+            
+            //self.postNotification()
+        
+    }
     
     
     func addGestureToLabel(label: UILabel, intent: String) {
@@ -1620,52 +1897,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         let controller = storyboard.instantiateViewController(withIdentifier: "LabelSelectVC")
         self.present(controller, animated: true, completion: nil)
     }
-    
-    
-    // Action sheet
-    func showActionAlert() {
-        // Config action
-        let actionSheetController: UIAlertController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .actionSheet)
-        
-        // Make Button
-        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-            print("Cancel")
-        }
-        
-        // Add button
-        actionSheetController.addAction(cancelActionButton)
-        
-        // Make button
-        let emailAction = UIAlertAction(title: "Email", style: .default)
-        { _ in
-            
-            print("Email")
-        }
-        // Add Buttoin
-        actionSheetController.addAction(emailAction)
-        
-        // Make
-        let textAction = UIAlertAction(title: "Text", style: .default)
-        { _ in
-            
-            print("Text")
-        }
-        // Add Buttoin
-        actionSheetController.addAction(textAction)
-        
-        // Add
-        let callAction = UIAlertAction(title: "Call", style: .default)
-        { _ in
-            print("call")
-            
-        }
-        
-        //  Add action
-        actionSheetController.addAction(callAction)
-        
-        self.present(actionSheetController, animated: true, completion: nil)
-    }
-    
     
     
     

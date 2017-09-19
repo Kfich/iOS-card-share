@@ -1090,7 +1090,7 @@
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -1150,7 +1150,7 @@
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -1174,7 +1174,7 @@
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -1198,7 +1198,7 @@
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -1234,7 +1234,7 @@
                                                 <rect key="frame" x="195" y="160" width="150" height="36"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -1590,7 +1590,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5oh-pi-rBe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7078" y="4380"/>
+            <point key="canvasLocation" x="10193" y="3585"/>
         </scene>
         <!--Profile-->
         <scene sceneID="L5d-gb-mCa">
@@ -1598,7 +1598,7 @@
                 <navigationController storyboardIdentifier="ProfileVC" id="wbp-bP-tiH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="SLj-8d-qLN"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xVx-3S-WBA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xVx-3S-WBA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1608,7 +1608,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0fo-Sg-TwC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1518" y="4293"/>
+            <point key="canvasLocation" x="1254" y="4609"/>
         </scene>
         <!--Profile-->
         <scene sceneID="bNF-cb-my7">
@@ -2142,7 +2142,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TsI-GI-O1Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4998" y="4699"/>
+            <point key="canvasLocation" x="10193" y="5204"/>
         </scene>
         <!--Edit Profile View Controller-->
         <scene sceneID="GHO-qh-66j">
@@ -2428,7 +2428,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ActivityVC" navigationBarHidden="YES" id="1Oc-5A-vEL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Activity" id="vMf-bf-9I9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bx0-lP-1KU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bx0-lP-1KU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2438,7 +2438,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f8Z-tX-zAe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1518" y="5079"/>
+            <point key="canvasLocation" x="1255" y="5767"/>
         </scene>
         <!--Profile-->
         <scene sceneID="X8c-Ww-vRM">
@@ -2711,9 +2711,6 @@
                                                 <state key="normal" title="View My Cards">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
-                                                <connections>
-                                                    <segue destination="N2C-XP-IWx" kind="presentation" identifier="showCardViewer" id="Odi-UF-mHp"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -2890,7 +2887,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zgX-tU-fTJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5426" y="4700"/>
+            <point key="canvasLocation" x="9314" y="5054"/>
         </scene>
         <!--Add Card View Controller-->
         <scene sceneID="55y-eC-F6A">
@@ -3274,7 +3271,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Cards" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aiq-CP-kgO">
-                                        <rect key="frame" x="142" y="43" width="92" height="24"/>
+                                        <rect key="frame" x="142.5" y="43" width="92" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -3595,7 +3592,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dsb-NY-nLj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2412" y="5079.310344827587"/>
+            <point key="canvasLocation" x="2145" y="5749"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="viY-Nd-SLc">
@@ -3646,7 +3643,7 @@
                                         <rect key="frame" x="0.0" y="-5" width="375" height="65"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egw-m4-NkQ">
-                                                <rect key="frame" x="113" y="41" width="149" height="24"/>
+                                                <rect key="frame" x="113.5" y="41" width="149" height="24"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -3665,7 +3662,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2jh-2E-YZN">
-                                                <rect key="frame" x="307" y="41" width="60" height="27"/>
+                                                <rect key="frame" x="307.5" y="41" width="59.5" height="27"/>
                                                 <state key="normal" title="Done">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -4223,7 +4220,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follow Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUv-sN-bN5">
-                                        <rect key="frame" x="140" y="37" width="95" height="24"/>
+                                        <rect key="frame" x="140.5" y="37" width="95" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -4290,7 +4287,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AN6-Eu-V0b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3210" y="5079"/>
+            <point key="canvasLocation" x="3086" y="5749"/>
         </scene>
         <!--Home-->
         <scene sceneID="dRK-39-QyL">
@@ -4321,7 +4318,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ContactVC" navigationBarHidden="YES" id="pli-7b-Vvs" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Contacts" image="contactsicon" selectedImage="contactsicon" id="fnb-zs-j2f"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="SOC-E3-VL8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SOC-E3-VL8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4487,7 +4484,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7d7-AW-mAe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3788" y="696"/>
+            <point key="canvasLocation" x="3150" y="696"/>
         </scene>
         <!--Add Contact View Controller-->
         <scene sceneID="Gia-GU-eK5">
@@ -4586,7 +4583,7 @@
                                                                 </constraints>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
                                                                         <color key="value" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -4609,7 +4606,7 @@
                                                                 </constraints>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
+                                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
                                                                         <color key="value" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -4844,7 +4841,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tn3-Xm-mGd">
-                                        <rect key="frame" x="113.5" y="37" width="148.5" height="24"/>
+                                        <rect key="frame" x="114" y="37" width="148.5" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -4862,7 +4859,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstItem="Rkf-tZ-Tv8" firstAttribute="top" secondItem="kFE-zT-bgS" secondAttribute="top" constant="34" id="CdH-2Z-b3m"/>
                                     <constraint firstItem="Rkf-tZ-Tv8" firstAttribute="leading" secondItem="kFE-zT-bgS" secondAttribute="leading" constant="13" id="Qan-hv-Uws"/>
@@ -4994,7 +4991,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWA-56-dii">
-                            <rect key="frame" x="129" y="8" width="102" height="24"/>
+                            <rect key="frame" x="129.5" y="8" width="101.5" height="24"/>
                             <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                             <color key="textColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
@@ -5683,7 +5680,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WSV-Zw-JRZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="121" y="5672"/>
+            <point key="canvasLocation" x="3638" y="4624"/>
         </scene>
         <!--Social Media Detail View Controller-->
         <scene sceneID="M98-lw-bDg">
@@ -5724,7 +5721,7 @@
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Thin" family="San Francisco Text" pointSize="16"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
@@ -5804,7 +5801,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pv3-9x-dQs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="833" y="5671"/>
+            <point key="canvasLocation" x="4457" y="4623"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="1ZK-EN-LP3">
@@ -6091,7 +6088,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zYt-ls-esq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4382" y="2578"/>
+            <point key="canvasLocation" x="2793" y="3383"/>
         </scene>
         <!--Buisness Detail View Controller-->
         <scene sceneID="JaG-Nb-tsB">
@@ -7376,7 +7373,7 @@
                 <navigationController storyboardIdentifier="RadarVC" navigationBarHidden="YES" id="xIZ-TC-ypV" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" id="CI6-FL-GhO"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="N9h-YD-6eO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N9h-YD-6eO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7420,6 +7417,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="1Z3-Dl-8Sf">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="xnV-Qg-Rlw">
+                            <color key="tintColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="Wtf-k1-R2b" id="W3d-ZP-QsL"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="jme-1d-uXU">
+                            <color key="tintColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <action selector="doneButtonPressed:" destination="Wtf-k1-R2b" id="NgN-ja-UYi"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="cardWrapperView" destination="RAS-FC-c8n" id="C8j-OI-d47"/>
                         <outlet property="contactImageView" destination="Gja-F4-x5D" id="DUw-Uj-fE4"/>
@@ -7503,7 +7514,7 @@
                             </constraints>
                             <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="16"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
                                     <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -7526,7 +7537,7 @@
                             </constraints>
                             <color key="textColor" red="0.11056222020000001" green="0.20581735670000001" blue="0.43148908019999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="16"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
                                     <color key="value" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -7611,17 +7622,101 @@
                     </connections>
                 </collectionView>
             </objects>
-            <point key="canvasLocation" x="3338" y="4451"/>
+            <point key="canvasLocation" x="2793" y="4622"/>
         </scene>
         <!--Single Activity View Controller-->
         <scene sceneID="sVR-5E-1LC">
             <objects>
+                <viewController id="uOl-Ov-KQv" customClass="SingleActivityViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RDK-ou-Uw9"/>
+                        <viewControllerLayoutGuide type="bottom" id="QKV-Sa-e97"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wng-zC-a0Y">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YaY-CS-kcL">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BioInfoCell" rowHeight="55" id="USM-7t-QQm" customClass="CardOptionsViewCell" customModule="Unify" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="55"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="USM-7t-QQm" id="Vwf-2o-bra">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S0Z-XR-kkS">
+                                                    <rect key="frame" x="15" y="25" width="345" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMV-z1-lUb">
+                                                    <rect key="frame" x="15" y="9" width="344" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="pki-gL-q5Q"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="centerX" secondItem="S0Z-XR-kkS" secondAttribute="centerX" id="6eB-IS-YEp"/>
+                                                <constraint firstItem="S0Z-XR-kkS" firstAttribute="top" secondItem="iMV-z1-lUb" secondAttribute="bottom" constant="1" id="FOi-5I-fci"/>
+                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="leading" secondItem="S0Z-XR-kkS" secondAttribute="leading" id="JEi-vN-aCS"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="S0Z-XR-kkS" secondAttribute="bottom" id="ech-kg-Fzn"/>
+                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="top" secondItem="Vwf-2o-bra" secondAttribute="topMargin" constant="1" id="eub-2x-TJK"/>
+                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="leading" secondItem="Vwf-2o-bra" secondAttribute="leadingMargin" constant="7" id="uCR-9h-dBH"/>
+                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="centerX" secondItem="Vwf-2o-bra" secondAttribute="centerX" id="wvu-BK-DDP"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="descriptionLabel" destination="S0Z-XR-kkS" id="hlf-4H-gDy"/>
+                                            <outlet property="titleLabel" destination="iMV-z1-lUb" id="uPa-7T-Acj"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="uOl-Ov-KQv" id="NIt-Um-BQR"/>
+                                    <outlet property="delegate" destination="uOl-Ov-KQv" id="Wtv-Pa-TEl"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="YaY-CS-kcL" secondAttribute="trailing" id="H3e-vI-f2h"/>
+                            <constraint firstItem="YaY-CS-kcL" firstAttribute="top" secondItem="wng-zC-a0Y" secondAttribute="top" id="IJR-yF-OCM"/>
+                            <constraint firstItem="QKV-Sa-e97" firstAttribute="top" secondItem="YaY-CS-kcL" secondAttribute="bottom" id="Q6C-dw-VBy"/>
+                            <constraint firstItem="YaY-CS-kcL" firstAttribute="leading" secondItem="wng-zC-a0Y" secondAttribute="leading" id="nZU-My-YsU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="gxm-RL-xCy">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="94h-s8-K3V">
+                            <color key="tintColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <segue destination="Wtf-k1-R2b" kind="show" id="pD4-pw-wzN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="badgeCollectionView" destination="DHA-Mj-5vA" id="zfI-bx-Of5"/>
+                        <outlet property="cardWrapperView" destination="uRc-P5-xlh" id="WIP-rk-Rb0"/>
+                        <outlet property="contactImageView" destination="dQV-qW-Awo" id="rR2-cO-H1w"/>
+                        <outlet property="nameLabel" destination="xQI-7s-Vpk" id="Qnh-9G-gKK"/>
+                        <outlet property="profileImageCollectionView" destination="57E-aH-lm5" id="8nI-aT-X1S"/>
+                        <outlet property="profileInfoTableView" destination="YaY-CS-kcL" id="DVy-vd-QaK"/>
+                        <outlet property="socialBadgeCollectionView" destination="0fU-Dy-3sS" id="5Ol-wp-GYf"/>
+                    </connections>
+                </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oaf-ac-Rww" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uRc-P5-xlh">
                     <rect key="frame" x="0.0" y="0.0" width="359" height="285"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xQI-7s-Vpk">
-                            <rect key="frame" x="129" y="8" width="102" height="24"/>
+                            <rect key="frame" x="129.5" y="8" width="101.5" height="24"/>
                             <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                             <color key="textColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
@@ -7781,91 +7876,8 @@
                         <outlet property="delegate" destination="uOl-Ov-KQv" id="3Qc-R3-PvS"/>
                     </connections>
                 </collectionView>
-                <viewController id="uOl-Ov-KQv" customClass="SingleActivityViewController" customModule="Unify" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="RDK-ou-Uw9"/>
-                        <viewControllerLayoutGuide type="bottom" id="QKV-Sa-e97"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="wng-zC-a0Y">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YaY-CS-kcL">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BioInfoCell" rowHeight="55" id="USM-7t-QQm" customClass="CardOptionsViewCell" customModule="Unify" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="55"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="USM-7t-QQm" id="Vwf-2o-bra">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S0Z-XR-kkS">
-                                                    <rect key="frame" x="15" y="25" width="345" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMV-z1-lUb">
-                                                    <rect key="frame" x="15" y="9" width="344" height="15"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="15" id="pki-gL-q5Q"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="centerX" secondItem="S0Z-XR-kkS" secondAttribute="centerX" id="6eB-IS-YEp"/>
-                                                <constraint firstItem="S0Z-XR-kkS" firstAttribute="top" secondItem="iMV-z1-lUb" secondAttribute="bottom" constant="1" id="FOi-5I-fci"/>
-                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="leading" secondItem="S0Z-XR-kkS" secondAttribute="leading" id="JEi-vN-aCS"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="S0Z-XR-kkS" secondAttribute="bottom" id="ech-kg-Fzn"/>
-                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="top" secondItem="Vwf-2o-bra" secondAttribute="topMargin" constant="1" id="eub-2x-TJK"/>
-                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="leading" secondItem="Vwf-2o-bra" secondAttribute="leadingMargin" constant="7" id="uCR-9h-dBH"/>
-                                                <constraint firstItem="iMV-z1-lUb" firstAttribute="centerX" secondItem="Vwf-2o-bra" secondAttribute="centerX" id="wvu-BK-DDP"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="descriptionLabel" destination="S0Z-XR-kkS" id="hlf-4H-gDy"/>
-                                            <outlet property="titleLabel" destination="iMV-z1-lUb" id="uPa-7T-Acj"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="uOl-Ov-KQv" id="NIt-Um-BQR"/>
-                                    <outlet property="delegate" destination="uOl-Ov-KQv" id="Wtv-Pa-TEl"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="YaY-CS-kcL" secondAttribute="trailing" id="H3e-vI-f2h"/>
-                            <constraint firstItem="YaY-CS-kcL" firstAttribute="top" secondItem="wng-zC-a0Y" secondAttribute="top" id="IJR-yF-OCM"/>
-                            <constraint firstItem="QKV-Sa-e97" firstAttribute="top" secondItem="YaY-CS-kcL" secondAttribute="bottom" id="Q6C-dw-VBy"/>
-                            <constraint firstItem="YaY-CS-kcL" firstAttribute="leading" secondItem="wng-zC-a0Y" secondAttribute="leading" id="nZU-My-YsU"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="gxm-RL-xCy">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="94h-s8-K3V">
-                            <connections>
-                                <segue destination="Wtf-k1-R2b" kind="show" id="pD4-pw-wzN"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="badgeCollectionView" destination="DHA-Mj-5vA" id="zfI-bx-Of5"/>
-                        <outlet property="cardWrapperView" destination="uRc-P5-xlh" id="WIP-rk-Rb0"/>
-                        <outlet property="contactImageView" destination="dQV-qW-Awo" id="rR2-cO-H1w"/>
-                        <outlet property="nameLabel" destination="xQI-7s-Vpk" id="Qnh-9G-gKK"/>
-                        <outlet property="profileImageCollectionView" destination="57E-aH-lm5" id="8nI-aT-X1S"/>
-                        <outlet property="profileInfoTableView" destination="YaY-CS-kcL" id="DVy-vd-QaK"/>
-                        <outlet property="socialBadgeCollectionView" destination="0fU-Dy-3sS" id="5Ol-wp-GYf"/>
-                    </connections>
-                </viewController>
             </objects>
-            <point key="canvasLocation" x="2468" y="4451"/>
+            <point key="canvasLocation" x="2017" y="4624"/>
         </scene>
         <!--Radar View Controller-->
         <scene sceneID="Q2D-Bi-wOt">
@@ -8659,7 +8671,7 @@
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <items/>
                                                                         </toolbar>
-                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hp1-1I-OI8">
+                                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hp1-1I-OI8">
                                                                             <rect key="frame" x="1" y="0.0" width="359" height="44"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Xad-8b-Iop">
@@ -9798,7 +9810,7 @@
                                                                 <color key="textColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WSZ-gG-Zbv">
+                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WSZ-gG-Zbv">
                                                                 <rect key="frame" x="0.0" y="156" width="359" height="43"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="lb2-uU-JyN">
@@ -9895,7 +9907,7 @@
                                                         </constraints>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -9919,7 +9931,7 @@
                                                         </constraints>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -9949,7 +9961,7 @@
                                                         </constraints>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -9973,7 +9985,7 @@
                                                         </constraints>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -9998,7 +10010,7 @@
                                                         </constraints>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -10034,7 +10046,7 @@
                                                         <rect key="frame" x="192" y="10" width="150" height="36"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-MediumP4" family="San Francisco Display" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
@@ -10070,6 +10082,7 @@
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn-mail-white" translatesAutoresizingMaskIntoConstraints="NO" id="Ear-hY-0yo">
                                                         <rect key="frame" x="8" y="106" width="19" height="20"/>
                                                         <constraints>
+                                                            <constraint firstAttribute="width" constant="19" id="4rb-gg-gtn"/>
                                                             <constraint firstAttribute="height" constant="20" id="VMB-1z-Hf0"/>
                                                         </constraints>
                                                     </imageView>
@@ -10679,7 +10692,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MgI-G0-99V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6668" y="3662"/>
+            <point key="canvasLocation" x="7036" y="4061"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="zMe-dN-aNb">
@@ -10943,7 +10956,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khy-R3-ag1">
-                                        <rect key="frame" x="133" y="41" width="109" height="24"/>
+                                        <rect key="frame" x="133.5" y="41" width="109" height="24"/>
                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family="San Francisco Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -11457,7 +11470,7 @@
         <scene sceneID="gZp-VV-fQI">
             <objects>
                 <collectionViewController id="tOI-Kc-32Q" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="O9M-i8-w5a">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="O9M-i8-w5a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -11567,7 +11580,7 @@
                     <tabBarItem key="tabBarItem" title="Intro" id="0XH-iX-L6l"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="LSz-30-GH9"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="JhS-bM-a1h">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JhS-bM-a1h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -11779,7 +11792,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U1L-in-CME" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4240" y="4982"/>
+            <point key="canvasLocation" x="9312" y="5724"/>
         </scene>
         <!--Contact Social Media View Controller-->
         <scene sceneID="KQP-kc-iAT">
@@ -11936,7 +11949,7 @@
                                                         </constraints>
                                                         <color key="textColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Thin" family="San Francisco Text" pointSize="16"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="shakeLineWithError" value="YES"/>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
@@ -12288,7 +12301,7 @@
             <objects>
                 <navigationController storyboardIdentifier="CalendarListVC" automaticallyAdjustsScrollViewInsets="NO" id="3Hr-sD-wAa" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="yF5-iR-0Pf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yF5-iR-0Pf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -12542,7 +12555,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hQh-0Y-SfZ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wjm-wu-dQa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wjm-wu-dQa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -12560,7 +12573,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PTb-kK-DfG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="VDD-zM-y3E">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VDD-zM-y3E">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -13422,7 +13435,7 @@
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="45" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YHy-5V-p3O">
                                                 <rect key="frame" x="8" y="340" width="359" height="264"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <collectionView key="tableFooterView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="LZB-zQ-mgV">
+                                                <collectionView key="tableFooterView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="LZB-zQ-mgV">
                                                     <rect key="frame" x="0.0" y="73" width="359" height="120"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -13589,7 +13602,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dt6-OY-XDe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5088.8000000000002" y="3744.3778110944531"/>
+            <point key="canvasLocation" x="5495" y="4063"/>
         </scene>
         <!--Edit Card View Controller-->
         <scene sceneID="ZTf-2f-Y3p">
@@ -14095,7 +14108,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ju-H9-wxV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5807" y="3681"/>
+            <point key="canvasLocation" x="6263" y="4061"/>
         </scene>
     </scenes>
     <resources>
@@ -14145,7 +14158,7 @@
         <image name="usericon" width="95" height="95"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TbL-8d-Kw2"/>
+        <segue reference="cPv-Jr-ON4"/>
         <segue reference="Zec-tg-TkT"/>
     </inferredMetricsTieBreakers>
 </document>

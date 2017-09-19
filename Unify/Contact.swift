@@ -59,7 +59,6 @@ public class Contact: Fuseable{
             FuseProperty(name: "last", weight: 1.0),
             FuseProperty(name: "name", weight: 1.0),
             FuseProperty(name: "phoneNumber", weight: 1.0),
-            FuseProperty(name: "workInformation", weight: 1.0),
             FuseProperty(name: "organization", weight: 1.0),
             FuseProperty(name: "title", weight: 1.0),
             FuseProperty(name: "email", weight: 1.0),

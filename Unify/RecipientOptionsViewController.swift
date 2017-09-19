@@ -25,6 +25,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var segmentedControl = UISegmentedControl()
     var selectedCells = [NSIndexPath]()
     
+    // Fuse for search
+    let fuse = Fuse()
+    
     // If contact created from form
     var selectedContactPhone : String = ""
     var selectedEmail : String = ""
@@ -49,24 +52,29 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     // Sorted contact list
     var letters: [String] = []
-    var contacts = [String: [String]]()
     
-    var contactObjectTable = [[String: Any]]()
-    var contactNamesHashTable = [String: CNContact]()
+    var contacts = [String: [String]]()
+    var contactObjectTable = [String: [Contact]]()
+    var contactsHashTable = [String: [CNContact]]()
+    var tableData = [String: [CNContact]]()
     
     
     var tuples = [(String, String)]()
     var contactTuples = [(String, CNContact)]()
     
     var selectedContact = CNContact()
+    var selectedContactObject = Contact()
     var contactObjectList = [Contact]()
+    var contactList = [Contact]()
+    var contactSearchResults = [Contact]()
     
     var phoneContacts = [CNContact]()
+    var synced = false
 
     
     // Radar 
     var radarStatus: Bool = false
-    let formatter = CNContactFormatter()
+    var formatter = CNContactFormatter()
     
     
     // IBOutlets
@@ -291,44 +299,93 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if shouldShowSearchResults {
-            return filteredArray.count
+            return contactSearchResults.count
         }
         else {
-            return contacts[letters[section]]!.count
+            //print("Section row count >>", contactsHashTable[letters[section]]!.count)
+            return contactObjectTable[letters[section]]!.count
         }
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        
         return letters//["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U", "V", "W", "X", "Y", "Z"] //String(letters)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return String(letters[section])
+        if shouldShowSearchResults {
+            print("Should show results >> \(shouldShowSearchResults)")
+            return " "
+        }else{
+            return letters[section]
+        }
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListCell", for: indexPath) as! ContactListCell
         
+        // Get separators right
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
+        
         if shouldShowSearchResults {
-            cell.contactNameLabel?.text = filteredArray[indexPath.row]
+            
+            let contact = contactSearchResults[indexPath.row]
+            
+            cell.contactNameLabel?.text = contactSearchResults[indexPath.row].name//filteredArray[indexPath.row].givenName
+            
+            // Set image data here
+            if contact.imageId != "" {
+                print("Has IMAGE")
+                // Set id
+                let id = contact.imageId
+                
+                // Set image for contact
+                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                //let placeholderImage = UIImage(named: "profile")!
+                // Set image
+                cell.contactImageView?.setImageWith(url)
+                
+                
+            }else{
+                cell.contactImageView.image = UIImage(named: "profile")
+            }
+            
+            
         }
         else {
             // Assign contact object
             
-            //let contact
-            cell.contactNameLabel?.text = contacts[letters[indexPath.section]]?[indexPath.row]//dataArray[indexPath.row]
+            let contact = contactObjectTable[letters[indexPath.section]]?[indexPath.row]
+            let name = contact?.name //self.formatter.string(from: contact!) ?? "No Name"
+            // Set name
+            cell.contactNameLabel?.text = name//contactsHashTable[letters[indexPath.section]]?[indexPath.row].givenName ?? "Nothing"//dataArray[indexPath.row]
+            
+            // Set image data here
+            if contact?.imageId != "" {
+                print("Has IMAGE")
+                // Set id
+                let id = contact?.imageId
+                
+                // Set image for contact
+                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                //let placeholderImage = UIImage(named: "profile")!
+                // Set image
+                cell.contactImageView?.setImageWith(url)
+                
+                
+            }else{
+                cell.contactImageView.image = UIImage(named: "profile")
+            }
+            
             
         }
         
-        // Set cell image
-        cell.contactImageView.image = UIImage(named: "profile")
         
         // Configure imageviews
         self.configureSelectedImageView(imageView: cell.contactImageView)
-        
-        // Set image
-        //cell.contactImageView.image = UIImage(named: "profile")
         
         
         return cell
@@ -344,7 +401,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(8, 3, 15, 15))
+        let lbl = UILabel(frame: CGRect(10, 3, 20, 15))
         
         // Empty header if searching
         if shouldShowSearchResults {
@@ -353,7 +410,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }else{
             lbl.text = String(letters[section])
         }
-
+        
         lbl.textAlignment = .left
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: "SanFranciscoRegular", size: CGFloat(16))
@@ -366,6 +423,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         return 20
     }
     
+    
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -374,144 +432,81 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         
         
-        /* contactListTableView.deselectRow(at: indexPath, animated: true)
-         
-         print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
-         // Assign selected contact
-         selectedContact = ContactManager.sharedManager.phoneContactList[indexPath.row]
-         // Pass in segue
-         self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row) */
-        
-        var selectedId = ""
-        
         if shouldShowSearchResults {
             // Show results from filtered array
             print("Index path", indexPath)
-            print(filteredArray[indexPath.row])
+            print(contactSearchResults[indexPath.row])
             
-            // Search for contact by name in list
-            for item in self.tuples {
-                if item.1 == filteredArray[indexPath.row] {
-                    // This is the selected item
-                    print("Selected Item: >> \(item)")
-                    // Set Id
-                    selectedId = item.0
-                }
-                
-                
-            }
-            
+            // Set selected contact
+            self.selectedContactObject = contactSearchResults[indexPath.row]
+            print("The selected contact \(self.selectedContactObject.toAnyObject())")
             
         }else{
-            //print("Index path for data array", indexPath)
-            //print(dataArray[indexPath.row])
+            // Set selected contact
+            self.selectedContactObject = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
+            print("The selected contact \(self.selectedContactObject.toAnyObject())")
+        }
+
+        // Set selected contact from conversion
+        self.selectedContact = self.contactToCNContact(contact: self.selectedContactObject)
+        
+        print("The object after selection\n\n\(selectedContact)")
+        
+        // Print to test
+        print(self.selectedContact.givenName)
+        // Make conditional checks to see where user navigated from
+        if ContactManager.sharedManager.userArrivedFromIntro != true {
             
-            // Search for contact by name in list
-            for item in self.tuples {
-                if item.1 == contacts[letters[indexPath.section]]?[indexPath.row] {
-                    // This is the selected item
-                    print("Selected Item: >> \(item)")
-                    // Set Id
-                    selectedId = item.0
-                }
-                
-                
-            }
+            // Set bool to true
+            ContactManager.sharedManager.userArrivedFromIntro = true
             
-            //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
+            // Set bool to false
+            ContactManager.sharedManager.userSelectedNewContactForIntro = false
+            
+            // Set Contact on Manager
+            ContactManager.sharedManager.contactToIntro = selectedContact
+            
+            print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+            print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+            
+            // Notification for intro screen
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+            
+            // Drop view
+            dismiss(animated: true, completion: nil)
+        }else{
+            // Set Contact on Manager
+            ContactManager.sharedManager.recipientToIntro = selectedContact
+            
+            // Set nav bool
+            //ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
+            
+            
+            print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+            print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+            print("User selected recipient on second selection \(ContactManager.sharedManager.userSelectedNewRecipientForIntro)")
+            
+            // Post for recipient selected
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+            
+            // Drop View
+            dismiss(animated: true, completion: nil)
         }
         
-        // Set contact from list
-        for item in contactTuples{
-            if item.0 == selectedId {
-                // Set contact object
-                self.selectedContact = item.1
-                
-                
-                // Print to test
-                print(self.selectedContact.givenName)
-                /*
-                // Set contact to manager
-                ContactManager.sharedManager.contactToIntro = selectedContact
-                
-                // Set navigation toggle on manager to indicate intent
-                ContactManager.sharedManager.userArrivedFromContactList = true
-                ContactManager.sharedManager.userArrivedFromIntro = true*/
-                
-                
-                // Print to test
-                print(self.selectedContact.givenName)
-                // Make conditional checks to see where user navigated from
-                if ContactManager.sharedManager.userArrivedFromIntro != true {
-                    
-                    // Set bool to true
-                    ContactManager.sharedManager.userArrivedFromIntro = true
-                    
-                    // Set bool to false
-                    ContactManager.sharedManager.userSelectedNewContactForIntro = false
-                    
-                    // Set Contact on Manager
-                    ContactManager.sharedManager.contactToIntro = selectedContact
-                    
-                    print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
-                    print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
-                    
-                    // Notification for intro screen
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
-                    
-                    // Drop view
-                    dismiss(animated: true, completion: nil)
-                }else{
-                    // Set Contact on Manager
-                    ContactManager.sharedManager.recipientToIntro = selectedContact
-                    
-                    // Set nav bool
-                    //ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
-                    
-                    
-                    print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
-                    print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
-                    print("User selected recipient on second selection \(ContactManager.sharedManager.userSelectedNewRecipientForIntro)")
-                    
-                    // Post for recipient selected
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
-                    
-                    // Drop View
-                    dismiss(animated: true, completion: nil)
-                }
-
-                
-                
-                // Notification for intro screen
-                //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)        // Set selected tab
-                
-                
-                // Sync up with main queue
-                DispatchQueue.main.async {
-                    // Set selected tab
-                    //self.tabBarController?.selectedIndex = 1
-                    // Drop view
-                    self.navigationController?.popViewController(animated: true)
-                }
-                
-                
-                // Original recipient logics
-                /*
-                // Print to test
-                print(self.selectedContact.givenName)
-                // Call segue
-                // Set recipient
-                ContactManager.sharedManager.recipientToIntro = self.selectedContact
-                
-                // Toggle BOOL
-                ContactManager.sharedManager.userSelectedRecipient = true
-                
-                // Trigger send action
-                self.shareWithContact(self)
-                */
-                
-            }
+        
+        
+        // Notification for intro screen
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)        // Set selected tab
+        
+        
+        // Sync up with main queue
+        DispatchQueue.main.async {
+            // Set selected tab
+            //self.tabBarController?.selectedIndex = 1
+            // Drop view
+            self.navigationController?.popViewController(animated: true)
         }
+
         
     }
 
@@ -599,15 +594,25 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     
     func didChangeSearchText(_ searchText: String) {
-        // Filter the data array and get only those countries that match the search text.
-        filteredArray = dataArray.filter({ (country) -> Bool in
-            let countryText: NSString = country as NSString
-            
-            return (countryText.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
         
-        // Reload the tableview.
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            
+            // Init search results
+            let results = self.fuse.search(searchText, in: self.contactObjectList)
+            
+            self.contactSearchResults = results.map { (index, _, matchedRanges) in
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            // Refresh table
+            self.tableView.reloadData()
+            
+        }
+
     }
     
     
@@ -631,70 +636,86 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     
-    func sortContacts() {
-        // Test for sorting contacts by last name into sections
-        
-        //let data = self.dataArray // Example data, use your phonebook data here.
-        
-        // Build letters array:
-        
-        //letters: [Character]
-        // Init data array
-        dataArray = self.tuples.map { $0.1 }
-        
-        
-        
-        letters = dataArray.map { (name) -> String in
-            //print("UPPER CASE HERE")
-            let nameToUpper = name.uppercased()
-            //print(nameToUpper[nameToUpper.startIndex])
-            return String(nameToUpper[nameToUpper.startIndex])
-        }
-        
-        letters = letters.sorted()
-        // Print letters array
-        //print("\n\nLETTERS >>>> \(letters)")
-        
-        // Reduce letters to single count for each
-        letters = letters.reduce([], { (list, name) -> [String] in
-            if !list.contains(name) {
-                // Test to see if letters added
-                //print("\n\nAdded >>>> \(list + [name])")
-                return list + [name]
-            }
-            return list
-        })
-        
-        
-        // Iterate over contact list
-        for name in dataArray {
-            
-            if contacts[String(name[name.startIndex])] == nil {
-                // Set index if doesn't exist
-                contacts[String(name[name.startIndex])] = [String]()
-            }
-            
-            // Add entry to section
-            contacts[String(name[name.startIndex])]!.append(name)
-            
-        }
-        
-        // Sort list
-        for (letter, list) in contacts {
-            contacts[letter] = list.sorted()
-            // Test output
-            print(contacts[letter])
-        }
-    }
-
-    
-    
-    
     // Contact management
+
+    func contactToCNContact(contact: Contact) -> CNContact {
+        var cnObject = CNContact()
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        //contactToAdd.givenName = self.firstNameLabel.text ?? ""
+        //contactToAdd.familyName = self.lastNameLabel.text ?? ""
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        
+        // Set name
+        //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        let fullName = contact.name
+        var fullNameArr = fullName.components(separatedBy: " ")
+        let firstName: String = fullNameArr[0]
+        var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : ""
+        
+        // Add names
+        contactToAdd.givenName = firstName
+        contactToAdd.familyName = lastName ?? ""
+        
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
+            
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                // print to test
+                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                
+                // Parse for mobile
+                let mobileNumber = CNPhoneNumber(stringValue: (number["phone"] ?? ""))
+                let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+                contactToAdd.phoneNumbers = [mobileValue]
+                
+            }
+            
+            
+        }
+        if contact.emails.count > 0 {
+        
+            // Iterate over array and pull value
+            for address in contact.emails {
+                // Print to test
+                print("Email : \(address["email"]!)")
+                
+                // Parse for emails
+                let email = CNLabeledValue(label: CNLabelWork, value: address["email"] as NSString? ?? "")
+                contactToAdd.emailAddresses = [email]
+            
+            }
+        
+        }
+        // Cast mutable contact back to regular contact
+        cnObject = contactToAdd as CNContact
+        
+        print("Immutable Copy \(cnObject)")
+        print("Immutable Copy Phones \(cnObject.phoneNumbers)")
+        print("Immutable Copy Emails \(cnObject.emailAddresses)")
+        
+        
+        // Return the non mutable copy
+        return cnObject
+    
+    }
+    
+    
     func getContacts() {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
-            //presentSettingsActionSheet()
+            
+            print("Permission status >> \(status)")
+            // Send them to the setting page
+            self.presentSettingsActionSheet()
             return
         }
         
@@ -704,7 +725,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         store.requestAccess(for: .contacts) { granted, error in
             guard granted else {
                 DispatchQueue.main.async {
-                    //self.presentSettingsActionSheet()
+                    self.presentSettingsActionSheet()
                 }
                 return
             }
@@ -729,68 +750,380 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             // do something with the contacts array (e.g. print the names)
             
-            let formatter = CNContactFormatter()
-            formatter.style = .fullName
+            self.formatter = CNContactFormatter()
+            self.formatter.style = .fullName
+            
             for contact in contacts {
                 //print(formatter.string(from: contact) ?? "No Name")
                 
                 // Generate ID String
                 let str = self.randomString(length: 10)
                 // Assign id to object
-                let contactTuple = (str, formatter.string(from: contact) ?? "No Name")
+                let contactTuple = (str, self.formatter.string(from: contact) ?? "No Name")
                 let objectTuple = (str, contact)
                 
                 // Create tuples and append to list
                 self.tuples.append(contactTuple)
-                print("Tuple >> \(contactTuple)")
+                //print("Tuple >> \(contactTuple)")
                 self.contactTuples.append(objectTuple)
-                print("Object Tuple >> \(objectTuple)")
-                
-                let dataArrayObject = ["id" : str, "name": formatter.string(from: contact) ?? "No Name"]
-                self.contactObjectTable.append(dataArrayObject)
-                
-                //print("The ContactDictionary")
-                //print(contactDictionary)
-                
-                //print("The data array object")
-                //print(dataArrayObject)
+                //print("Object Tuple >> \(objectTuple)")
                 
                 
-                
-                //dataArray
-                
-                //self.dataArray.append(formatter.string(from: contact) ?? "No Name")
-                
-                
-                if contact.phoneNumbers.count > 0 {
-                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
-                }
-                if contact.emailAddresses.count > 0 {
-                    //print((contact.emailAddresses[0].value))
-                }
-                if contact.imageDataAvailable {
-                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
-                    //print("Has IMAGE")
-                }
-                // Previous apprend area
-                //self.phoneContactList.append(contact)
-                
-                // print(self.phoneContactList.count)
-                //print(contact)
             }
             
+            // Create contact objects
+            //self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
+            
+            // Create contact objects
+            self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
+            
+            // Sort list
             self.sortContacts()
+            
+            
+            
+            // Find out if contacts synced
+            self.synced = UDWrapper.getBool("contacts_synced")
+            print("Contacts sync value!! >> \(self.synced)")
+            //synced = false
+            //print("Contacts overwrite sync value!! >> \(synced)")
+            
             
             // Sync up with main queue
             DispatchQueue.main.async {
                 
-                // Sort list
-                //self.sortContacts()
+                // Upload Contacts
+                //self.uploadContactRecords()
                 // Reload the tableview.
                 self.tableView.reloadData()
+                
+                /*
+                 if self.synced{
+                 
+                 print("Contacts synced!! >> \(self.synced)")
+                 //Set bool to indicate contacts have been synced
+                 //UDWrapper.setBool("contacts_synced", value: true)
+                 
+                 }else{
+                 
+                 // Upload Contacts
+                 self.uploadContactRecords()
+                 }*/
+                
             }
             
         }
+        /*DispatchQueue.main.async {
+         
+         // Sort list
+         //self.sortContacts()
+         // Reload the tableview.
+         self.tblSearchResults.reloadData()
+         }*/
+    }
+    
+    func sortContacts() {
+        // Test for sorting contacts by last name into sections
+        
+        // Init data array
+        dataArray = self.tuples.map { $0.1 }
+        
+        
+        
+        letters = dataArray.map { (name) -> String in
+            //print("UPPER CASE HERE")
+            let nameToUpper = name.uppercased()
+            //print(nameToUpper[nameToUpper.startIndex])
+            return String(nameToUpper[nameToUpper.startIndex])
+        }
+        
+        // Sort letters array
+        letters = letters.sorted()
+        
+        // Reduce letters to single count for each
+        letters = letters.reduce([], { (list, name) -> [String] in
+            if !list.contains(name) {
+                // Test to see if letters added
+                //print("\n\nAdded >>>> \(list + [name])")
+                return list + [name]
+            }
+            return list
+        })
+        
+        // Create indicies based on letters
+        for letter in letters{
+            
+            // Create section in hash table
+            contactsHashTable[letter] = [CNContact]()
+            // Unify contacts table
+            contactObjectTable[letter] = [Contact]()
+            
+        }
+        
+        // Apple contacts
+        for contact in self.phoneContacts{
+            // Init contact name
+            var contactName : String = self.formatter.string(from: contact) ?? "No Name"
+            // Uppercase the name
+            contactName = contactName.uppercased()
+            
+            var fullNameArr = contactName.components(separatedBy: " ")  //split(contactName) {$0 == " "}
+            
+            let firstName: String = fullNameArr[0]
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            
+            
+            // Check if section exists
+            if contactsHashTable[String(describing: lastName.characters.first ?? "N")] == nil{
+                //print("Hash Section Empty!")
+                // If empty, initialize list
+                contactsHashTable[String(describing: lastName.characters.first!)] = []
+            }
+            // Add contact to list
+            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+            let startIndex = String(describing: lastName.characters.first ?? "N")
+            print("Start Index: >> \(startIndex)")
+            
+            contactsHashTable[startIndex]!.append(contact)
+            //print("Section count for added item")
+            //print(contactsHashTable[startIndex]?.count)
+        }
+        
+        
+        // Unify Contacts
+        for contact in self.contactObjectList{
+            // Init contact name
+            var contactName : String = contact.name
+            // Uppercase the name
+            contactName = contactName.uppercased()
+            
+            // Init full name
+            var fullNameArr = contactName.components(separatedBy: " ")
+            
+            // Init first name just in case no last exists
+            let firstName: String = fullNameArr[0]
+            // Retieve last name
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            
+            // Check if section exists
+            if contactObjectTable[String(describing: lastName.characters.first ?? "N")] == nil{
+                //print("Hash Section Empty!")
+                // If empty, initialize list
+                contactObjectTable[String(describing: lastName.characters.first!)] = []
+            }
+            // Add contact to list
+            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+            let startIndex = String(describing: lastName.characters.first ?? "N")
+            print("Start Index: >> \(startIndex)")
+            
+            contactObjectTable[startIndex]!.append(contact)
+            //print("Section count for added item")
+            //print(contactsHashTable[startIndex]?.count)
+        }
+        
+        
+        
+        /*
+         // Sort list
+         for (section, list) in contactObjectTable {
+         
+         // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
+         
+         let array = list.sorted(by: { (object1, object2) -> Bool in
+         object1.name < object2.name
+         })
+         
+         // Set sorted array
+         contactObjectTable[section] = array
+         
+         // Test output
+         print("THE unify contacts hash table section list count")
+         print(contacts[section]?.count)
+         print(list)
+         }
+         
+         // Sort list
+         for (section, list) in contactsHashTable {
+         
+         // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
+         
+         let array = list.sorted(by: { (object1, object2) -> Bool in
+         object1.givenName < object2.givenName
+         })
+         
+         // Set sorted array
+         contactsHashTable[section] = array
+         
+         }
+         */
+        
+        
+        // Assign table data
+        //self.tableData = contactsHashTable
+        
+        //print("Table Data \n\(self.tableData)")
+        
+        //print(contactsHashTable)
+        
+        print("The Table Count >> ", contactObjectTable.count)
+        
+        DispatchQueue.main.async {
+            
+            // Reload data
+            self.tableView.reloadData()
+        }
+        
+        // Set hash to contact manager
+        ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
+        
+    }
+    
+    
+    func createContactRecords(phoneContactList: [CNContact]) -> [Contact] {
+        // Create array of contacts
+        var contactObjectList = [Contact]()
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        for contact in phoneContactList{
+            
+            // Init temp contact object
+            let contactObject = Contact()
+            
+            // Set name
+            contactObject.name = formatter.string(from: contact) ?? "No Name"
+            
+            // Check for count
+            if contact.phoneNumbers.count > 0 {
+                // Iterate over items
+                for number in contact.phoneNumbers{
+                    // print to test
+                    //print("Number: \((number.value.value(forKey: "digits" )!))")
+                    
+                    // Init the number
+                    let digits = number.value.value(forKey: "digits") as! String
+                    
+                    // Append to object
+                    contactObject.setPhoneRecords(phoneRecord: digits)
+                }
+                
+            }
+            if contact.emailAddresses.count > 0 {
+                // Iterate over array and pull value
+                for address in contact.emailAddresses {
+                    // Print to test
+                    print("Email : \(address.value)")
+                    
+                    // Append to object
+                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                }
+            }
+            if contact.imageDataAvailable {
+                // Print to test
+                //print("Has IMAGE Data")
+                
+                // Create ID and add to dictionary
+                // Image data png
+                
+                // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
+                
+                if let imageData = contact.imageData{
+                    print(imageData)
+                    
+                    // Assign asset name and type
+                    let idString = contactObject.randomString(length: 20)
+                    
+                    // Name image with id string
+                    let fname = idString
+                    let mimetype = "image/png"
+                    
+                    // Create image dictionary
+                    let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+                    
+                    
+                    // Append to object
+                    contactObject.setContactImageId(id: idString)
+                    contactObject.imageDictionary = imageDict
+                    
+                    if self.synced != true {
+                        // Upload Record
+                        ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
+                    }else{
+                        //
+                        print("The users image has been uploaded already")
+                    }
+                    
+                }
+                
+                
+            }
+            if contact.urlAddresses.count > 0{
+                // Iterate over items
+                for address in contact.urlAddresses {
+                    // Print to test
+                    print("Website : \(address.value as String)")
+                    
+                    // Append to object
+                    contactObject.setWebsites(websiteRecord: address.value as String)
+                }
+                
+            }
+            if contact.socialProfiles.count > 0{
+                // Iterate over items
+                for profile in contact.socialProfiles {
+                    // Print to test
+                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                    
+                    // Create temp link
+                    let link = profile.value.value(forKey: "urlString")  as! String
+                    
+                    // Append to object
+                    contactObject.setSocialLinks(socialLink: link)
+                }
+                
+            }
+            
+            if contact.jobTitle != "" {
+                //Print to test
+                print("Job Title: \(contact.jobTitle)")
+                
+                // Append to object
+                contactObject.setTitleRecords(title: contact.jobTitle)
+            }
+            if contact.organizationName != "" {
+                //print to test
+                print("Organization : \(contact.organizationName)")
+                
+                // Append to object
+                contactObject.setOrganizations(organization: contact.organizationName)
+            }
+            if contact.note != "" {
+                //print to test
+                print(contact.note)
+                
+                // Append to object
+                contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            // Test object
+            //print("Contact >> \n\(contactObject.toAnyObject()))")
+            
+            // Parse own record
+            contactObject.parseContactRecord()
+            
+            // Append object to contactObjectList
+            contactObjectList.append(contactObject)
+            
+            
+            // Print count
+            print("List Count ... \(contactObjectList.count)")
+        }
+        
+        return contactObjectList
     }
 
     
@@ -799,14 +1132,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     // Settings
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-        
-        // All arrays are empty
-        /*if checkForEmptyData() == true {
-         return true
-         }else{
-         return false
-         }*/
-        return false
+        if shouldShowSearchResults {
+            
+            return false
+        }else{
+            return true
+        }
+
     }
     
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
@@ -1622,6 +1954,22 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         //self.postRefreshNotification()
         
     }
+    
+    func presentSettingsActionSheet() {
+        let alert = UIAlertController(title: "Permission to Contacts", message: "This app needs access to contacts in order to ...", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Go to Settings", style: .default) { _ in
+            let url = URL(string: UIApplicationOpenSettingsURLString)!
+            UIApplication.shared.open(url)
+        })
+        
+        // Add action
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        // Show the alert
+        present(alert, animated: true)
+    }
+    
+
     
     func createTransaction(type: String) {
         // Configure trans for CNContact

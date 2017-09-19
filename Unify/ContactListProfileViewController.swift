@@ -10,9 +10,10 @@ import UIKit
 import Eureka
 import Contacts
 import EventKitUI
+import MessageUI
 
 
-class ContactListProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, EKEventEditViewDelegate{
+class ContactListProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, EKEventEditViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate{
     
     // Properties
     // ----------------------------------
@@ -21,6 +22,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     var contact = Contact()
     let formatter = CNContactFormatter()
     var selectedContact = CNContact()
+    var transaction = Transaction()
     
     // Parsed profile arrays
     var bios = [String]()
@@ -106,13 +108,13 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     
     @IBAction func smsSelected(_ sender: AnyObject) {
         // Call sms function
-        //self.showSMSCard()
+        self.showSMSCard()
         
     }
     
     @IBAction func emailSelected(_ sender: AnyObject) {
         // Call email function
-        //self.showEmailCard()
+        self.showEmailCard()
         
     }
     @IBAction func callSelected(_ sender: AnyObject) {
@@ -143,37 +145,49 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     
     @IBAction func calendarSelected(_ sender: Any) {
         
-        /* // Check status
+         // Check status
          let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
          
-         switch (status) {
-         case EKAuthorizationStatus.notDetermined:
-         // This happens on first-run
-         //requestAccessToCalendar()
-         print("Undecided")
-         case EKAuthorizationStatus.authorized:
+        
+        switch (status) {
+        
+        case EKAuthorizationStatus.notDetermined:
+        
+            // This happens on first-run
          
-         let vc = EKEventEditViewController()
-         // Event
-         vc.editViewDelegate = self
-         let eventStore = EKEventStore()
-         // Init new event
-         let newEvent = EKEvent(eventStore: eventStore)
-         // Init new event
-         vc.event = newEvent
-         // Create store
-         vc.eventStore = eventStore
-         // Present view
-         self.present(vc, animated: true, completion: nil)
+            //requestAccessToCalendar()
+         
+            print("Undecided")
+         
+        case EKAuthorizationStatus.authorized:
+         
+        
+            let vc = EKEventEditViewController()
+            // Event
+            vc.editViewDelegate = self
+            let eventStore = EKEventStore()
+            // Init new event
+            let newEvent = EKEvent(eventStore: eventStore)
+            // Init new event
+            vc.event = newEvent
+            // Create store
+            vc.eventStore = eventStore
+            // Present view
+            self.present(vc, animated: true, completion: nil)
          
          break
          
          case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
-         // We need to help them give us permission
-         //needPermissionView.fadeIn()
-         print("Restricted")
-         break
-         }*/
+         
+            // We need to help them give us permission
+         
+            //needPermissionView.fadeIn()
+         
+            print("Restricted")
+         
+            break
+        
+        }
         
     }
     
@@ -262,6 +276,14 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
         
+        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses"{
+            
+            // Set tint on text field
+            cell.descriptionLabel.textColor = self.view.tintColor
+            
+        }
+
+        
         return cell
         
     }
@@ -271,6 +293,15 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         return 55.0
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if sections[indexPath.section] == "Phone Numbers"{
+            
+            // Call option
+            self.callSelected(self)
+        }
+            
+        
+    }
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -432,9 +463,12 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 // Init the number with formatting
                 let digits = self.format(phoneNumber: number["phone"]!)
                 
+                
                 self.phoneNumbers.append(digits!)
                 print(phoneNumbers.count)
             }
+            
+            
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
             
@@ -845,48 +879,42 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         //nameLabel.text = formatter.string(from: selectedContact) ?? "No Name"
         nameLabel.text = self.contact.name
         
-        /*
+        
          if self.contact.phoneNumbers.count > 0 {
-         // Set label text
-         //phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
-         //phoneLabel.text = self.format(phoneNumber: self.contact.phoneNumbers[0]["phone"]!)
-         
-         // Set global phone val
-         self.selectedUserPhone = self.contact.phoneNumbers[0]["phone"]!
+            // Set global phone val
+            self.selectedUserPhone = self.contact.phoneNumbers[0]["phone"]!
          }else{
-         // Hide phone icon image
-         phoneImageView.isHidden = true
-         // Disable buttons
-         callButton.isEnabled = false
-         smsButton.isEnabled = false
          
-         // Set tint for buttons
-         callButton.tintColor = UIColor.gray
-         smsButton.tintColor = UIColor.gray
+            // Disable buttons
+            callButton.isEnabled = false
+            smsButton.isEnabled = false
          
-         // Toggle image
-         callButton.image = UIImage(named: "btn-call-white")
-         smsButton.image = UIImage(named: "btn-chat-white")
+            // Set tint for buttons
+            callButton.tintColor = UIColor.gray
+            smsButton.tintColor = UIColor.gray
+         
+            // Toggle image
+            callButton.image = UIImage(named: "btn-call-white")
+            smsButton.image = UIImage(named: "btn-chat-white")
          
          }
          if contact.emails.count > 0 {
-         // Set label text
-         //emailLabel.text = self.contact.emails[0]["email"]
-         // Set global email
-         self.selectedUserEmail = self.contact.emails[0]["email"]!
+            // Set global email
+            self.selectedUserEmail = self.contact.emails[0]["email"]!
+         
          }else{
-         // Hide email icon
-         emailImageView.isHidden = true
-         // Disable button
-         emailButton.isEnabled = false
-         // Set tint
-         emailButton.tintColor = UIColor.gray
-         // Toggle image
-         emailButton.image = UIImage(named: "btn-message-white")
+            // Disable button
+            emailButton.isEnabled = false
+         
+            // Set tint
+            emailButton.tintColor = UIColor.gray
+         
+            // Toggle image
+            emailButton.image = UIImage(named: "btn-message-white")
          }
          // Check if image data available
          
-         */
+        
         if contact.imageId != "" {
             print("Has IMAGE")
             // Set id
@@ -1037,6 +1065,246 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         // Notification for radar screen
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NewContactAdded"), object: self)
         
+    }
+    
+    func createTransaction(type: String) {
+        
+        // Set type & Transaction data
+        transaction.type = type
+        transaction.setTransactionDate()
+        transaction.senderName = ContactManager.sharedManager.currentUser.getName()
+        transaction.senderId = ContactManager.sharedManager.currentUser.userId
+        transaction.type = "connection"
+        transaction.scope = "transaction"
+        transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+        
+        // Show progress hud
+        KVNProgress.show(withStatus: "Making the connection...")
+        
+        // Save card to DB
+        let parameters = ["data": self.transaction.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        
+        Connection(configuration: nil).createTransactionCall(parameters as! [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Card Created Response ---> \(response)")
+                
+                // Set card uuid with response from network
+                /*let dictionary : Dictionary = response as! [String : Any]
+                 self.transaction.transactionId = (dictionary["uuid"] as? String)!*/
+                
+                // Hide HUD
+                KVNProgress.dismiss()
+                
+            } else {
+                print("Card Created Error Response ---> \(error)")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection request. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+
+    
+    // Message Composer Functions
+    
+    func showEmailCard() {
+        
+        print("EMAIL CARD SELECTED")
+        
+        // Send post notif
+        // Create instance of controller
+        let mailComposeViewController = configuredMailComposeViewController()
+        
+        // Check if deviceCanSendMail
+        if MFMailComposeViewController.canSendMail() {
+            
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+        
+    }
+    
+    func showSMSCard() {
+        // Set Selected Card
+        
+        //selectedCardIndex = cardCollectionView.inde
+        
+        
+        print("SMS CARD SELECTED")
+        // Send post notif
+        
+        let composeVC = MFMessageComposeViewController()
+        if(MFMessageComposeViewController .canSendText()){
+            
+            composeVC.messageComposeDelegate = self
+            
+            // 6468251231
+            
+            // Check for nil vals
+            
+            var name = ""
+            var recipientName = ""
+            var phone = ""
+            var email = ""
+            //var title = ""
+            
+            
+            // CNContact Objects
+            let contact = ContactManager.sharedManager.contactToIntro
+            let recipient = ContactManager.sharedManager.recipientToIntro
+            
+            // Check if they both have email
+            name = formatter.string(from: contact) ?? "No Name"
+            recipientName = formatter.string(from: recipient) ?? ""
+            
+            /* if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+             
+             let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+             // Set contact phone number
+             phone = contactPhone!
+             
+             let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+             
+             // Launch text client
+             composeVC.recipients = [contactPhone!, recipientPhone!]
+             }
+             
+             if contact.emailAddresses.count > 0 {
+             email = (contact.emailAddresses[0].value as String)
+             }*/
+            
+            
+            // Set card link from cardID
+            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+            
+            // Test String
+            let str = "\n\n\n \(cardLink)"
+            
+            // Set string as message body
+            composeVC.body = str
+            // Set recipient phone
+            composeVC.recipients = [selectedUserPhone]
+            
+            // Present the view controller modally.
+            self.present(composeVC, animated: true, completion: nil)
+        }
+        
+    }
+    
+    
+    // Email Composer Delegate Methods
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        
+        // Create Instance of controller
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        // Check for nil vals
+        
+        var name = ""
+        var emailContact = ""
+        //var title = ""
+        
+        
+        // CNContact Objects
+        let contact = self.selectedContact
+        
+        // Check if they both have email
+        name = formatter.string(from: contact) ?? "No Name"
+        
+        if contact.emailAddresses.count > 0{
+            // Set email string
+            let contactEmail = contact.emailAddresses[0].value as String
+            
+            // Set variable
+            emailContact = contactEmail
+        }
+        
+        // Create Message
+        
+        //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
+        
+        // Set card link from cardID
+        let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+        
+        // Test String
+        let str = "\n\n\n\(cardLink)"
+        
+        // Create Message
+        mailComposerVC.setToRecipients([emailContact])
+        mailComposerVC.setSubject("Unify Connection - I'd like to connect with you")
+        mailComposerVC.setMessageBody(str, isHTML: false)
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("User cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            self.createTransaction(type: "connection")
+            // Dimiss vc
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    // Message Composer Delegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        if result == .cancelled {
+            // User cancelled
+            print("Cancelled")
+            
+        }else if result == .sent{
+            // User sent
+            // Create transaction
+            self.createTransaction(type: "connection")
+            // Dismiss VC
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            // There was an error
+            KVNProgress.showError(withStatus: "There was an error sending your message. Please try again.")
+            
+        }
+        
+        
+        // Make checks here for
+        controller.dismiss(animated: true) {
+            print("Message composer dismissed")
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     
