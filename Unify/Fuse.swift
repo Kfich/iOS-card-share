@@ -60,7 +60,7 @@ public class Fuse {
     ///   - threshold: At what point does the match algorithm give up. A threshold of `0.0` requires a perfect match (of both letters and location), a threshold of `1.0` would match anything. Defaults to `0.6`
     ///   - maxPatternLength: The maximum valid pattern length. The longer the pattern, the more intensive the search operation will be. If the pattern exceeds the `maxPatternLength`, the `search` operation will return `nil`. Why is this important? [Read this](https://en.wikipedia.org/wiki/Word_(computer_architecture)#Word_size_choice). Defaults to `32`
     ///   - isCaseSensitive: Indicates whether comparisons should be case sensitive. Defaults to `false`
-    public init (location: Int = 0, distance: Int = 100, threshold: Double = 0.05, maxPatternLength: Int = 32, isCaseSensitive: Bool = false) {
+    public init (location: Int = 0, distance: Int = 100, threshold: Double = 0.25, maxPatternLength: Int = 32, isCaseSensitive: Bool = false) {
         self.location = location
         self.distance = distance
         self.threshold = threshold

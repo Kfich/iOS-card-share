@@ -702,6 +702,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Set current user
                 self.currentUser = user
                 
+                print("Current user to any", self.currentUser.toAnyObject())
+                
                 // Set manager badges
                 ContactManager.sharedManager.currentUser.userProfile.badges = self.currentUser.userProfile.badges
                 

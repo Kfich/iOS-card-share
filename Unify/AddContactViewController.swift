@@ -113,7 +113,6 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         ContactManager.sharedManager.userCreatedNewContact = true
         
         
-        
         // Dismiss view
         dismiss(animated: true, completion: nil)
     }
@@ -380,10 +379,12 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         ContactManager.sharedManager.userCreatedNewContact = true
         
         // Store contact to list
-        self.syncContact()
+        //self.syncContact()
         
         // Upload record
         self.uploadContactRecord()
+        
+        
     }
     
     func initializeBadgeList() {
@@ -522,7 +523,7 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         
         
         // Show HUD
-        /*KVNProgress.show(withStatus: "Saving new contact..")
+        KVNProgress.show(withStatus: "Saving new contact..")
         
         // Send to server
         let parameters = ["data" : contact.toAnyObject(), "uuid": self.currentUser.userId] as [String : Any]
@@ -544,8 +545,8 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
                 // Hide HUD
                 KVNProgress.showSuccess(withStatus: "Contact added successfully!")
                 
-                // Sync contact to list and sort
-                
+                // Post notification for refresh
+                self.postRefreshNotification()
                 
                 // Nav out the view
                 self.dismiss(animated: true, completion: nil)
@@ -558,7 +559,7 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
             }
             // Hide indicator
             KVNProgress.dismiss()
-        }*/
+        }
     }
     
     func syncContact() {
@@ -624,7 +625,7 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
         ContactManager.sharedManager.phoneContactList.append(newContact)
         
         // Post notification for refresh
-        self.postRefreshNotification()
+        //self.postRefreshNotification()
 
     }
     

@@ -52,13 +52,14 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     var linkToDelete = ""
     
     var userBadges = [UIImage]()
+    
     // Selected image
     var selectedImage = UIImage()
     
     var sections = [String]()
     var tableData = [String: [String]]()
     // For verified user badges
-    var corpBadges: [CardProfile.Bagde] = []
+    var corpBadges: [Contact.Bagde] = []
     
     var count = 0
     
@@ -227,6 +228,21 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             
             // Add subview
             cell.contentView.addSubview(imageView)
+        }else{
+            
+            // Config badge
+            
+            let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl/*selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl*/)
+            
+            // Configure corner radius
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            imageView.setImageWith(fileUrl! as URL)
+            // Set image
+            //imageView.image = image
+            
+            // Add subview
+            cell.contentView.addSubview(imageView)
+            
         }
         
         return cell
@@ -387,6 +403,20 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         configureViews()
         self.populateCards()
         
+        // Parse for corp
+        for corp in self.contact.badgeDictionaryList {
+            // Init badge
+            let badge = Contact.Bagde(snapshot: corp)
+            
+            // Add to list
+            self.corpBadges.append(badge)
+            print("CorpBadges", self.corpBadges.count)
+        }
+        
+        self.badgeCollectionView.reloadData()
+        
+        // Pass corp badges 
+        //self.corpBadges = self.contact.badgeList
         
         
         profileInfoTableView.tableHeaderView = self.cardWrapperView
@@ -474,6 +504,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 // Init the number with formatting
                 let digits = self.format(phoneNumber: number["phone"]!)
                 
+                print("Bogus Phone", digits)
                 
                 self.phoneNumbers.append(digits!)
                 print(phoneNumbers.count)

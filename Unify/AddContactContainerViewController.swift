@@ -440,7 +440,7 @@ class AddContactContainerViewController: FormViewController {
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        contact.titles.append(["title" : str])
+                        ContactManager.sharedManager.newContact.titles.append(["title" : str])
                         titles.append(str)
                     }
                 }
@@ -452,7 +452,7 @@ class AddContactContainerViewController: FormViewController {
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        contact.setPhoneRecords(phoneRecord: str)
+                        ContactManager.sharedManager.newContact.setPhoneRecords(phoneRecord: str)
                         phoneNumbers.append(str)
                     }
                 }
@@ -465,7 +465,7 @@ class AddContactContainerViewController: FormViewController {
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
                         // Append to arrays
-                        contact.setEmailRecords(emailAddress: str)
+                        ContactManager.sharedManager.newContact.setEmailRecords(emailAddress: str)
                         emails.append(str)
                     }
                 }
@@ -478,7 +478,7 @@ class AddContactContainerViewController: FormViewController {
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
                         // Append to array
-                        contact.setWebsites(websiteRecord: str)
+                        ContactManager.sharedManager.newContact.setWebsites(websiteRecord: str)
                     }
                 }
             }
@@ -503,7 +503,7 @@ class AddContactContainerViewController: FormViewController {
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
                         // Set values to arrays
-                        contact.setNotes(note: str)
+                        ContactManager.sharedManager.newContact.setNotes(note: str)
                         notes.append(str)
                     }
                 }
@@ -515,7 +515,7 @@ class AddContactContainerViewController: FormViewController {
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        contact.setTags(tag: str)
+                        ContactManager.sharedManager.newContact.setTags(tag: str)
                         tags.append(str)
                         
                         //print("Social links not needed here anymore")
@@ -529,7 +529,7 @@ class AddContactContainerViewController: FormViewController {
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        contact.setAddresses(address: str)
+                        ContactManager.sharedManager.newContact.setAddresses(address: str)
                         addresses.append(str)
                         
                         //print("Social links not needed here anymore")
@@ -544,17 +544,17 @@ class AddContactContainerViewController: FormViewController {
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
                         // Append to arrays
-                        contact.setOrganizations(organization: str)
+                        ContactManager.sharedManager.newContact.setOrganizations(organization: str)
                         organizations.append(str)
                     }
                 }
             }
             
             // Add origin 
-            self.contact.origin = "unify"
+            ContactManager.sharedManager.newContact.origin = "unify"
             
             // Set contact to shared manager
-            ContactManager.sharedManager.newContact = self.contact
+            //ContactManager.sharedManager.newContact = self.contact
             
             
             // Test to print profile

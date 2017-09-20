@@ -26,6 +26,16 @@ public class Contact: Fuseable{
     var tags = [[String : String]]()
     var addresses = [[String : String]]()
     
+    var emailList = NSArray()
+    var phoneNumberList = NSArray()
+    var titleList = NSArray()
+    var organizationList  = NSArray()
+    var socialLinkList = NSArray()
+    var websiteList = NSArray()
+    var noteList = NSArray()
+    var tagList = NSArray()
+    var addressList = NSArray()
+    
     // Parsed profile arrays
     dynamic var bioList = String()
     dynamic var workInformation = String()
@@ -49,6 +59,33 @@ public class Contact: Fuseable{
     var sections = [String]()
     var tableData = [String: [String]]()
     var formatter = CNContactFormatter()
+    
+    // Badges
+    var badges = [String]()
+    var badgeList = [Bagde]()
+    var badgeDictionaryList = [NSDictionary]()
+    
+    // Badge struct
+    public class Bagde {
+        var pictureUrl: String
+        var website: String
+        var isHidden: Bool = false
+        
+        init(snapshot: NSDictionary) {
+            pictureUrl = snapshot["image"] as? String ?? ""
+            website = snapshot["url"] as? String ?? ""
+        }
+        
+        init(){
+            
+            pictureUrl = ""
+            website = ""
+        }
+        func toAnyObject() -> NSDictionary {
+            return ["image": pictureUrl, "url": website]
+        }
+        
+    }
     
     // Initializers
     init(){}
@@ -85,7 +122,9 @@ public class Contact: Fuseable{
             "organizations" : organizations,
             "origin" : origin,
             "image_id": imageId,
-            "isVerified" : isVerified
+            "isVerified" : isVerified,
+            "badges" : badges,
+            "badge_list" : badgeDictionaryList
         ]
     }
 
@@ -97,6 +136,10 @@ public class Contact: Fuseable{
         emails = snapshot["emails"] as? [[String : String]] ?? [[String : String]]()
         phoneNumbers = snapshot["phone_numbers"] as? [[String : String]] ?? [[String : String]]()
         socialLinks = snapshot["social_links"] as? [[String : String]] ?? [[String : String]]()
+            
+        //let lastName = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+        
+        
         tags = snapshot["tags"] as? [[String : String]] ?? [[String : String]]()
         notes = snapshot["notes"] as? [[String : String]] ?? [[String : String]]()
         websites = snapshot["websites"] as? [[String : String]] ?? [[String : String]]()
@@ -106,12 +149,45 @@ public class Contact: Fuseable{
         origin = snapshot["origin"] as? String ?? ""
         isVerified = snapshot["isVerified"] as? String ?? "0"
         
+        badges = snapshot["badges"] as? [String] ?? [String]()
+        badgeList = snapshot["badgeList"] as? [Bagde] ?? [Bagde]()
+        
+        badgeDictionaryList = snapshot["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
+        
         //images = snapshot["images"] as! [[String : Any]]
         
         //parseContactRecord()
         
         
         // Testing to see if populated
+        
+    }
+    
+    init(arraySnapshot: NSDictionary) {
+        
+        name = arraySnapshot["name"] as? String ?? "No name"
+        titleList = arraySnapshot["titles"] as? NSArray ?? NSArray()
+        emailList = arraySnapshot["emails"] as? NSArray ?? NSArray()
+        phoneNumberList = arraySnapshot["phone_numbers"] as? NSArray ?? NSArray()
+        socialLinkList = arraySnapshot["social_links"] as? NSArray ?? NSArray()
+        
+        //let lastName = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+        tagList = arraySnapshot["tags"] as? NSArray ?? NSArray()
+        noteList = arraySnapshot["notes"] as? NSArray ?? NSArray()
+        websiteList = arraySnapshot["websites"] as? NSArray ?? NSArray()
+        organizationList = arraySnapshot["organizations"] as? NSArray ?? NSArray()
+        addressList = arraySnapshot["addresses"] as? NSArray ?? NSArray()
+        imageId = arraySnapshot["image_ids"] as? String ?? ""
+        origin = arraySnapshot["origin"] as? String ?? ""
+        isVerified = arraySnapshot["isVerified"] as? String ?? "0"
+        
+        badges = arraySnapshot["badges"] as? [String] ?? [String]()
+        badgeList = arraySnapshot["badgeList"] as? [Bagde] ?? [Bagde]()
+        
+        badgeDictionaryList = arraySnapshot["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
+        
+        
+        parseContactRecordArrays()
         
     }
     
@@ -253,6 +329,281 @@ public class Contact: Fuseable{
         }
         
         return randomString
+    }
+    
+    func parseContactRecordArrays(){
+        
+        // Iterate over lists and parse vals
+        
+        if titleList.count > 0 {
+            
+            let dict = titleList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "title")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                
+                setTitleRecords(title: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let titlesArray = list as! NSArray
+                
+                for item in titlesArray {
+                    
+                    setTitleRecords(title: item as! String)
+                }
+                
+                print("The titles")
+                print(titles)
+                
+            }
+            
+            
+        }
+        
+        
+        if organizationList.count > 0 {
+            
+            let dict = organizationList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "organization")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set org
+                setOrganizations(organization: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let orgsArray = list as! NSArray
+                
+                for item in orgsArray {
+                    
+                    setOrganizations(organization: item as! String)
+                }
+                
+                print("The orgs")
+                print(organizations)
+                
+            }
+
+        }
+        
+        // Check for count
+        if phoneNumberList.count > 0 {
+            
+            let dict = phoneNumberList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "phone")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set org
+                setPhoneRecords(phoneRecord: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let phonesArray = list as! NSArray
+                
+                for item in phonesArray {
+                    
+                    setPhoneRecords(phoneRecord: item as! String)
+                }
+                
+                print("The phones")
+                print(phoneNumbers)
+                
+            }
+
+            
+            
+        }
+        if emailList.count > 0 {
+            
+            let dict = emailList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "email")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set org
+                setEmailRecords(emailAddress: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let emailsArray = list as! NSArray
+                
+                for item in emailsArray {
+                    
+                    setEmailRecords(emailAddress: item as! String)
+                }
+                
+                print("The emails")
+                print(emails)
+                
+            }
+        }
+        
+        if websiteList.count > 0{
+            
+            let dict = websiteList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "website")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set web
+                setWebsites(websiteRecord: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let webArray = list as! NSArray
+                
+                for item in webArray {
+                    // Set web
+                    setWebsites(websiteRecord: item as! String)
+                }
+                
+                print("The websites")
+                print(websites)
+                
+            }
+
+            
+        }
+        if socialLinkList.count > 0{
+            
+            let dict = socialLinkList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "link")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set social
+                setSocialLinks(socialLink: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let linkArray = list as! NSArray
+                
+                for item in linkArray {
+                    // Set web
+                    setSocialLinks(socialLink: item as! String)
+                }
+                
+                print("The links")
+                print(socialLinks)
+                
+            }
+            
+        }
+        
+        
+        if noteList.count > 0 {
+            
+            let dict = noteList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "note")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set social
+                setNotes(note: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let noteArray = list as! NSArray
+                
+                for item in noteArray {
+                    // Set web
+                   setNotes(note: item as! String)
+                }
+                
+                print("The links")
+                print(notes)
+                
+            }
+            
+        }
+        
+        
+        if tagList.count > 0 {
+           
+            let dict = tagList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "tag")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set social
+                setTags(tag: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let tagArray = list as! NSArray
+                
+                for item in tagArray {
+                    // Set web
+                    setTags(tag: item as! String)
+                }
+                
+                print("The tags")
+                print(tags)
+                
+            }
+        }
+        
+        if addressList.count > 0 {
+            
+            let dict = addressList[0] as! NSDictionary
+            
+            let list = dict.value(forKey: "address")
+            
+            if list is String {
+                print("Outhere string", list as! String)
+                // Set social
+                setAddresses(address: list as! String)
+                
+            }else{
+                print("Outhere array", list as! NSArray)
+                //
+                let addArray = list as! NSArray
+                
+                for item in addArray {
+                    // Set web
+                    setAddresses(address: item as! String)
+                }
+                
+                print("The addresses")
+                print(addresses)
+                
+            }
+
+            
+        }
+        
+        // Parse for corp badges
+        // Parse for corp
+        for corp in badgeDictionaryList {
+            // Init badge
+            let badge = Contact.Bagde(snapshot: corp)
+            
+            // Add to list
+            badgeList.append(badge)
+        }
+
+        
+        
     }
     
     func parseContactRecord(){

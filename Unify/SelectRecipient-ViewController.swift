@@ -64,6 +64,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     var contactSearchResults = [Contact]()
     
     
+    var searchText = ""
     
     
     // Page setup
@@ -480,6 +481,97 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
     }
     
+    func fetchContactsForUser() {
+        // Fetch the user data associated with users
+        
+        var errorOccured = false
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        // Show progress
+        KVNProgress.show(withStatus: "Fetching details on the activity...")
+        
+        // Create User Objects
+        Connection(configuration: nil).getContactsCall(parameters, completionBlock: { response, error in
+            
+            if error == nil {
+                
+                //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                
+                // Init dictionary to capture response
+                let userArray = response as? NSDictionary
+                // // Parse dictionary for array of trans
+                //print(userArray)
+                
+                let userList = userArray?["data"] as! NSArray
+                
+                
+                // Iterate over array, append trans to list
+                for item in userList{
+                    
+                    print("Contact Item >> \(item)")
+                    
+                    let social = item as! NSDictionary
+                    
+                    print("The newest social", social["addresses"] as? NSArray ?? NSArray())
+                    
+                    // Init user objects from array
+                    let contact = Contact(arraySnapshot: item as! NSDictionary)
+                    
+                    //print("Contact Object Item >>")
+                    //print(contact.toAnyObject())
+                    
+                    // Append users to Selected array
+                    self.contactObjectList.append(contact)
+                    
+                    // Generate ID String
+                    let str = self.randomString(length: 10)
+                    // Assign id to object
+                    let contactTuple = (str, contact.name)
+                    
+                    // Create tuples and append to list
+                    self.tuples.append(contactTuple)
+                    print("Tuples array", self.tuples)
+                    
+                    //print(self.contactObjectList.count, "Object count")
+                }
+                
+                // sort contacts
+                self.sortContacts()
+                
+                // Show sucess
+                //KVNProgress.showSuccess()
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - User Fetch Error: \n\n>>>>>>>> \(error)\n\n")
+                //KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
+                
+                // Set the bool to true
+                errorOccured = true
+                
+                if errorOccured == true{
+                    
+                    DispatchQueue.main.async {
+                        // Sort and refresh table
+                        self.sortContacts()
+                    }
+                    
+                }
+                
+            }
+            // Regardless, hide hud
+            KVNProgress.dismiss()
+            
+        })
+        
+    }
+
+    
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTable), name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: nil)
@@ -582,8 +674,10 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
             
             // Sort list
-            self.sortContacts()
+            //self.sortContacts()
             
+            // Get contacts
+            self.fetchContactsForUser()
             
             
             // Find out if contacts synced
@@ -1153,26 +1247,16 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     
     
     func didTapOnSearchButton() {
-        if !shouldShowSearchResults {
-            shouldShowSearchResults = true
-            contactListTableView.reloadData()
-        }
-    }
-    
-    
-    func didTapOnCancelButton() {
-        shouldShowSearchResults = false
-        contactListTableView.reloadData()
-    }
-    
-    
-    func didChangeSearchText(_ searchText: String) {
+        // Clear search results array
+        self.contactSearchResults.removeAll()
         
         
         DispatchQueue.main.async {
             
+            KVNProgress.show(withStatus: "Searching...")
+            
             // Init search results
-            let results = self.fuse.search(searchText, in: self.contactObjectList)
+            let results = self.fuse.search(self.searchText, in: self.contactObjectList)
             
             self.contactSearchResults = results.map { (index, _, matchedRanges) in
                 
@@ -1185,19 +1269,36 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             // Refresh table
             self.contactListTableView.reloadData()
             
+            // Drop it
+            KVNProgress.dismiss()
         }
-
         
-        /*
-        // Filter the data array and get only those countries that match the search text.
-        filteredArray = dataArray.filter({ (country) -> Bool in
-            let countryText: NSString = country as NSString
-            
-            return (countryText.range(of: searchText, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            // Hit search endpoint
+            self.contactListTableView.reloadData()
+        }
         
-        // Reload the tableview.
-        contactListTableView.reloadData()*/
+        // Refresh table
+        self.contactListTableView.reloadData()
+        
+    }
+    
+    
+    func didTapOnCancelButton() {
+        shouldShowSearchResults = false
+        contactListTableView.reloadData()
+        
+        // Clear search results array
+        self.contactSearchResults.removeAll()
+    }
+    
+    
+    func didChangeSearchText(_ searchText: String) {
+        // Set text
+        self.searchText = searchText
+        
+        print("self search text \(self.searchText)")
     }
     
     
@@ -1237,8 +1338,12 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         letters = dataArray.map { (name) -> String in
             //print("UPPER CASE HERE")
             let nameToUpper = name.uppercased()
-            //print(nameToUpper[nameToUpper.startIndex])
-            return String(nameToUpper[nameToUpper.startIndex])
+            
+            var fullNameArr = nameToUpper.components(separatedBy: " ")  //split(contactName) {$0 == " "}
+            let firstName: String = fullNameArr[0]
+            let lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            print(lastName[lastName.startIndex])
+            return String(lastName[lastName.startIndex])
         }
         
         // Sort letters array

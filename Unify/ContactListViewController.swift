@@ -87,7 +87,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         //loadListOfCountries()
         
-        getContacts()
+        self.getContacts()
         
         //self.fetchContactsForUser()
         
@@ -284,6 +284,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         }
         
+        print(self.selectedContactObject.toAnyObject())
+        
         // Pass segue
         self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row)
 
@@ -312,8 +314,11 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         contactTuples.removeAll()
         dataArray.removeAll()
         
+        
+        
         // Fetch contact list
         getContacts()
+        //fetchContactsForUser()
     }
     
     func configureSelectedImageView(imageView: UIImageView) {
@@ -392,10 +397,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             //self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
             
             // Create contact objects
-            self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
+            self.contactObjectList += self.createContactRecords(phoneContactList: self.phoneContacts)
             
             // Sort list
-            self.sortContacts()
+            //self.sortContacts()
+            
+            self.fetchContactsForUser()
+            
             
             
             
@@ -413,6 +421,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 //self.uploadContactRecords()
                 // Reload the tableview.
                 self.tblSearchResults.reloadData()
+                
+                
                 
                 /*
                 if self.synced{
@@ -440,6 +450,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func createContactRecords(phoneContactList: [CNContact]) -> [Contact] {
+        
         // Create array of contacts
         var contactObjectList = [Contact]()
         
@@ -915,6 +926,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     //self.sortTransactionList(list: self.searchTransactionList)
                     
                     
+                    
                     // Update the table values
                     self.tblSearchResults.reloadData()
                     
@@ -975,12 +987,15 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         dataArray = self.tuples.map { $0.1 }
         
         
-        
         letters = dataArray.map { (name) -> String in
             //print("UPPER CASE HERE")
             let nameToUpper = name.uppercased()
-            //print(nameToUpper[nameToUpper.startIndex])
-            return String(nameToUpper[nameToUpper.startIndex])
+            
+            var fullNameArr = nameToUpper.components(separatedBy: " ")  //split(contactName) {$0 == " "}
+            let firstName: String = fullNameArr[0]
+            let lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            print(lastName[lastName.startIndex])
+            return String(lastName[lastName.startIndex])
         }
         
         // Sort letters array
@@ -990,7 +1005,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
-                //print("\n\nAdded >>>> \(list + [name])")
+                print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
@@ -1023,7 +1038,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             if contactsHashTable[String(describing: lastName.characters.first ?? "N")] == nil{
                 //print("Hash Section Empty!")
                 // If empty, initialize list
-               contactsHashTable[String(describing: lastName.characters.first!)] = []
+               contactsHashTable[String(describing: lastName.characters.first ?? "N")] = []
             }
             // Add contact to list
             //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
@@ -1051,11 +1066,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Retieve last name
             var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
             
+            print("First + Last", firstName, lastName)
+            
             // Check if section exists
             if contactObjectTable[String(describing: lastName.characters.first ?? "N")] == nil{
                 //print("Hash Section Empty!")
                 // If empty, initialize list
-                contactObjectTable[String(describing: lastName.characters.first!)] = []
+                contactObjectTable[String(describing: lastName.characters.first ?? "N")] = []
             }
             // Add contact to list
             //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
@@ -1063,7 +1080,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             print("Start Index: >> \(startIndex)")
             
             contactObjectTable[startIndex]!.append(contact)
-            //print("Section count for added item")
+            print("Section count for added item", contact.toAnyObject())
             //print(contactsHashTable[startIndex]?.count)
         }
         
@@ -1109,7 +1126,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         //print("Table Data \n\(self.tableData)")
         
-        //print(contactsHashTable)
+        print(contactObjectTable)
         
         print("The Table Count >> ", contactObjectTable.count)
         
@@ -1340,6 +1357,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func fetchContactsForUser() {
         // Fetch the user data associated with users
         
+        var errorOccured = false
+        
         // Hit endpoint for updates on users nearby
         let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
         
@@ -1357,7 +1376,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Init dictionary to capture response
                 let userArray = response as? NSDictionary
                 // // Parse dictionary for array of trans
-                print(userArray)
+                //print(userArray)
                 
                 let userList = userArray?["data"] as! NSArray
                 
@@ -1367,15 +1386,33 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     
                     print("Contact Item >> \(item)")
                     
+                    let social = item as! NSDictionary
+                    
+                    print("The newest social", social["addresses"] as? NSArray ?? NSArray())
+                    
                     // Init user objects from array
-                    let contact = Contact(snapshotLite: item as! NSDictionary)
+                    let contact = Contact(arraySnapshot: item as! NSDictionary)
+                    
+                    //print("Contact Object Item >>")
+                    //print(contact.toAnyObject())
                     
                     // Append users to Selected array
-                    self.contactList.append(contact)
+                    self.contactObjectList.append(contact)
+                    
+                    // Generate ID String
+                    let str = self.randomString(length: 10)
+                    // Assign id to object
+                    let contactTuple = (str, contact.name)
+                    
+                    // Create tuples and append to list
+                    self.tuples.append(contactTuple)
+                    print("Tuples array", self.tuples)
+                    
+                    //print(self.contactObjectList.count, "Object count")
                 }
                 
-                // Delete all for next sync
-                //self.deleteContactsForUser()
+                // sort contacts
+                self.sortContacts()
                 
                 // Show sucess
                 //KVNProgress.showSuccess()
@@ -1385,10 +1422,24 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 print(error)
                 // Show user popup of error message
                 print("\n\nConnection - User Fetch Error: \n\n>>>>>>>> \(error)\n\n")
-                KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
+                //KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
+                
+                // Set the bool to true
+                errorOccured = true
+                
+                if errorOccured == true{
+                    
+                    DispatchQueue.main.async {
+                        // Sort and refresh table
+                        self.sortContacts()
+                    }
+                    
+                }
+                
             }
             // Regardless, hide hud
             KVNProgress.dismiss()
+            
         })
         
     }
