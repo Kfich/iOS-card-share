@@ -733,7 +733,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // get the contacts
             
             var contacts = [CNContact]()
-            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor])
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor, CNContactPostalAddressesKey as CNKeyDescriptor])
             // Sort users by last name
             request.sortOrder = CNContactSortOrder.familyName
             // Execute request
@@ -1106,6 +1106,37 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 
                 // Append to object
                 contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            if contact.postalAddresses.count > 0{
+                
+                print("The postal address")
+                let address = contact.postalAddresses.first?.value
+                
+                let formatter = CNPostalAddressFormatter()
+                formatter.style = .mailingAddress
+                
+                let city = contact.postalAddresses.first?.value.city ?? ""
+                let state = contact.postalAddresses.first?.value.state ?? ""
+                let street = contact.postalAddresses.first?.value.street ?? ""
+                let zip = contact.postalAddresses.first?.value.postalCode ?? ""
+                let country = contact.postalAddresses.first?.value.country ?? ""
+                
+                
+                let addy = "\(street), \(city) \(state) \(zip), \(country)"
+                
+                //let formattedAddress = formatter.string(from: address!)
+                
+                //let trimmed = String(formattedAddress.characters.filter { !"\n\t\r".characters.contains($0) })
+                
+                
+                
+                print("The address is \(addy)")
+                
+                
+                // Append to object
+                contactObject.setAddresses(address: addy)
                 
             }
             

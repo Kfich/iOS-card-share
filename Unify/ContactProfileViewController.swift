@@ -11,7 +11,7 @@ import Contacts
 import MessageUI
 import EventKitUI
 
-class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, EKEventEditViewDelegate {
+class ContactProfileViewController: UIViewController,UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, EKEventEditViewDelegate{
     
     // Properties
     // --------------------------------------------

@@ -63,6 +63,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     var phoneContacts = [CNContact]()
     var synced = false
+    var searchText = ""
     
     
     // Page setup
@@ -349,7 +350,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // get the contacts
             
             var contacts = [CNContact]()
-            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor])
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor, CNContactPostalAddressesKey as CNKeyDescriptor])
             // Sort users by last name
             request.sortOrder = CNContactSortOrder.familyName
             // Execute request
@@ -474,7 +475,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Iterate over array and pull value
                 for address in contact.emailAddresses {
                     // Print to test
-                    print("Email : \(address.value)")
+                    //print("Email : \(address.value)")
                     
                     // Append to object
                     contactObject.setEmailRecords(emailAddress: address.value as String)
@@ -490,7 +491,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
                 
                 if let imageData = contact.imageData{
-                    print(imageData)
+                    //print(imageData)
                     
                     // Assign asset name and type
                     let idString = contactObject.randomString(length: 20)
@@ -506,6 +507,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     // Append to object
                     contactObject.setContactImageId(id: idString)
                     contactObject.imageDictionary = imageDict
+                    
                     
                     if self.synced != true {
                         // Upload Record
@@ -523,7 +525,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Iterate over items
                 for address in contact.urlAddresses {
                     // Print to test
-                    print("Website : \(address.value as String)")
+                    //print("Website : \(address.value as String)")
                     
                     // Append to object
                     contactObject.setWebsites(websiteRecord: address.value as String)
@@ -534,7 +536,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Iterate over items
                 for profile in contact.socialProfiles {
                     // Print to test
-                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                    //print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
                     
                     // Create temp link
                     let link = profile.value.value(forKey: "urlString")  as! String
@@ -547,24 +549,56 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             if contact.jobTitle != "" {
                 //Print to test
-                print("Job Title: \(contact.jobTitle)")
+                //print("Job Title: \(contact.jobTitle)")
                 
                 // Append to object
                 contactObject.setTitleRecords(title: contact.jobTitle)
             }
             if contact.organizationName != "" {
                 //print to test
-                print("Organization : \(contact.organizationName)")
+                //print("Organization : \(contact.organizationName)")
                 
                 // Append to object
                 contactObject.setOrganizations(organization: contact.organizationName)
             }
             if contact.note != "" {
                 //print to test
-                print(contact.note)
+                //print(contact.note)
                 
                 // Append to object
                 contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            
+            if contact.postalAddresses.count > 0{
+                
+                print("The postal address")
+                let address = contact.postalAddresses.first?.value
+                
+                let formatter = CNPostalAddressFormatter()
+                formatter.style = .mailingAddress
+                
+                let city = contact.postalAddresses.first?.value.city ?? ""
+                let state = contact.postalAddresses.first?.value.state ?? ""
+                let street = contact.postalAddresses.first?.value.street ?? ""
+                let zip = contact.postalAddresses.first?.value.postalCode ?? ""
+                let country = contact.postalAddresses.first?.value.country ?? ""
+                
+                
+                let addy = "\(street), \(city) \(state), \(zip), \(country)"
+                
+                //let formattedAddress = formatter.string(from: address!)
+                
+                //let trimmed = String(formattedAddress.characters.filter { !"\n\t\r".characters.contains($0) })
+                
+                
+                
+                //print("The address is \(addy)")
+                
+                
+                // Append to object
+                contactObject.setAddresses(address: addy)
                 
             }
             
@@ -714,7 +748,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         shouldShowSearchResults = true
         
         // Update results
-        updateSearchResults(for: self.customSearchController)
+        //updateSearchResults(for: self.customSearchController)
         
         
         //self.tblSearchResults.reloadData()
@@ -722,12 +756,98 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     func didTapOnSearchButton() {
+        
+        // Clear search results array
+        self.contactSearchResults.removeAll()
+       
+        /*
+        DispatchQueue.main.async {
+        
+            self.fuse.search(self.searchText, in: self.contactObjectList) { (result) in
+                // Handle
+                print(result)
+                
+                self.contactSearchResults = result.map { (index, _, matchedRanges) in
+                    
+                    // Init contact from results
+                    let contact = self.contactObjectList[index]
+                    
+                    return contact
+                    
+                }
+                
+                // Refresh table
+                self.tblSearchResults.reloadData()
+                
+                
+            }
+            
+        }*/
+        
+        /*
+        self.fuse.search(self.searchText, in: contactObjectList, chunkSize: (contactObjectList.count / 20)) { (item) in
+            
+            print(item)
+            
+            
+            self.contactSearchResults = item.map { (index, _, matchedRanges) in
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            // Refresh table
+            self.tblSearchResults.reloadData()
+            
+            /*
+            DispatchQueue.main.async {
+                
+                
+                // Refresh table
+                self.tblSearchResults.reloadData()
+            }*/
+
+            
+        }*/
+        
+        
+        
+        //KVNProgress.show(withStatus: "Searching...")
+        
+        DispatchQueue.main.async {
+            
+            KVNProgress.show(withStatus: "Searching...")
+            
+            // Init search results
+            let results = self.fuse.search(self.searchText, in: self.contactObjectList)
+            
+            self.contactSearchResults = results.map { (index, _, matchedRanges) in
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            // Refresh table
+            self.tblSearchResults.reloadData()
+            
+            // Drop it
+            KVNProgress.dismiss()
+        }
+
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
             // Hit search endpoint
             self.tblSearchResults.reloadData()
         }
-        //self.searchContacts()
+        
+        // Refresh table
+        self.tblSearchResults.reloadData()
+        
     }
     
     
@@ -740,24 +860,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func didChangeSearchText(_ searchText: String) {
         
-        DispatchQueue.main.async {
-            
-            // Init search results
-            let results = self.fuse.search(searchText, in: self.contactObjectList)
-            
-            self.contactSearchResults = results.map { (index, _, matchedRanges) in
-                
-                // Init contact from results
-                let contact = self.contactObjectList[index]
-
-                return contact
-                
-            }
-            // Refresh table
-            self.tblSearchResults.reloadData()
-            
-        }
+        self.searchText = searchText
         
+        print("self search text \(self.searchText)")
     }
     
     

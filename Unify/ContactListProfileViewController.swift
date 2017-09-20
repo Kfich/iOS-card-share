@@ -108,7 +108,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     
     @IBAction func smsSelected(_ sender: AnyObject) {
         // Call sms function
-        self.showSMSCard()
+        self.showActionTextAlert()
         
     }
     
@@ -276,7 +276,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
         
-        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses"{
+        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails"{
             
             // Set tint on text field
             cell.descriptionLabel.textColor = self.view.tintColor
@@ -294,10 +294,21 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Deselect row
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // Check section for click actions
         if sections[indexPath.section] == "Phone Numbers"{
             
             // Call option
             self.callSelected(self)
+        }
+        
+        if sections[indexPath.section] == "Emails"{
+            
+            // Email option
+            self.emailSelected(self)
         }
             
         
@@ -838,33 +849,101 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         // Add button
         actionSheetController.addAction(cancelActionButton)
         
-        // Make button
-        let emailAction = UIAlertAction(title: "Email", style: .default)
-        { _ in
-            
-            print("Email")
-        }
-        // Add Buttoin
-        actionSheetController.addAction(emailAction)
         
-        // Make
-        let textAction = UIAlertAction(title: "Text", style: .default)
-        { _ in
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
             
-            print("Text")
-        }
-        // Add Buttoin
-        actionSheetController.addAction(textAction)
-        
-        // Add
-        let callAction = UIAlertAction(title: "Call", style: .default)
-        { _ in
-            print("call")
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                
+                // Add phone number button
+                let digits = number["phone"]!
+                
+                // Add
+                let callAction = UIAlertAction(title: digits, style: .default)
+                { _ in
+                    print("call")
+                    
+                    // Get call ready
+                    // Set phone val
+                    var phone: String = digits
+                    
+                    //print(self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"])
+                    
+                    
+                    let result = String(phone.characters.filter { "01234567890.".characters.contains($0) })
+                    
+                    print(result)
+                    
+                    if let url = NSURL(string: "tel://\(result)"), UIApplication.shared.canOpenURL(url as URL) {
+                        UIApplication.shared.openURL(url as URL)
+                    }
+                    
+                }
+                
+                //  Add action
+                actionSheetController.addAction(callAction)
+                
+            }
             
         }
         
-        //  Add action
-        actionSheetController.addAction(callAction)
+        self.present(actionSheetController, animated: true, completion: nil)
+    }
+    
+    // Action sheet
+    func showActionTextAlert() {
+        // Config action
+        let actionSheetController: UIAlertController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .actionSheet)
+        
+        // Make Button
+        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            print("Cancel")
+        }
+        
+        // Add button
+        actionSheetController.addAction(cancelActionButton)
+        
+        
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
+            
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                
+                // Add phone number button
+                let digits = number["phone"]!
+                
+                // Add
+                let callAction = UIAlertAction(title: digits, style: .default)
+                { _ in
+                    print("call")
+                    
+                    // Get call ready
+                    // Set phone val
+                    var phone: String = digits
+                    
+                    //print(self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"])
+                    
+                    
+                    let result = String(phone.characters.filter { "01234567890.".characters.contains($0) })
+                    
+                    print(result)
+                    
+                    // Set selection
+                    self.selectedUserPhone = result
+                    
+                    // Show console
+                    self.showSMSCard()
+                    
+                }
+                
+                //  Add action
+                actionSheetController.addAction(callAction)
+                
+            }
+            
+        }
         
         self.present(actionSheetController, animated: true, completion: nil)
     }

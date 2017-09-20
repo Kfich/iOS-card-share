@@ -62,11 +62,11 @@ public class Contact: Fuseable{
             FuseProperty(name: "organization", weight: 1.0),
             FuseProperty(name: "title", weight: 1.0),
             FuseProperty(name: "email", weight: 1.0),
-            FuseProperty(name: "website", weight: 1.0),
+            //FuseProperty(name: "website", weight: 0.3),
             FuseProperty(name: "socialLink", weight: 1.0),
             FuseProperty(name: "note", weight: 1.0),
-            FuseProperty(name: "tag", weight: 1.0),
-            FuseProperty(name: "address", weight: 1.0)
+            FuseProperty(name: "tag", weight: 1.0)
+            //FuseProperty(name: "address", weight: 0.5)
         ]
     }
     

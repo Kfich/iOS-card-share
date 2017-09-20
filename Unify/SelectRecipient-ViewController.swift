@@ -252,6 +252,67 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         
         
+        if shouldShowSearchResults {
+            // Show results from filtered array
+            print("Index path", indexPath)
+            print(contactSearchResults[indexPath.row])
+            
+            // Set selected contact
+            self.selectedContactObject = contactSearchResults[indexPath.row]
+            print("The selected contact \(self.selectedContactObject.toAnyObject())")
+            
+        }else{
+            // Set selected contact
+            self.selectedContactObject = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
+            print("The selected contact \(self.selectedContactObject.toAnyObject())")
+        }
+        
+        // Set selected contact from conversion
+        self.selectedContact = self.contactToCNContact(contact: self.selectedContactObject)
+        
+        print("The object after selection\n\n\(selectedContact)")
+        
+        // Print to test
+        print(self.selectedContact.givenName)
+        
+        // Print to test
+        print(self.selectedContact.givenName)
+        // Make conditional checks to see where user navigated from
+        if ContactManager.sharedManager.userArrivedFromIntro != true {
+            
+            // Set bool to true
+            ContactManager.sharedManager.userArrivedFromIntro = true
+            
+            // Set bool to false
+            ContactManager.sharedManager.userSelectedNewContactForIntro = false
+            
+            // Set Contact on Manager
+            ContactManager.sharedManager.contactToIntro = selectedContact
+            
+            print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+            print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+            
+            // Notification for intro screen
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+            
+            // Drop view
+            dismiss(animated: true, completion: nil)
+        }else{
+            // Set Contact on Manager
+            ContactManager.sharedManager.recipientToIntro = selectedContact
+            
+            print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+            print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+            
+            // Post for recipient selected
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+            // Drop View
+            dismiss(animated: true, completion: nil)
+        }
+        
+        
+        
+        /*
         /* contactListTableView.deselectRow(at: indexPath, animated: true)
          
          print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
@@ -342,12 +403,82 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                 
                 
             }
-        }
+        }*/
         
     }
     
     
     // MARK: Custom functions
+    
+    func contactToCNContact(contact: Contact) -> CNContact {
+        var cnObject = CNContact()
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        //contactToAdd.givenName = self.firstNameLabel.text ?? ""
+        //contactToAdd.familyName = self.lastNameLabel.text ?? ""
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        
+        // Set name
+        //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        let fullName = contact.name
+        var fullNameArr = fullName.components(separatedBy: " ")
+        let firstName: String = fullNameArr[0]
+        var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : ""
+        
+        // Add names
+        contactToAdd.givenName = firstName
+        contactToAdd.familyName = lastName ?? ""
+        
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
+            
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                // print to test
+                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                
+                // Parse for mobile
+                let mobileNumber = CNPhoneNumber(stringValue: (number["phone"] ?? ""))
+                let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+                contactToAdd.phoneNumbers = [mobileValue]
+                
+            }
+            
+            
+        }
+        if contact.emails.count > 0 {
+            
+            // Iterate over array and pull value
+            for address in contact.emails {
+                // Print to test
+                print("Email : \(address["email"]!)")
+                
+                // Parse for emails
+                let email = CNLabeledValue(label: CNLabelWork, value: address["email"] as NSString? ?? "")
+                contactToAdd.emailAddresses = [email]
+                
+            }
+            
+        }
+        // Cast mutable contact back to regular contact
+        cnObject = contactToAdd as CNContact
+        
+        print("Immutable Copy \(cnObject)")
+        print("Immutable Copy Phones \(cnObject.phoneNumbers)")
+        print("Immutable Copy Emails \(cnObject.emailAddresses)")
+        
+        
+        // Return the non mutable copy
+        return cnObject
+        
+    }
     
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
@@ -406,7 +537,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             // get the contacts
             
             var contacts = [CNContact]()
-            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor])
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor, CNContactPostalAddressesKey as CNKeyDescriptor])
             // Sort users by last name
             request.sortOrder = CNContactSortOrder.familyName
             // Execute request
@@ -753,6 +884,37 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                 
                 // Append to object
                 contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            if contact.postalAddresses.count > 0{
+                
+                print("The postal address")
+                //let address = contact.postalAddresses.first?.value
+                
+                let formatter = CNPostalAddressFormatter()
+                formatter.style = .mailingAddress
+                
+                let city = contact.postalAddresses.first?.value.city ?? ""
+                let state = contact.postalAddresses.first?.value.state ?? ""
+                let street = contact.postalAddresses.first?.value.street ?? ""
+                let zip = contact.postalAddresses.first?.value.postalCode ?? ""
+                let country = contact.postalAddresses.first?.value.country ?? ""
+                
+                
+                let addy = "\(street), \(city) \(state) \(zip), \(country)"
+                
+                //let formattedAddress = formatter.string(from: address!)
+                
+                //let trimmed = String(formattedAddress.characters.filter { !"\n\t\r".characters.contains($0) })
+                
+                
+                
+                print("The address is \(addy)")
+                
+                
+                // Append to object
+                contactObject.setAddresses(address: addy)
                 
             }
             

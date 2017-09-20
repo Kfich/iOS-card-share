@@ -482,11 +482,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/SelectRecipient-ViewController.swift"
-            timestampString = "527532242.428727"
+            timestampString = "527539661.208107"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1270"
-            endingLineNumber = "1270"
+            startingLineNumber = "1432"
+            endingLineNumber = "1432"
             landmarkName = "SelectRecipientViewController"
             landmarkType = "3">
          </BreakpointContent>
