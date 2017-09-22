@@ -23,12 +23,15 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var organizations = [String]()
     var titles = [String]()
     var phoneNumbers = [String]()
+    var phoneNumberLabels = [String]()
     var emails = [String]()
+    var emailLabels = [String]()
     var websites = [String]()
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
+    var addressLabels = [String]()
     var corpBadges : [CardProfile.Bagde] = []
 
     // Profile pics
@@ -964,6 +967,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         case "Emails":
             //cell.titleLabel.text = "Email \(indexPath.row)"
             cell.descriptionLabel.text = emails[indexPath.row]
+            //cell.textLabel?.text = emailLabels[indexPath.row]
             
             // Check if in list
             if selectedEmails.contains(emails[indexPath.row]) {
@@ -977,6 +981,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         case "Phone Numbers":
             //cell.titleLabel.text = "Phone \(indexPath.row)"
             cell.descriptionLabel.text = phoneNumbers[indexPath.row]
+            //cell.textLabel?.text = phoneNumberLabels[indexPath.row]
             
             // Check if in list
             if selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
@@ -1042,6 +1047,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if addresses.count > 0{
                 // Set addy
                 cell.descriptionLabel.text = addresses[indexPath.row]
+                //cell.textLabel?.text = addressLabels[indexPath.row]
             }
             
             // Check if in list
@@ -1358,7 +1364,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
 
         if card.cardProfile.phoneNumbers.count > 0{
             for number in card.cardProfile.phoneNumbers{
-                selectedPhoneNumbers.append(number["phone"]! )
+                selectedPhoneNumbers.append(number.values.first!)
             }
         }
         
@@ -1407,7 +1413,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         // Parse for addresses
         if card.cardProfile.addresses.count > 0{
             for add in card.cardProfile.addresses{
-                selectedAddress.append(add["address"]!)
+                selectedAddress.append(add.values.first!)
             }
         }
 
@@ -1485,7 +1491,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 // Format phone number
-                phoneNumbers.append(self.format(phoneNumber:(number["phone"])!)!)
+                phoneNumbers.append(self.format(phoneNumber:(number.values.first!))!)
+                phoneNumberLabels.append(number.keys.first!)
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
@@ -1498,6 +1505,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             sections.append("Emails")
             for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
+                emailLabels.append(email["type"]!)
             }
             // Create section data
             self.tableData["Emails"] = emails
@@ -1567,8 +1575,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             // Add section
             sections.append("Addresses")
             for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
-                
-                addresses.append(add["address"]!)
+                // Append vales
+                addresses.append(add.values.first!)
+                addressLabels.append(add.keys.first!)
                 
             }
             // Create section data
@@ -1890,7 +1899,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             nameLabel.text = name
         }
         if card.cardProfile.phoneNumbers.count > 0{
-            numberLabel.text = self.format(phoneNumber: card.cardProfile.phoneNumbers[0]["phone"]!)
+            numberLabel.text = self.format(phoneNumber: card.cardProfile.phoneNumbers[0].values.first!)
         }
         if card.cardProfile.emails.count > 0{
             emailLabel.text = card.cardProfile.emails[0]["email"]

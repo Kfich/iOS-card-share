@@ -30,12 +30,15 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     var organizations = [String]()
     var titles = [String]()
     var phoneNumbers = [String]()
+    var phoneNumberLabels = [String]()
     var emails = [String]()
+    var emailLabels = [String]()
     var websites = [String]()
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
+    var addressLabels = [String]()
     
     // Selected items
     var selectedUserPhone = ""
@@ -58,6 +61,8 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     
     var sections = [String]()
     var tableData = [String: [String]]()
+    var labels = [String : [String]]()
+    
     // For verified user badges
     var corpBadges: [Contact.Bagde] = []
     
@@ -287,15 +292,29 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
         
         //cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
-        cell.titleLabel.text = sections[indexPath.section]
+        cell.titleLabel.text = labels[sections[indexPath.section]]?[indexPath.row]
         //cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
         
-        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails"{
+        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses"{
             
-            // Set tint on text field
-            cell.descriptionLabel.textColor = self.view.tintColor
+            // Set labels for field values
+            if sections[indexPath.section] == "Emails"{
+                cell.titleLabel.text = self.emailLabels[indexPath.row]
+                // Set tint on text field
+                cell.descriptionLabel.textColor = self.view.tintColor
+                
+            }else if sections[indexPath.section] == "Phone Numbers"{
+                cell.titleLabel.text = self.phoneNumberLabels[indexPath.row]
+                // Set tint on text field
+                cell.descriptionLabel.textColor = self.view.tintColor
+                
+            }else if sections[indexPath.section] == "Addresses"{
+                // Set label
+                cell.titleLabel.text = self.addressLabels[indexPath.row]
+                // Not tint
+            }
             
         }
 
@@ -445,6 +464,10 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         self.sections.removeAll()
         self.tableData.removeAll()
         self.notes.removeAll()
+        phoneNumberLabels.removeAll()
+        emailLabels.removeAll()
+        addresses.removeAll()
+        labels.removeAll()
         
         
         // Init formatter
@@ -464,21 +487,31 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             // Add section
             sections.append("Titles")
             
+            // Init labels
+            var labelList = [String]()
+            
             for title in contact.titles {
                 // Print to test
                 print("Title : \(title["title"]!)")
                 
                 // Append to list
                 self.titles.append(title["title"]!)
+                
+                labelList.append("title")
+                
+                
                 print(titles.count)
             }
             // Set list for section
             self.tableData["Titles"] = titles
+            self.labels["Titles"] = labelList
         }
         
         if contact.organizations.count > 0 {
             // Add section
             sections.append("Company")
+            // Init labellist
+            var labelList = [String]()
             
             for org in contact.organizations {
                 // Print to test
@@ -486,27 +519,31 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 
                 // Append to list
                 self.organizations.append(org["organization"]!)
+                labelList.append("company")
                 print(organizations.count)
             }
             // Set list for section
             self.tableData["Company"] = organizations
+            self.labels["Company"] = labelList
         }
         
         // Check for count
         if contact.phoneNumbers.count > 0 {
             // Add section
             sections.append("Phone Numbers")
+            
             // Iterate over items
             for number in contact.phoneNumbers{
                 // print to test
-                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                // Phone number with format style
+                phoneNumbers.append(self.format(phoneNumber: number.values.first!)!)
+                phoneNumberLabels.append(number.keys.first!)
                 
-                // Init the number with formatting
-                let digits = self.format(phoneNumber: number["phone"]!)
+                // Init record
+                let record = [number.keys.first! : number.values.first!]
+                // Test
+                print("Phone record", record)
                 
-                print("Bogus Phone", digits)
-                
-                self.phoneNumbers.append(digits!)
                 print(phoneNumbers.count)
             }
             
@@ -525,6 +562,12 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 
                 // Append to array
                 self.emails.append(address["email"]!)
+                self.emailLabels.append(address["type"]!)
+                
+                // Init record and test
+                let record = ["email" : address["email"]!, "type" : address["type"]!]
+                print("Email Record", record)
+                
                 print(emails.count)
             }
             // Create section data
@@ -534,6 +577,9 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         if contact.websites.count > 0{
             // Add section
             sections.append("Websites")
+            // Init label list
+            var labelList = [String]()
+            
             // Iterate over items
             for address in contact.websites {
                 // Print to test
@@ -541,10 +587,12 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 
                 // Append to list
                 self.websites.append(address["website"]!)
+                labelList.append("url")
                 print(websites.count)
             }
             // Create section data
             self.tableData["Websites"] = websites
+            self.labels["Websites"] = labelList
             
         }
         if contact.socialLinks.count > 0{
@@ -564,6 +612,8 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         if contact.notes.count > 0 {
             // Add section
             sections.append("Notes")
+            // Init label list
+            var labelList = [String]()
             
             for note in contact.notes {
                 // Print to test
@@ -571,10 +621,13 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 
                 // Append to list
                 self.notes.append(note["note"]!)
+                // Append label
+                labelList.append("note")
                 print(notes.count)
             }
             // Set list for section
             self.tableData["Notes"] = notes
+            self.labels["Notes"] = labelList
         }
         
         
@@ -582,16 +635,20 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             // Add section
             sections.append("Tags")
             
+            var labelList = [String]()
+            
             for tag in contact.tags {
                 // Print to test
                 print("Title : \(tag["tag"]!)")
                 
                 // Append to list
                 self.tags.append(tag["tag"]!)
+                labelList.append("tag")
                 print(tags.count)
             }
             // Set list for section
             self.tableData["Tags"] = tags
+            self.labels["Tags"] = labelList
         }
         
         if contact.addresses.count > 0 {
@@ -599,10 +656,17 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             sections.append("Addresses")
             for add in contact.addresses {
                 // Print to test
-                print("Address : \(add["address"]!)")
+                //print("Address : \(add["address"]!)")
                 
                 // Append to list
-                self.addresses.append(add["address"]!)
+                self.addresses.append(add.values.first!)
+                self.addressLabels.append(add.keys.first!)
+                
+                // Init record
+                let record = [add.keys.first! : add.values.first!]
+                // Test
+                print("Address record", record)
+                
                 print(addresses.count)
             }
             // Set list for section
@@ -992,7 +1056,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
          if self.contact.phoneNumbers.count > 0 {
             // Set global phone val
-            self.selectedUserPhone = self.contact.phoneNumbers[0]["phone"]!
+            self.selectedUserPhone = self.contact.phoneNumbers[0].values.first!
          }else{
          
             // Disable buttons

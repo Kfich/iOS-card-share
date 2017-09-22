@@ -585,7 +585,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             //print(self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"])
             
             if self.selectedTransaction.senderId == self.currentUser.userId{
-                 phone = (self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0]["phone"]!)!
+                 phone = (self.selectedTransaction.recipientCard?.cardProfile.phoneNumbers[0].values.first!)!
             }else if self.selectedTransaction.type == ""{
                 phone = self.senderPhone
             }
@@ -1101,7 +1101,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Parse for phone
                 if card.cardProfile.phoneNumbers.count > 0{
                     // Set selected phone
-                    self.senderPhone = card.cardProfile.phoneNumbers[0]["phone"]!
+                    self.senderPhone = card.cardProfile.phoneNumbers[0].values.first!
                 }
                 // Parse for email
                 if card.cardProfile.emails.count > 0{

@@ -548,7 +548,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
                 name = selectedUser.fullName
             }
             if selectedUser.userProfile.phoneNumbers.count > 0{
-                phone = selectedUser.userProfile.phoneNumbers[0]["phone"]! 
+                phone = selectedUser.userProfile.phoneNumbers[0].values.first!
             }
             if selectedUser.userProfile.emails.count > 0{
                 email = selectedUser.userProfile.emails[0]["email"]! 
@@ -593,7 +593,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
             name = selectedUser.fullName
         }
         if selectedUser.userProfile.phoneNumbers.count > 0{
-            phone = selectedUser.userProfile.phoneNumbers[0]["phone"]!
+            phone = selectedUser.userProfile.phoneNumbers[0].values.first!
         }
         if selectedUser.userProfile.emails.count > 0{
             email = selectedUser.userProfile.emails[0]["email"]!
@@ -648,7 +648,7 @@ class RadarContactSelectionViewController: UIViewController, UITableViewDelegate
         // Populate label fields
         
         if selectedUser.userProfile.phoneNumbers.count > 0{
-            phoneLabel.text = selectedUser.userProfile.phoneNumbers[0]["phone"]!
+            phoneLabel.text = selectedUser.userProfile.phoneNumbers[0].values.first!
         }
         if selectedUser.userProfile.emails.count > 0{
             emailLabel.text = selectedUser.userProfile.emails[0]["email"]!

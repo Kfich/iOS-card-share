@@ -218,8 +218,12 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             sections.append("Phone Numbers")
             for number in currentUser.userProfile.phoneNumbers{
                 // Format number
-                phoneNumbers.append(self.format(phoneNumber: number["phone"]!)!)
-                //phoneNumberLabels.append(number[""])
+                phoneNumbers.append(self.format(phoneNumber: number.values.first!)!)
+                phoneNumberLabels.append(number.keys.first!)
+                // Make record
+                let record = [number.keys.first! : number.values.first!]
+                // Test
+                print("Phone record", record)
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
@@ -230,6 +234,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             sections.append("Emails")
             for email in currentUser.userProfile.emails{
                 emails.append(email["email"]!)
+                emailLabels.append(email["type"]!)
+                
+                // Make record
+                let record = ["email" : email["email"]!, "type" : email["type"]!]
+                // Test
+                print("Email record", record)
+                
             }
             // Create section data
             self.tableData["Emails"] = emails
@@ -271,7 +282,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Add section
             sections.append("Addresses")
             for add in currentUser.userProfile.addresses{
-                addresses.append(add["address"]!)
+                addresses.append(add.values.first!)
+                addressLabels.append(add.keys.first!)
+                
+                // Make record
+                let record = [add.keys.first! : add.values.first!]
+                // Test
+                print("Address record", record)
             }
             // Create section data
             self.tableData["Addresses"] = addresses
@@ -873,14 +890,14 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             self.titleLabel.text = titles[indexPath.row]
         case "Emails":
             
-            card.cardProfile.emails.append(["email" : emails[indexPath.row]])
+            card.cardProfile.emails.append(["email" : emails[indexPath.row], "type" : emailLabels[indexPath.row]])
             print(card.cardProfile.emails as Any)
             // Assign label value
             self.emailLabel.text = emails[indexPath.row]
            
         case "Phone Numbers":
             // Add dictionary value to cardProfile
-            card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
+            card.cardProfile.setPhoneRecords(phoneRecords: [phoneNumberLabels[indexPath.row] : phoneNumbers[indexPath.row]])
             // Print for testing
             print(card.cardProfile.phoneNumbers as Any)
             // Assign label value
@@ -906,7 +923,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
         case "Addresses":
             // Append to array
-            card.cardProfile.addresses.append(["address" : addresses[indexPath.row]])
+            card.cardProfile.addresses.append([addressLabels[indexPath.row] : addresses[indexPath.row]])
             // Print for test
             print(card.cardProfile.addresses as Any)
 

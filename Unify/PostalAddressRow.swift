@@ -33,6 +33,7 @@ public struct PostalAddress: PostalAddressType {
     public var postalCode: String?
     public var city: String?
     public var country: String?
+    public var label: String?
     
     public init(){}
     

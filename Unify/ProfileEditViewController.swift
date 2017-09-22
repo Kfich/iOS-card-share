@@ -434,7 +434,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         tableView.backgroundColor = UIColor.white
         
         //title = "Multivalued Examples"
-        form +++
+        form
+            +++
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "  ",
                                footer: "") {
@@ -931,6 +932,42 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Note"
                                         $0.value = val
                                         //$0.tag = "Add Media Info"
+                                    }
+                                }
+            }
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Address Section 2"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Address"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return PostalAddressRow() {
+                                        $0.streetPlaceholder = "Street"
+                                        $0.statePlaceholder = "State"
+                                        $0.cityPlaceholder = "City"
+                                        $0.countryPlaceholder = "Country"
+                                        $0.postalCodePlaceholder = "Zip code"
+                                    }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in addresses{
+                                    $0 <<< PostalAddressRow() {
+                                        $0.streetPlaceholder = "Street"
+                                        $0.statePlaceholder = "State"
+                                        $0.cityPlaceholder = "City"
+                                        $0.countryPlaceholder = "Country"
+                                        $0.postalCodePlaceholder = "Zip code"
+                                        $0.cell.textLabel?.text = "Hot Sauce"
                                     }
                                 }
             }
@@ -2093,7 +2130,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         }
         if currentUser.userProfile.phoneNumbers.count > 0{
             // Format text labels
-            phoneLabel.text = self.format(phoneNumber: currentUser.userProfile.phoneNumbers[0]["phone"]!)
+            phoneLabel.text = self.format(phoneNumber: currentUser.userProfile.phoneNumbers[0].values.first!)
         }
         if currentUser.userProfile.emails.count > 0{
             emailLabel.text = currentUser.userProfile.emails[0]["email"]

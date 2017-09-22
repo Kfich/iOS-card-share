@@ -411,7 +411,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             nameLabel.text = name
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
-            numberLabel.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0]["phone"]!)
+            numberLabel.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0].values.first!)
         }else{
             // Hide icon 
             phoneImageView.isHidden = true

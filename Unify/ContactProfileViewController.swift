@@ -903,10 +903,10 @@ class ContactProfileViewController: UIViewController,UITableViewDelegate, UITabl
         if self.contact.phoneNumbers.count > 0 {
             // Set label text
             //phoneLabel.text = (selectedContact.phoneNumbers[0].value).value(forKey: "digits") as? String
-            phoneLabel.text = self.format(phoneNumber: self.contact.phoneNumbers[0]["phone"]!)
+            phoneLabel.text = self.format(phoneNumber: self.contact.phoneNumbers[0].values.first!)
             
             // Set global phone val
-            self.selectedUserPhone = self.contact.phoneNumbers[0]["phone"]!
+            self.selectedUserPhone = self.contact.phoneNumbers[0].values.first!
         }else{
             // Hide phone icon image 
             phoneImageView.isHidden = true

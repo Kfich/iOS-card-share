@@ -20,6 +20,7 @@ public protocol PostalAddressCellConformance {
     var postalCodeTextField: UITextField? { get }
     var cityTextField: UITextField? { get }
     var countryTextField: UITextField? { get }
+    var label: UILabel? { get }
 }
 
 /// Base class that implements the cell logic for the PostalAddressRow
@@ -32,6 +33,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
     @IBOutlet open var cityTextField: UITextField?
     @IBOutlet open var secondSeparatorView: UIView?
     @IBOutlet open var countryTextField: UITextField?
+    @IBOutlet open var label: UILabel?
 
     @IBOutlet weak var postalPercentageConstraint: NSLayoutConstraint?
 
@@ -62,6 +64,7 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
         countryTextField?.delegate = nil
         countryTextField?.removeTarget(self, action: nil, for: .allEvents)
         imageView?.removeObserver(self, forKeyPath: "image")
+        
     }
 
     open override func setup() {
@@ -119,6 +122,9 @@ open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAd
             setPlaceholderToTextField(textField: cityTextField, placeholder: rowConformance.cityPlaceholder)
             setPlaceholderToTextField(textField: countryTextField, placeholder: rowConformance.countryPlaceholder)
         }
+        
+       
+        
     }
 
     private func setPlaceholderToTextField(textField: UITextField?, placeholder: String?) {

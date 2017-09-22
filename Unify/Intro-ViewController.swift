@@ -149,7 +149,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 
             }else if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
                 // Set selected phone
-                self.selectedPhone = contact.phoneNumbers[0]["phone"]!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                self.selectedPhone = contact.phoneNumbers[0].values.first!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
                 
                 // Launch text client
                 self.showSMSCard()
@@ -303,7 +303,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                     
                     
                     // Set selected phone
-                    self.selectedPhone = contact.phoneNumbers[0]["phone"]!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                    self.selectedPhone = contact.phoneNumbers[0].values.first!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
                     phone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
                     
                     // Launch text client
@@ -522,7 +522,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 
                 
                 // Set selected phone
-                self.selectedPhone = contact.phoneNumbers[0]["phone"]!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+                self.selectedPhone = contact.phoneNumbers[0].values.first!//((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
                 let phone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
                 
                 // Add to transaction

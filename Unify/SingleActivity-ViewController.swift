@@ -63,6 +63,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     
     var sections = [String]()
     var tableData = [String: [String]]()
+    var labels = [String : [String]]()
     // For verified user badges
     var corpBadges: [CardProfile.Bagde] = []
     
@@ -323,23 +324,26 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
         
         //cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
-        cell.titleLabel.text = ""
+        cell.titleLabel.text = labels[sections[indexPath.section]]?[indexPath.row]
         //cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
        
         if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses"{
             
-            // Set tint on text field
-            cell.descriptionLabel.textColor = self.view.tintColor
-            
             // Set labels for field values
             if sections[indexPath.section] == "Emails"{
                 cell.titleLabel.text = self.emailLabels[indexPath.row]
+                // Set tint on text field
+                cell.descriptionLabel.textColor = self.view.tintColor
             }else if sections[indexPath.section] == "Phone Numbers"{
                 cell.titleLabel.text = self.phoneNumberLabels[indexPath.row]
+                // Set tint on text field
+                cell.descriptionLabel.textColor = self.view.tintColor
             }else if sections[indexPath.section] == "Addresses"{
+                // No tint
                 cell.titleLabel.text = self.addressLabels[indexPath.row]
+                
             }
             
         }
@@ -484,6 +488,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         self.phoneNumberLabels.removeAll()
         self.emailLabels.removeAll()
         self.addressLabels.removeAll()
+        self.labels.removeAll()
         
         
         // Call to populate cards
@@ -496,36 +501,48 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
             // Add section
             sections.append("Titles")
+            // Label list
+            var labelList = [String]()
+            
             for info in ContactManager.sharedManager.currentUser.userProfile.titles{
                 titles.append((info["title"])!)
+                labelList.append("title")
                 print(info["title"])
             }
             // Create section data
             self.tableData["Titles"] = titles
+            self.labels["Titles"] = labelList
         }
         
         // Parse organizations
         if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
             // Add section
             sections.append("Company")
+            var labelList = [String]()
+            
             for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
                 organizations.append(org["organization"]!)
+                labelList.append("company")
             }
             // Create section data
             self.tableData["Company"] = organizations
+            self.labels["Company"] = labelList
         }
         
         if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
             // Add section
             sections.append("Bios")
+            var labelList = [String]()
             // Iterate throught array and append available content
             for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
                 bios.append((bio["bio"])!)
+                labelList.append("bio")
                 print(bio["bio"])
             }
             
             // Create section data
             self.tableData["Bios"] = bios
+            self.labels["Bios"] = labelList
         }
         
         if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
@@ -569,25 +586,30 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
             // Add section
             sections.append("Websites")
+            var labelList = [String]()
             for site in ContactManager.sharedManager.currentUser.userProfile.websites{
                 websites.append(site["website"]!)
+                labelList.append("url")
             }
             // Create section data
             self.tableData["Websites"] = websites
+            self.labels["Websites"] = labelList
             
         }
         // Parse Tags
         if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
             // Add section
             sections.append("Tags")
+            var labelList = [String]()
             
             for hashtag in ContactManager.sharedManager.currentUser.userProfile.tags{
                 
                 tags.append(hashtag["tag"]!)
-                
+                labelList.append("tag")
             }
             // Create section data
             self.tableData["Tags"] = tags
+            self.labels["Tags"] = labelList
         }
         
         // Parse notes
@@ -595,13 +617,16 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             
             // Add section
             sections.append("Notes")
+            var labelList = [String]()
+            
             for note in ContactManager.sharedManager.currentUser.userProfile.notes{
                 
                 notes.append(note["note"]!)
-                
+                labelList.append("note")
             }
             // Create section data
             self.tableData["Notes"] = notes
+            self.labels["Notes"] = labelList
         }
         // Parse notes
         if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{

@@ -42,6 +42,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     }
     // Handle nav
     var userCancelledEntry = false
+    var keyboardDidHide = false
     
     
     // Bool check for user existance
@@ -286,17 +287,21 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         // Hide verify btn
         self.verifyBtn.isHidden = true
         
-        
         // Process pin
         
         
-        if userCancelledEntry != true {
+        if userCancelledEntry != true && self.keyboardDidHide == false {
             // Execute verification
             processPin()
         }else{
             // The user needed to resend
             print("User cancelled entry")
+            print("Or view already hit")
         }
+        
+        // Toggle switch for check
+        self.keyboardDidHide = true
+        
        
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y != 0 {
@@ -433,6 +438,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
             }
             
         }else{
+            print("Printing about to pass seggy to create prof")
             // Send to create profile
             performSegue(withIdentifier: "createProfileSegue", sender: self)
         }

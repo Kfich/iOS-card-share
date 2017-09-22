@@ -660,7 +660,7 @@ public class Contact: Fuseable{
             // Add section
             sections.append("Phone Numbers")
             
-            let digits = phoneNumbers[0]["phone"]!
+            let digits = phoneNumbers[0].values.first!//["phone"]!
             // Set phone number
             self.phoneNumber = digits
             
@@ -773,7 +773,7 @@ public class Contact: Fuseable{
         
         if addresses.count > 0 {
             
-            address = addresses[0]["address"]!
+            address = addresses[0].values.first!
             
             // Add section
             sections.append("Addresses")

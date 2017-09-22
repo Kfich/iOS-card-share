@@ -47,6 +47,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     // Sorted contact list
     var letters: [String] = []
     var contacts = [String: [String]]()
+    var sectionTitles = [String]()
     
     var contactObjectTable = [String: [Contact]]()
     var contactsHashTable = [String: [CNContact]]()
@@ -477,8 +478,15 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     // Init the number
                     let digits = number.value.value(forKey: "digits") as! String
                     
+                    let label = CNLabeledValue<NSString>.localizedString(forLabel: number.label ?? "work") //number.label ?? "phone"
+                    
+                    // Init dict
+                    let record = [label : digits]
+                    print("Phone record", record)
+                    
                     // Append to object
-                    contactObject.setPhoneRecords(phoneRecord: digits)
+                    //contactObject.setPhoneRecords(phoneRecord: digits)
+                    contactObject.phoneNumbers.append(record)
                 }
                 
             }
@@ -488,8 +496,14 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     // Print to test
                     //print("Email : \(address.value)")
                     
+                    let label =  CNLabeledValue<NSString>.localizedString(forLabel: address.label ?? "work")
+                    // Init dict
+                    let record = ["email" : address.value as String, "type": label]
+                    print("Email record", record)
+                    
                     // Append to object
-                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                    //contactObject.setEmailRecords(emailAddress: address.value as String)
+                    contactObject.emails.append(record)
                 }
             }
             if contact.imageDataAvailable {
@@ -596,8 +610,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 let zip = contact.postalAddresses.first?.value.postalCode ?? ""
                 let country = contact.postalAddresses.first?.value.country ?? ""
                 
-                
+                // Init address
                 let addy = "\(street), \(city) \(state), \(zip), \(country)"
+                // Init label and record
+                let label =  CNLabeledValue<NSString>.localizedString(forLabel: contact.postalAddresses.first?.label ?? "home")
+                let record = [label : addy]
+
+                print("Address record", record)
                 
                 //let formattedAddress = formatter.string(from: address!)
                 
@@ -609,7 +628,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
                 
                 // Append to object
-                contactObject.setAddresses(address: addy)
+                //contactObject.setAddresses(address: addy)
+                contactObject.addresses.append(record)
                 
             }
             

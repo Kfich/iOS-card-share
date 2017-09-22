@@ -1155,7 +1155,7 @@ class ProfileViewController: UIViewController,UITableViewDelegate, UITableViewDa
         }
         if currentUser.userProfile.phoneNumbers.count > 0{
             // Format text labels
-            numberLabel.text = self.format(phoneNumber: currentUser.userProfile.phoneNumbers[0]["phone"]!)
+            numberLabel.text = self.format(phoneNumber: currentUser.userProfile.phoneNumbers[0].values.first!)
         }
         if currentUser.userProfile.emails.count > 0{
             emailLabel.text = currentUser.userProfile.emails[0]["email"]

@@ -25,12 +25,15 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     var organizations = [String]()
     var titles = [String]()
     var phoneNumbers = [String]()
+    var phoneNumberLabels = [String]()
     var emails = [String]()
+    var emailLabels = [String]()
     var websites = [String]()
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
+    var addressLabels = [String]()
     var corpBadges: [CardProfile.Bagde] = []
     
     // Store image icons
@@ -248,6 +251,9 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.tableData.removeAll()
         // Corp badges?
         self.corpBadges.removeAll()
+        self.emailLabels.removeAll()
+        self.phoneNumberLabels.removeAll()
+        self.addressLabels.removeAll()
         
         
         // Parse work info
@@ -288,7 +294,14 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             sections.append("Phone Numbers")
             for number in selectedCard.cardProfile.phoneNumbers{
                 // Phone number with format style
-                phoneNumbers.append(self.format(phoneNumber:number["phone"]!)!)
+                phoneNumbers.append(self.format(phoneNumber: number.values.first!)!)
+                phoneNumberLabels.append(number.keys.first!)
+                
+                // Init record
+                let record = [number.keys.first! : number.values.first!]
+                // Test
+                print("Phone record", record)
+                
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
@@ -299,6 +312,11 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             sections.append("Emails")
             for email in selectedCard.cardProfile.emails{
                 emails.append(email["email"]! )
+                emailLabels.append(email["type"]!)
+                
+                // Init record and test
+                let record = ["email" : email["email"]!, "type" : email["type"]!]
+                print("Email Record", record)
             }
             // Create section data
             self.tableData["Emails"] = emails
@@ -350,7 +368,14 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add section
             sections.append("Addresses")
             for add in selectedCard.cardProfile.addresses{
-                addresses.append(add["address"]!)
+                addresses.append(add.values.first!)
+                
+                addressLabels.append(add.keys.first!)
+                
+                // Init record
+                let record = [add.keys.first! : add.values.first!]
+                // Test
+                print("Address record", record)
             }
             // Create section data
             self.tableData["Addresses"] = addresses
@@ -522,6 +547,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
+        
         return cell
         
     }
@@ -629,7 +655,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
            name = selectedCard.cardHolderName!
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
-            phone = selectedCard.cardProfile.phoneNumbers[0]["phone"]! 
+            phone = selectedCard.cardProfile.phoneNumbers[0].values.first!
         }
         if selectedCard.cardProfile.emails.count > 0{
             email = selectedCard.cardProfile.emails[0]["email"]! 
@@ -916,7 +942,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
             // Format number 
-            phoneLabel.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0]["phone"]!)
+            phoneLabel.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0].values.first!)
         }
         if selectedCard.cardProfile.emails.count > 0{
             emailLabel.text = selectedCard.cardProfile.emails[0]["email"]

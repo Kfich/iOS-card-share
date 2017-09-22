@@ -224,7 +224,8 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
         if isValid {
         // Assign form values to user object
-        newUser.userProfile.emails.append(["email": email.text!])
+        newUser.userProfile.emails.append(["email": email.text!, "type" : "work"])
+            print("New User Emails", newUser.userProfile.emails)
         newUser.firstName = firstName.text!
         newUser.lastName = lastName.text!
         newUser.setName(first: firstName.text!, last: lastName.text!)
@@ -431,7 +432,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
     
         // Assign name, cardname, email and phone values to card
         card.cardName = "Default"
-        card.cardProfile.setEmailRecords(emailRecords: ["email" : email.text!])
+        card.cardProfile.setEmailRecords(emailRecords: ["email" : email.text!, "type": "work"])
         card.cardHolderName = newUser.fullName
         // Assign card image id
         card.cardProfile.imageIds.append(["card_image_id": idString])

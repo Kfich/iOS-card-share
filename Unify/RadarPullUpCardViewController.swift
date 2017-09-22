@@ -540,7 +540,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             }
             if currentCard.cardProfile.phoneNumbers.count > 0 {
                 // Format the number
-                cell.cardPhone.text = self.format(phoneNumber: currentCard.cardProfile.phoneNumbers[0]["phone"]!)
+                cell.cardPhone.text = self.format(phoneNumber: currentCard.cardProfile.phoneNumbers[0].values.first!)
             }
             if currentCard.cardProfile.images.count > 0 {
                 // Populate image view
@@ -608,7 +608,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     }
     
     func snapToNearestCell(_ collectionView: UICollectionView) {
-        for i in 0..<collectionView.numberOfItems(inSection: 0) {
+        for i in 0..<collectionView.numberOfItems(inSection: 0) + 1 {
             
             let itemWithSpaceWidth = cardCollectionView.frame.width
             let itemWidth = cardCollectionView.frame.width
