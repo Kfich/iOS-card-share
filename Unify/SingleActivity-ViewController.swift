@@ -29,12 +29,19 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     var organizations = [String]()
     var titles = [String]()
     var phoneNumbers = [String]()
+    var phoneNumberLabels = [String]()
     var emails = [String]()
+    var emailLabels = [String]()
     var websites = [String]()
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
+    var addressLabels = [String]()
+    
+    var phoneNumberDictionaryArray = [NSDictionary]()
+    var emailsDictionaryArray = [NSDictionary]()
+    var addressDictionaryArray = [NSDictionary]()
     
     // Selected items
     var selectedUserPhone = ""
@@ -316,7 +323,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
         
         //cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
-        cell.titleLabel.text = sections[indexPath.section]
+        cell.titleLabel.text = ""
         //cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
@@ -325,6 +332,15 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             
             // Set tint on text field
             cell.descriptionLabel.textColor = self.view.tintColor
+            
+            // Set labels for field values
+            if sections[indexPath.section] == "Emails"{
+                cell.titleLabel.text = self.emailLabels[indexPath.row]
+            }else if sections[indexPath.section] == "Phone Numbers"{
+                cell.titleLabel.text = self.phoneNumberLabels[indexPath.row]
+            }else if sections[indexPath.section] == "Addresses"{
+                cell.titleLabel.text = self.addressLabels[indexPath.row]
+            }
             
         }
        
@@ -465,6 +481,10 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         self.addresses.removeAll()
         self.notes.removeAll()
         self.corpBadges.removeAll()
+        self.phoneNumberLabels.removeAll()
+        self.emailLabels.removeAll()
+        self.addressLabels.removeAll()
+        
         
         // Call to populate cards
         self.populateCards()
@@ -512,7 +532,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             // Add section
             sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
-                phoneNumbers.append(self.format(phoneNumber:(number["phone"]!))!)
+                phoneNumbers.append(self.format(phoneNumber:(number.values.first!))!)
+                phoneNumberLabels.append(number.keys.first!)
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers
@@ -525,6 +546,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             sections.append("Emails")
             for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
+                emailLabels.append(email["type"]!)
+                
             }
             // Create section data
             self.tableData["Emails"] = emails
@@ -587,7 +610,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             sections.append("Addresses")
             for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
                 
-                addresses.append(add["address"]!)
+                addresses.append(add.values.first!)
+                addressLabels.append(add.keys.first!)
                 
             }
             // Create section data

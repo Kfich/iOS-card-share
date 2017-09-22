@@ -23,9 +23,20 @@ class LabelSelectionViewController: FormViewController {
                     cell.textLabel?.textAlignment = .left
                 
                 }.onCellSelection({ (cell, row) in
-                self.dismiss(animated: true, completion: { 
+                    
+                    // Set path
+                    ContactManager.sharedManager.labelPathWithIntent["label_value"] = "home"
+                    
+                    print("Manager label path with intent", ContactManager.sharedManager.labelPathWithIntent)
+                    
+                    // Post notif
+                    self.postNotificationForUpdate()
+                    
+                
+                    self.dismiss(animated: true, completion: {
                     // Print to test
                     print("Home selected")
+                    
                 })
             })
             <<< ButtonRow(){
@@ -34,9 +45,18 @@ class LabelSelectionViewController: FormViewController {
                     cell.textLabel?.textAlignment = .left
                     
                 }.onCellSelection({ (cell, row) in
+                    // Set path
+                    ContactManager.sharedManager.labelPathWithIntent["label_value"] = "work"
+                    
+                    print("Manager label path with intent", ContactManager.sharedManager.labelPathWithIntent)
+                    
+                    // Post notif
+                    self.postNotificationForUpdate()
+                    
                     self.dismiss(animated: true, completion: {
                         // Print to test
                         print("Work selected")
+                        
                     })
                 })
             <<< ButtonRow(){
@@ -46,6 +66,15 @@ class LabelSelectionViewController: FormViewController {
                     cell.textLabel?.textAlignment = .left
                     
                 }.onCellSelection({ (cell, row) in
+                    
+                    // Set path
+                    ContactManager.sharedManager.labelPathWithIntent["label_value"] = "personal"
+                    
+                    print("Manager label path with intent", ContactManager.sharedManager.labelPathWithIntent)
+                    
+                    // Post notif
+                    self.postNotificationForUpdate()
+                    
                     self.dismiss(animated: true, completion: {
                         // Print to test
                         print("Personal selected")
@@ -58,6 +87,15 @@ class LabelSelectionViewController: FormViewController {
                     cell.textLabel?.textAlignment = .left
                     
                 }.onCellSelection({ (cell, row) in
+                    
+                    // Set path
+                    ContactManager.sharedManager.labelPathWithIntent["label_value"] = "mobile"
+                    
+                    print("Manager label path with intent", ContactManager.sharedManager.labelPathWithIntent)
+                    
+                    // Post notif
+                    self.postNotificationForUpdate()
+                    
                     self.dismiss(animated: true, completion: {
                         // Print to test
                         print("Mobile selected")
@@ -70,12 +108,30 @@ class LabelSelectionViewController: FormViewController {
                     cell.textLabel?.textAlignment = .left
                     
                 }.onCellSelection({ (cell, row) in
+                    
+                    // Set path
+                    ContactManager.sharedManager.labelPathWithIntent["label_value"] = "other"
+                    
+                    print("Manager label path with intent", ContactManager.sharedManager.labelPathWithIntent)
+                    
+                    // Post notif
+                    self.postNotificationForUpdate()
+                    
                     self.dismiss(animated: true, completion: {
                         // Print to test
                         print("Other selected")
                     })
                 })
 
+    }
+    
+    func postNotificationForUpdate() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Update Labels"), object: self)
+        
+        //UpdateCurrentUserProfile
+        
     }
     
     

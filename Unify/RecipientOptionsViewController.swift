@@ -949,7 +949,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             var fullNameArr = nameToUpper.components(separatedBy: " ")  //split(contactName) {$0 == " "}
             let firstName: String = fullNameArr[0]
-            let lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            
+            // Check if empty string
+            if lastName.isEmpty{
+                lastName = "No Name"
+            }
+
             print(lastName[lastName.startIndex])
             return String(lastName[lastName.startIndex])
         }

@@ -125,6 +125,8 @@ class ContactManager{
     // For radar list
     var radarUserCount = 0
     
+    var labelPathWithIntent = ["index": IndexPath(), "label_value": String()] as [String : Any]
+    
     
     // Initialize class
     init() {

@@ -871,15 +871,15 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         let urls = ImageURLS()
         
         // Create URL For Prod
-        let prodURL = urls.getFromStagingURL
+        //let prodURL = urls.getFromStagingURL
         
         // Create URL For Test
-        //let testURL = urls.getFromDevelopmentURL
+        let testURL = urls.getFromDevelopmentURL
         let id = user.publicProfile?.imageId
         
         if user.userIsIncognito == true {
             // Show incognito data
-            let url = URL(string: "\(prodURL)\(id ?? "").jpg")!
+            let url = URL(string: "\(testURL)\(id ?? "").jpg")!
             let placeholderImage = UIImage(named: "user")!
             // Set image
             imageView.setImageWith(url, placeholderImage: placeholderImage)
@@ -891,7 +891,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Grab image ref using alamo
                 
                 // ** Currently Set to Test URL
-                let url = URL(string: "\(prodURL)\(user.profileImageId).jpg")!
+                let url = URL(string: "\(testURL)\(user.profileImageId).jpg")!
                 let placeholderImage = UIImage(named: "user")!
                 // Set image
                 imageView.setImageWith(url, placeholderImage: placeholderImage)

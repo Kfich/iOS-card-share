@@ -583,10 +583,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let urls = ImageURLS()
         
         // Create URL For Prod
-        let prodURL = urls.uploadToStagingURL
+        //let prodURL = urls.uploadToStagingURL
         
         // Create URL For Test
-        //let testURL = urls.uploadToDevelopmentURL
+        let testURL = urls.uploadToDevelopmentURL
         
         
         // Show progress HUD
@@ -602,7 +602,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UITableV
              }*/
             
             // Currently Set to point to Prod Server
-        }, to:prodURL)
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):

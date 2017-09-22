@@ -104,11 +104,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactManager.swift"
-            timestampString = "527448172.926573"
+            timestampString = "527707023.179598"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "768"
-            endingLineNumber = "768"
+            startingLineNumber = "770"
+            endingLineNumber = "770"
             landmarkName = "getContacts()"
             landmarkType = "7">
          </BreakpointContent>
@@ -120,11 +120,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/CreateCardViewController.swift"
-            timestampString = "526926316.577274"
+            timestampString = "527740664.132831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "839"
-            endingLineNumber = "839"
+            startingLineNumber = "846"
+            endingLineNumber = "846"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -388,11 +388,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/CreateCardViewController.swift"
-            timestampString = "526926316.577274"
+            timestampString = "527740664.132831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "673"
-            endingLineNumber = "673"
+            startingLineNumber = "680"
+            endingLineNumber = "680"
             landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -482,11 +482,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/SelectRecipient-ViewController.swift"
-            timestampString = "527640062.897942"
+            timestampString = "527700350.114291"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1537"
-            endingLineNumber = "1537"
+            startingLineNumber = "1542"
+            endingLineNumber = "1542"
             landmarkName = "SelectRecipientViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -546,11 +546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactManager.swift"
-            timestampString = "527448172.926573"
+            timestampString = "527707023.179598"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
             landmarkName = "load_image(urlString:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -584,6 +584,22 @@
             startingLineNumber = "139"
             endingLineNumber = "139"
             landmarkName = "filterContentForSearchText(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Unify/ContactListViewController.swift"
+            timestampString = "527700141.837306"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1003"
+            endingLineNumber = "1003"
+            landmarkName = "sortContacts()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

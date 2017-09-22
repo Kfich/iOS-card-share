@@ -632,8 +632,8 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
     func uploadImage(imageDictionary: NSDictionary) {
         // Link to endpoint and send
         // Create URL For Test
-        //let testURL = ImageURLS().uploadToDevelopmentURL
-        let prodURL = ImageURLS().uploadToDevelopmentURL
+        let testURL = ImageURLS().uploadToDevelopmentURL
+        //let prodURL = ImageURLS().uploadToDevelopmentURL
         
         // Parse dictionary
         let imageData = imageDictionary["image_data"] as! Data
@@ -652,7 +652,7 @@ class AddContactViewController: UIViewController, UICollectionViewDelegate, UICo
              }*/
             
             // Currently Set to point to Prod Server
-        }, to:prodURL)
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):

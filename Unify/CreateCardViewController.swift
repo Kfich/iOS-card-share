@@ -25,12 +25,15 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     var organizations = [String]()
     var titles = [String]()
     var phoneNumbers = [String]()
+    var phoneNumberLabels = [String]()
     var emails = [String]()
+    var emailLabels = [String]()
     var websites = [String]()
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
+    var addressLabels = [String]()
     var corpBadges = [CardProfile.Bagde()]
     
     // Profile pics
@@ -155,6 +158,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.workInformation = [String]()
         self.corpBadges.removeAll()
         self.tags.removeAll()
+        self.addressLabels.removeAll()
+        self.emailLabels.removeAll()
+        self.phoneNumberLabels.removeAll()
         
         // Set name as default value
         if currentUser.fullName != ""{
@@ -213,6 +219,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             for number in currentUser.userProfile.phoneNumbers{
                 // Format number
                 phoneNumbers.append(self.format(phoneNumber: number["phone"]!)!)
+                //phoneNumberLabels.append(number[""])
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers

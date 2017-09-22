@@ -993,9 +993,23 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             var fullNameArr = nameToUpper.components(separatedBy: " ")  //split(contactName) {$0 == " "}
             let firstName: String = fullNameArr[0]
-            let lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
-            print(lastName[lastName.startIndex])
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            
+            if lastName.isEmpty{
+                lastName = "No Name"
+            }
+            
             return String(lastName[lastName.startIndex])
+            
+            /*
+            if String(lastName[lastName.startIndex]).isEmpty{
+                let none = "No Name"
+                return String(none[none.startIndex] )
+            }else{
+                let none = "No Name"
+                return String(lastName[lastName.startIndex])
+            }*/
+           
         }
         
         // Sort letters array

@@ -26,13 +26,21 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     var workInformation = [String]()
     var organizations = [String]()
     var titles = [String]()
-    var phoneNumbers = [String]()
-    var emails = [String]()
+    var phoneNumbers = [[String : String]]()
+    var phoneNumberDictionaryArray = [NSDictionary]()
+    var emailsDictionaryArray = [NSDictionary]()
+    var phoneLabels = [String]()
+    
+    var emails = [[String : String]]()
+    var emailLabels = [String]()
+    
     var websites = [String]()
     var socialLinks = [String]()
     var notes = [String]()
     var tags = [String]()
-    var addresses = [String]()
+    
+    var addresses = [[String : String]]()
+    var addressLabels = [String]()
     
     var socialBadges = [UIImage]()
     var profileImages = [UIImage()]
@@ -325,18 +333,32 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 
             }
         }
-        
+
         
         // Parse phone numbers
         if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
-                phoneNumbers.append(number["phone"]!)
+            
+                // Add dictionary
+                phoneNumbers.append(number)
+                // Add to label list
+                phoneLabels.append(number.keys.first!)
+                
             }
         }
+        
+        
         // Parse emails
         if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
             for email in ContactManager.sharedManager.currentUser.userProfile.emails{
-                emails.append(email["email"]!)
+                
+                // Append dict
+                emails.append(email)
+                
+                // Append label to dict
+                emailLabels.append(email.keys.first!)
+                
+                
             }
         }
         // Parse websites
@@ -373,7 +395,13 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // Parse addresses
         if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
             for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
-                addresses.append(add["address"]!)
+                // Add dict
+                addresses.append(add)
+                
+                // Add dict
+                addressLabels.append(add.keys.first!)
+                
+  
             }
         }
         
@@ -414,6 +442,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
                                         $0.title = "Add Title"
+                                        
                                         //$0.tag = "Add Titles"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
@@ -422,31 +451,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("titlesRow_\(index)") {
-                                        $0.title = "home "
+                                        // Set tint
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
-                                        // Create headerview
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        
+                                        print("Printing section index ", index)
+                                        
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
                                             
-                                            print("Cell updating !!")
                                             
-                                    }
+                                    }.cellSetup({ (cell, row) in
+                                        
+                                        //self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
+                                        
+                                        print("Cell Setup on Title Row >> \(row.indexPath!)")
+                                    })
                                 }
                                 
                                 /*$0.multivaluedRowToInsertAt = { index in
@@ -461,32 +484,21 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 for val in titles{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Title"
-                                        $0.title = "home "
                                         $0.value = val
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        
+                                        print("section index: ", $0.indexPath ?? IndexPath())
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
-                                            
-                                            print("Cell updating !!")
-                                            
+           
                                     }
 
                                 }
+                                
+            
             }
             
             +++
@@ -505,29 +517,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("organizationRow_\(index)") {
-                                        $0.title = "home "
+                                        
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
-                                        // Create headerview
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                    
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
                                             
-                                            print("Cell updating !!")
                                             
                                     }
                                 }
@@ -537,28 +536,13 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Name"
                                         $0.value = val
-                                        $0.title = "home "
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
-                                        //$0.tag = "Add Organizations"
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
-                                            
-                                            print("Cell updating !!")
+                                    
                                             
                                     }
 
@@ -622,16 +606,28 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 $0.multivaluedRowToInsertAt = { index in
                                     
                                     return NameRow("numbersRow_\(index)") {
-                                        $0.title = "home "
+                                        $0.title = "mobile"
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
-                                        // Create headerview
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        
+                                        // Add label to label list
+                                        self.phoneLabels.append("home")
+                                        self.phoneNumbers.append(["home" : ""])
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            if row.indexPath != nil{
+                                                // Add to label
+                                                self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
+                                                
+                                                // Test 
+                                                print("Cell updating with index Path", row.indexPath!)
+                                                
+                                            }
+                                            
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -644,7 +640,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                              // Add seperator to label
                                              cell.titleLabel?.addSubview(headerView)*/
                                             
-                                            print("Cell updating !!")
+                                    
                                             
                                     }
                                     
@@ -661,16 +657,22 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 for val in phoneNumbers{
                                     $0 <<< PhoneRow() {
                                         $0.placeholder = "Number"
-                                        $0.value = self.format(phoneNumber: val)//val
-                                        $0.title = "home "
-                                        // Add gesture
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        $0.value = self.format(phoneNumber: val.values.first!)//val
+                                        $0.title = val.keys.first!
+                                        
+                                        
                                         //$0.tag = "Phone Numbers"
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            cell.titleLabel?.text = self.phoneLabels[(cell.row.indexPath?.row)!]
+                                            
+                                            // Add gesture to cell
+                                            self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
+                                            
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -682,8 +684,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                              
                                              // Add seperator to label
                                              cell.titleLabel?.addSubview(headerView)*/
-                                            
-                                            print("Cell updating !!")
                                             
                                     }
 
@@ -708,14 +708,27 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     return NameRow("emailsRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
-                                        // Create headerview
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        
+                                        // Add label to labels
+                                        self.emailLabels.append("home")
+                                        self.emails.append(["home" : ""])
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            if row.indexPath != nil{
+                                                // Add to label
+                                                self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
+                                                
+                                                // Test
+                                                print("Cell updating with index Path", row.indexPath!)
+                                                
+                                            }
+
+                                            
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -745,15 +758,20 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Address"
                                         //$0.tag = "Add Emails"
-                                        $0.value = val
-                                        $0.title = "home "
-                                        // Add gesture to label
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        $0.value = val["email"]!
+                                        $0.title = val["type"]!
+                                        
                                         }.cellUpdate { cell, row in
-                                            
+                                            // Reconfig alignment
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            // Add gesture to cell
+                                            self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
+                                            
+                                            cell.titleLabel?.text = val["type"]!
+                                            
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -765,8 +783,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                              
                                              // Add seperator to label
                                              cell.titleLabel?.addSubview(headerView)*/
-                                            
-                                            print("Cell updating !!")
                                             
                                     }
 
@@ -788,10 +804,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("websitesRow_\(index)") {
-                                        $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
-                                        // Create headerview
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -802,27 +815,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Config auto correct
                                             cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                             cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
                                             
-                                            print("Cell updating !!")
+                                        
                                             
                                     }
-                                    /*return NameRow("websitesRow_\(index)") {
-                                     $0.placeholder = "Site"
-                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                     //$0.tag = "Add Websites"
-                                     }*/
+                                    
                                 }
                                 // Iterate through array and set val
                                 
@@ -830,27 +827,13 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Site"
                                         $0.value = val
-                                        $0.title = "home "
-                                        // Add gesture to label
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
                                             
-                                            print("Cell updating !!")
                                             
                                     }
 
@@ -970,14 +953,26 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     return NameRow("addressRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
-                                        // Create headerview
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
+                                        
+                                        // Add label to labels
+                                        self.addressLabels.append("home")
+                                        self.addresses.append(["home" : ""])
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            if row.indexPath != nil{
+                                                // Add to label
+                                                self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
+                                                
+                                                // Test
+                                                print("Cell updating with index Path", row.indexPath!)
+                                                
+                                            }
+
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -990,45 +985,30 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                              // Add seperator to label
                                              cell.titleLabel?.addSubview(headerView)*/
                                             
-                                            print("Cell updating !!")
-                                            
                                     }
                                     
-                                    
-                                    /*return NameRow("addressRow_\(index)") {
-                                        $0.placeholder = "Address"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                        //$0.tag = "Add Media Info"
-                                    }*/
+                                
                                 }
                                 
                                 // Iterate through array and set val
                                 for val in addresses{
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Address"
-                                        $0.title = "home "
-                                        $0.value = val
-                                        self.addGestureToLabel(label: $0.cell.textLabel!, intent: "phone")
-                                        //$0.tag = "Add Media Info"
+                                        $0.value = val.values.first!//val
+                                        $0.title = val.keys.first!
+                                        
                                         }.cellUpdate { cell, row in
-                                            
+                                            // Label config
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
                                             
-                                            print("Cell updating !!")
+                                            // Add gesture to cell
+                                            self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
+                                            
+                                            // Set text
+                                            cell.titleLabel?.text = self.addressLabels[(cell.row.indexPath?.row)!]
+                    
                                             
                                     }
 
@@ -1036,6 +1016,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         }
         
         
+        //let titleValues = self.form.sectionBy(tag: "Title Section")
+        //print("section index: ", titleValues?.index)
         
         
     }
@@ -1264,7 +1246,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     func addObservers() {
         // Call to refresh table
-        //NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.showSocialMediaSelection), name: NSNotification.Name(rawValue: "RefreshProfile"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ProfileEditViewController.updateCellLabel), name: NSNotification.Name(rawValue: "Update Labels"), object: nil)
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(ProfileEditViewController.parseForSocialIcons), name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: nil)
@@ -1613,10 +1595,10 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         let urls = ImageURLS()
         
         // Create URL For Prod
-        let prodURL = urls.uploadToStagingURL
+        //let prodURL = urls.uploadToStagingURL
         
         // Create URL For Test
-        //let testURL = urls.uploadToDevelopmentURL
+        let testURL = urls.uploadToDevelopmentURL
         
         
         // Show progress HUD
@@ -1632,7 +1614,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
              }*/
             
             // Currently Set to point to Prod Server
-        }, to:prodURL)
+        }, to:testURL)
         { (result) in
             switch result {
             case .success(let upload, _, _):
@@ -1776,8 +1758,19 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone" : str])
-                        phoneNumbers.append(str)
+                        
+                        let label = val.baseCell.textLabel?.text ?? "home"
+                        
+                        // Assign label
+                        phoneNumbers.append([label : str])
+                        // Add to label list
+                        phoneLabels.append(label)
+                        
+                        // Add to manager
+                        ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: [label : str])
+                        
+                        phoneNumberDictionaryArray.append(["email": str, "type": label])
+                        //print("Phone dict", phoneNumberDictionaryArray)
                         
                         // Func for stripping phone numbers
                         // let result = String(phoneNumberInput.text!.characters.filter { "01234567890.".characters.contains($0) })
@@ -1792,8 +1785,15 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.emails.append(["email" : str])
-                        emails.append(str)
+                        // Get label
+                        let label = val.baseCell.textLabel?.text ?? "home"
+                        
+                        ContactManager.sharedManager.currentUser.userProfile.emails.append(["email": str, "type": label])
+                        
+                        emailsDictionaryArray.append(["email": str, "type": label])
+                        print("Email dict", emailsDictionaryArray)
+                        
+                        emails.append([label : str])
                     }
                 }
             }
@@ -1813,6 +1813,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             // Website Section
             let websiteValues = form.sectionBy(tag: "Website Section")
             for val in websiteValues! {
+
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
@@ -1853,8 +1854,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 print(val.baseValue ?? "")
                 if let str = "\(val.baseValue ?? "")" as? String{
                     if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.setAddresses(addressRecords: ["address": str])
-                        addresses.append(str)
+                        
+                        // Get label
+                        let label = val.baseCell.textLabel?.text ?? "home"
+                        
+                        ContactManager.sharedManager.currentUser.userProfile.setAddresses(addressRecords: [label : str])
+                        addresses.append([label : str])
                     }
                 }
             }
@@ -1890,6 +1895,177 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
     }
     
+    func addGestureToLabel(label: UILabel, index: IndexPath) {
+        // Init tap gesture
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(setSelectedTransaction(sender:)))
+        label.isUserInteractionEnabled = true
+        // Add gesture to image
+        label.addGestureRecognizer(tapGestureRecognizer)
+        // Set image index
+        label.tag = index.row
+        // Set string identifier for view
+        label.accessibilityIdentifier = String(describing: index)
+        
+    
+    }
+    
+    func setSelectedTransaction(sender: UITapGestureRecognizer){
+        
+        let label = sender.view as! UILabel
+        let intent = label.text!
+        
+        print("Sender Index: \((sender.view?.tag)!)")
+        print("Sender Index Path: \((sender.view?.accessibilityIdentifier)!)")
+        print("Intent : \(intent)")
+        
+
+        let path = (sender.view?.accessibilityIdentifier)!.characters.filter { "01234567890.".characters.contains($0) }
+        print(path, "Path")
+        let indexPath = IndexPath(row: Int(String(path[1]))!, section: Int(String(path[0]))!)
+        
+        // Show selection screen
+        showSelectionWithOptions(cellPath: indexPath)
+    }
+    
+    func updateCellLabel(){
+        
+        // Init section val 
+        let cellIndex = ContactManager.sharedManager.labelPathWithIntent["index"] as! IndexPath
+        let newLabelValue = ContactManager.sharedManager.labelPathWithIntent["label_value"] as! String
+        
+        // Retrieve the label field
+        let sectionTag = form.allSections[cellIndex.section].tag ?? " "
+        let section = form.allSections[cellIndex.section]
+        
+        print("The section", sectionTag, " ", section)
+        
+        switch sectionTag {
+        case "Title Section":
+            print("Titles")
+            
+            // Try and set label
+            for cell in section {
+                if cell.indexPath == cellIndex {
+                    print("The Cell Label val", cell.baseCell.textLabel?.text)
+                    // Set text
+                    cell.baseCell.textLabel?.text = newLabelValue
+                    
+                }
+            }
+            
+        case "Organization Section":
+            print("Orgs")
+            
+            
+        case "Bio Section":
+            print("Bios")
+            
+            
+        case "Phone Section":
+            print("Phones")
+            
+            // Try and set label
+            for cell in section {
+                if cell.indexPath == cellIndex {
+                    
+                    print("The Cell Label val", cell.baseCell.textLabel?.text!)
+                    
+                    // Overwrite previous value for update
+                    self.phoneNumbers[cellIndex.row] = [newLabelValue : phoneNumbers[cellIndex.row].values.first!]
+                    
+                    self.phoneLabels[cellIndex.row] = newLabelValue
+                    
+                    print("The phone numbers array index value", self.phoneNumbers[cellIndex.row])
+                    
+                    
+                    
+                    // Set text
+                    cell.baseCell.textLabel?.text = newLabelValue
+                    
+                    // Update cell
+                    
+                    
+                }
+            }
+            
+            
+        case "Email Section":
+            print("Emails")
+            
+            // Try and set label
+            for cell in section {
+                if cell.indexPath == cellIndex {
+                    print("The Cell Label val", cell.baseCell.textLabel?.text)
+                    
+                    // Overwrite previous value for update
+                    self.emails[cellIndex.row] = [newLabelValue : emails[cellIndex.row].values.first!]
+                    self.emailLabels[cellIndex.row] = newLabelValue
+                    
+                    print("The phone emails array index value", self.emails[cellIndex.row])
+                    
+                    
+                    // Set text
+                    cell.baseCell.textLabel?.text = newLabelValue
+                    
+                }
+            }
+            
+            
+        case "Website Section":
+            print("Web")
+            
+            
+        case "Tag Section":
+            print("Tags")
+            
+            
+        case "Address Section":
+            print("Address")
+            
+            // Try and set label
+            for cell in section {
+                if cell.indexPath == cellIndex {
+                    print("The Cell Label val", cell.baseCell.textLabel?.text)
+                    
+                    // Overwrite previous value for update
+                    self.addresses[cellIndex.row] = [newLabelValue : addresses[cellIndex.row].values.first!]
+                    self.addressLabels[cellIndex.row] = newLabelValue
+                    
+                    print("The phone numbers array index value", self.addresses[cellIndex.row])
+                    
+                    
+                    // Set text
+                    cell.baseCell.textLabel?.text = newLabelValue
+                    
+                }
+            }
+            
+            
+        case "Note Section":
+            print("Notes")
+            
+            
+        default:
+            print("Not a valid section")
+        }
+        
+        
+    }
+    
+    func showSelectionWithOptions(cellPath: IndexPath) {
+        
+        print("The selected index path", cellPath)
+        // Set path
+        ContactManager.sharedManager.labelPathWithIntent["index"] = cellPath
+        
+        print("Manager label path", ContactManager.sharedManager.labelPathWithIntent)
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "LabelSelectVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+
     
     func showSelectionOptions() {
         // Call the viewController
