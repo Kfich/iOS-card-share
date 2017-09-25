@@ -87,6 +87,7 @@
 		FB24EE491F0D667B006A997D /* PMAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE461F0D667B006A997D /* PMAlertController.swift */; };
 		FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB24EE471F0D667B006A997D /* PMAlertController.xib */; };
 		FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB24EE4D1F0EB721006A997D /* UDWrapper.swift */; };
+		FB2B710A1F75A5D3005B1CA5 /* AddNewContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2B71091F75A5D3005B1CA5 /* AddNewContactViewController.swift */; };
 		FB2F42841F1526CB00E3D6B5 /* KVNProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F42781F1526CB00E3D6B5 /* KVNProgress.m */; };
 		FB2F42851F1526CB00E3D6B5 /* KVNProgressConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2F427A1F1526CB00E3D6B5 /* KVNProgressConfiguration.m */; };
 		FB2F42861F1526CB00E3D6B5 /* KVNProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB2F427B1F1526CB00E3D6B5 /* KVNProgressView.xib */; };
@@ -334,6 +335,7 @@
 		FB24EE461F0D667B006A997D /* PMAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMAlertController.swift; sourceTree = "<group>"; };
 		FB24EE471F0D667B006A997D /* PMAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMAlertController.xib; sourceTree = "<group>"; };
 		FB24EE4D1F0EB721006A997D /* UDWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UDWrapper.swift; sourceTree = "<group>"; };
+		FB2B71091F75A5D3005B1CA5 /* AddNewContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewContactViewController.swift; sourceTree = "<group>"; };
 		FB2F42771F1526CB00E3D6B5 /* KVNProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVNProgress.h; sourceTree = "<group>"; };
 		FB2F42781F1526CB00E3D6B5 /* KVNProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVNProgress.m; sourceTree = "<group>"; };
 		FB2F42791F1526CB00E3D6B5 /* KVNProgressConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVNProgressConfiguration.h; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 				FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */,
 				FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */,
 				FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */,
+				FB2B71091F75A5D3005B1CA5 /* AddNewContactViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -1133,6 +1136,7 @@
 				FB767D451F4358750065F46E /* EventsViewController.swift in Sources */,
 				FB84ACE71F682D310004510F /* Reachability.swift in Sources */,
 				1C151D2D1F1DBE73004B23CE /* CountlyAPM.m in Sources */,
+				FB2B710A1F75A5D3005B1CA5 /* AddNewContactViewController.swift in Sources */,
 				1C151D341F1DBE73004B23CE /* CountlyEvent.m in Sources */,
 				1CB31C991E9406EB00A0C4A5 /* Contacts-TableViewController.swift in Sources */,
 				FBA1F5121F38CCF100CDCB76 /* AddContactViewController.swift in Sources */,

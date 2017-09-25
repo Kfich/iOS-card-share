@@ -1,8 +1,8 @@
 //
-//  ProfileEditViewController.swift
+//  AddNewContactViewController.swift
 //  Unify
 //
-//  Created by Kevin Fich on 9/14/17.
+//  Created by Kevin Fich on 9/22/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
@@ -10,8 +10,9 @@ import UIKit
 import Eureka
 import MBPhotoPicker
 import Alamofire
+import Contacts
 
-class ProfileEditViewController: FormViewController, UICollectionViewDelegate, UICollectionViewDataSource, RSKImageCropViewControllerDelegate{
+class AddNewContactViewController: FormViewController, UICollectionViewDelegate, UICollectionViewDataSource, RSKImageCropViewControllerDelegate{
     
     // Properties
     // ----------------------------------
@@ -81,46 +82,85 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     @IBOutlet var lastNameTextField: UITextField!
     
     
+    
     // IBActions
     // ----------------------------------
+    @IBAction func selectProfilePicture(_ sender: AnyObject) {
+        
+        // Add code to edit photo here
+        photo.onPhoto = { (image: UIImage?) -> Void in
+            print("Selected image")
+            
+            /*
+             self.firstName.becomeFirstResponder()
+             
+             self.hasProfilePic = true
+             
+             
+             self.profileImageContainerView.image = image
+             global_image = image*/
+            
+            print("Selected image")
+            
+            // Change button text
+            //self.selectProfileImageButton.titleLabel?.text = "Change"
+            
+            // Set image to view
+            self.contactImageView.image = image
+            
+            // Previous location for image assignment to user object
+            
+            
+            //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
+            
+        }
+        
+        photo.onCancel = {
+            print("Cancel Pressed")
+        }
+        photo.onError = { (error) -> Void in
+            print("Photo selection Error")
+            print("Error: \(error.rawValue)")
+        }
+        photo.present(self)
+        
+    }
+    
     @IBAction func doneButtonPressed(_ sender: AnyObject) {
-       
+        // Drop the keyboard
+        self.view.endEditing(true)
+        
+        ContactManager.sharedManager.userCreatedNewContact = true
+        
         // Execute call to parse profile from form
         self.parseEditedProfile()
         
-    }
-
-    @IBAction func backButtonPressed(_ sender: AnyObject) {
         
-        // Reassign to the OG user object
-        if let user = UDWrapper.getDictionary("user"){
-            // Assign current user to manager object from phone
-            // Print to test
-            print("USER DICTIONARY")
-            print(user)
-            
-            print("User has profile!")
-            ContactManager.sharedManager.currentUser = User(withDefaultsSnapshot:user)
-            
-            print("CURRENT USER from edit profile cancel action ")
-            ContactManager.sharedManager.currentUser.printUser()
-        }
+        // Dismiss view
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func backButtonPressed(_ sender: AnyObject) {
+        // Set manager to false
+        ContactManager.sharedManager.userCreatedNewContact = false
+        
+        // Reset new contact
+        ContactManager.sharedManager.newContact = Contact()
+        
+        // Dismiss view
+        dismiss(animated: true, completion: nil)
         
         // Dismiss VC
         navigationController?.popViewController(animated: true)
         
     }
     
+    
     // Collection view Delegate && Data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == self.profileImageCollectionView {
-            // Config images
-            return self.profileImages.count
-        }else{
             // Badge config
-            return socialBadges.count
-        }
-        //return 4//self.socialBadges.count
+        
+        return socialBadges.count
         
     }
     
@@ -129,129 +169,59 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         //cell.backgroundColor = UIColor.blue
         
-        if collectionView == self.profileImageCollectionView {
-            // Config images
-            //self.configurePhoto(cell: cell)
-        }else{
-            // Badge config
-            //self.configureBadges(cell: cell)
-        }
         
-        if collectionView == self.profileImageCollectionView {
-            // Init cell
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        
+        //configureViews(cell: cell)
+        // Configure badge image
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        var image = UIImage()
+        image = self.socialBadges[indexPath.row]
+        // Set image
+        imageView.image = image
+        
+        if indexPath.row != self.socialBadges.count - 1 {
             
-            if indexPath.row != self.profileImages.count - 1 {
-                
-                // Image config
-                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
-                let image = self.profileImages[indexPath.row]
-                //imageView.layer.masksToBounds = true
-                // Set image to view
-                imageView.image = image
-                
-                // Delete
-                let deleteIconView = UIImageView(frame: CGRect(x: 70, y: 5, width: 20, height: 20))
-                let deleteImage = UIImage(named: "icn-minus-red")
-                deleteIconView.image = deleteImage
-                
-                // Add to imageview
-                imageView.addSubview(deleteIconView)
-                
-                // Config cell
-                self.configurePhoto(cell: cell)
-                
-                // Add to collection
-                cell.contentView.addSubview(imageView)
-                
-            }else{
-                
-                print("Last image index on Photo collection")
-                // Badge icon
-                var image = UIImage()
-                image = self.profileImages[indexPath.row]
-                let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
-                imageView.layer.masksToBounds = true
-                // Set image to view
-                imageView.image = image
-                // Add to collection
-                cell.contentView.addSubview(imageView)
-                
-            }
+            // Delete
+            let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+            let deleteImage = UIImage(named: "icn-minus-red")
+            deleteIconView.image = deleteImage
             
+            // Add to imageview
+            imageView.addSubview(deleteIconView)
+            
+            // Add to cell
+            cell.contentView.addSubview(imageView)
             
         }else{
             
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+            print("Last image index")
             
-            //configureViews(cell: cell)
             // Configure badge image
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
             var image = UIImage()
             image = self.socialBadges[indexPath.row]
             // Set image
             imageView.image = image
             
-            if indexPath.row != self.socialBadges.count - 1 {
-                
-                // Delete
-                let deleteIconView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
-                let deleteImage = UIImage(named: "icn-minus-red")
-                deleteIconView.image = deleteImage
-                
-                // Add to imageview
-                imageView.addSubview(deleteIconView)
-                
-                // Add to cell
-                cell.contentView.addSubview(imageView)
-                
-            }else{
-                
-                print("Last image index")
-                
-                // Configure badge image
-                let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
-                var image = UIImage()
-                image = self.socialBadges[indexPath.row]
-                // Set image
-                imageView.image = image
-                
-                // Add subview
-                cell.contentView.addSubview(imageView)
-            }
-            
-            
+            // Add subview
+            cell.contentView.addSubview(imageView)
         }
+        
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == self.profileImageCollectionView {
-            
-            if indexPath.row !=  self.profileImages.count - 1{
-                // Delete the card
-                self.removeImageFromProfile(index: indexPath.row)
-            }else{
-                // Add new badge
-                //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
-                self.selectProfilePicture(self)
-            }
-            //cell.backgroundColor = UIColor.red
-            
+        if indexPath.row !=  self.socialBadges.count - 1{
+            // Delete the card
+            self.removeBadgeFromProfile(index: indexPath.row)
         }else{
-            
-            if indexPath.row !=  self.socialBadges.count - 1{
-                // Delete the card
-                self.removeBadgeFromProfile(index: indexPath.row)
-            }else{
-                // Add new badge
-                performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
-            }
-            
-            
+            // Add new badge
+            performSegue(withIdentifier: "showContactMediaSelection", sender: self)
         }
+        
         // Remove icon from list
         print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
         
@@ -268,9 +238,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     }
     
     
-    
-    
-    
     // Page setup
     
     override func viewDidLoad() {
@@ -280,12 +247,9 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // Fill profile with example info
         currentUser = ContactManager.sharedManager.currentUser
         
+        
         configureViews()
         
-        self.configureSelectedImageView(imageView: self.contactImageView)
-        
-        // Parse for images
-        self.parseAccountForImges()
         
         // Parse prof for social info
         self.parseForSocialIcons()
@@ -296,138 +260,86 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // For notification handling
         self.addObservers()
         
-        // Set profile image
-        if ContactManager.sharedManager.currentUser.profileImages.count > 0 {
-            contactImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
-        }
+        // Set image
+        let image = UIImage(named: "profile-placeholder")
+        self.contactImageView.image = image
         
-        // Set names
-        if ContactManager.sharedManager.currentUser.firstName != ""{
-            firstNameTextField.text = ContactManager.sharedManager.currentUser.firstName
-        }
+        // Config textfields
+        self.firstNameTextField.placeholder = "First name"
+        self.lastNameTextField.placeholder = "Last name"
         
-        if ContactManager.sharedManager.currentUser.lastName != ""{
-            lastNameTextField.text = ContactManager.sharedManager.currentUser.lastName
-        }
         
+        self.configureSelectedImageView(imageView: self.contactImageView)
         // Parse bio info
         
-        /*if contact.bios.count > 0{
-         // Iterate throught array and append available content
-         for bio in currentUser.userProfile.bios{
-         bios.append(bio["bio"]!)
-         }
-         }*/
-        
         // Parse work info
-        /*if contact.workInformationList.count > 0{
-         for info in contact.workInformationList{
-         workInformation.append(info["work"]!)
-         }
-         }*/
-        
-        // Parse work info
-        if ContactManager.sharedManager.currentUser.userProfile.titles.count > 0{
-            for info in ContactManager.sharedManager.currentUser.userProfile.titles{
+        if contact.titles.count > 0{
+            for info in contact.titles{
                 titles.append((info["title"])!)
-                
             }
         }
-
         
         // Parse phone numbers
-        if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
-            for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
-            
-                // Add dictionary
+        if contact.phoneNumbers.count > 0{
+            for number in contact.phoneNumbers{
                 phoneNumbers.append(number)
                 // Add to label list
                 phoneLabels.append(number.keys.first!)
-                
             }
         }
-        
-        
         // Parse emails
-        if ContactManager.sharedManager.currentUser.userProfile.emails.count > 0{
-            for email in ContactManager.sharedManager.currentUser.userProfile.emails{
-                
-                // Append dict
+        if contact.emails.count > 0{
+            for email in contact.emails{
                 emails.append(email)
                 
-                // Append label to dict
-                emailLabels.append(email.keys.first!)
-                
-                
+                emailLabels.append(email["type"]!)
             }
         }
         // Parse websites
-        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
-            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
+        if contact.websites.count > 0{
+            for site in contact.websites{
                 websites.append(site["website"]!)
             }
         }
         // Parse organizations
-        if ContactManager.sharedManager.currentUser.userProfile.organizations.count > 0{
-            for org in ContactManager.sharedManager.currentUser.userProfile.organizations{
+        if contact.organizations.count > 0{
+            for org in contact.organizations{
                 organizations.append(org["organization"]!)
             }
         }
         
         // Parse notes
-        if ContactManager.sharedManager.currentUser.userProfile.notes.count > 0{
-            for note in ContactManager.sharedManager.currentUser.userProfile.notes{
+        if contact.notes.count > 0{
+            for note in contact.notes{
                 notes.append(note["note"]!)
             }
         }
         // Parse socials links
-        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
+        if contact.socialLinks.count > 0{
+            for link in contact.socialLinks{
                 socialLinks.append(link["link"]!)
             }
         }
         // Parse socials links
-        if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
-            for link in ContactManager.sharedManager.currentUser.userProfile.tags{
+        if contact.tags.count > 0{
+            for link in contact.tags{
                 tags.append(link["tag"]!)
             }
         }
         // Parse addresses
-        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
-            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
-                // Add dict
+        if contact.addresses.count > 0{
+            for add in contact.addresses{
                 addresses.append(add)
                 
-                // Add dict
                 addressLabels.append(add.keys.first!)
-                
-  
             }
         }
+
         
         print("Testing Current User")
         
         
-        
-        // Create
-        
-        //let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height:365))
-        
-        //self.cardWrapperView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height:365)
-        //self.cardWrapperView.backgroundColor = UIColor.gray
-        
-        //headerView.addSubview(self.cardWrapperView)
-        
-        //headerView.backgroundColor = UIColor.lightGray
-        
-        //let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height:100))
-        
-        //footerView.backgroundColor = UIColor.lightGray
-        
-        //self.profileImageCollectionView.backgroundColor = UIColor.blue
-        
         tableView.tableHeaderView = self.cardWrapperView
-        tableView.tableFooterView = self.profileImageCollectionView
         
         
         // Set bg
@@ -465,12 +377,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             
-                                    }.cellSetup({ (cell, row) in
-                                        
-                                        //self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
-                                        
-                                        print("Cell Setup on Title Row >> \(row.indexPath!)")
-                                    })
+                                        }.cellSetup({ (cell, row) in
+                                            
+                                            //self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
+                                            
+                                            print("Cell Setup on Title Row >> \(row.indexPath!)")
+                                        })
                                 }
                                 
                                 /*$0.multivaluedRowToInsertAt = { index in
@@ -494,12 +406,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
-           
+                                            
                                     }
-
+                                    
                                 }
                                 
-            
+                                
             }
             
             +++
@@ -520,7 +432,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     return NameRow("organizationRow_\(index)") {
                                         
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
-                                    
+                                        
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -543,13 +455,15 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                    
+                                            
                                             
                                     }
-
+                                    
                                 }
                                 
             }
+            
+            /*
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "Bio Information", footer: "") {
@@ -587,8 +501,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 
                 
                 
-            }
-
+            }*/
+            
             
             +++
             
@@ -624,7 +538,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 // Add to label
                                                 self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
                                                 
-                                                // Test 
+                                                // Test
                                                 print("Cell updating with index Path", row.indexPath!)
                                                 
                                             }
@@ -641,7 +555,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                              // Add seperator to label
                                              cell.titleLabel?.addSubview(headerView)*/
                                             
-                                    
+                                            
                                             
                                     }
                                     
@@ -687,7 +601,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                              cell.titleLabel?.addSubview(headerView)*/
                                             
                                     }
-
+                                    
                                 }
                                 
             }
@@ -728,7 +642,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 print("Cell updating with index Path", row.indexPath!)
                                                 
                                             }
-
+                                            
                                             
                                             /*
                                              // Init line view
@@ -786,7 +700,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                              cell.titleLabel?.addSubview(headerView)*/
                                             
                                     }
-
+                                    
                                 }
             }
             +++
@@ -817,7 +731,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                             cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             
-                                        
+                                            
                                             
                                     }
                                     
@@ -837,7 +751,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                     }
-
+                                    
                                 }
             }
             
@@ -887,11 +801,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("tagRow_\(index)") {
-                                     $0.placeholder = "Tag"
-                                     //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                     //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                     //$0.tag = "Add Media Info"
-                                     }
+                                        $0.placeholder = "Tag"
+                                        //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                        //$0.tag = "Add Media Info"
+                                    }
                                 }
                                 
                                 // Iterate through array and set val
@@ -900,7 +814,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Tag"
                                         $0.value = val
                                         //$0.tag = "Add Media Info"
-                                        }
+                                    }
                                 }
             }
             +++
@@ -919,11 +833,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("notesRow_\(index)") {
-                                     $0.placeholder = "Note"
-                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
-                                     //$0.tag = "Add Media Info"
-                                     }
+                                        $0.placeholder = "Note"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
+                                        //$0.tag = "Add Media Info"
+                                    }
                                 }
                                 
                                 // Iterate through array and set val
@@ -970,7 +884,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 if view is UILabel{
                                                     // assign label
                                                     typeLabel = view as! UILabel
-                                                
+                                                    
                                                 }
                                             }
                                             // Check for nil path
@@ -981,7 +895,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 
                                             }
                                     }
-
+                                    
                                 }
                                 
                                 // Iterate through array and set val
@@ -1063,94 +977,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 }
                                             }
                                     }
-                                }
-            }
-            
-            
-            /*
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "",
-                               footer: "") {
-                                $0.tag = "Address Section 2"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Address"
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("addressRow_\(index)") {
-                                        $0.title = "home "
-                                        $0.cell.titleLabel?.textColor = self.view.tintColor
-                                        
-                                        // Add label to labels
-                                        self.addressLabels.append("home")
-                                        self.addresses.append(["home" : ""])
-                                        
-                                        }.cellUpdate { cell, row in
-                                            
-                                            cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = self.view.tintColor
-                                            
-                                            if row.indexPath != nil{
-                                                // Add to label
-                                                self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
-                                                
-                                                // Test
-                                                print("Cell updating with index Path", row.indexPath!)
-                                                
-                                            }
-
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
-                                            
-                                    }
-                                    
                                 
                                 }
-                                
-                                // Iterate through array and set val
-                                for val in addresses{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Address"
-                                        $0.value = val.values.first!//val
-                                        $0.title = val.keys.first!
-                                        
-                                        }.cellUpdate { cell, row in
-                                            // Label config
-                                            cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
-                                            cell.titleLabel?.textColor = self.view.tintColor
-                                            
-                                            // Add gesture to cell
-                                            self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
-                                            
-                                            // Set text
-                                            cell.titleLabel?.text = self.addressLabels[(cell.row.indexPath?.row)!]
-                    
-                                            
-                                    }
-
-                                }
-        }*/
         
+        }
         
-        //let titleValues = self.form.sectionBy(tag: "Title Section")
-        //print("section index: ", titleValues?.index)
         
         
     }
@@ -1161,147 +992,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
-        /*
-        // Assign all the items in each list to the contact profile on manager
-        // Parse table section vals
-        
-        if ContactManager.sharedManager.userCreatedNewContact {
-            
-            
-            
-            // Titles Section
-            let titleValues = form.sectionBy(tag: "Title Section")
-            for val in titleValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.titles.append(["title" : str])
-                        titles.append(str)
-                    }
-                }
-            }
-            
-            // Phone Number section
-            let phoneValues = form.sectionBy(tag: "Phone Section")
-            for val in phoneValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.setPhoneRecords(phoneRecord: str)
-                        phoneNumbers.append(str)
-                    }
-                }
-            }
-            
-            // Email Section
-            let emailValues = form.sectionBy(tag: "Email Section")
-            for val in emailValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Append to arrays
-                        contact.setEmailRecords(emailAddress: str)
-                        emails.append(str)
-                    }
-                }
-            }
-            
-            // Website Section
-            let websiteValues = form.sectionBy(tag: "Website Section")
-            for val in websiteValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Append to array
-                        contact.setWebsites(websiteRecord: str)
-                    }
-                }
-            }
-            
-            /*// Social Media Section
-             let mediaValues = form.sectionBy(tag: "Media Section")
-             for val in mediaValues! {
-             print(val.baseValue ?? "")
-             if let str = "\(val.baseValue ?? "")" as? String{
-             if str != "nil" && str != "" {
-             // Append to array
-             contact.setSocialLinks(socialLink: str)
-             socialLinks.append(str)
-             }
-             }
-             }*/
-            
-            // Notes Section
-            let noteValues = form.sectionBy(tag: "Notes Section")
-            for val in noteValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Set values to arrays
-                        contact.setNotes(note: str)
-                        notes.append(str)
-                    }
-                }
-            }
-            
-            // Social Media Section
-            let tagValues = form.sectionBy(tag: "Tag Section")
-            for val in tagValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.setTags(tag: str)
-                        tags.append(str)
-                        
-                        //print("Social links not needed here anymore")
-                    }
-                }
-            }
-            
-            // Address Section
-            let addressValues = form.sectionBy(tag: "Address Section")
-            for val in addressValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.setAddresses(address: str)
-                        addresses.append(str)
-                        
-                        //print("Social links not needed here anymore")
-                    }
-                }
-            }
-            
-            // Organization section
-            let organizationValues = form.sectionBy(tag: "Organization Section")
-            for val in organizationValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Append to arrays
-                        contact.setOrganizations(organization: str)
-                        organizations.append(str)
-                    }
-                }
-            }
-            
-            // Add origin
-            self.contact.origin = "unify"
-            
-            // Set contact to shared manager
-            ContactManager.sharedManager.newContact = self.contact
-            
-            
-            // Test to print profile
-            ContactManager.sharedManager.newContact.printContact()
-            
-            
-            // Post Alert
-            self.postNotification()
-            
-        }else{
-            print("They cancelled")
-        }*/
         
     }
     
@@ -1353,7 +1043,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         self.selectedImage = croppedImage
         
         // Set image to profile
-        self.setImageData()
+        //self.uploadi()
         
         //self.profileImages.append(self.selectedImage)
         // Refresh account images
@@ -1378,16 +1068,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     // Custom methods
     
     func addObservers() {
-        // Call to refresh table
-        NotificationCenter.default.addObserver(self, selector: #selector(ProfileEditViewController.updateCellLabel), name: NSNotification.Name(rawValue: "Update Labels"), object: nil)
+        // Call to refresh table labels
+        NotificationCenter.default.addObserver(self, selector: #selector(AddNewContactViewController.updateCellLabel), name: NSNotification.Name(rawValue: "Update Labels"), object: nil)
         
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(ProfileEditViewController.parseForSocialIcons), name: NSNotification.Name(rawValue: "RefreshEditProfile"), object: nil)
-        
-        // Update user
-       // NotificationCenter.default.addObserver(self, selector: #selector(EditProfileViewController.uploadEditedUser), name: NSNotification.Name(rawValue: "UpdateCurrentUserProfile"), object: nil)
+        // Refresh for social icons
+        NotificationCenter.default.addObserver(self, selector: #selector(AddNewContactViewController.parseForSocialIcons), name: NSNotification.Name(rawValue: "RefreshContactEditProfile"), object: nil)
         
     }
+    
     
     
     func configurePhotoPicker() {
@@ -1411,112 +1099,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
     }
     
-    func selectProfilePicture(_ sender: AnyObject) {
-        
-        // Add code to edit photo here
-        photo.onPhoto = { (image: UIImage?) -> Void in
-            print("Selected image")
-            
-            /*
-             self.firstName.becomeFirstResponder()
-             
-             self.hasProfilePic = true
-             
-             
-             self.profileImageContainerView.image = image
-             global_image = image*/
-            
-            print("Selected image")
-            
-            // Change button text
-            //self.selectProfileImageButton.titleLabel?.text = "Change"
-            
-            // Set selected
-            self.selectedImage = image!
-            
-            // Show cropper view
-            ContactManager.sharedManager.userArrivedFromSocial = true
-            
-            //self.profileImageContainerView.layer.borderColor = UIColor.clear as! CGColor
-            
-            // Show cropper view
-            self.dismiss(animated: true, completion: {
-                self.showCropper(withImage: self.selectedImage)
-            })
-            
-            
-            // Previous location for image assignment to user object
-            
-            
-            //self.addProfilePictureBtn.setImage(image, for: UIControlState.normal)
-            
-        }
-        
-        photo.onCancel = {
-            print("Cancel Pressed")
-        }
-        photo.onError = { (error) -> Void in
-            print("Photo selection Error")
-            print("Error: \(error.rawValue)")
-        }
-        photo.present(self)
-        
-    }
-
-    
-    func updateCurrentUser() {
-        // Configure to send to server
-        
-        // Assign current user object
-        
-        // Send to server
-        let parameters = ["data" : ContactManager.sharedManager.currentUser.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
-        print("\n\nThe user update")
-        print(parameters)
-        
-        
-        // Show progress hud
-        KVNProgress.show(withStatus: "Updating profile...")
-        
-        // Save card to DB
-        //let parameters = ["data": card.toAnyObject()]
-        
-        
-        Connection(configuration: nil).updateUserCall(parameters as [AnyHashable : Any]){ response, error in
-            if error == nil {
-                print("User updated Response ---> \(String(describing: response))")
-                
-                // Set card uuid with response from network
-                let dictionary : Dictionary = response as! [String : Any]
-                print(dictionary)
-                
-                
-                // Store user to device
-                UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
-                
-                // Refresh profile
-                self.postNotificationForUpdate()
-                
-                // Hide HUD
-                KVNProgress.showSuccess(withStatus: "Profile updated successfully!")
-                
-                // Nav out the view
-                self.navigationController?.popViewController(animated: true)
-                
-                
-            } else {
-                print("Card Created Error Response ---> \(String(describing: error))")
-                // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error creating your card. Please try again.")
-            }
-            // Hide indicator
-            KVNProgress.dismiss()
-        }
-        
-    }
-    
-    
-
     
     func initializeBadgeList() {
         // Image config
@@ -1565,29 +1147,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         parseForSocialIcons()
     }
     
-    func removeImageFromProfile(index: Int) {
-        
-        print("Initial list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
-        // Remove item at index
-        ContactManager.sharedManager.currentUser.profileImages.remove(at: index)
-        // Remove image from local list
-        self.profileImages.remove(at: index)
-        
-        print("Post delete list count \(ContactManager.sharedManager.currentUser.profileImages.count)")
-        
-        self.profileImageCollectionView.reloadData()
-        
-        self.parseAccountForImges()
-    }
-
-    
     
     func parseForSocialIcons() {
         
-        // Badge List
-        self.initializeBadgeList()
         
-        print("PARSING for icons from edit profile vc")
+        print("PARSING for icons from add contact vc")
         // Remove all items from badges
         self.socialBadges.removeAll()
         self.socialLinks.removeAll()
@@ -1596,8 +1160,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         //self.currentUser = ContactManager.sharedManager.currentUser
         
         // Parse socials links
-        if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
-            for link in ContactManager.sharedManager.currentUser.userProfile.socialLinks{
+        if ContactManager.sharedManager.newContact.socialLinks.count > 0{
+            for link in ContactManager.sharedManager.newContact.socialLinks{
                 socialLinks.append(link["link"]!)
                 // Test
                 print("Count >> \(socialLinks.count)")
@@ -1622,19 +1186,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     
                     // Append link to list
                     self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    /*if !socialBadges.contains(item.first?.value as! UIImage) {
-                     print("NOT IN LIST")
-                     // Append link to list
-                     self.socialBadges.append(item.first?.value as! UIImage)
-                     }else{
-                     print("ALREADY IN LIST")
-                     }*/
-                    // Append link to list
-                    //self.socialBadges.append(item.first?.value as! UIImage)
-                    
-                    
-                    
+            
                     //print("THE IMAGE IS PRINTING")
                     //print(item.first?.value as! UIImage)
                     print("SOCIAL BADGES COUNT")
@@ -1646,100 +1198,185 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             
             
             // Reload table
-            //self.collectionTableView.reloadData()
+            self.socialBadgeCollectionView.reloadData()
         }
         
         // Add image to the end of list
         let image = UIImage(named: "Green-1")
         self.socialBadges.append(image!)
         
-        // Get images
-        parseAccountForImges()
-        
         // Reload table
-        
         self.socialBadgeCollectionView.reloadData()
         
     }
     
-    
-    
-    func parseAccountForImges() {
-        print("Parse account for images Executing")
-        print("Parse account images count >> \(self.profileImages.count)")
+    // Send to server
+    func uploadContactRecord() {
         
-        // Clear all from list
-        self.profileImages.removeAll()
+        // Assign contact object
+        self.contact = ContactManager.sharedManager.newContact
         
-        print("Parse account images count post delete >> \(self.profileImages.count)")
-        print("Profile images count for current user >> \(ContactManager.sharedManager.currentUser.profileImages.count)")
+        print("The new contacts social media")
+        contact.printContact()
         
-        // Set current user
-        self.currentUser = ContactManager.sharedManager.currentUser
         
-        // Check for image, set to imageview
-        if currentUser.profileImages.count > 0{
-            for img in currentUser.profileImages {
-                let image = UIImage(data: img["image_data"] as! Data)
-                // Append to list
-                self.profileImages.append(image!)
+        // Show HUD
+        KVNProgress.show(withStatus: "Saving new contact..")
+        
+        // Send to server
+        let parameters = ["data" : contact.toAnyObject(), "uuid": self.currentUser.userId] as [String : Any]
+        print("\n\nContact Params")
+        print(parameters)
+        
+        // Show HUD
+        KVNProgress.show(withStatus: "Uploading new contact..")
+        
+        // Establish connection
+        Connection(configuration: nil).uploadContactCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Contact Created Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSArray = response as! NSArray
+                print(dictionary)
+                
+                // Hide HUD
+                KVNProgress.showSuccess(withStatus: "Contact added successfully!")
+                
+                // Post notification for refresh
+                self.postRefreshNotification()
+                
+                // Nav out the view
+                self.dismiss(animated: true, completion: nil)
+                
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error creating your contact. Please try again.")
             }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+    }
+    
+    func setContact() {
+        // Set contact from manager
+        //self.contact = ContactManager.sharedManager.newContact
+        
+        // Parse vals
+        if let first = firstNameTextField.text {
+            // Assign to contact
+            ContactManager.sharedManager.newContact.first = first
+        }else{
+            print("No first")
+        }
+        // Parse vals
+        if let last = lastNameTextField.text {
+            // Assign to contact
+            ContactManager.sharedManager.newContact.last = last
+        }else{
+            print("No last")
         }
         
-        // Append dummy image to the end
-        // Add image to the end of list
-        let image = UIImage(named: "Green-1")
-        self.profileImages.append(image!)
+        // Set contact full name
+        ContactManager.sharedManager.newContact.name = "\(ContactManager.sharedManager.newContact.first) \(ContactManager.sharedManager.newContact.last)"
         
-        print("Refreshing table of photos")
+        // Set ContactManager Nav bool
+        ContactManager.sharedManager.userCreatedNewContact = true
         
-        // Refresh
-        self.profileImageCollectionView.reloadData()
+        // Store contact to list
+        //self.syncContact()
+        
+        // Upload record
+        self.parseEditedProfile()
+        
         
     }
     
-    func setImageData() {
-        // Image data png
-        //let imageData = UIImagePNGRepresentation(self.profileImageContainerView.image!, 0.5)
-        let imageData = UIImageJPEGRepresentation(self.selectedImage, 0.5)
-        print(imageData!)
+    func syncContact() {
         
-        // Generate id string for image
-        let idString = currentUser.randomString(length: 20)
+        // Init CNContact Object
+        //let temp = CNContact()
+        //temp.emailAddresses.append(CNLabeledValue<NSString>)
+        let tempContact = ContactManager.sharedManager.newContact
         
-        // Assign asset name and type
-        let fname = idString
-        let mimetype = "image/png"
+        // Append to list of existing contacts
+        let store = CNContactStore()
         
-        // Create image dictionary
-        let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        contactToAdd.givenName = self.firstNameTextField.text ?? ""
+        contactToAdd.familyName = self.lastNameTextField.text ?? ""
         
-        // Add image to user profile images
-        ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
+        if tempContact.phoneNumbers.count > 0{
+            
+            // Parse for mobile
+            let mobileNumber = CNPhoneNumber(stringValue: (tempContact.phoneNumbers[0]["phone"] ?? ""))
+            let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+            contactToAdd.phoneNumbers = [mobileValue]
+        }
         
-        print("Contact Manager total images count: >> \(ContactManager.sharedManager.currentUser.profileImages.count)")
+        if tempContact.emails.count > 0 {
+            
+            // Parse for emails
+            let email = CNLabeledValue(label: CNLabelWork, value: tempContact.emails[0]["email"] as! NSString ?? "")
+            contactToAdd.emailAddresses = [email]
+        }
         
-        // Upload to Server
-        // Save card to DB
-        let parameters = imageDict
-        print(parameters)
         
-        // Init imageURLS
-        let urls = ImageURLS()
+        if let image = self.contactImageView.image {
+            contactToAdd.imageData = UIImagePNGRepresentation(image)
+        }
         
-        // Create URL For Prod
-        //let prodURL = urls.uploadToStagingURL
+        if tempContact.titles.count > 0 {
+            // Add to contact
+            contactToAdd.jobTitle = tempContact.titles[0]["title"]!
+        }
+        if tempContact.organizations.count > 0 {
+            // Add to contact
+            contactToAdd.organizationName = tempContact.organizations[0]["organization"]!
+        }
         
+        // Save contact to phone
+        let saveRequest = CNSaveRequest()
+        saveRequest.add(contactToAdd, toContainerWithIdentifier: nil)
+        
+        do {
+            try store.execute(saveRequest)
+        } catch {
+            print(error)
+        }
+        
+        // Init contact object
+        let newContact : CNContact = contactToAdd
+        
+        print("New Contact >> \(newContact)")
+        
+        // Append to contact list
+        ContactManager.sharedManager.phoneContactList.append(newContact)
+        
+        // Post notification for refresh
+        //self.postRefreshNotification()
+        
+    }
+    
+    func uploadImage(imageDictionary: NSDictionary) {
+        // Link to endpoint and send
         // Create URL For Test
-        let testURL = urls.uploadToDevelopmentURL
+        let testURL = ImageURLS().uploadToDevelopmentURL
+        //let prodURL = ImageURLS().uploadToDevelopmentURL
         
+        // Parse dictionary
+        let imageData = imageDictionary["image_data"] as! Data
+        let fname = imageDictionary["file_name"] as! String
         
         // Show progress HUD
-        //KVNProgress.show(withStatus: "Adding image to profile..")
+        KVNProgress.show(withStatus: "Generating profile..")
         
         // Upload image with Alamo
         Alamofire.upload(multipartFormData: { multipartFormData in
-            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            multipartFormData.append(imageData, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
             
             print("Multipart Data >>> \(multipartFormData)")
             /*for (key, value) in parameters {
@@ -1760,14 +1397,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     print("\n\n\n\n success...")
                     print(response.result.value ?? "Successful upload")
                     
-                    // Dismiss hud
-                    //KVNProgress.showSuccess()
-                    
-                    // Reload table
-                    self.parseAccountForImges()
-                    
-                    
-                    //self.profileImageCollectionView.reloadData()
                 }
                 
             case .failure(let encodingError):
@@ -1777,13 +1406,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
             }
         }
+    }
+    
+    
+    // Notification posting
+    
+    func postRefreshNotification() {
+        // Notification for list refresh
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: self)
+    }
+    func postNotificationForUpdate() {
         
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshProfile"), object: self)
         
-        // Test if image stored
-        //print(self.newUser.profileImages)
+        //UpdateCurrentUserProfile
         
     }
     
+    // Reset arrays
     func clearCurrentUserArrays() {
         // Clear all profile info to prepare for override
         ContactManager.sharedManager.currentUser.userProfile.bios.removeAll()
@@ -1824,15 +1465,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         
     }
-    
-    func postNotificationForUpdate() {
-        
-        // Notification for radar screen
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshProfile"), object: self)
-        
-        //UpdateCurrentUserProfile
-        
-    }
 
     func parseEditedProfile() {
         // Parse form
@@ -1841,217 +1473,220 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // Clear manager arrays
         self.clearCurrentUserArrays()
         
+        
+        // Configure to send to server
+        if firstNameTextField.text != "" && lastNameTextField.text != "" {
+            // Fields not empty
+            ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
+            ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
+            // Combine to make full name
+            ContactManager.sharedManager.currentUser.fullName = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
+        }
+        
+        
+        
+        // Clear the arrays
+        self.removeAllFromArrays()
+        
+        // Assign all the items in each list to the contact profile on manager
+        // Parse table section vals
+        
+        /*
+        // Bios Section
+        let bioValues = form.sectionBy(tag: "Bio Section")
+        for val in bioValues! {
             
-            // Configure to send to server
-            if firstNameTextField.text != "" && lastNameTextField.text != "" {
-                // Fields not empty
-                ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
-                ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
-                // Combine to make full name
-                ContactManager.sharedManager.currentUser.fullName = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String {
+                // Append to user profile
+                if str != "nil" && str != "" {
+                    ContactManager.sharedManager.currentUser.userProfile.setBioRecords(emailRecords: ["bio": str])
+                    bios.append(str)
+                }
             }
+        }*/
+        
+        // Titles Section
+        let titleValues = form.sectionBy(tag: "Title Section")
+        for val in titleValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    ContactManager.sharedManager.newContact.titles.append(["title" : str])
+                    titles.append(str)
+                }
+            }
+        }
+        
+        // Organization section
+        let organizationValues = form.sectionBy(tag: "Organization Section")
+        for val in organizationValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    // Append to arrays
+                    ContactManager.sharedManager.newContact.setOrganizations(organization: str)
+                    organizations.append(str)
+                }
+            }
+        }
+        
+        // Phone Number section
+        let phoneValues = form.sectionBy(tag: "Phone Section")
+        for val in phoneValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    
+                    let label = val.baseCell.textLabel?.text ?? "home"
+                    
+                    // Assign label
+                    phoneNumbers.append([label : str])
+                    // Add to label list
+                    phoneLabels.append(label)
+                    
+                    // Add to manager
+                    ContactManager.sharedManager.newContact.phoneNumbers.append([label : str])
+                    
+                    phoneNumberDictionaryArray.append(["email": str, "type": label])
+                    //print("Phone dict", phoneNumberDictionaryArray)
+                    
+                    // Func for stripping phone numbers
+                    // let result = String(phoneNumberInput.text!.characters.filter { "01234567890.".characters.contains($0) })
+                    // print("Filtered Phone String >> \(result)")
+                }
+            }
+        }
+        
+        // Email Section
+        let emailValues = form.sectionBy(tag: "Email Section")
+        for val in emailValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    // Get label
+                    let label = val.baseCell.textLabel?.text ?? "home"
+                    
+                    ContactManager.sharedManager.newContact.emails.append(["email": str, "type": label])
+                    
+                    emailsDictionaryArray.append(["email": str, "type": label])
+                    print("Email dict", emailsDictionaryArray)
+                    
+                    emails.append([label : str])
+                }
+            }
+        }
+        
+        // Website Section
+        let websiteValues = form.sectionBy(tag: "Website Section")
+        for val in websiteValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    // Append to array
+                    ContactManager.sharedManager.newContact.setWebsites(websiteRecord: str)
+                }
+            }
+        }
 
-            
-            
-            // Clear the arrays
-            self.removeAllFromArrays()
-            
-            // Assign all the items in each list to the contact profile on manager
-            // Parse table section vals
-            
-            // Bios Section
-            let bioValues = form.sectionBy(tag: "Bio Section")
-            for val in bioValues! {
-                
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String {
-                    // Append to user profile
-                    if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.setBioRecords(emailRecords: ["bio": str])
-                        bios.append(str)
-                    }
+        
+        // Notes Section
+        let noteValues = form.sectionBy(tag: "Notes Section")
+        for val in noteValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    // Set values to arrays
+                    ContactManager.sharedManager.newContact.setNotes(note: str)
+                    notes.append(str)
                 }
             }
-            
-            // Titles Section
-            let titleValues = form.sectionBy(tag: "Title Section")
-            for val in titleValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.titles.append(["title" : str])
-                        titles.append(str)
-                    }
+        }
+        
+        // Social Media Section
+        let tagValues = form.sectionBy(tag: "Tag Section")
+        for val in tagValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    ContactManager.sharedManager.newContact.setTags(tag: str)
+                    tags.append(str)
+                    
+                    //print("Social links not needed here anymore")
                 }
             }
-            
-            // Phone Number section
-            let phoneValues = form.sectionBy(tag: "Phone Section")
-            for val in phoneValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
+        }
+        
+        // Organization section
+        let addressValues = form.sectionBy(tag: "Address Section")
+        for val in addressValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    
+                    // Init address dict
+                    var addressDict:[String : String] = [:]
+                    // Extract values
+                    let cell = val.baseCell as! PostalAddressCell
+                    
+                    var label = "work" // assign the address type here
+                    
+                    // Get label val
+                    for view in cell.contentView.subviews{
+                        print("Subview iteration count", cell.contentView.subviews.count)
                         
-                        let label = val.baseCell.textLabel?.text ?? "home"
+                        print("Access ID", view.accessibilityIdentifier)
                         
-                        // Assign label
-                        phoneNumbers.append([label : str])
-                        // Add to label list
-                        phoneLabels.append(label)
-                        
-                        // Add to manager
-                        ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: [label : str])
-                        
-                        phoneNumberDictionaryArray.append(["email": str, "type": label])
-                        //print("Phone dict", phoneNumberDictionaryArray)
-                        
-                        // Func for stripping phone numbers
-                        // let result = String(phoneNumberInput.text!.characters.filter { "01234567890.".characters.contains($0) })
-                        // print("Filtered Phone String >> \(result)")
-                    }
-                }
-            }
-            
-            // Email Section
-            let emailValues = form.sectionBy(tag: "Email Section")
-            for val in emailValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Get label
-                        let label = val.baseCell.textLabel?.text ?? "home"
-                        
-                        ContactManager.sharedManager.currentUser.userProfile.emails.append(["email": str, "type": label])
-                        
-                        emailsDictionaryArray.append(["email": str, "type": label])
-                        print("Email dict", emailsDictionaryArray)
-                        
-                        emails.append([label : str])
-                    }
-                }
-            }
-            /*
-             // Work Info Section
-             let workValues = form.sectionBy(tag: "Work Section")
-             for val in workValues! {
-             print(val.baseValue ?? "")
-             if let str = "\(val.baseValue ?? "")" as? String{
-             if str != "nil" && str != "" {
-             ContactManager.sharedManager.currentUser.userProfile.workInformationList.append(["work" :str])
-             workInformation.append(str)
-             }
-             }
-             }*/
-            
-            // Website Section
-            let websiteValues = form.sectionBy(tag: "Website Section")
-            for val in websiteValues! {
-
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.setWebsites(websiteRecords: ["website": str])
-                    }
-                }
-            }
-            
-            // Social Media Section
-            let mediaValues = form.sectionBy(tag: "Tag Section")
-            for val in mediaValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.setTags(tagRecords: ["tag": str])
-                        tags.append(str)
-                        
-                        //print("Social links not needed here anymore")
-                    }
-                }
-            }
-            
-            // Organization section
-            let organizationValues = form.sectionBy(tag: "Organization Section")
-            for val in organizationValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        ContactManager.sharedManager.currentUser.userProfile.setOrganizations(organizationRecords: ["organization": str])
-                        organizations.append(str)
-                    }
-                }
-            }
-            
-            // Organization section
-            let addressValues = form.sectionBy(tag: "Address Section")
-            for val in addressValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        
-                        // Init address dict
-                        var addressDict:[String : String] = [:]
-                        // Extract values
-                        let cell = val.baseCell as! PostalAddressCell
-                        
-                        var label = "work" // assign the address type here
-                        
-                        // Get label val
-                        for view in cell.contentView.subviews{
-                            print("Subview iteration count", cell.contentView.subviews.count)
+                        if view.accessibilityIdentifier != nil{
                             
-                            print("Access ID", view.accessibilityIdentifier)
+                            print("The Address Label Original text", (view as! UILabel).text ?? "No text")
                             
-                            if view.accessibilityIdentifier != nil{
-                                
-                                print("The Address Label Original text", (view as! UILabel).text ?? "No text")
-                                
-                                // Set text
-                                label = (view as! UILabel).text ?? "work"
-                                
-                            }
-                            
-                            
+                            // Set text
+                            label = (view as! UILabel).text ?? "work"
                             
                         }
                         
-                        // Set all values for the cells
-                        addressDict["street"] = cell.streetTextField?.text ?? ""
-                        addressDict["city"] = cell.cityTextField?.text ?? ""
-                        addressDict["state"] = cell.stateTextField?.text ?? ""
-                        addressDict["zip"] = cell.postalCodeTextField?.text ?? ""
-                        addressDict["country"] = cell.countryTextField?.text ?? ""
-                        addressDict["type"] = label 
                         
                         
-                        let dict = [label : addressDict]
-                        
-                        // Test it
-                        print("Final Address\n", dict)
-                        
-                        // Append to user object
-                        ContactManager.sharedManager.currentUser.userProfile.setAddresses(addressRecords: addressDict)
-                        addresses.append(addressDict)
                     }
+                    
+                    // Set all values for the cells
+                    addressDict["street"] = cell.streetTextField?.text ?? ""
+                    addressDict["city"] = cell.cityTextField?.text ?? ""
+                    addressDict["state"] = cell.stateTextField?.text ?? ""
+                    addressDict["zip"] = cell.postalCodeTextField?.text ?? ""
+                    addressDict["country"] = cell.countryTextField?.text ?? ""
+                    addressDict["type"] = label
+                    
+                    
+                    let dict = [label : addressDict]
+                    
+                    // Test it
+                    print("Final Address\n", dict)
+                    
+                    // Append to user object
+                    ContactManager.sharedManager.newContact.addresses.append(addressDict)
+                    addresses.append(addressDict)
                 }
             }
-            
-            // Set current user
-            //ContactManager.sharedManager.currentUser = self.currentUser
-            
-            // Test to print profile
-            print("PRINTING FROM CONTAINER CURRENT USER")
-            ContactManager.sharedManager.currentUser.printUser()
-            
-            // Post notification
-            //self.postNotificationForUpdate()
+        }
+        // Set current user
+        //ContactManager.sharedManager.currentUser = self.currentUser
         
-            // Call to update
-            self.updateCurrentUser()
-            
-            // Store user to device
-            //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
-            
-            //self.postNotification()
+        // Test to print profile
+        print("PRINTING FROM CONTAINER CURRENT USER")
+        ContactManager.sharedManager.currentUser.printUser()
+        
+        // Post notification
+        //self.postNotificationForUpdate()
+        
+        // Call to update
+        self.uploadContactRecord()
+        
+        // Store user to device
+        //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+        
+        //self.postNotification()
         
     }
     
@@ -2077,7 +1712,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // Set string identifier for view
         label.accessibilityIdentifier = String(describing: index)
         
-    
+        
     }
     
     func setSelectedTransaction(sender: UITapGestureRecognizer){
@@ -2089,7 +1724,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         print("Sender Index Path: \((sender.view?.accessibilityIdentifier)!)")
         print("Intent : \(intent)")
         
-
+        
         let path = (sender.view?.accessibilityIdentifier)!.characters.filter { "01234567890.".characters.contains($0) }
         print(path, "Path")
         let indexPath = IndexPath(row: Int(String(path[1]))!, section: Int(String(path[0]))!)
@@ -2100,7 +1735,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     func updateCellLabel(){
         
-        // Init section val 
+        // Init section val
         let cellIndex = ContactManager.sharedManager.labelPathWithIntent["index"] as! IndexPath
         let newLabelValue = ContactManager.sharedManager.labelPathWithIntent["label_value"] as! String
         
@@ -2209,22 +1844,22 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     
                     for view in cell.baseCell.contentView.subviews{
                         print("Subview iteration count", cell.baseCell.contentView.subviews.count)
-                
+                        
                         print("Access ID", view.accessibilityIdentifier)
                         
                         if view.accessibilityIdentifier != nil{
-                        
+                            
                             print("The Address Label Original text", (view as! UILabel).text ?? "No text")
                             
                             // Set text
                             (view as! UILabel).text = newLabelValue
                             
-                            }
-                    
+                        }
                         
-                
+                        
+                        
                     }
-            
+                    
                 }
             }
             
@@ -2253,7 +1888,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         let controller = storyboard.instantiateViewController(withIdentifier: "LabelSelectVC")
         self.present(controller, animated: true, completion: nil)
     }
-
+    
     
     func showSelectionOptions() {
         // Call the viewController
@@ -2349,21 +1984,21 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     func configureViews(){
         // Toolbar button config
         /*
-        outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        outreachCallButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        outreachCalendarButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        
-        // Config buttons
-        // ** Email and call inverted
-        smsButton.image = UIImage(named: "btn-chat-blue")
-        emailButton.image = UIImage(named: "btn-message-blue")
-        callButton.image = UIImage(named: "btn-call-blue")
-        calendarButton.image = UIImage(named: "btn-calendar-blue")*/
+         outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+         
+         outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+         
+         outreachCallButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+         
+         outreachCalendarButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+         
+         
+         // Config buttons
+         // ** Email and call inverted
+         smsButton.image = UIImage(named: "btn-chat-blue")
+         emailButton.image = UIImage(named: "btn-message-blue")
+         callButton.image = UIImage(named: "btn-call-blue")
+         calendarButton.image = UIImage(named: "btn-calendar-blue")*/
     }
     
     

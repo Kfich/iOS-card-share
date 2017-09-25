@@ -396,9 +396,6 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         dismiss(animated: true, completion: nil)
     }
 
-
-    
-    
     
     // Page setup
     
@@ -635,8 +632,20 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             sections.append("Addresses")
             for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
                 
-                addresses.append(add.values.first!)
-                addressLabels.append(add.keys.first!)
+                
+                // Set all values for the cells
+                let street = add["street"]!
+                let city = add["city"]!
+                let state = add["state"]!
+                let zip = add["zip"]!
+                let country = add["country"]!
+                
+                // Create Address String
+                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                
+                // Append values
+                addresses.append(addressString)
+                addressLabels.append(add["type"]!)
                 
             }
             // Create section data

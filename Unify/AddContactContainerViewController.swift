@@ -76,6 +76,7 @@ class AddContactContainerViewController: FormViewController {
         if contact.phoneNumbers.count > 0{
             for number in contact.phoneNumbers{
                 phoneNumbers.append(number["phone"]!)
+                
             }
         }
         // Parse emails

@@ -575,13 +575,13 @@ public class Contact: Fuseable{
                 setAddresses(address: list as! String)
                 
             }else{
-                print("Outhere array", list as! NSArray)
+                print("Outhere array", list as Dictionary)
                 //
                 let addArray = list as! NSArray
                 
                 for item in addArray {
                     // Set web
-                    setAddresses(address: item as! String)
+                    setAddresses(address: item as! Dictionary)
                 }
                 
                 print("The addresses")

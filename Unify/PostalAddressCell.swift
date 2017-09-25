@@ -24,7 +24,7 @@ public protocol PostalAddressCellConformance {
 }
 
 /// Base class that implements the cell logic for the PostalAddressRow
-open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAddressCellConformance, UITextFieldDelegate {
+open class _PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalAddressCellConformance, UITextFieldDelegate{
 
     @IBOutlet open var streetTextField: UITextField?
     @IBOutlet open var firstSeparatorView: UIView?
