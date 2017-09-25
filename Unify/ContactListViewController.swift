@@ -304,22 +304,25 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func refreshTable() {
-        // Reload contacts
         
-        // Reset all the arrays
-        letters.removeAll()
-        contacts.removeAll()
-        contactObjectTable.removeAll()
-        //contactsHashTable.removeAll()
-        tuples.removeAll()
-        contactTuples.removeAll()
-        dataArray.removeAll()
-        
-        
-        
-        // Fetch contact list
-        getContacts()
-        //fetchContactsForUser()
+        DispatchQueue.main.async {
+            
+            // Reset all the arrays
+            self.letters.removeAll()
+            self.contacts.removeAll()
+            self.contactObjectTable.removeAll()
+            //contactsHashTable.removeAll()
+            self.tuples.removeAll()
+            self.contactTuples.removeAll()
+            self.dataArray.removeAll()
+            
+            
+            
+            // Fetch contact list
+            self.getContacts()
+            //fetchContactsForUser()
+            
+        }
     }
     
     func configureSelectedImageView(imageView: UIImageView) {
@@ -421,7 +424,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Upload Contacts
                 //self.uploadContactRecords()
                 // Reload the tableview.
-                self.tblSearchResults.reloadData()
+                //self.tblSearchResults.reloadData()
                 
                 
                 
@@ -877,7 +880,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         // Refresh table
-        self.tblSearchResults.reloadData()
+        //self.tblSearchResults.reloadData()
         
     }
     
@@ -944,6 +947,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     
                     // Sort list
                     //self.sortTransactionList(list: self.searchTransactionList)
+                    
                     
                     
                     
@@ -1171,7 +1175,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         // Set hash to contact manager
-        ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
+        //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
 
     }
     
@@ -1398,7 +1402,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         print(">>> SENT PARAMETERS >>>> \n\(parameters))")
         // Show progress
-        KVNProgress.show(withStatus: "Fetching details on the activity...")
+        //KVNProgress.show(withStatus: "Fetching details on the activity...")
         
         // Create User Objects
         Connection(configuration: nil).getContactsCall(parameters, completionBlock: { response, error in
@@ -1422,7 +1426,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     
                     let social = item as! NSDictionary
                     
-                    print("The newest social", social["addresses"] as? NSArray ?? NSArray())
+                    print("The newest social", social["addresses"] as Any /*as? NSArray ?? NSArray()*/)
                     
                     // Init user objects from array
                     let contact = Contact(arraySnapshot: item as! NSDictionary)

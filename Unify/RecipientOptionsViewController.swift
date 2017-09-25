@@ -1740,6 +1740,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 contact.emails.append(["email": emailLabel.text!])
             }
             
+            if self.syncContactSwitch.isOn == true {
+                
+                // Set bool for contact sync
+                ContactManager.sharedManager.syncIntroContactSwitch = true
+                print("The intro switch was on")
+                
+            }
+            
             // Set manager navigation path
             ContactManager.sharedManager.userSelectedNewContactForIntro = true
             
@@ -2197,9 +2205,17 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Set location from field
             transaction.location = self.notesLabel.text ?? ""
             
-            /*if self.syncContactSwitch.isOn == true {
+            /*
+            if self.syncContactSwitch.isOn == true {
+                
+                // Set bool for contact sync
+                ContactManager.sharedManager.syncIntroContactSwitch = true
+                
+                
                 // Upload sync contact record
-                self.syncContact()
+                //self.syncContact()
+                
+                
             }*/
 
         }

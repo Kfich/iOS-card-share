@@ -429,6 +429,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         tableView.tableHeaderView = self.cardWrapperView
         tableView.tableFooterView = self.profileImageCollectionView
         
+        //tableView.separ
+        tableView.separatorStyle = .none
         
         // Set bg
         tableView.backgroundColor = UIColor.white
@@ -447,6 +449,17 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Titles"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                            
                                     }
                                 }
                                 
@@ -465,9 +478,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             
+                                            
                                     }.cellSetup({ (cell, row) in
                                         
                                         //self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
+                                        
+                                        
                                         
                                         print("Cell Setup on Title Row >> \(row.indexPath!)")
                                     })
@@ -494,6 +510,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
            
                                     }
 
@@ -501,6 +527,9 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 
             
             }
+            
+            // Filler section
+            +++ Section("")
             
             +++
             
@@ -514,6 +543,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Organizations"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -544,22 +583,45 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                     
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                             
                                     }
 
                                 }
                                 
             }
+            // Filler section
+            +++ Section("")
+            
             +++
             
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "Bio Information", footer: "") {
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "", footer: "") {
                 $0.tag = "Bio Section"
+                
                 $0.addButtonProvider = { section in
                     return ButtonRow(){
                         $0.title = "Add Bio Info"
                         //$0.tag = "Add Bio"
                         }.cellUpdate { cell, row in
                             cell.textLabel?.textAlignment = .left
+                            
+                            // Init line view
+                            let headerView = UIView()
+                            
+                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                            headerView.backgroundColor = UIColor.lightGray
+                            
+                            
+                            // Add seperator to label
+                            cell.addSubview(headerView)
                     }
                 }
                 $0.multivaluedRowToInsertAt = { index in
@@ -582,13 +644,27 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         $0.placeholder = "Bio"
                         $0.value = val
                         //$0.tag = "b_row\(IndexPath())"
-                    }
+                    }.cellUpdate({ (cell, row) in
+                        
+                        
+                        // Init line view
+                        let headerView = UIView()
+                        
+                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                        headerView.backgroundColor = UIColor.lightGray
+                        
+                        
+                        // Add seperator to label
+                        cell.addSubview(headerView)
+                    })
                 }
                 
                 
                 
             }
 
+            // Filler section
+            +++ Section("")
             
             +++
             
@@ -602,6 +678,17 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Phone Numbers"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                           
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -669,6 +756,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                            
                                             cell.titleLabel?.text = self.phoneLabels[(cell.row.indexPath?.row)!]
                                             
                                             // Add gesture to cell
@@ -691,6 +788,10 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 
             }
+            
+            // Filler section
+            +++ Section("")
+            
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -703,6 +804,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Emails"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -773,6 +884,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             cell.titleLabel?.text = val["type"]!
                                             
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                            
                                             /*
                                              // Init line view
                                              let headerView = UIImageView()
@@ -789,6 +910,10 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
 
                                 }
             }
+            
+            // Filler section
+            +++ Section("")
+            
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -801,6 +926,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Websites"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -835,42 +970,24 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "(left alignment)"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                            
                                             
                                     }
 
                                 }
             }
+            // Filler section
+            +++ Section("")
             
-            /* +++
-             
-             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-             header: "Social Media Links",
-             footer: "") {
-             $0.tag = "Media Section"
-             $0.addButtonProvider = { section in
-             return ButtonRow(){
-             $0.title = "Add Media Info"
-             //$0.tag = "Add Media Info"
-             }.cellUpdate { cell, row in
-             cell.textLabel?.textAlignment = .left
-             }
-             }
-             $0.multivaluedRowToInsertAt = { index in
-             return NameRow("socialLinkRow_\(index)") {
-             $0.placeholder = "Link"
-             //$0.tag = "Add Media Info"
-             }
-             }
-             
-             // Iterate through array and set val
-             for val in socialLinks{
-             $0 <<< NameRow() {
-             $0.placeholder = "Link"
-             $0.value = val
-             //$0.tag = "Add Media Info"
-             }
-             }
-             }*/
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -883,6 +1000,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Media Info"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -900,9 +1027,24 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Tag"
                                         $0.value = val
                                         //$0.tag = "Add Media Info"
-                                        }
+                                        }.cellUpdate({ (cell, row) in
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                        })
                                 }
             }
+            
+            // Filler section
+            +++ Section("")
+            
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -915,6 +1057,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Media Info"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -932,9 +1084,24 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Note"
                                         $0.value = val
                                         //$0.tag = "Add Media Info"
-                                    }
+                                    }.cellUpdate({ (cell, row) in
+                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        
+                                        
+                                        // Add seperator to label
+                                        cell.addSubview(headerView)
+                                    })
                                 }
             }
+            
+            // Filler section
+            +++ Section("")
+            
             +++
             
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
@@ -947,6 +1114,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Media Info"
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -1059,6 +1236,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                         
                                                         
                                                     }
+                                                    
+                                                    // Init line view
+                                                    let headerView = UIView()
+                                                    
+                                                    headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                                    headerView.backgroundColor = UIColor.lightGray
+                                                    
+                                                    
+                                                    // Add seperator to label
+                                                    cell.addSubview(headerView)
                                                     
                                                 }
                                             }

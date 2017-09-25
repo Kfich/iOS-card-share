@@ -535,16 +535,15 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             
             // Set location from contact object
             transaction.location = contact.notes[0]["note"] ?? ""
-                
-            
-            /*if self.syncContactSwitch.isOn == true {
-            
-             // Upload sync contact record
-             
-             self.syncContact()
-             
-             }*/
 
+            
+            if ContactManager.sharedManager.syncIntroContactSwitch == true {
+                
+                // Upload sync contact record
+                self.syncContact()
+                
+            }
+            
         }else{
             // CNContact Objects
             let contact = ContactManager.sharedManager.contactToIntro
@@ -614,7 +613,117 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             KVNProgress.dismiss()
         }
     }
+    
+    func contactToCNContact(contact: Contact) -> CNMutableContact {
+        var cnObject = CNContact()
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        //contactToAdd.givenName = self.firstNameLabel.text ?? ""
+        //contactToAdd.familyName = self.lastNameLabel.text ?? ""
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        
+        // Set name
+        //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        let fullName = contact.name
+        var fullNameArr = fullName.components(separatedBy: " ")
+        let firstName: String = fullNameArr[0]
+        var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : ""
+        
+        // Add names
+        contactToAdd.givenName = firstName
+        contactToAdd.familyName = lastName ?? ""
+        
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
+            
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                // print to test
+                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                
+                // Parse for mobile
+                let mobileNumber = CNPhoneNumber(stringValue: (number.values.first!))
+                let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+                contactToAdd.phoneNumbers = [mobileValue]
+                
+            }
+            
+            
+        }
+        if contact.emails.count > 0 {
+            
+            // Iterate over array and pull value
+            for address in contact.emails {
+                // Print to test
+                print("Email : \(address["email"]!)")
+                
+                // Parse for emails
+                let email = CNLabeledValue(label: CNLabelWork, value: address["email"] as NSString? ?? "")
+                contactToAdd.emailAddresses = [email]
+                
+            }
+            
+        }
+        // Cast mutable contact back to regular contact
+        //cnObject = contactToAdd as CNContact
+        
+        print("Immutable Copy \(cnObject)")
+        print("Immutable Copy Phones \(cnObject.phoneNumbers)")
+        print("Immutable Copy Emails \(cnObject.emailAddresses)")
+        
+        
+        // Return the non mutable copy
+        return contactToAdd
+        
+    }
+    
+    
+    func syncContact() {
+        
+        // Init CNContact Object
+        //let temp = CNContact()
+        //temp.emailAddresses.append(CNLabeledValue<NSString>)
+        //let tempContact = ContactManager.sharedManager.newContact
+        
+        // Append to list of existing contacts
+        let store = CNContactStore()
+        
+        // Set text for name
+        var contactToAdd = CNMutableContact()
+        // Set contact to save
+        contactToAdd = self.contactToCNContact(contact: ContactManager.sharedManager.contactObjectForIntro)
+        
+        // Save contact to phone
+        let saveRequest = CNSaveRequest()
+        saveRequest.add(contactToAdd, toContainerWithIdentifier: nil)
+        
+        do {
+            try store.execute(saveRequest)
+        } catch {
+            print(error)
+        }
+        
+        // Init contact object
+        let newContact : CNContact = contactToAdd
+        
+        print("New Contact >> \(newContact)")
+        
+        // Append to contact list
+        ContactManager.sharedManager.phoneContactList.append(newContact)
+        
+        // Post notification for refresh
+        //self.postRefreshNotification()
+        
+    }
 
+    
     
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {

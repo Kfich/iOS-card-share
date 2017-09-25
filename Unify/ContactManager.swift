@@ -42,6 +42,9 @@ class ContactManager{
     var userSelectedNewContactForIntro = false
     var userSelectedNewRecipientForIntro = false
     
+    // Conatct syncing on intro
+    var syncIntroContactSwitch = true
+    
     // Check if user from network
     var userIsRemoteUser = false
     var userNeedsRemoteImage = false

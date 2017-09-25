@@ -182,6 +182,9 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         print("Parsing card for corps")
         ContactManager.sharedManager.parseForCorpBadges(card: self.selectedCard)
+        
+        // Add observers for notifs
+        addObservers()
     }
 
     // Page Setup
@@ -312,10 +315,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             sections.append("Emails")
             for email in selectedCard.cardProfile.emails{
                 emails.append(email["email"]! )
-                emailLabels.append(email["type"]!)
+                emailLabels.append(email["type"] ?? "work")
                 
                 // Init record and test
-                let record = ["email" : email["email"]!, "type" : email["type"]!]
+                let record = ["email" : email["email"]!, "type" : email["type"] ?? "work"]
                 print("Email Record", record)
             }
             // Create section data

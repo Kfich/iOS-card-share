@@ -43,6 +43,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     // Selected items
     var selectedUserPhone = ""
     var selectedUserEmail = ""
+    var selectedBadgeIndex = 0
     
     var socialBadges = [UIImage]()
     var profileImages = [UIImage()]
@@ -69,8 +70,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     var count = 0
     
     @IBOutlet var cardWrapperView: UIView!
+    @IBOutlet var cardWrapperViewSingleWrapper: UIView!
+    @IBOutlet var cardWrapperViewEmptyWrapper: UIView!
     
-    @IBOutlet var profileImageCollectionView: UICollectionView!
+    
+    @IBOutlet var singleWrapperCollectionView: UICollectionView!
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
     
@@ -80,15 +84,14 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     // IBOutlets
     // ----------------------------------
     @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var emailLabel: UILabel!
-    @IBOutlet var phoneLabel: UILabel!
+    
+    // Card wrapper view with 2 collection cells
     @IBOutlet var contactImageView: UIImageView!
     @IBOutlet var smsButton: UIBarButtonItem!
     @IBOutlet var emailButton: UIBarButtonItem!
     @IBOutlet var callButton: UIBarButtonItem!
     @IBOutlet var calendarButton: UIBarButtonItem!
-    
+    @IBOutlet var badgeImageView: UIImageView!
     
     // Outreach toolbar
     @IBOutlet var outreachChatButton: UIBarButtonItem!
@@ -97,9 +100,38 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     @IBOutlet var outreachCalendarButton: UIBarButtonItem!
     
     
+    // Card wrapper view with single collection cell
+    @IBOutlet var contactImageViewSingleWrapper: UIImageView!
+    @IBOutlet var smsButtonSingleWrapper: UIBarButtonItem!
+    @IBOutlet var emailButtonSingleWrapper: UIBarButtonItem!
+    @IBOutlet var callButtonSingleWrapper: UIBarButtonItem!
+    @IBOutlet var calendarButtonSingleWrapper: UIBarButtonItem!
+    // Outreach toolbar
+    @IBOutlet var outreachChatButtonSingleWrapper: UIBarButtonItem!
+    @IBOutlet var outreachCallButtonSingleWrapper: UIBarButtonItem!
+    @IBOutlet var outreachMailButtonSingleWrapper: UIBarButtonItem!
+    @IBOutlet var outreachCalendarButtonSingleWrapper: UIBarButtonItem!
+    @IBOutlet var badgeImageViewSingleWrapper: UIImageView!
+    
+    
+    
+    // Card wrapper view with single collection cell
+    @IBOutlet var contactImageViewEmptyWrapper: UIImageView!
+    @IBOutlet var smsButtonEmptyWrapper: UIBarButtonItem!
+    @IBOutlet var emailButtonEmptyWrapper: UIBarButtonItem!
+    @IBOutlet var callButtonEmptyWrapper: UIBarButtonItem!
+    @IBOutlet var calendarButtonEmptyWrapper: UIBarButtonItem!
+    // Outreach toolbar
+    @IBOutlet var outreachChatButtonEmptyWrapper: UIBarButtonItem!
+    @IBOutlet var outreachCallButtonEmptyWrapper: UIBarButtonItem!
+    @IBOutlet var outreachMailButtonEmptyWrapper: UIBarButtonItem!
+    @IBOutlet var outreachCalendarButtonEmptyWrapper: UIBarButtonItem!
+    @IBOutlet var badgeImageViewEmptyWrapper: UIImageView!
+    
+    
+    
     @IBOutlet var phoneImageView: UIImageView!
     @IBOutlet var emailImageView: UIImageView!
-    @IBOutlet var badgeImageView: UIImageView!
     
     @IBOutlet var shadowView: YIInnerShadowView!
     
@@ -204,12 +236,18 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         if collectionView == self.socialBadgeCollectionView {
             // Config images
             return self.socialBadges.count
-        }else{
+        }else if collectionView == self.badgeCollectionView{
             // Badge config
             return corpBadges.count
+        }else{
+            if self.socialBadges.count > 0 {
+                // Assign the socials to single collection
+                return self.socialBadges.count
+            }else{
+                // The corp badges are the move
+                return corpBadges.count
+            }
         }
-        
-        
         //return 4//self.socialBadges.count
         
     }
@@ -233,7 +271,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             
             // Add subview
             cell.contentView.addSubview(imageView)
-        }else{
+        }else if collectionView == self.badgeCollectionView{
             
             // Config badge
             
@@ -248,6 +286,38 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             // Add subview
             cell.contentView.addSubview(imageView)
             
+        }else{
+            
+            // The single collection is present
+            // Check which list populated
+            if self.socialBadges.count > 0 {
+                // Config for social
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                let image = self.socialBadges[indexPath.row]
+                
+                // Set image
+                imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }else{
+                // Config for corp
+                let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl/*selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl*/)
+                
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                imageView.setImageWith(fileUrl! as URL)
+                // Set image
+                //imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }
+            
+            
         }
         
         return cell
@@ -255,9 +325,17 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
+        //performSegue(withIdentifier: "showSocialMediaOptions", sender: self)
+        self.selectedBadgeIndex = indexPath.row
         
+        // Set selected link
+        self.launchMediaWebView()
+        
+        
+        print("Collection view at row \(collectionView.tag) selected index path \(indexPath)")
     }
+
+    
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
@@ -297,7 +375,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
         
-        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses"{
+        if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses" || sections[indexPath.section] == "Websites"{
             
             // Set labels for field values
             if sections[indexPath.section] == "Emails"{
@@ -314,6 +392,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 // Set label
                 cell.titleLabel.text = self.addressLabels[indexPath.row]
                 // Not tint
+            }else if sections[indexPath.section] == "Websites"{
+            
+                // Set tint on text field
+                cell.descriptionLabel.textColor = self.view.tintColor
+                
             }
             
         }
@@ -344,6 +427,14 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             
             // Email option
             self.emailSelected(self)
+        }
+        
+        if sections[indexPath.section] == "Websites"{
+            
+            // Set proper index
+            self.selectedBadgeIndex = indexPath.row
+            // Launch website option
+            self.launchWebView()
         }
             
         
@@ -397,7 +488,9 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         super.viewDidLoad()
         
         // Show nav
-        self.navigationController?.navigationBar.isHidden = false
+        //self.navigationController?.navigationBar.isHidden = false
+        
+
         
         // Really, we parse the card and profile infos to extract the list
         // Fill profile with example info
@@ -406,8 +499,6 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         // Contact
         //self.contact = ContactManager.sharedManager.newContact
         
-        // Config image
-        self.configureSelectedImageView(imageView: self.contactImageView)
         
         // Parse contact
         self.parseContactRecord()
@@ -438,7 +529,21 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         //self.corpBadges = self.contact.badgeList
         
         
-        profileInfoTableView.tableHeaderView = self.cardWrapperView
+        if self.contact.socialLinks.count > 0 && self.contact.badgeDictionaryList.count > 0{
+            print("The contact has both social and corp badges")
+            // Set double collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperView
+        }else if (self.contact.socialLinks.count > 0 && self.contact.badgeDictionaryList.count == 0) || (self.contact.socialLinks.count == 0 && self.contact.badgeDictionaryList.count > 0){
+            print("The contact has one list populated")
+            // Set single collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperViewSingleWrapper
+        }else{
+            print("The contact has neither list populated")
+            // Set empty collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperViewEmptyWrapper
+        }
+        
+        
         //tableView.tableFooterView = self.profileImageCollectionView
         
         
@@ -562,10 +667,10 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 
                 // Append to array
                 self.emails.append(address["email"]!)
-                self.emailLabels.append(address["type"]!)
+                self.emailLabels.append(address["type"] ?? "work")
                 
                 // Init record and test
-                let record = ["email" : address["email"]!, "type" : address["type"]!]
+                let record = ["email" : address["email"]!, "type" : address["type"] ?? "work"]
                 print("Email Record", record)
                 
                 print(emails.count)
@@ -952,7 +1057,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             for number in contact.phoneNumbers{
                 
                 // Add phone number button
-                let digits = number["phone"]!
+                let digits = number.values.first!
                 
                 // Add
                 let callAction = UIAlertAction(title: digits, style: .default)
@@ -1007,7 +1112,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             for number in contact.phoneNumbers{
                 
                 // Add phone number button
-                let digits = number["phone"]!
+                let digits = number.values.first!
                 
                 // Add
                 let callAction = UIAlertAction(title: digits, style: .default)
@@ -1043,7 +1148,26 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         self.present(actionSheetController, animated: true, completion: nil)
     }
     
+    // Social selection
+    func launchMediaWebView() {
+        // Config the social link webVC
+        ContactManager.sharedManager.selectedSocialMediaLink = self.socialLinks[self.selectedBadgeIndex]
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
+        self.present(controller, animated: true, completion: nil)
+    }
     
+    func launchWebView() {
+        // Config the social link webVC
+        ContactManager.sharedManager.selectedSocialMediaLink = self.websites[self.selectedBadgeIndex]
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SocialWebVC")
+        self.present(controller, animated: true, completion: nil)
+    }
     
     
     // Page styling
@@ -1061,7 +1185,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
          
             // Disable buttons
             callButton.isEnabled = false
+            callButtonSingleWrapper.isEnabled = false
+            callButtonEmptyWrapper.isEnabled = false
             smsButton.isEnabled = false
+            smsButtonSingleWrapper.isEnabled = false
+            smsButtonEmptyWrapper.isEnabled = false
          
             // Set tint for buttons
             callButton.tintColor = UIColor.gray
@@ -1069,7 +1197,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
          
             // Toggle image
             callButton.image = UIImage(named: "btn-call-white")
+            callButtonSingleWrapper.image = UIImage(named: "btn-call-white")
+            callButtonEmptyWrapper.image = UIImage(named: "btn-call-white")
             smsButton.image = UIImage(named: "btn-chat-white")
+            smsButtonSingleWrapper.image = UIImage(named: "btn-chat-white")
+            smsButtonEmptyWrapper.image = UIImage(named: "btn-chat-white")
          
          }
          if contact.emails.count > 0 {
@@ -1079,16 +1211,18 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
          }else{
             // Disable button
             emailButton.isEnabled = false
+            emailButtonSingleWrapper.isEnabled = false
+            emailButtonEmptyWrapper.isEnabled = false
          
             // Set tint
             emailButton.tintColor = UIColor.gray
+            emailButtonSingleWrapper.tintColor = UIColor.gray
+            emailButtonEmptyWrapper.tintColor = UIColor.gray
          
             // Toggle image
             emailButton.image = UIImage(named: "btn-message-white")
          }
          // Check if image data available
-         
-        
         if contact.imageId != "" {
             print("Has IMAGE")
             // Set id
@@ -1100,9 +1234,14 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             // Set image
             //contactImageView?.setImageWith(url)
             self.contactImageView.setImageWith(url)
+            self.contactImageViewSingleWrapper.setImageWith(url)
+            self.contactImageViewEmptyWrapper.setImageWith(url)
             
         }else{
+            // Set placeholder image
             contactImageView.image = UIImage(named: "profile")
+            contactImageViewSingleWrapper.image = UIImage(named: "profile")
+            contactImageViewEmptyWrapper.image = UIImage(named: "profile")
         }
         
         
@@ -1161,6 +1300,22 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
         outreachCalendarButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
         
+        outreachChatButtonSingleWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
+        outreachMailButtonSingleWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
+        outreachCallButtonSingleWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
+        outreachCalendarButtonSingleWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
+        outreachChatButtonEmptyWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
+        outreachMailButtonEmptyWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
+        outreachCallButtonEmptyWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
+        outreachCalendarButtonEmptyWrapper.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
+        
         
         // Config buttons
         // ** Email and call inverted
@@ -1168,6 +1323,22 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         emailButton.image = UIImage(named: "btn-message-blue")
         callButton.image = UIImage(named: "btn-call-blue")
         calendarButton.image = UIImage(named: "btn-calendar-blue")
+        
+        smsButtonSingleWrapper.image = UIImage(named: "btn-chat-blue")
+        emailButtonSingleWrapper.image = UIImage(named: "btn-message-blue")
+        callButtonSingleWrapper.image = UIImage(named: "btn-call-blue")
+        calendarButtonSingleWrapper.image = UIImage(named: "btn-calendar-blue")
+        
+        smsButtonEmptyWrapper.image = UIImage(named: "btn-chat-blue")
+        emailButtonEmptyWrapper.image = UIImage(named: "btn-message-blue")
+        callButtonEmptyWrapper.image = UIImage(named: "btn-call-blue")
+        calendarButtonEmptyWrapper.image = UIImage(named: "btn-calendar-blue")
+        
+        // Config image
+        self.configureSelectedImageView(imageView: self.contactImageView)
+        self.configureSelectedImageView(imageView: self.contactImageViewSingleWrapper)
+        self.configureSelectedImageView(imageView: self.contactImageViewEmptyWrapper)
+        
     }
     
     
@@ -1412,7 +1583,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         let str = "\n\n\n\(cardLink)"
         
         // Create Message
-        mailComposerVC.setToRecipients([emailContact])
+        mailComposerVC.setToRecipients([selectedUserEmail])
         mailComposerVC.setSubject("Unify Connection - I'd like to connect with you")
         mailComposerVC.setMessageBody(str, isHTML: false)
         

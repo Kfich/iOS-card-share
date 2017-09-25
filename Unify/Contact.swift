@@ -145,7 +145,7 @@ public class Contact: Fuseable{
         websites = snapshot["websites"] as? [[String : String]] ?? [[String : String]]()
         organizations = snapshot["organizations"] as? [[String : String]] ?? [[String : String]]()
         addresses = snapshot["addresses"] as? [[String : String]] ?? [[String : String]]()
-        imageId = snapshot["image_ids"] as? String ?? ""
+        imageId = snapshot["image_id"] as? String ?? ""
         origin = snapshot["origin"] as? String ?? ""
         isVerified = snapshot["isVerified"] as? String ?? "0"
         
@@ -177,7 +177,7 @@ public class Contact: Fuseable{
         websiteList = arraySnapshot["websites"] as? NSArray ?? NSArray()
         organizationList = arraySnapshot["organizations"] as? NSArray ?? NSArray()
         addressList = arraySnapshot["addresses"] as? NSArray ?? NSArray()
-        imageId = arraySnapshot["image_ids"] as? String ?? ""
+        imageId = arraySnapshot["image_id"] as? String ?? ""
         origin = arraySnapshot["origin"] as? String ?? ""
         isVerified = arraySnapshot["isVerified"] as? String ?? "0"
         
@@ -395,32 +395,100 @@ public class Contact: Fuseable{
         
         // Check for count
         if phoneNumberList.count > 0 {
+            /*
+            // Iterate and fetch items
+            for item in phoneNumberList {
+                
+                print("Phone item raw >> \(item)")
+                
+                if item is String {
+                    // Loop and collect
+                    print("Phone item as string> \(item)")
+                    // Set org
+                    setPhoneRecords(phoneRecord: item as! String)
+                }else{
+                    let value = item as! NSDictionary
+                    print("Phone record", value)
+                    
+                    let list = value.value(forKey: value.allKeys.first! as! String)
+                    
+                    //phoneNumbers.append(value as! [String : String])
+                    
+                    //setPhoneRecords(phoneRecord: item as! String)
+                    
+                }
+                
+            }*/
             
             let dict = phoneNumberList[0] as! NSDictionary
             
-            let list = dict.value(forKey: "phone")
+            print("Phone numbers list raw >", dict)
+            
+            if dict.count > 1{
+                print("The phone list raw > 1")
+                // Loop through and grab keys
+                for number in dict {
+                    
+                    let stringDict = [number.key as! String : number.value as! String]
+                    print("Phone numbers list parsed >", stringDict)
+                    
+                    // Add dict values to list
+                    phoneNumbers.append(stringDict)
+                }
+            }else{
+                
+                let list = dict.value(forKey: dict.allKeys.first as! String)
+                
+                if list is String {
+                    print("Outhere phone string", list as! String)
+                    // Set org
+                    setPhoneRecords(phoneRecord: list as! String)
+                    
+                }
+                
+            }
+            
+            /*
+            let list = dict.value(forKey: dict.allKeys.first as! String)
             
             if list is String {
-                print("Outhere string", list as! String)
+                print("Outhere phone string", list as! String)
                 // Set org
                 setPhoneRecords(phoneRecord: list as! String)
                 
             }else{
-                print("Outhere array", list as! NSArray)
-                //
-                let phonesArray = list as! NSArray
+                // Init phones array
+                let phonesArray = list as? NSArray ?? NSArray()
                 
+                // Test
+                print("Outhere phones array", phonesArray)
+                
+                // Iterate and fetch items
                 for item in phonesArray {
                     
-                    setPhoneRecords(phoneRecord: item as! String)
+                    if item is String {
+                        // Loop and collect
+                        print("Phone item > \(item)")
+                        // Set org
+                        setPhoneRecords(phoneRecord: item as! String)
+                    }else{
+                        
+                        let value = item as! NSDictionary
+                        
+                        print("Phone record", value)
+                        phoneNumbers.append(value as! [String : String])
+                        
+                        //setPhoneRecords(phoneRecord: item as! String)
+                        
+                    }
+                    
                 }
                 
-                print("The phones")
-                print(phoneNumbers)
-                
-            }
+            }*/
 
-            
+            // Test output
+            print("The phones")
+            print(phoneNumbers)
             
         }
         if emailList.count > 0 {
@@ -431,17 +499,33 @@ public class Contact: Fuseable{
             
             if list is String {
                 print("Outhere string", list as! String)
-                // Set org
+                // Set email
                 setEmailRecords(emailAddress: list as! String)
                 
             }else{
-                print("Outhere array", list as! NSArray)
-                //
-                let emailsArray = list as! NSArray
+                // Init array
+                let emailsArray = list as? NSArray ?? NSArray()
                 
+                print("Outhere emails array", emailsArray)
+                
+                
+                // Fetch each item
                 for item in emailsArray {
                     
-                    setEmailRecords(emailAddress: item as! String)
+                    if item is String {
+                        // Loop and collect 
+                        print("Email item > \(item)")
+                        setEmailRecords(emailAddress: item as! String)
+                    }else{
+                        
+                        let value = item as! NSDictionary
+                        
+                        let record = ["email": value["email"] as! String, "type" : value["type"] as! String]
+                        print("Email record", record)
+                        emails.append(record)
+                        
+                    }
+                    
                 }
                 
                 print("The emails")
@@ -565,29 +649,77 @@ public class Contact: Fuseable{
         
         if addressList.count > 0 {
             
-            let dict = addressList[0] as! NSDictionary
+            print("Address list count greater then 0")
             
-            let list = dict.value(forKey: "address")
+            for item in addressList {
+                
+                let value = item as! NSDictionary
+                
+                print("Address list dict raw > \(value)")
+                
+                // Init all values for the cells
+                let street = value["street"] ?? ""
+                let city = value["city"] ?? ""
+                let state = value["state"] ?? ""
+                let zip = value["zip"] ?? ""
+                let country = value["country"] ?? ""
+                
+                // Init address
+                let addy = "\(street), \(city) \(state), \(zip), \(country)"
+                
+                
+                // Set web
+                //setAddresses(address: item as! [NSDictionary])
+                
+                print("The new address \n\([value["type"] as! String : addy])")
+                addresses.append([value["type"] as! String : addy])
+            }
             
-            if list is String {
-                print("Outhere string", list as! String)
+            print("The addresses")
+            print(addresses)
+            
+            
+            /*
+            //let list = dict.allValues.first
+            
+            //print("Outhere address to any", list as Any)
+            
+            if dict is String {
+                print("Outhere address string", dict as! String)
                 // Set social
-                setAddresses(address: list as! String)
+                setAddresses(address: dict as! String)
                 
             }else{
-                print("Outhere array", list as Dictionary)
+                //print("Outhere array", list as! [NSDictionary])
                 //
-                let addArray = list as! NSArray
+                let addArray = dict as? NSArray ?? NSArray()
                 
                 for item in addArray {
+                    
+                    let value = item as! NSDictionary
+                    
+                    // Init all values for the cells
+                    let street = value["street"] ?? ""
+                    let city = value["city"] ?? ""
+                    let state = value["state"] ?? ""
+                    let zip = value["zip"] ?? ""
+                    let country = value["country"] ?? ""
+                    
+                    // Init address
+                    let addy = "\(street), \(city) \(state), \(zip), \(country)"
+                    
+                    
                     // Set web
-                    setAddresses(address: item as! Dictionary)
+                    //setAddresses(address: item as! [NSDictionary])
+                    
+                    print("The new address \n\([value["type"] as! String : addy])")
+                    addresses.append([value["type"] as! String : addy])
                 }
                 
                 print("The addresses")
                 print(addresses)
                 
-            }
+            }*/
 
             
         }
@@ -776,17 +908,17 @@ public class Contact: Fuseable{
             address = addresses[0].values.first!
             
             // Add section
-            sections.append("Addresses")
-            /*for add in addresses {
+            /*sections.append("Addresses")
+            for add in addresses {
                 // Print to test
-                print("Address : \(add["address"]!)")
+                print("Address from parse : \(add)")
                 
                 // Append to list
-                self.addressList.append(add["address"]!)
+                self.addressList.adding(add)
                 print(addressList.count)
-            }
+            }*/
             // Set list for section
-            self.tableData["Addresses"] = addressList*/
+            //self.tableData["Addresses"] = addressList as! [String]
         }
         
         

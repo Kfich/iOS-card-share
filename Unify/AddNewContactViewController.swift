@@ -1150,6 +1150,9 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
     
     func parseForSocialIcons() {
         
+        // Init badge list
+        self.initializeBadgeList()
+        
         
         print("PARSING for icons from add contact vc")
         // Remove all items from badges
@@ -1215,6 +1218,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
         
         // Assign contact object
         self.contact = ContactManager.sharedManager.newContact
+        self.contact.origin = "unify"
         
         print("The new contacts social media")
         contact.printContact()
@@ -1399,6 +1403,9 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                     
                 }
                 
+                // Upload the contact
+                self.uploadContactRecord()
+                
             case .failure(let encodingError):
                 print("\n\n\n\n error....")
                 print(encodingError)
@@ -1477,10 +1484,10 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
         // Configure to send to server
         if firstNameTextField.text != "" && lastNameTextField.text != "" {
             // Fields not empty
-            ContactManager.sharedManager.currentUser.firstName = firstNameTextField.text!
-            ContactManager.sharedManager.currentUser.lastName = lastNameTextField.text!
+            ContactManager.sharedManager.newContact.first = firstNameTextField.text!
+            ContactManager.sharedManager.newContact.last = lastNameTextField.text!
             // Combine to make full name
-            ContactManager.sharedManager.currentUser.fullName = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
+            ContactManager.sharedManager.newContact.name = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
         }
         
         
@@ -1680,8 +1687,31 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
         // Post notification
         //self.postNotificationForUpdate()
         
+        // Get and set image data
+        // Assign asset name and type
+        let idString = Contact().randomString(length: 20)
+        let imageData = UIImageJPEGRepresentation(self.contactImageView.image!, 0.75)
+        
+        // Name image with id string
+        let fname = idString
+        let mimetype = "image/png"
+        
+        // Create image dictionary
+        let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        
+        // Assign to contact object
+        ContactManager.sharedManager.newContact.setContactImageId(id: idString)
+        ContactManager.sharedManager.newContact.imageDictionary = imageDict
+        
+        // Upload
+        // Execute upload image call
+        self.uploadImage(imageDictionary: imageDict as NSDictionary)
+        
+        
+        
+        
         // Call to update
-        self.uploadContactRecord()
+        //self.uploadContactRecord()
         
         // Store user to device
         //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())

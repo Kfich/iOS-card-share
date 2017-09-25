@@ -672,11 +672,11 @@
 				FB37381A1EDDBB660074200F /* ContactProfileViewController.swift */,
 				FB08130A1F02BA3E00CF14BE /* ContactListViewController.swift */,
 				FB6975B31F6C50F300D68C09 /* ContactListProfileViewController.swift */,
-				FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */,
-				FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */,
+				FB2B71091F75A5D3005B1CA5 /* AddNewContactViewController.swift */,
 				FB6FAB0C1F565A2200E66508 /* ContactSocialMediaViewController.swift */,
 				FB6FAB0F1F565A5600E66508 /* ContactSocialMediaDetailViewController.swift */,
-				FB2B71091F75A5D3005B1CA5 /* AddNewContactViewController.swift */,
+				FBA1F5111F38CCF100CDCB76 /* AddContactViewController.swift */,
+				FBA1F5141F38CD1100CDCB76 /* AddContactContainerViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
