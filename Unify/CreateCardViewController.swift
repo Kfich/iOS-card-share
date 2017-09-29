@@ -1282,14 +1282,13 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             textField?.placeholder = placeholder
         }
         
-        // Add 'cancel' action
-        alertVC.addAction(PMAlertAction(title: "Cancel", style: .cancel, action: { () -> Void in
-            print("Capture action Cancel")
-        }))
-        
         // Add 'done' action
         alertVC.addAction(PMAlertAction(title: "Done", style: .default, action: { () in
             print("Capture action OK")
+            
+            
+            
+            
             if alertVC.textFields[0].text != nil{
                 
                 // Switch Case here to do the appropriate action
@@ -1314,6 +1313,12 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
         }))
+        
+        // Add 'cancel' action
+        alertVC.addAction(PMAlertAction(title: "Cancel", style: .cancel, action: { () -> Void in
+            print("Capture action Cancel")
+        }))
+        
         // Show VC
         self.present(alertVC, animated: true, completion: nil)
     }

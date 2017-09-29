@@ -108,6 +108,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         // Dismiss view
         dismiss(animated: true, completion: nil)
+        // Drop view
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -298,6 +300,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             
             // Drop view
             dismiss(animated: true, completion: nil)
+            // Drop view
+            self.navigationController?.popViewController(animated: true)
         }else{
             // Set Contact on Manager
             ContactManager.sharedManager.recipientToIntro = selectedContact
@@ -309,6 +313,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
             // Drop View
             dismiss(animated: true, completion: nil)
+            // Drop view
+            self.navigationController?.popViewController(animated: true)
         }
         
         

@@ -71,10 +71,14 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     var selectedBadgeIndex : Int = 0
     
     @IBOutlet var cardWrapperView: UIView!
+    @IBOutlet var cardWrapperViewSingleWrapper: UIView!
+    @IBOutlet var cardWrapperViewEmptyWrapper: UIView!
     
     @IBOutlet var profileImageCollectionView: UICollectionView!
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
+    
+    @IBOutlet var singleWrapperCollectionView: UICollectionView!
     
     // Tableview
     @IBOutlet var profileInfoTableView: UITableView!
@@ -86,17 +90,12 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var phoneLabel: UILabel!
     @IBOutlet var contactImageView: UIImageView!
-    @IBOutlet var smsButton: UIBarButtonItem!
-    @IBOutlet var emailButton: UIBarButtonItem!
-    @IBOutlet var callButton: UIBarButtonItem!
-    @IBOutlet var calendarButton: UIBarButtonItem!
     
+    // Card wrapper view with single collection cell
+    @IBOutlet var contactImageViewSingleWrapper: UIImageView!
     
-    // Outreach toolbar
-    @IBOutlet var outreachChatButton: UIBarButtonItem!
-    @IBOutlet var outreachCallButton: UIBarButtonItem!
-    @IBOutlet var outreachMailButton: UIBarButtonItem!
-    @IBOutlet var outreachCalendarButton: UIBarButtonItem!
+    // Card wrapper view with empty collection cell
+    @IBOutlet var contactImageViewEmptyWrapper: UIImageView!
     
     
     @IBOutlet var phoneImageView: UIImageView!
@@ -104,6 +103,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet var badgeImageView: UIImageView!
     
    @IBOutlet var shadowView: YIInnerShadowView!
+
+    
     
     // IBActions / Buttons Pressed
     // --------------------------------------------
@@ -197,9 +198,17 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         }else if collectionView == self.profileImageCollectionView{
             // Photo config
             return profileImages.count
-        }else{
+        }else if collectionView == self.badgeCollectionView{
             // Photo config
             return corpBadges.count
+        }else{
+            if self.socialBadges.count > 0 {
+                // Assign the socials to single collection
+                return self.socialBadges.count
+            }else{
+                // The corp badges are the move
+                return corpBadges.count
+            }
         }
         
     }
@@ -243,7 +252,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             // Add subview
             cell.contentView.addSubview(imageView)
             
-        }else{
+        }else if collectionView == self.profileImageCollectionView{
             
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
             
@@ -257,6 +266,37 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             imageView.image = image
             // Add to collection
             cell.contentView.addSubview(imageView)
+            
+            
+        }else{
+            
+            // Check which list populated
+            if self.socialBadges.count > 0 {
+                // Config for social
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                let image = self.socialBadges[indexPath.row]
+                
+                // Set image
+                imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }else{
+                // Config for corp
+                let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl/*selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl*/)
+                
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                imageView.setImageWith(fileUrl! as URL)
+                // Set image
+                //imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }
             
             
         }
@@ -396,9 +436,14 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         dismiss(animated: true, completion: nil)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        // Show nav
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     
     // Page setup
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -406,8 +451,10 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Fill profile with example info
         currentUser = ContactManager.sharedManager.currentUser
         
-        // Config image
+        // Config image views
         self.configureSelectedImageView(imageView: self.contactImageView)
+        self.configureSelectedImageView(imageView: self.contactImageViewSingleWrapper)
+        self.configureSelectedImageView(imageView: self.contactImageViewEmptyWrapper)
         
         // Parse contact 
         //self.parseContactRecord()
@@ -423,11 +470,36 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // View config
         self.populateCards()
         
+        // Config nav bar
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
         
         
-        // Set header and footer for table
-        profileInfoTableView.tableHeaderView = self.cardWrapperView
+        // Config header view based on counts
+        if self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0{
+            print("The contact has both social and corp badges")
+            // Set double collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperView
+        
+        }else if (self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count == 0) || (self.currentUser.userProfile.socialLinks.count == 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0){
+            print("The contact has one list populated")
+            // Set single collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperViewSingleWrapper
+        
+        }else{
+            print("The contact has neither list populated")
+            // Set empty collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperViewEmptyWrapper
+        }
+        
+        
+        // Set footer for table
         profileInfoTableView.tableFooterView = self.profileImageCollectionView
+        
+        // Config table 
+        profileInfoTableView.separatorStyle = .none
         
         // Observer for notifs
         addObservers()
@@ -546,7 +618,9 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             // Add section
             sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
-                phoneNumbers.append(self.format(phoneNumber:(number.values.first!))!)
+                // Check if phone valid before formatting
+                //phoneNumbers.append(self.format(phoneNumber:(number.values.first ?? ""))!)
+                phoneNumbers.append(number.values.first ?? "")
                 phoneNumberLabels.append(number.keys.first!)
             }
             // Create section data
@@ -560,7 +634,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             sections.append("Emails")
             for email in ContactManager.sharedManager.currentUser.userProfile.emails{
                 emails.append(email["email"]!)
-                emailLabels.append(email["type"]!)
+                emailLabels.append(email["type"] ?? "work")
                 
             }
             // Create section data
@@ -985,10 +1059,24 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
         if currentUser.profileImages.count > 0 {
             contactImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+            contactImageViewSingleWrapper.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+            contactImageViewEmptyWrapper.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+        }else{
+            
+            contactImageView.image = UIImage(named: "profile")
+            contactImageViewSingleWrapper.image = UIImage(named: "profile")
+            contactImageViewEmptyWrapper.image = UIImage(named: "profile")
+            
         }
+        
         if currentUser.fullName != ""{
             nameLabel.text = currentUser.fullName
+            
         }
+        
+        // Set on nav bar
+        self.navigationController?.navigationBar.topItem?.title = "My Profile"
+        navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName : (UIFont.systemFont(ofSize: 20)), NSForegroundColorAttributeName: UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)]//[NSForegroundColorAttributeName: UIColor.orange]
         
     }
     
@@ -998,7 +1086,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -1014,7 +1102,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         cell.contentView.layer.cornerRadius = 45.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -1030,28 +1118,13 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Configure borders
         imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 45    // Create container for image and name
+        imageView.layer.cornerRadius = 55    // Create container for image and name
         
     }
     
     func configureViews(){
         // Toolbar button config
         
-        outreachChatButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        outreachMailButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        outreachCallButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        outreachCalendarButton.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: "Avenir", size: 14)!], for: UIControlState.normal)
-        
-        
-        // Config buttons
-        // ** Email and call inverted
-        smsButton.image = UIImage(named: "btn-chat-blue")
-        emailButton.image = UIImage(named: "btn-message-blue")
-        callButton.image = UIImage(named: "btn-call-blue")
-        calendarButton.image = UIImage(named: "btn-calendar-blue")
     }
     
     

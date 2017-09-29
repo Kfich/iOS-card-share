@@ -50,6 +50,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     @IBOutlet var addRecipientLabel: UILabel!
     
     @IBOutlet var cancelIntroButton: UIButton!
+    @IBOutlet var shareButton: UIButton!
     
     
     // Page Config
@@ -93,7 +94,8 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         // Hide cancel button
         cancelIntroButton.isHidden = true
         
-        //
+        // Hide share button
+        shareButton.isHidden = true
         
         
         /*self.contactImageView.isUserInteractionEnabled = true
@@ -905,6 +907,9 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             let name = formatter.string(from: selected) ?? "No Name"
             self.addRecipientLabel.text = name
         }
+        
+        // Show share button 
+        shareButton.isHidden = false
         
     }
     

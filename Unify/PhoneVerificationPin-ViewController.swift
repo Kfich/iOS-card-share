@@ -57,7 +57,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     @IBOutlet weak var phoneNumberDisplay: UILabel!
     
-    @IBOutlet weak var verifyBtn: UIButton!
+    //@IBOutlet weak var verifyBtn: UIButton!
     
     @IBOutlet weak var termBox: UIView!
     
@@ -257,10 +257,10 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                 let height = keyboardSize.height
                 
                 print("-----------------------------------")
-                print("\n\n", self.verifyBtn.frame.height, self.verifyBtn.frame.origin.y, self.view.frame.height)
+                //print("\n\n", self.verifyBtn.frame.height, self.verifyBtn.frame.origin.y, self.view.frame.height)
                 
                 
-                self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height - height
+                //self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height - height
                 
                 
                 
@@ -270,7 +270,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                 self.view.layoutIfNeeded()
                 
                 print("verify")
-                print("\n\n", self.verifyBtn.frame.origin.y)
+                //print("\n\n", self.verifyBtn.frame.origin.y)
                 print(height)
                 
                 
@@ -285,7 +285,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         print("Maybe call pin on will hide?!?")
         
         // Hide verify btn
-        self.verifyBtn.isHidden = true
+        //self.verifyBtn.isHidden = true
         
         // Process pin
         
@@ -306,8 +306,8 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y != 0 {
                 let height = keyboardSize.height
-                self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
-                 self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
+                //self.verifyBtn.frame.origin.y = self.view.frame.height - self.verifyBtn.frame.height
+                // self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
                 print("no keyboard")
                 
                 // Layout views
@@ -383,8 +383,8 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                     // Clear pin text area
                     self.pinCodeArea.text = ""
                     // Reenable button
-                    self.verifyBtn.isEnabled = true
-                    self.verifyBtn.isHidden = false
+                    //self.verifyBtn.isEnabled = true
+                    //self.verifyBtn.isHidden = false
                     
                     // Relaunch keyboard
                     DispatchQueue.main.async {
@@ -399,8 +399,8 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
             } else {
                 print(error ?? "Error Occured Processing pin")
                 
-                self.verifyBtn.isEnabled = true
-                self.verifyBtn.isHidden = false
+                //self.verifyBtn.isEnabled = true
+                //self.verifyBtn.isHidden = false
                 
                 // Show user popup of error message
                 print("\n\nConnection - Create User Error: \(String(describing: error))\n\n")

@@ -1077,8 +1077,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
         
         // Config shadow
-        cell.shadowView.shadowRadius = 2
-        cell.shadowView.shadowMask = YIInnerShadowMaskTop
+        cell.shadowView.shadowRadius = 1
+        cell.shadowView.shadowMask = YIInnerShadowMaskBottom//YIInnerShadowMaskTop
         
         // Set shadow
         //self.shadowView.shadowRadius = 2
@@ -1115,7 +1115,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Configure borders
         imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 45// Create container for image and name
+        imageView.layer.cornerRadius = 50// Create container for image and name
         
     }
     

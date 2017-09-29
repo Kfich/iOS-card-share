@@ -671,8 +671,8 @@ public class Contact: Fuseable{
                 // Set web
                 //setAddresses(address: item as! [NSDictionary])
                 
-                print("The new address \n\([value["type"] as! String : addy])")
-                addresses.append([value["type"] as! String : addy])
+                print("The new address \n\([value["type"] as? String ?? "home" : addy])")
+                addresses.append([value["type"] as? String ?? "home" : addy])
             }
             
             print("The addresses")

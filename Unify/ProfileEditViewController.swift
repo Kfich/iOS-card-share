@@ -10,6 +10,7 @@ import UIKit
 import Eureka
 import MBPhotoPicker
 import Alamofire
+import ACFloatingTextfield_Swift
 
 class ProfileEditViewController: FormViewController, UICollectionViewDelegate, UICollectionViewDataSource, RSKImageCropViewControllerDelegate{
     
@@ -77,8 +78,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     @IBOutlet var calendarButton: UIBarButtonItem!
     
     
-    @IBOutlet var firstNameTextField: UITextField!
-    @IBOutlet var lastNameTextField: UITextField!
+    @IBOutlet var firstNameTextField: ACFloatingTextfield!
+    @IBOutlet var lastNameTextField: ACFloatingTextfield!
     
     
     // IBActions
@@ -151,7 +152,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 imageView.image = image
                 
                 // Delete
-                let deleteIconView = UIImageView(frame: CGRect(x: 70, y: 5, width: 20, height: 20))
+                let deleteIconView = UIImageView(frame: CGRect(x: 55, y: 15, width: 20, height: 20))
                 let deleteImage = UIImage(named: "icn-minus-red")
                 deleteIconView.image = deleteImage
                 
@@ -170,7 +171,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 // Badge icon
                 var image = UIImage()
                 image = self.profileImages[indexPath.row]
-                let imageView = UIImageView(frame: CGRect(x: 2, y: 10, width: 20, height: 20))
+                let imageView = UIImageView(frame: CGRect(x: 2, y: 15, width: 20, height: 20))
                 imageView.layer.masksToBounds = true
                 // Set image to view
                 imageView.image = image
@@ -269,6 +270,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        // Show nav everytime
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     
     
     // Page setup
@@ -280,6 +287,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // Fill profile with example info
         currentUser = ContactManager.sharedManager.currentUser
         
+        // Config textfields
+        firstNameTextField.disableFloatingLabel = true
+        lastNameTextField.disableFloatingLabel = true
+        
+        // View config
         configureViews()
         
         self.configureSelectedImageView(imageView: self.contactImageView)
@@ -435,6 +447,15 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // Set bg
         tableView.backgroundColor = UIColor.white
         
+        // Show nav bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+         //self.navigationController?.navigationBar.barStyle = .
+        
         //title = "Multivalued Examples"
         form
             +++
@@ -453,7 +474,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -470,6 +491,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         print("Printing section index ", index)
                                         
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -478,15 +507,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             
+                                            // Init line view
+                                            let headerView = UIView()
                                             
-                                    }.cellSetup({ (cell, row) in
-                                        
-                                        //self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
-                                        
-                                        
-                                        
-                                        print("Cell Setup on Title Row >> \(row.indexPath!)")
-                                    })
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                            
+                                    
+                                        }
                                 }
                                 
                                 /*$0.multivaluedRowToInsertAt = { index in
@@ -503,6 +533,15 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Title"
                                         $0.value = val
                                         
+                                        // Init line view
+                                        /*let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)*/
+                                        
+                                        
                                         print("section index: ", $0.indexPath ?? IndexPath())
                                         
                                         }.cellUpdate { cell, row in
@@ -510,11 +549,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                           
                                             
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -529,7 +569,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             }
             
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -547,7 +587,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -564,7 +604,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             
@@ -574,19 +614,22 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 // Iterate through array and set val
                                 for val in organizations{
                                     $0 <<< NameRow() {
-                                        $0.placeholder = "Name"
+                                        $0.placeholder = "Company"
                                         $0.value = val
+                                        
+                                        // Add lineview
+                                        
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                     
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -599,7 +642,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 
             }
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -616,7 +659,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                             // Init line view
                             let headerView = UIView()
                             
-                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                             headerView.backgroundColor = UIColor.lightGray
                             
                             
@@ -650,7 +693,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         // Init line view
                         let headerView = UIView()
                         
-                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                         headerView.backgroundColor = UIColor.lightGray
                         
                         
@@ -664,7 +707,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             }
 
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -683,7 +726,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -693,19 +736,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
                                     
-                                    return NameRow("numbersRow_\(index)") {
+                                    return PhoneRow("numbersRow_\(index)") {
                                         $0.title = "mobile"
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
+                                        // Set the label frame to align the values against left edge
+                                        $0.cell.titleLabel!.frame = CGRect(x: ($0.cell.titleLabel?.frame.origin.x)!, y: ($0.cell.titleLabel?.frame.origin.x)!, width: 160.0 , height: ($0.cell.titleLabel?.frame.height)!)
+                
                                         
                                         // Add label to label list
-                                        self.phoneLabels.append("home")
-                                        self.phoneNumbers.append(["home" : ""])
+                                        self.phoneLabels.append("mobile")
+                                        self.phoneNumbers.append(["mobile" : ""])
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Phone"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            // Set the label frame to align the values against left edge
+                                            cell.titleLabel!.frame = CGRect(x: (cell.titleLabel?.frame.origin.x)!, y: (cell.titleLabel?.frame.origin.x)!, width: 160.0 , height: (cell.titleLabel?.frame.height)!)
                                             
                                             if row.indexPath != nil{
                                                 // Add to label
@@ -713,6 +762,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 
                                                 // Test 
                                                 print("Cell updating with index Path", row.indexPath!)
+                                                cell.titleLabel!.frame = CGRect(x: (cell.titleLabel?.frame.origin.x)!, y: (cell.titleLabel?.frame.origin.x)!, width: 160.0 , height: (cell.titleLabel?.frame.height)!)
                                                 
                                             }
                                             
@@ -746,20 +796,35 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     $0 <<< PhoneRow() {
                                         $0.placeholder = "Number"
                                         $0.value = self.format(phoneNumber: val.values.first!)//val
+                                        // Adjust label frame
+                                        $0.cell.titleLabel?.frame = CGRect(x: ($0.cell.titleLabel?.frame.origin.x)!, y: ($0.cell.titleLabel?.frame.origin.x)!, width: 160.0 , height: ($0.cell.titleLabel?.frame.height)!)
+                                        
+                                        // Set label
                                         $0.title = val.keys.first!
+                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
                                         
                                         
                                         //$0.tag = "Phone Numbers"
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Phone"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            // Set the label frame to align the values against left edge
+                                            cell.titleLabel!.frame = CGRect(x: (cell.titleLabel?.frame.origin.x)!, y: (cell.titleLabel?.frame.origin.x)!, width: 160.0 , height: (cell.titleLabel?.frame.height)!)
                                             
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -767,6 +832,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.addSubview(headerView)
                                             
                                             cell.titleLabel?.text = self.phoneLabels[(cell.row.indexPath?.row)!]
+                                            
                                             
                                             // Add gesture to cell
                                             self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
@@ -790,7 +856,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             }
             
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -808,7 +874,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -825,10 +891,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         self.emailLabels.append("home")
                                         self.emails.append(["home" : ""])
                                         
+                                        // Config text field
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                        
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Email"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             if row.indexPath != nil{
@@ -871,23 +941,23 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Address"
                                         //$0.tag = "Add Emails"
                                         $0.value = val["email"]!
-                                        $0.title = val["type"]!
+                                        $0.title = val["type"] ?? "work"
                                         
                                         }.cellUpdate { cell, row in
                                             // Reconfig alignment
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Email"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             // Add gesture to cell
                                             self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
                                             
-                                            cell.titleLabel?.text = val["type"]!
+                                            cell.titleLabel?.text = val["type"] ?? "work"
                                             
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -912,7 +982,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             }
             
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -930,7 +1000,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -945,7 +1015,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Url"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             // Config auto correct
@@ -967,13 +1037,13 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Url"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -986,7 +1056,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
             }
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -1004,7 +1074,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -1032,7 +1102,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -1043,7 +1113,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             }
             
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -1061,7 +1131,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -1089,7 +1159,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         // Init line view
                                         let headerView = UIView()
                                         
-                                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         
                                         
@@ -1100,7 +1170,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             }
             
             // Filler section
-            +++ Section("")
+            //+++ Section("")
             
             +++
             
@@ -1118,7 +1188,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Init line view
                                             let headerView = UIView()
                                             
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             
                                             
@@ -1240,7 +1310,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                     // Init line view
                                                     let headerView = UIView()
                                                     
-                                                    headerView.frame = CGRect(x: 0, y: cell.frame.height - 1, width: self.tableView.frame.width, height: 0.5)
+                                                    headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                                     headerView.backgroundColor = UIColor.lightGray
                                                     
                                                     
@@ -2497,7 +2567,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -2513,7 +2583,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         cell.contentView.layer.cornerRadius = 45.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor

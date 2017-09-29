@@ -193,7 +193,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
             // This happens on first-run
          
-            //requestAccessToCalendar()
+            requestAccessToCalendar()
          
             print("Undecided")
          
@@ -228,7 +228,44 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         }
         
     }
+    // Request access to calendar 
+    func checkCalendarAuthorizationStatus() {
+        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
+        
+        switch (status) {
+        case EKAuthorizationStatus.notDetermined:
+            // This happens on first-run
+            requestAccessToCalendar()
+            print("Undecided")
+        case EKAuthorizationStatus.authorized: break
+        // Things are in line with being able to show the calendars in the table view
+        print("Authorized")
+            
+        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied: break
+        // We need to help them give us permission
+        //needPermissionView.fadeIn()
+        print("Restricted")
+        }
+    }
     
+    
+    // Get access
+    func requestAccessToCalendar() {
+        EKEventStore().requestAccess(to: .event, completion: {
+            (accessGranted: Bool, error: Error?) in
+            
+            if accessGranted == true {
+                DispatchQueue.main.async(execute: {
+                    // self.loadCalendars()
+                    //self.refreshTableView()
+                })
+            } else {
+                DispatchQueue.main.async(execute: {
+                    //self.needPermissionView.fadeIn()
+                })
+            }
+        })
+    }
     
     
     // Collection view Delegate && Data source
@@ -521,6 +558,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             // Add to list
             self.corpBadges.append(badge)
             print("CorpBadges", self.corpBadges.count)
+            
         }
         
         self.badgeCollectionView.reloadData()
@@ -546,7 +584,8 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
         //tableView.tableFooterView = self.profileImageCollectionView
         
-        
+        // Request calendar access
+        checkCalendarAuthorizationStatus()
     }
     
     // Custom methods
@@ -1059,8 +1098,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 // Add phone number button
                 let digits = number.values.first!
                 
+                // Formatted digits
+                let digitsFormatted = self.format(phoneNumber: number.values.first!)
+                
                 // Add
-                let callAction = UIAlertAction(title: digits, style: .default)
+                let callAction = UIAlertAction(title: digitsFormatted, style: .default)
                 { _ in
                     print("call")
                     
@@ -1114,8 +1156,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 // Add phone number button
                 let digits = number.values.first!
                 
+                // Formatted digits
+                let digitsFormatted = self.format(phoneNumber: number.values.first!)
+                
                 // Add
-                let callAction = UIAlertAction(title: digits, style: .default)
+                let callAction = UIAlertAction(title: digitsFormatted, style: .default)
                 { _ in
                     print("call")
                     
@@ -1285,7 +1330,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         // Configure borders
         imageView.layer.borderWidth = 0.5
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 45    // Create container for image and name
+        imageView.layer.cornerRadius = 55    // Create container for image and name
         
     }
     

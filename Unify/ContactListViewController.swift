@@ -993,10 +993,20 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         return randomString
     }
     
-    func sortUnifyContacts(phoneList: [Contact]) {
-        
-        
-        
+    func isAlpha(char: Character) -> Bool {
+        switch char {
+        case "a"..."z":
+            return true
+        case "A"..."Z":
+            return true
+        default:
+            return false
+        }
+    }
+    
+    func isAlphaString(char: String) -> Bool {
+        let regex = try! NSRegularExpression(pattern: "[:alpha:]", options: [])
+        return regex.firstMatch(in: char, options: [], range: NSMakeRange(0, char.characters.count)) != nil
     }
     
     func sortContacts() {
@@ -1017,23 +1027,23 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             var fullNameArr = nameToUpper.components(separatedBy: " ")  //split(contactName) {$0 == " "}
             let firstName: String = fullNameArr[0]
-            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
             
             if lastName.isEmpty{
                 lastName = "No Name"
             }
             
-            return String(lastName[lastName.startIndex])
-            
-            /*
-            if String(lastName[lastName.startIndex]).isEmpty{
-                let none = "No Name"
-                return String(none[none.startIndex] )
-            }else{
-                let none = "No Name"
+            // Check if letter in the alphabet
+            if isAlphaString(char: String(lastName[lastName.startIndex])){
+                
                 return String(lastName[lastName.startIndex])
-            }*/
-           
+                
+            }else{
+                
+                // Otherwise return #
+                print("Not a string", String(lastName[lastName.startIndex]))
+                return "#"
+            }
         }
         
         // Sort letters array
@@ -1059,6 +1069,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
 
         }
         
+        /*
         // Apple contacts
         for contact in self.phoneContacts{
             // Init contact name
@@ -1073,20 +1084,21 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             
             // Check if section exists
-            if contactsHashTable[String(describing: lastName.characters.first ?? "N")] == nil{
+            if contactsHashTable[String(describing: lastName.characters.first ?? "#")] == nil{
                 //print("Hash Section Empty!")
                 // If empty, initialize list
-               contactsHashTable[String(describing: lastName.characters.first ?? "N")] = []
+               contactsHashTable[String(describing: lastName.characters.first ?? "#")] = []
             }
             // Add contact to list
             //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
-            let startIndex = String(describing: lastName.characters.first ?? "N")
+            let startIndex = String(describing: lastName.characters.first ?? "#")
             print("Start Index: >> \(startIndex)")
+            
             
             contactsHashTable[startIndex]!.append(contact)
             //print("Section count for added item")
             //print(contactsHashTable[startIndex]?.count)
-        }
+        }*/
         
         
         // Unify Contacts
@@ -1102,24 +1114,49 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Init first name just in case no last exists
             let firstName: String = fullNameArr[0]
             // Retieve last name
-            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
             
-            print("First + Last", firstName, lastName)
+            //print("First + Last", firstName, lastName)
             
-            // Check if section exists
-            if contactObjectTable[String(describing: lastName.characters.first ?? "N")] == nil{
-                //print("Hash Section Empty!")
-                // If empty, initialize list
-                contactObjectTable[String(describing: lastName.characters.first ?? "N")] = []
+            
+            // Check if letter in the alphabet
+            if isAlphaString(char: String(lastName.characters.first ?? "#")){
+                
+                // Check if section exists
+                if contactObjectTable[String(describing: lastName.characters.first ?? "#")] == nil{
+                    //print("Hash Section Empty!")
+                    // If empty, initialize list
+                    contactObjectTable[String(describing: lastName.characters.first ?? "#")] = []
+                }
+                // Add contact to list
+                //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+                let startIndex = String(describing: lastName.characters.first ?? "#")
+                //print("Start Index: >> \(startIndex)")
+                
+                contactObjectTable[startIndex]!.append(contact)
+                //print("Section count for added item", contact.toAnyObject())
+                //print(contactsHashTable[startIndex]?.count)
+                
+            }else{
+               
+                // Check if first name valid
+                // Check if section exists
+                if contactObjectTable[String(describing: firstName.characters.first ?? "#")] == nil{
+                    //print("Hash Section Empty!")
+                    // If empty, initialize list
+                    contactObjectTable[String(describing: firstName.characters.first ?? "#")] = []
+                }
+                // Add contact to list
+                //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+                let startIndex = String(describing: firstName.characters.first ?? "#")
+                //print("Start Index: >> \(startIndex)")
+                
+                contactObjectTable[startIndex]!.append(contact)
+                //print("Section count for added item", contact.toAnyObject())
+                //print(contactsHashTable[startIndex]?.count)
+                
             }
-            // Add contact to list
-            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
-            let startIndex = String(describing: lastName.characters.first ?? "N")
-            print("Start Index: >> \(startIndex)")
             
-            contactObjectTable[startIndex]!.append(contact)
-            print("Section count for added item", contact.toAnyObject())
-            //print(contactsHashTable[startIndex]?.count)
         }
         
         
@@ -1164,9 +1201,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         //print("Table Data \n\(self.tableData)")
         
-        print(contactObjectTable)
+        //print(contactObjectTable)
         
-        print("The Table Count >> ", contactObjectTable.count)
+        //print("The Table Count >> ", contactObjectTable.count)
         
         DispatchQueue.main.async {
             
@@ -1178,6 +1215,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
 
     }
+    
     
     func addGestureToImage(image: UIImageView, index: IndexPath) {
         // Init tap gesture

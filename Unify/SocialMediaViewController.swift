@@ -99,6 +99,8 @@ class SocialMediaViewController: UIViewController , UICollectionViewDelegate, UI
         super.viewWillAppear(true)
         
         thumbnailImageList = [img1!, img2!, img3!, img4!, img5!, img18!, img6!, img7!, img8!, img9!, img10!, img11!, img12!, img13!,img14!, img15!, img16!, img17!]
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

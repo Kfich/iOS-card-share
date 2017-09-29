@@ -238,6 +238,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         
         // Update user interface to check for connection 
         self.updateUserInterface()
+        
+        // Drop keyboard
+        self.view.endEditing(true)
 
   
     }

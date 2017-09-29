@@ -1740,13 +1740,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 contact.emails.append(["email": emailLabel.text!])
             }
             
+            /*
             if self.syncContactSwitch.isOn == true {
                 
                 // Set bool for contact sync
                 ContactManager.sharedManager.syncIntroContactSwitch = true
                 print("The intro switch was on")
                 
-            }
+            }*/
             
             // Set manager navigation path
             ContactManager.sharedManager.userSelectedNewContactForIntro = true

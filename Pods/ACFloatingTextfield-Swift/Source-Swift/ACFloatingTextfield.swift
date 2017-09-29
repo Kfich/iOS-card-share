@@ -149,7 +149,7 @@ fileprivate extension ACFloatingTextfield {
         
         bottomLineView?.removeFromSuperview()
         //Bottom Line UIView Configuration.
-        bottomLineView = UIView(frame: CGRect(x:0, y:self.frame.height-0.5, width:self.frame.width, height:0.1))
+        bottomLineView = UIView(frame: CGRect(x:0, y:self.frame.height - 0.5, width:self.frame.width, height:0.5))
         bottomLineView?.backgroundColor = lineColor;
         
         if bottomLineView != nil {

@@ -37,7 +37,7 @@ import UIKit
         self.titleLabel?.font = UIFont.systemFont(ofSize: 17)//(name: "Avenir-Heavy", size: 17)
         
         self.actionStyle = style
-        style == .default ? (self.setTitleColor(UIColor(red: 191.0/255.0, green: 51.0/255.0, blue: 98.0/255.0, alpha: 1.0), for: UIControlState())) : (self.setTitleColor(UIColor.gray, for: UIControlState()))
+        style == .default ? (self.setTitleColor(UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0), for: UIControlState())) : (self.setTitleColor(UIColor.gray, for: UIControlState()))
         
         self.addSeparator()
     }

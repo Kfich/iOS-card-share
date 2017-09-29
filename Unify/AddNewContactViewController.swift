@@ -261,7 +261,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
         self.addObservers()
         
         // Set image
-        let image = UIImage(named: "profile-placeholder")
+        let image = UIImage(named: "user")
         self.contactImageView.image = image
         
         // Config textfields
