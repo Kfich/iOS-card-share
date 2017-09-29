@@ -17,10 +17,11 @@ class LabelSelectionViewController: FormViewController {
         form +++
             Section("Select Label")
             <<< ButtonRow(){
-                $0.title = "Home"
+                $0.title = "home"
                 
                 }.cellUpdate { cell, row in
                     cell.textLabel?.textAlignment = .left
+                    cell.textLabel?.textColor = UIColor.black
                 
                 }.onCellSelection({ (cell, row) in
                     
@@ -40,9 +41,10 @@ class LabelSelectionViewController: FormViewController {
                 })
             })
             <<< ButtonRow(){
-                $0.title = "Work"
+                $0.title = "work"
                 }.cellUpdate { cell, row in
                     cell.textLabel?.textAlignment = .left
+                    cell.textLabel?.textColor = UIColor.black
                     
                 }.onCellSelection({ (cell, row) in
                     // Set path
@@ -59,6 +61,7 @@ class LabelSelectionViewController: FormViewController {
                         
                     })
                 })
+            /*
             <<< ButtonRow(){
                 $0.title = "Personal"
                 
@@ -79,12 +82,13 @@ class LabelSelectionViewController: FormViewController {
                         // Print to test
                         print("Personal selected")
                     })
-                })
+                })*/
             <<< ButtonRow(){
-                $0.title = "Mobile"
+                $0.title = "mobile"
         
                 }.cellUpdate { cell, row in
                     cell.textLabel?.textAlignment = .left
+                    cell.textLabel?.textColor = UIColor.black
                     
                 }.onCellSelection({ (cell, row) in
                     
@@ -106,6 +110,7 @@ class LabelSelectionViewController: FormViewController {
                 
                 }.cellUpdate { cell, row in
                     cell.textLabel?.textAlignment = .left
+                    cell.textLabel?.textColor = UIColor.black
                     
                 }.onCellSelection({ (cell, row) in
                     

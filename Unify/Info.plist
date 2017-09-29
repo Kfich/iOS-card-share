@@ -48,9 +48,9 @@
 	<key>NSContactsUsageDescription</key>
 	<string>Import Users</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>All 'Unify' to access your location to discover people nearby</string>
+	<string>Allow &apos;Unify&apos; to access your location to discover people nearby</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>All 'Unify' to access your location to discover people nearby</string>
+	<string>Allow &apos;Unify&apos; to access your location to discover people nearby</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To create your Unifty Profile Picture Image</string>
 	<key>UIAppFonts</key>

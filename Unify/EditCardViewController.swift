@@ -111,7 +111,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     // Action buttons
     
     @IBOutlet var addImageButton: UIButton!
-    @IBOutlet var addCardNameButton: UIButton!
+    @IBOutlet var deleteCardButton: UIButton!
     
     // Badge carosel
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
@@ -192,6 +192,15 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         self.pencilIcon.isUserInteractionEnabled = true
         self.pencilIcon.addGestureRecognizer(tapGestureRecognizer)
+        
+        // If user only has one card, hide button
+        if ContactManager.sharedManager.viewableUserCards.count == 1{
+            // Hide
+            self.deleteCardButton.isHidden = true
+        }else{
+            // Show
+            self.deleteCardButton.isHidden = false
+        }
         
     }
     

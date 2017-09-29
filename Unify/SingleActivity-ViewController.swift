@@ -619,9 +619,18 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 // Check if phone valid before formatting
-                //phoneNumbers.append(self.format(phoneNumber:(number.values.first ?? ""))!)
-                phoneNumbers.append(number.values.first ?? "")
+                
+                if (number.values.first?.isPhoneNumber)! {
+                    // Format and add to list
+                    phoneNumbers.append(self.format(phoneNumber: number.values.first ?? "")!)
+                }else{
+                    // Add unformatted number
+                    phoneNumbers.append(number.values.first!)
+                }
+                // Add label to list
                 phoneNumberLabels.append(number.keys.first!)
+                
+            
             }
             // Create section data
             self.tableData["Phone Numbers"] = phoneNumbers

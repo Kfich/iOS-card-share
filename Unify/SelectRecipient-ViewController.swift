@@ -165,7 +165,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             
             // Set image data here
             if contact.imageId != "" {
-                print("Has IMAGE")
+                
+                /*print("Has IMAGE")
                 // Set id
                 let id = contact.imageId
                 
@@ -173,10 +174,14 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
                 //let placeholderImage = UIImage(named: "profile")!
                 // Set image
-                cell.contactImageView?.setImageWith(url)
+                cell.contactImageView?.setImageWith(url)*/
+                
+                // Set from default
+                cell.contactImageView.image = UIImage(data: contact.imageData)
                 
                 
             }else{
+                // Set from default
                 cell.contactImageView.image = UIImage(named: "profile")
             }
             
@@ -192,7 +197,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             
             // Set image data here
             if contact?.imageId != "" {
-                print("Has IMAGE")
+                
+                /*print("Has IMAGE")
                 // Set id
                 let id = contact?.imageId
                 
@@ -200,10 +206,15 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
                 //let placeholderImage = UIImage(named: "profile")!
                 // Set image
-                cell.contactImageView?.setImageWith(url)
+                cell.contactImageView?.setImageWith(url)*/
+                
+                // Set from data
+                cell.contactImageView.image = UIImage(data: (contact?.imageData)!)
                 
                 
             }else{
+                
+                // Set to default
                 cell.contactImageView.image = UIImage(named: "profile")
             }
         }
@@ -474,6 +485,13 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             }
             
         }
+        
+        if contact.imageId != "" {
+            // Assign
+            contactToAdd.imageData = contact.imageData
+        }
+        
+        
         // Cast mutable contact back to regular contact
         cnObject = contactToAdd as CNContact
         
@@ -908,7 +926,9 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                 // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
                 
                 if let imageData = contact.imageData{
-                    print(imageData)
+                   
+                    // Set image data for local use
+                    contactObject.imageData = imageData
                     
                     // Assign asset name and type
                     let idString = contactObject.randomString(length: 20)
@@ -1327,7 +1347,37 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         return randomString
     }
     
+    // Check if char is a letter
+    func isAlpha(char: Character) -> Bool {
+        switch char {
+        case "a"..."z":
+            return true
+        case "A"..."Z":
+            return true
+        default:
+            return false
+        }
+    }
+    // Check if string char is a letter
+    func isAlphaString(char: String) -> Bool {
+        let regex = try! NSRegularExpression(pattern: "[:alpha:]", options: [])
+        return regex.firstMatch(in: char, options: [], range: NSMakeRange(0, char.characters.count)) != nil
+    }
     
+    // Rearrang idecies in an array
+    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
+        var arr = array
+        // Set element
+        let element = arr[fromIndex]
+        // Append to array
+        arr.insert(element, at: toIndex)
+        // Now remove from beginning
+        arr.remove(at: fromIndex)
+        
+        return arr
+    }
+    
+    // Sort the contact list
     func sortContacts() {
         // Test for sorting contacts by last name into sections
         
@@ -1340,21 +1390,29 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         dataArray = self.tuples.map { $0.1 }
         
         
-        
         letters = dataArray.map { (name) -> String in
             //print("UPPER CASE HERE")
             let nameToUpper = name.uppercased()
             
             var fullNameArr = nameToUpper.components(separatedBy: " ")  //split(contactName) {$0 == " "}
             let firstName: String = fullNameArr[0]
-            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
             
-            // Check if name not empty
             if lastName.isEmpty{
                 lastName = "No Name"
             }
-            print(lastName[lastName.startIndex])
-            return String(lastName[lastName.startIndex])
+            
+            // Check if letter in the alphabet
+            if isAlphaString(char: String(lastName[lastName.startIndex])){
+                
+                return String(lastName[lastName.startIndex])
+                
+            }else{
+                
+                // Otherwise return #
+                print("Not a string", String(lastName[lastName.startIndex]))
+                return "#"
+            }
         }
         
         // Sort letters array
@@ -1364,11 +1422,20 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
-                //print("\n\nAdded >>>> \(list + [name])")
+                print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
         })
+        
+        // If first index is the misc, move to end of array
+        if letters.first == "#" {
+            // Move to end of array
+            letters = self.rearrange(array: letters, fromIndex: 0, toIndex: letters.endIndex)
+            // Test
+            print("The new letters array\n\(letters)")
+        }
+        
         
         // Create indicies based on letters
         for letter in letters{
@@ -1380,34 +1447,36 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             
         }
         
-        // Apple contacts
-        for contact in self.phoneContacts{
-            // Init contact name
-            var contactName : String = self.formatter.string(from: contact) ?? "No Name"
-            // Uppercase the name
-            contactName = contactName.uppercased()
-            
-            var fullNameArr = contactName.components(separatedBy: " ")  //split(contactName) {$0 == " "}
-            
-            let firstName: String = fullNameArr[0]
-            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
-            
-            
-            // Check if section exists
-            if contactsHashTable[String(describing: lastName.characters.first ?? "N")] == nil{
-                //print("Hash Section Empty!")
-                // If empty, initialize list
-                contactsHashTable[String(describing: lastName.characters.first!)] = []
-            }
-            // Add contact to list
-            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
-            let startIndex = String(describing: lastName.characters.first ?? "N")
-            print("Start Index: >> \(startIndex)")
-            
-            contactsHashTable[startIndex]!.append(contact)
-            //print("Section count for added item")
-            //print(contactsHashTable[startIndex]?.count)
-        }
+        /*
+         // Apple contacts
+         for contact in self.phoneContacts{
+         // Init contact name
+         var contactName : String = self.formatter.string(from: contact) ?? "No Name"
+         // Uppercase the name
+         contactName = contactName.uppercased()
+         
+         var fullNameArr = contactName.components(separatedBy: " ")  //split(contactName) {$0 == " "}
+         
+         let firstName: String = fullNameArr[0]
+         var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+         
+         
+         // Check if section exists
+         if contactsHashTable[String(describing: lastName.characters.first ?? "#")] == nil{
+         //print("Hash Section Empty!")
+         // If empty, initialize list
+         contactsHashTable[String(describing: lastName.characters.first ?? "#")] = []
+         }
+         // Add contact to list
+         //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+         let startIndex = String(describing: lastName.characters.first ?? "#")
+         print("Start Index: >> \(startIndex)")
+         
+         
+         contactsHashTable[startIndex]!.append(contact)
+         //print("Section count for added item")
+         //print(contactsHashTable[startIndex]?.count)
+         }*/
         
         
         // Unify Contacts
@@ -1423,22 +1492,49 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             // Init first name just in case no last exists
             let firstName: String = fullNameArr[0]
             // Retieve last name
-            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
             
-            // Check if section exists
-            if contactObjectTable[String(describing: lastName.characters.first ?? "N")] == nil{
-                //print("Hash Section Empty!")
-                // If empty, initialize list
-                contactObjectTable[String(describing: lastName.characters.first!)] = []
+            //print("First + Last", firstName, lastName)
+            
+            
+            // Check if letter in the alphabet
+            if isAlphaString(char: String(lastName.characters.first ?? "#")){
+                
+                // Check if section exists
+                if contactObjectTable[String(describing: lastName.characters.first ?? "#")] == nil{
+                    //print("Hash Section Empty!")
+                    // If empty, initialize list
+                    contactObjectTable[String(describing: lastName.characters.first ?? "#")] = []
+                }
+                // Add contact to list
+                //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+                let startIndex = String(describing: lastName.characters.first ?? "#")
+                //print("Start Index: >> \(startIndex)")
+                
+                contactObjectTable[startIndex]!.append(contact)
+                //print("Section count for added item", contact.toAnyObject())
+                //print(contactsHashTable[startIndex]?.count)
+                
+            }else{
+                
+                // Check if first name valid
+                // Check if section exists
+                if contactObjectTable[String(describing: firstName.characters.first ?? "#")] == nil{
+                    //print("Hash Section Empty!")
+                    // If empty, initialize list
+                    contactObjectTable[String(describing: firstName.characters.first ?? "#")] = []
+                }
+                // Add contact to list
+                //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+                let startIndex = String(describing: firstName.characters.first ?? "#")
+                //print("Start Index: >> \(startIndex)")
+                
+                contactObjectTable[startIndex]!.append(contact)
+                //print("Section count for added item", contact.toAnyObject())
+                //print(contactsHashTable[startIndex]?.count)
+                
             }
-            // Add contact to list
-            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
-            let startIndex = String(describing: lastName.characters.first ?? "N")
-            print("Start Index: >> \(startIndex)")
             
-            contactObjectTable[startIndex]!.append(contact)
-            //print("Section count for added item")
-            //print(contactsHashTable[startIndex]?.count)
         }
         
         
@@ -1483,9 +1579,9 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         //print("Table Data \n\(self.tableData)")
         
-        //print(contactsHashTable)
+        //print(contactObjectTable)
         
-        print("The Table Count >> ", contactObjectTable.count)
+        //print("The Table Count >> ", contactObjectTable.count)
         
         DispatchQueue.main.async {
             
@@ -1498,11 +1594,10 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
     }
     
-    
     /*
     func sortContacts() {
         // Test for sorting contacts by last name into sections
-        
+     
         //let data = self.dataArray // Example data, use your phonebook data here.
         
         // Build letters array:

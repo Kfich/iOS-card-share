@@ -774,6 +774,11 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         ContactManager.sharedManager.userSelectedNewContactForIntro = false
         ContactManager.sharedManager.userSelectedNewRecipientForIntro = false
         
+        
+        // Hide shared button
+        self.shareButton.isHidden = true
+        self.cancelIntroButton.isHidden = true
+        
     }
     
     func configureViewForContact(){
@@ -792,14 +797,17 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             if selected.imageId != "" {
                 print("Has IMAGE")
                 // Set id
-                let id = selected.imageId
+                /*let id = selected.imageId
                 
                 // Set image for contact
                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
                 let placeholderImage = UIImage(named: "profile")!
                 // Set image
                 //contactImageView?.setImageWith(url)
-                self.contactImageView.setImageWith(url)
+                self.contactImageView.setImageWith(url)*/
+                
+                // Set from data directly
+                self.contactImageView.image = UIImage(data: selected.imageData)
                 
             }else{
                 contactImageView.image = UIImage(named: "contact-placeholder")
@@ -868,14 +876,17 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             if selected.imageId != "" {
                 print("Has IMAGE")
                 // Set id
-                let id = selected.imageId
+                /*let id = selected.imageId
                 
                 // Set image for contact
                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
                 let placeholderImage = UIImage(named: "profile")!
                 // Set image
                 //contactImageView?.setImageWith(url)
-                self.recipientImageView.setImageWith(url)
+                self.recipientImageView.setImageWith(url)*/
+                
+                // Set from data 
+                self.recipientImageView.image = UIImage(data: selected.imageData)
                 
             }else{
                 recipientImageView.image = UIImage(named: "contact-placeholder")

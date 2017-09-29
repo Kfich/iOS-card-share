@@ -1274,16 +1274,72 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     // User Data Access Permissions
     // -------------------------------------------------------------------
     
-    func requestRadarAccess(){
-        self.locationManager.requestAlwaysAuthorization()
+    // Send user to app settings
+    func showGeneralSettings() {
+        // Push to settings
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
         
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+    }
+    
+    // Show settings alert
+    func showAccessAlert() {
+        // Configure alertview
+        let alertView = UIAlertController(title: "Unify would like to access your location", message: "You need to authorize 'Unify' to access your location in your iPhone settings in order to use your radar", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Not now", style: .default, handler: { (alert) in
+            
+            // Dismiss alert
+            self.dismiss(animated: true, completion: nil)
+            
+        })
+        
+        let settings = UIAlertAction(title: "Allow", style: .default, handler: { (alert) in
+            // Execute logout function
+            self.showGeneralSettings()
+        })
+        
+        alertView.addAction(cancel)
+        alertView.addAction(settings)
+        self.present(alertView, animated: true, completion: nil)
+    }
+
+    
+    func requestRadarAccess(){
         
         if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
+            switch(CLLocationManager.authorizationStatus()) {
+            case .notDetermined:
+                print("No access")
+                
+                self.locationManager.requestAlwaysAuthorization()
+                
+                // For use in foreground
+                self.locationManager.requestWhenInUseAuthorization()
+                
+            case .restricted, .denied:
+                print("Rejected")
+                
+                // Show modal to all access
+                self.showAccessAlert()
+                
+            case .authorizedAlways, .authorizedWhenInUse:
+                print("Access")
+                
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                locationManager.startUpdatingLocation()
+            }
+        } else {
+            print("Location services are not enabled")
+            
+            // Show modal to gain access
+            self.showAccessAlert()
         }
         
     }

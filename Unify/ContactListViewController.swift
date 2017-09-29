@@ -20,6 +20,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBOutlet var searchBarWrapperView: UIView!
     
+    @IBOutlet var importContactsButton: UIButton!
+    
     
     
     // Properties
@@ -171,7 +173,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             // Set image data here
             if contact.imageId != "" {
-                print("Has IMAGE")
+                /*print("Has IMAGE")
                 // Set id
                 let id = contact.imageId
                 
@@ -179,7 +181,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
                 let placeholderImage = UIImage(named: "profile")!
                 // Set image
-                cell.contactImageView?.setImageWith(url)
+                cell.contactImageView?.setImageWith(url)*/
+                // Set from image data
+                cell.contactImageView.image = UIImage(data: contact.imageData)
                 
                 
             }else{
@@ -198,18 +202,22 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             // Set image data here
             if contact?.imageId != "" {
-                print("Has IMAGE")
-                // Set id
-                let id = contact?.imageId
-                
-                // Set image for contact
-                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
-                let placeholderImage = UIImage(named: "profile")!
-                // Set image
-                cell.contactImageView?.setImageWith(url)
+                /*print("Has IMAGE")
+                 // Set id
+                 let id = contact.imageId
+                 
+                 // Set image for contact
+                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                 let placeholderImage = UIImage(named: "profile")!
+                 // Set image
+                 cell.contactImageView?.setImageWith(url)*/
+               
+                // Set from image data
+                cell.contactImageView.image = UIImage(data: (contact?.imageData)!)
                 
                 
             }else{
+                // Set to default
                 cell.contactImageView.image = UIImage(named: "profile")
             }
 
@@ -335,15 +343,63 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
     
+    // Send user to app settings
+    func showGeneralSettings() {
+        // Push to settings
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+    }
+    
+    // Show settings alert
+    func showSyncAlert() {
+        // Configure alertview
+        let alertView = UIAlertController(title: "Would you like to sync your contacts?", message: "You need to authorize 'Unify' to access your contacts in your iPhone settings in order to sync your contact list", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Not now", style: .default, handler: { (alert) in
+            
+            // Dismiss alert
+            self.dismiss(animated: true, completion: nil)
+            
+        })
+        
+        let settings = UIAlertAction(title: "Allow", style: .default, handler: { (alert) in
+            // Execute logout function
+            self.showGeneralSettings()
+        })
+        
+        alertView.addAction(cancel)
+        alertView.addAction(settings)
+        self.present(alertView, animated: true, completion: nil)
+    }
+
+    
     func getContacts() {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
             
             print("Permission status >> \(status)")
+            
+            // Show sync alert
+            self.showSyncAlert()
+            
+            
+            // Show import btn
+            self.importContactsButton.isHidden = false
+            
             // Send them to the setting page
-            self.presentSettingsActionSheet()
+            //self.presentSettingsActionSheet()
             return
         }
+        
+        // Hide import button
+        self.importContactsButton.isHidden = true
+        
         
         // open it
         
@@ -519,7 +575,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
                 
                 if let imageData = contact.imageData{
-                    //print(imageData)
+                    
+                    // Assign image to contact for local use
+                    contactObject.imageData = imageData
+                    
                     
                     // Assign asset name and type
                     let idString = contactObject.randomString(length: 20)
@@ -654,7 +713,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func presentSettingsActionSheet() {
-        let alert = UIAlertController(title: "Permission to Contacts", message: "This app needs access to contacts in order to ...", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Permission to Contacts", message: "This app needs access to contacts in order to sync your contact list", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Go to Settings", style: .default) { _ in
             let url = URL(string: UIApplicationOpenSettingsURLString)!
             UIApplication.shared.open(url)
@@ -993,6 +1052,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         return randomString
     }
     
+    // Check if char is a letter
     func isAlpha(char: Character) -> Bool {
         switch char {
         case "a"..."z":
@@ -1003,10 +1063,23 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             return false
         }
     }
-    
+    // Check if string char is a letter
     func isAlphaString(char: String) -> Bool {
         let regex = try! NSRegularExpression(pattern: "[:alpha:]", options: [])
         return regex.firstMatch(in: char, options: [], range: NSMakeRange(0, char.characters.count)) != nil
+    }
+    
+    // Rearrang idecies in an array
+    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
+        var arr = array
+        // Set element
+        let element = arr[fromIndex]
+        // Append to array
+        arr.insert(element, at: toIndex)
+        // Now remove from beginning
+        arr.remove(at: fromIndex)
+        
+        return arr
     }
     
     func sortContacts() {
@@ -1058,6 +1131,15 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             }
             return list
         })
+        
+        // If first index is the misc, move to end of array
+        if letters.first == "#" {
+            // Move to end of array
+            letters = self.rearrange(array: letters, fromIndex: 0, toIndex: letters.endIndex)
+            // Test
+            print("The new letters array\n\(letters)")
+        }
+        
         
         // Create indicies based on letters
         for letter in letters{

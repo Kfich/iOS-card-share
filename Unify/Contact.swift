@@ -25,6 +25,10 @@ public class Contact: Fuseable{
     var notes = [[String : String]]()
     var tags = [[String : String]]()
     var addresses = [[String : String]]()
+
+    // Image handling for local store
+    var imageData = Data()
+
     
     var emailList = NSArray()
     var phoneNumberList = NSArray()

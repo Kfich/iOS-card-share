@@ -4477,6 +4477,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="G09-xr-nGj"/>
                     <connections>
+                        <outlet property="importContactsButton" destination="Mnm-2d-SUw" id="gEw-E7-V4w"/>
                         <outlet property="searchBarWrapperView" destination="nHf-3Q-lG1" id="2MU-QJ-lDd"/>
                         <outlet property="tblSearchResults" destination="p68-Yw-IbX" id="dfe-sY-cgO"/>
                         <segue destination="Zxu-Hd-vd4" kind="show" identifier="showContactProfile" id="M0K-Pk-gtm"/>
@@ -4801,7 +4802,7 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-LY-1tW">
                                                     <rect key="frame" x="15" y="27" width="345" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -4810,7 +4811,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="oyt-bf-wvZ"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -8131,8 +8132,8 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S0Z-XR-kkS">
-                                                    <rect key="frame" x="15" y="26" width="345" height="22"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <rect key="frame" x="15" y="27" width="345" height="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -8141,16 +8142,16 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="pki-gL-q5Q"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="iMV-z1-lUb" firstAttribute="centerX" secondItem="S0Z-XR-kkS" secondAttribute="centerX" id="6eB-IS-YEp"/>
-                                                <constraint firstItem="S0Z-XR-kkS" firstAttribute="top" secondItem="iMV-z1-lUb" secondAttribute="bottom" constant="1" id="FOi-5I-fci"/>
+                                                <constraint firstItem="S0Z-XR-kkS" firstAttribute="top" secondItem="iMV-z1-lUb" secondAttribute="bottom" constant="2" id="FOi-5I-fci"/>
                                                 <constraint firstItem="iMV-z1-lUb" firstAttribute="leading" secondItem="S0Z-XR-kkS" secondAttribute="leading" id="JEi-vN-aCS"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="S0Z-XR-kkS" secondAttribute="bottom" constant="-1.5" id="ech-kg-Fzn"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="S0Z-XR-kkS" secondAttribute="bottom" constant="-2.5" id="ech-kg-Fzn"/>
                                                 <constraint firstItem="iMV-z1-lUb" firstAttribute="top" secondItem="Vwf-2o-bra" secondAttribute="topMargin" constant="2" id="eub-2x-TJK"/>
                                                 <constraint firstItem="iMV-z1-lUb" firstAttribute="leading" secondItem="Vwf-2o-bra" secondAttribute="leadingMargin" constant="7" id="uCR-9h-dBH"/>
                                                 <constraint firstItem="iMV-z1-lUb" firstAttribute="centerX" secondItem="Vwf-2o-bra" secondAttribute="centerX" id="wvu-BK-DDP"/>
@@ -11362,8 +11363,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Public Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5GA-6f-AM5">
-                                                    <rect key="frame" x="15" y="11" width="159" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5GA-6f-AM5">
+                                                    <rect key="frame" x="15" y="11" width="159" height="0.0"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="159" id="Ry8-Hn-MZV"/>
                                                     </constraints>
@@ -11399,7 +11400,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dlz-5Y-kWU">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dlz-5Y-kWU">
                                                     <rect key="frame" x="15" y="11" width="159" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="159" id="VCc-VL-Kf2"/>
@@ -11408,7 +11409,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iAg-Wm-Y1U">
+                                                <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iAg-Wm-Y1U">
                                                     <rect key="frame" x="308" y="7" width="51" height="31"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="49" id="gy4-5S-FBv"/>

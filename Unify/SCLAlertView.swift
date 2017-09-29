@@ -196,7 +196,7 @@ open class SCLAlertView: UIViewController {
 			self.circleBackgroundColor = circleBackgroundColor
             self.contentViewColor = contentViewColor
             self.contentViewBorderColor = contentViewBorderColor
-            self.titleColor = titleColor
+            self.titleColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0) //titleColor
             
             self.kTitleFont = kTitleFont
             self.kTitleMinimumScaleFactor = kTitleMinimumScaleFactor

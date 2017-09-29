@@ -177,8 +177,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Get users in transaction
         
         if selectedTransaction.type == "connection" {
-            // Hit for userList
-            self.fetchUsersForTransaction()
+            
+            // If user not the sender, fetch data
+            if self.selectedTransaction.senderId != self.currentUser.userId {
+                // Hit for userList
+                self.fetchUsersForTransaction()
+            }else{
+                print("Current user is sender")
+            }
             
         }else if self.selectedTransaction.type == "introduction" && self.selectedTransaction.senderId == self.currentUser.userId{
             // Get values from transaction
@@ -1586,7 +1592,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // See if image ref available
         // Set description text
-        cell.connectionDescriptionLabel.text = "You connected with \(String(describing: name))"
+        cell.connectionDescriptionLabel.text = "You shared your profile with \(String(describing: name))"
         
         print("recipientCard", trans.recipientCard )
         
@@ -1666,7 +1672,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
 
         if trans.type == "quick_share" {
             // Set label text
-            cell.connectionDescriptionLabel.text = "You shared your contact information with \(String(describing: name))"
+            cell.connectionDescriptionLabel.text = "You shared your profile with \(String(describing: name))"
         }
         
         

@@ -99,12 +99,28 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        // Drop view
+        alert.hideView()
+        
+    }
+    
+    func pencilTappedForEdit(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        
+        // Show edit alert view
+        self.showAlertWithTextField()
+    }
+    
+    
     func configureAndShowIncognitoAlert(){
         // 
         // Example of using the view to add two text fields to the alert
         // Create the subview
+        
         var appearance = SCLAlertView.SCLAppearance(
-            kTitleFont: UIFont(name: "HelveticaNeue-Bold", size: 20)!,
+            kTitleFont: UIFont(name: "HelveticaNeue-Bold", size: 24)!,
             kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
             kButtonFont: UIFont(name: "HelveticaNeue", size: 18)!,
             showCloseButton: false
@@ -114,10 +130,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         appearance.kWindowWidth = self.view.frame.width - 20
         appearance.setkWindowHeight(self.view.frame.height - 20)
         appearance.showCircularIcon = false
-        
+        //appearance.titleColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         // Initialize SCLAlertView using custom Appearance
         alert = SCLAlertView(appearance: appearance)
+        
         
         
         // Creat the subview
@@ -127,18 +144,35 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         //subview.backgroundColor = UIColor.gray
         
         // Add textfield 1
-        let label1 = UILabel(frame: CGRect(x,30,300,25))
+        let label1 = UILabel(frame: CGRect(x,40,300,25))
         label1.text = "Here is how people will see you:"
+        label1.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         //label1.textAlignment = NSTextAlignment.center
         
         // Add textfield 2
         let label2 = UILabel(frame: CGRect(x,325, 300, 25))
-        label2.text = "Your incognito mode is active"
+        label2.text = ""
+        
+        // Init pencil icon
+        let cancelImageView = UIImageView()
+        // Set frame
+        cancelImageView.frame = CGRect(x: subview.frame.width - 35, y: 10 , width: 20, height: 20)
+        cancelImageView.image = UIImage(named: "exit")
+        
+        // Add gesture
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        cancelImageView.isUserInteractionEnabled = true
+        cancelImageView.addGestureRecognizer(tapGestureRecognizer)
+        
 
         // Add subviews
         subview.addSubview(label1)
         subview.addSubview(label2)
         
+        // Add x to main view
+
+        //alert.baseView.addSubview(pencilImageView)
+        alert.contentView.addSubview(cancelImageView)
         
         
         // Config imageview
@@ -163,7 +197,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Set image to imageview
         let imageView = UIImageView(image: image)
 
-        imageView.layer.borderColor = UIColor.red.cgColor
+        imageView.layer.borderColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0).cgColor
         imageView.layer.borderWidth = 1.5
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 59    // Create container for image and name
@@ -171,7 +205,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         containerView.backgroundColor = UIColor.clear
         
         // Changed the image rendering size
-        containerView.frame = CGRect(x: (subview.frame.width - 180) / 1.9, y: 100, width: 150, height: 150)
+        containerView.frame = CGRect(x: (subview.frame.width - 180) / 1.9, y: 100, width: 150, height: 200)
         // Test container view 
         //containerView.backgroundColor = UIColor.green
         
@@ -179,8 +213,27 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(0, containerView.frame.height - 15, containerView.frame.width, 20))
-       
+        let changelbl = UILabel(frame: CGRect(0, containerView.frame.height - 55, containerView.frame.width, 20))
+        changelbl.font = UIFont.systemFont(ofSize: 17)
+        changelbl.text = "change picture"
+        changelbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        // Config lable
+        changelbl.textAlignment = .center
+        
+        
+        // Add label to the view
+        let lbl = UILabel(frame: CGRect(0, containerView.frame.height - 5, containerView.frame.width, 20))
+        lbl.font = UIFont.systemFont(ofSize: 22)
+        lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        // Config lable
+        lbl.textAlignment = .center
+        
+        // Init pencil icon
+        let pencilImageView = UIImageView()
+        // Set frame
+        pencilImageView.frame = CGRect(x: lbl.frame.width, y: lbl.frame.origin.y - 1 , width: 25, height: 25)
+        pencilImageView.image = UIImage(named: "pencil")
+        
         
         if editNameSelected {
             // Set to selected name
@@ -190,16 +243,17 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             lbl.text = currentUser.getName() // Set to current user name
         }
         
-        // Config lable
-        lbl.textAlignment = .center
-        lbl.textColor = UIColor.black
-        lbl.font = UIFont(name: "HelveticaNeue", size: CGFloat(16))
         
         // Add action tap gesture to view object
         let labelAction = UITapGestureRecognizer(target: self, action: #selector(showAlertWithTextField))
         // Config label for action
         lbl.isUserInteractionEnabled = true
         lbl.addGestureRecognizer(labelAction)
+        
+        // Add gesture to penicl
+        pencilImageView.isUserInteractionEnabled = true
+        pencilImageView.addGestureRecognizer(labelAction)
+        
         
         // Add action tap gesture to view object
         let imageAction = UITapGestureRecognizer(target: self, action: #selector(editImageSelected(sender:)))
@@ -214,6 +268,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Add subviews
         containerView.addSubview(lbl)
         containerView.addSubview(imageView)
+        containerView.addSubview(changelbl)
+        containerView.addSubview(pencilImageView)
         
         
         // Add image to subview
@@ -223,7 +279,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         alert.customSubview = subview
         
         // Add buttons to alert
-        alert.addButton("Save") {
+        alert.addButton("Done") {
             print("Keep On")
             
             // Toggle the isIncognito on
@@ -251,6 +307,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             
         }
         
+        // Config buttons
+        alert.buttons[0].customBackgroundColor = UIColor.white
+        alert.buttons[0].customTextColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
         /*alert.addButton("Off") {
             print("Turn off")
             // Toggle the isIncognito off
@@ -277,7 +337,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         //alert.buttons.last?.backgroundColor = UIColor.clear
         
         // Show Alert
-        alert.showInfo("You Are Incognito", subTitle: "", closeButtonTitle: "Close")
+        alert.showInfo("Public Profile", subTitle: "", closeButtonTitle: "Close")
     }
     
     func prepareImageForUpload() -> NSDictionary {
@@ -660,7 +720,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7 // your number of cell here
+        return 10 // your number of cell here
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -675,6 +735,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Show incognito cell
             let incognitoCell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
             incognitoCell.incongnitoSwitch.isOn = self.hidden
+            incognitoCell.textLabel?.text = "Public Profile"
             // Hide and disable switch
             incognitoCell.incongnitoSwitch.isHidden = true
             incognitoCell.incongnitoSwitch.isEnabled = false
@@ -684,28 +745,49 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             
         }else if indexPath.row == 1 {
             // Show incognito cell
-            let syncCell = tableView.dequeueReusableCell(withIdentifier: "SyncCell", for: indexPath) as! SettingsViewCell
-            
-            // Toggle based on sync status
-            syncCell.syncContactsSwitch.isOn = self.synced
+            cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.text = "Contacts Settings"
+            // Set accessory
+            cell.accessoryType = .disclosureIndicator
             
         }else if indexPath.row == 2 {
+            // Show incognito cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.text = "Radar Settings"
+            // Set accessory
+            cell.accessoryType = .disclosureIndicator
+            
+        }else if indexPath.row == 3 {
+            // Show incognito cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.text = "Calendar Settings"
+            // Set accessory
+            cell.accessoryType = .disclosureIndicator
+            
+        }else if indexPath.row == 4 {
+            // Show incognito cell
+            cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.text = "Push Notification Settings"
+            // Set accessory
+            cell.accessoryType = .disclosureIndicator
+            
+        }else if indexPath.row == 5 {
             // Show contact us cell
             cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
             
-        }else if indexPath.row == 3{
+        }else if indexPath.row == 6{
             // Show privacy cell
             cell = tableView.dequeueReusableCell(withIdentifier: "HideBadgesCell", for: indexPath) as! SettingsViewCell
             
-        }else if indexPath.row == 4{
+        }else if indexPath.row == 7{
             // Show privacy cell
             cell = tableView.dequeueReusableCell(withIdentifier: "ContactUsCell", for: indexPath) as! SettingsViewCell
             
-        }else if indexPath.row == 5{
+        }else if indexPath.row == 8{
             // Show privacy cell
             cell = tableView.dequeueReusableCell(withIdentifier: "PrivacyCell", for: indexPath) as! SettingsViewCell
             
-        }else if indexPath.row == 6{
+        }else if indexPath.row == 9{
             // Show logout cell
             cell = tableView.dequeueReusableCell(withIdentifier: "LogoutCell", for: indexPath) as! SettingsViewCell
         }
@@ -724,29 +806,45 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Show incognito options
             self.showIncognitoOptions()
             
-        }else if indexPath.row == 2  {
+        }else if ((indexPath.row == 1) || (indexPath.row == 2) || (indexPath.row == 3) || (indexPath.row == 4)){
+            // Show radar settings
+            self.showGeneralSettings()
+            
+        }else if indexPath.row == 5  {
             // Set nav status
             ContactManager.sharedManager.hideCardsSelected = true
             // Show contact us segue
             performSegue(withIdentifier: "showCardToggleVC", sender: self)
-        }else if indexPath.row == 3{
+        }else if indexPath.row == 6{
             // Set nav status
             ContactManager.sharedManager.hideBadgesSelected = true
             // Show contact us segue
             performSegue(withIdentifier: "showCardToggleVC", sender: self)
-        }else if indexPath.row == 4 {
+        }else if indexPath.row == 7 {
             // Show contact us segue
             performSegue(withIdentifier: "showContactUs", sender: self)
-        }else if indexPath.row == 5{
+        }else if indexPath.row == 8{
             // Show privacy webview
             showPrivacy()
             
-        }else if indexPath.row == 6{
+        }else if indexPath.row == 9{
             // Log user out
             self.showLogoutAlert()
         }
     }
     
+    func showGeneralSettings() {
+        // Push to settings
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

@@ -145,14 +145,31 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     }
     
     @IBAction func smsSelected(_ sender: AnyObject) {
-        // Call sms function
-        self.showActionTextAlert()
+        
+        // Check for count
+        if contact.phoneNumbers.count > 1 {
+        
+            // Call sms function
+            self.showActionTextAlert()
+        }else{
+            // show sms 
+            self.showSMSCard()
+        }
         
     }
     
     @IBAction func emailSelected(_ sender: AnyObject) {
-        // Call email function
-        self.showEmailCard()
+        
+        if contact.emails.count > 1{
+            // call email options alert
+            self.showActionEmailAlert()
+       
+        }else{
+            
+            // Call email function
+            self.showEmailCard()
+            
+        }
         
     }
     @IBAction func callSelected(_ sender: AnyObject) {
@@ -248,6 +265,40 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         }
     }
     
+    // Send user to app settings
+    func showGeneralSettings() {
+        // Push to settings
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
+    }
+    
+    // Show settings alert
+    func showAccessAlert() {
+        // Configure alertview
+        let alertView = UIAlertController(title: "Unify would like to access your calendar", message: "You need to authorize 'Unify' to access your location in your iPhone settings in order to schedule appointments with your contacts", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Not now", style: .default, handler: { (alert) in
+            
+            // Dismiss alert
+            self.dismiss(animated: true, completion: nil)
+            
+        })
+        
+        let settings = UIAlertAction(title: "Allow", style: .default, handler: { (alert) in
+            // Execute logout function
+            self.showGeneralSettings()
+        })
+        
+        alertView.addAction(cancel)
+        alertView.addAction(settings)
+        self.present(alertView, animated: true, completion: nil)
+    }
     
     // Get access
     func requestAccessToCalendar() {
@@ -258,10 +309,12 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 DispatchQueue.main.async(execute: {
                     // self.loadCalendars()
                     //self.refreshTableView()
+                    print("Allowed")
                 })
             } else {
                 DispatchQueue.main.async(execute: {
                     //self.needPermissionView.fadeIn()
+                    self.showAccessAlert()
                 })
             }
         })
@@ -680,7 +733,15 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             for number in contact.phoneNumbers{
                 // print to test
                 // Phone number with format style
-                phoneNumbers.append(self.format(phoneNumber: number.values.first!)!)
+                
+                if (number.values.first?.isPhoneNumber)! {
+                    // Format and add to list
+                    phoneNumbers.append(self.format(phoneNumber: number.values.first ?? "")!)
+                }else{
+                    // Add unformatted number
+                    phoneNumbers.append(number.values.first!)
+                }
+                // Add label
                 phoneNumberLabels.append(number.keys.first!)
                 
                 // Init record
@@ -1078,7 +1139,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     // Action sheet
     func showActionAlert() {
         // Config action
-        let actionSheetController: UIAlertController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .actionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: "Please select a phone number", message: "", preferredStyle: .actionSheet)
         
         // Make Button
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -1099,7 +1160,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 let digits = number.values.first!
                 
                 // Formatted digits
-                let digitsFormatted = self.format(phoneNumber: number.values.first!)
+                let digitsFormatted = "\(number.keys.first ?? "phone"): \(self.format(phoneNumber: number.values.first!)!)"
                 
                 // Add
                 let callAction = UIAlertAction(title: digitsFormatted, style: .default)
@@ -1133,10 +1194,63 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         self.present(actionSheetController, animated: true, completion: nil)
     }
     
+    
+    // Action sheet
+    func showActionEmailAlert() {
+        // Config action
+        let actionSheetController: UIAlertController = UIAlertController(title: "Please select an email address", message: "", preferredStyle: .actionSheet)
+        
+        // Make Button
+        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            print("Cancel")
+        }
+        
+        // Add button
+        actionSheetController.addAction(cancelActionButton)
+        
+        
+        // Check for count
+        if contact.emails.count > 0 {
+            
+            // Iterate over items
+            for email in contact.emails{
+                
+                // Add email button
+                let emailAddress = email["email"]!
+                
+                let emailString = "\(email["type"] ?? "email"): \(emailAddress)"
+                
+                // Formatted digits
+                //let digitsFormatted = self.format(phoneNumber: number.values.first!)
+                
+                // Add
+                let callAction = UIAlertAction(title: emailString, style: .default)
+                { _ in
+                    print("email")
+                    
+                    // Set selection
+                    self.selectedUserEmail = emailAddress
+                    
+                    // Show console
+                    self.showEmailCard()
+                    
+                }
+                
+                //  Add action
+                actionSheetController.addAction(callAction)
+                
+            }
+            
+        }
+        
+        self.present(actionSheetController, animated: true, completion: nil)
+    }
+
+    
     // Action sheet
     func showActionTextAlert() {
         // Config action
-        let actionSheetController: UIAlertController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .actionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: "Please select a phone number", message: "", preferredStyle: .actionSheet)
         
         // Make Button
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -1159,8 +1273,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 // Formatted digits
                 let digitsFormatted = self.format(phoneNumber: number.values.first!)
                 
+                // Format title
+                let title = "\(number.keys.first ?? "phone"): \(digitsFormatted!)"
+                
                 // Add
-                let callAction = UIAlertAction(title: digitsFormatted, style: .default)
+                let callAction = UIAlertAction(title: title, style: .default)
                 { _ in
                     print("call")
                     
@@ -1266,12 +1383,14 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
          
             // Toggle image
             emailButton.image = UIImage(named: "btn-message-white")
+            emailButtonSingleWrapper.image = UIImage(named: "btn-message-white")
+            emailButtonEmptyWrapper.image = UIImage(named: "btn-message-white")
          }
          // Check if image data available
         if contact.imageId != "" {
             print("Has IMAGE")
             // Set id
-            let id = contact.imageId
+            /*let id = contact.imageId
             
             // Set image for contact
             let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id).jpg")!
@@ -1280,7 +1399,11 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             //contactImageView?.setImageWith(url)
             self.contactImageView.setImageWith(url)
             self.contactImageViewSingleWrapper.setImageWith(url)
-            self.contactImageViewEmptyWrapper.setImageWith(url)
+            self.contactImageViewEmptyWrapper.setImageWith(url)*/
+            
+            self.contactImageView.image = UIImage(data: contact.imageData)
+            self.contactImageViewSingleWrapper.image = UIImage(data: contact.imageData)
+            self.contactImageViewEmptyWrapper.image = UIImage(data: contact.imageData)
             
         }else{
             // Set placeholder image
