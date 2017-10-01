@@ -108,6 +108,9 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set target for location field
+        locationTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidBegin)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -247,7 +250,39 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         self.dismiss(animated: true, completion: nil)
     }
     
+    // Textfield delegate
+    func textFieldDidChange(_ textField: UITextField) {
+        
+        // Show location
+        self.showLocationVC()
+        
+    }
+    
+    // Keyboard Delegate
+    
+    func keyboardWillHide(notification: NSNotification) {
+    
+        /*
+        // Check if user arrived from location
+        if ContactManager.sharedManager.userArrivedFromLocationVC{
+            // Drop vc
+            self.dismiss(animated: true, completion: nil)
+        }*/
+    }
+
+    
     // Custom Methods
+    
+    // Show location 
+    
+    func showLocationVC(){
+    
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "LocationVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     
     func initializeBadgeList() {
         // Image config
@@ -371,14 +406,14 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         mediaButton5.image = UIImage(named: "social-blank")
         mediaButton6.image = UIImage(named: "social-blank")
         mediaButton7.image = UIImage(named: "social-blank")*/
-        
+        /*
         if ContactManager.sharedManager.quickshareEmailSelected {
             // Set placeholder
             self.phoneTextField.placeholder = "Email"
             self.phoneIcon.image = UIImage(named: "icn-mail-white")
             self.emailTextField.placeholder = "Phone"
             self.emailIcon.image = UIImage(named: "icn-phone-white")
-        }
+        }*/
         
     }
     
@@ -484,15 +519,12 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 self.showSMSCard()
             }else{
                 // Set email
-                contact.emails.append(["email": phoneTextField.text ?? ""])
-                contact.phoneNumbers.append(["phone": emailTextField.text ?? ""])
+                contact.phoneNumbers.append(["phone": phoneTextField.text ?? ""])
+                contact.emails.append(["email": emailTextField.text ?? ""])
                 
-                print("Hitting from quickshare else")
-                print("Email \(phoneTextField.text ?? "")")
-                print("Phone \(emailTextField.text ?? "")")
                 
-                self.selectedEmail = phoneTextField.text ?? ""
-                self.selectedPhone = emailTextField.text ?? ""
+                self.selectedEmail = emailTextField.text ?? ""
+                self.selectedPhone = phoneTextField.text ?? ""
                 
                 print(contact.emails)
                 print(contact.phoneNumbers)
@@ -500,13 +532,6 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 self.showEmailCard()
             }
 
-            
-            
-            
-            
-            // Create Transaction 
-            //self.createTransaction(type: "connection")
-            
         }
     }
     

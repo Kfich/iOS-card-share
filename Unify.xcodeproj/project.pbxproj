@@ -168,6 +168,33 @@
 		FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807561F06D12C00A05292 /* CreateProfileViewController.swift */; };
 		FBE8075A1F06D36200A05292 /* CreateCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE807591F06D36200A05292 /* CreateCardViewController.swift */; };
 		FBE8075D1F06DBBE00A05292 /* CardOptionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE8075C1F06DBBE00A05292 /* CardOptionsViewCell.swift */; };
+		FBEA21631F8146EF003DAF64 /* GoogleMapsBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA215B1F8146EF003DAF64 /* GoogleMapsBase.framework */; };
+		FBEA21641F8146EF003DAF64 /* GooglePlacePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBEA215C1F8146EF003DAF64 /* GooglePlacePicker.bundle */; };
+		FBEA21651F8146EF003DAF64 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBEA215D1F8146EF003DAF64 /* GoogleMaps.bundle */; };
+		FBEA21661F8146EF003DAF64 /* GooglePlaces.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBEA215E1F8146EF003DAF64 /* GooglePlaces.bundle */; };
+		FBEA21671F8146EF003DAF64 /* GooglePlacePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA215F1F8146EF003DAF64 /* GooglePlacePicker.framework */; };
+		FBEA21681F8146EF003DAF64 /* GoogleMapsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21601F8146EF003DAF64 /* GoogleMapsCore.framework */; };
+		FBEA21691F8146EF003DAF64 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21611F8146EF003DAF64 /* GoogleMaps.framework */; };
+		FBEA216A1F8146EF003DAF64 /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21621F8146EF003DAF64 /* GooglePlaces.framework */; };
+		FBEA216C1F81475A003DAF64 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA216B1F81475A003DAF64 /* SystemConfiguration.framework */; };
+		FBEA216E1F814780003DAF64 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA216D1F814780003DAF64 /* QuartzCore.framework */; };
+		FBEA21701F814792003DAF64 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA216F1F814792003DAF64 /* OpenGLES.framework */; };
+		FBEA21721F8147A9003DAF64 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21711F8147A9003DAF64 /* libz.tbd */; };
+		FBEA21741F8147C6003DAF64 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21731F8147C6003DAF64 /* libc++.tbd */; };
+		FBEA21761F8147D1003DAF64 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21751F8147D1003DAF64 /* ImageIO.framework */; };
+		FBEA21781F8147F2003DAF64 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21771F8147F2003DAF64 /* GLKit.framework */; };
+		FBEA217A1F8147FD003DAF64 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21791F8147FD003DAF64 /* CoreText.framework */; };
+		FBEA217C1F81480A003DAF64 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA217B1F81480A003DAF64 /* CoreTelephony.framework */; };
+		FBEA217E1F814816003DAF64 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA217D1F814816003DAF64 /* CoreGraphics.framework */; };
+		FBEA21801F814823003DAF64 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA217F1F814823003DAF64 /* CoreLocation.framework */; };
+		FBEA21821F814833003DAF64 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21811F814833003DAF64 /* CoreData.framework */; };
+		FBEA21841F814841003DAF64 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21831F814841003DAF64 /* Accelerate.framework */; };
+		FBEA21861F81484F003DAF64 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEA21851F81484F003DAF64 /* UIKit.framework */; };
+		FBEA218B1F81492C003DAF64 /* KSToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEA21871F81492C003DAF64 /* KSToken.swift */; };
+		FBEA218C1F81492C003DAF64 /* KSTokenField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEA21881F81492C003DAF64 /* KSTokenField.swift */; };
+		FBEA218D1F81492C003DAF64 /* KSTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEA21891F81492C003DAF64 /* KSTokenView.swift */; };
+		FBEA218E1F81492C003DAF64 /* KSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEA218A1F81492C003DAF64 /* KSUtils.swift */; };
+		FBEA21901F814A8A003DAF64 /* LocationSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBEA218F1F814A8A003DAF64 /* LocationSelectionViewController.swift */; };
 		FBF2EFB31F44E18200DDF9B4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB21F44E18200DDF9B4 /* Settings.swift */; };
 		FBF2EFB71F45453000DDF9B4 /* Fuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB41F45453000DDF9B4 /* Fuse.swift */; };
 		FBF2EFB81F45453000DDF9B4 /* FuseUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF2EFB51F45453000DDF9B4 /* FuseUtilities.swift */; };
@@ -442,6 +469,33 @@
 		FBE807561F06D12C00A05292 /* CreateProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileViewController.swift; sourceTree = "<group>"; };
 		FBE807591F06D36200A05292 /* CreateCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCardViewController.swift; sourceTree = "<group>"; };
 		FBE8075C1F06DBBE00A05292 /* CardOptionsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardOptionsViewCell.swift; sourceTree = "<group>"; };
+		FBEA215B1F8146EF003DAF64 /* GoogleMapsBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMapsBase.framework; sourceTree = "<group>"; };
+		FBEA215C1F8146EF003DAF64 /* GooglePlacePicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlacePicker.bundle; sourceTree = "<group>"; };
+		FBEA215D1F8146EF003DAF64 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
+		FBEA215E1F8146EF003DAF64 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlaces.bundle; sourceTree = "<group>"; };
+		FBEA215F1F8146EF003DAF64 /* GooglePlacePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlacePicker.framework; sourceTree = "<group>"; };
+		FBEA21601F8146EF003DAF64 /* GoogleMapsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMapsCore.framework; sourceTree = "<group>"; };
+		FBEA21611F8146EF003DAF64 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		FBEA21621F8146EF003DAF64 /* GooglePlaces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlaces.framework; sourceTree = "<group>"; };
+		FBEA216B1F81475A003DAF64 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		FBEA216D1F814780003DAF64 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		FBEA216F1F814792003DAF64 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		FBEA21711F8147A9003DAF64 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		FBEA21731F8147C6003DAF64 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		FBEA21751F8147D1003DAF64 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		FBEA21771F8147F2003DAF64 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		FBEA21791F8147FD003DAF64 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		FBEA217B1F81480A003DAF64 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		FBEA217D1F814816003DAF64 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		FBEA217F1F814823003DAF64 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		FBEA21811F814833003DAF64 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		FBEA21831F814841003DAF64 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		FBEA21851F81484F003DAF64 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FBEA21871F81492C003DAF64 /* KSToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSToken.swift; sourceTree = "<group>"; };
+		FBEA21881F81492C003DAF64 /* KSTokenField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSTokenField.swift; sourceTree = "<group>"; };
+		FBEA21891F81492C003DAF64 /* KSTokenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSTokenView.swift; sourceTree = "<group>"; };
+		FBEA218A1F81492C003DAF64 /* KSUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSUtils.swift; sourceTree = "<group>"; };
+		FBEA218F1F814A8A003DAF64 /* LocationSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSelectionViewController.swift; sourceTree = "<group>"; };
 		FBF2EFB21F44E18200DDF9B4 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		FBF2EFB41F45453000DDF9B4 /* Fuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fuse.swift; sourceTree = "<group>"; };
 		FBF2EFB51F45453000DDF9B4 /* FuseUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuseUtilities.swift; sourceTree = "<group>"; };
@@ -458,9 +512,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBEA21861F81484F003DAF64 /* UIKit.framework in Frameworks */,
+				FBEA21841F814841003DAF64 /* Accelerate.framework in Frameworks */,
+				FBEA21821F814833003DAF64 /* CoreData.framework in Frameworks */,
+				FBEA21801F814823003DAF64 /* CoreLocation.framework in Frameworks */,
+				FBEA217E1F814816003DAF64 /* CoreGraphics.framework in Frameworks */,
+				FBEA217C1F81480A003DAF64 /* CoreTelephony.framework in Frameworks */,
+				FBEA217A1F8147FD003DAF64 /* CoreText.framework in Frameworks */,
+				FBEA21781F8147F2003DAF64 /* GLKit.framework in Frameworks */,
+				FBEA21761F8147D1003DAF64 /* ImageIO.framework in Frameworks */,
+				FBEA21741F8147C6003DAF64 /* libc++.tbd in Frameworks */,
+				FBEA21721F8147A9003DAF64 /* libz.tbd in Frameworks */,
+				FBEA21701F814792003DAF64 /* OpenGLES.framework in Frameworks */,
+				FBEA216E1F814780003DAF64 /* QuartzCore.framework in Frameworks */,
+				FBEA216C1F81475A003DAF64 /* SystemConfiguration.framework in Frameworks */,
+				FBEA21631F8146EF003DAF64 /* GoogleMapsBase.framework in Frameworks */,
+				FBEA21671F8146EF003DAF64 /* GooglePlacePicker.framework in Frameworks */,
 				1CBB1D691F1C6C55009698D9 /* Eureka.framework in Frameworks */,
+				FBEA21681F8146EF003DAF64 /* GoogleMapsCore.framework in Frameworks */,
 				FB95D4BF1EE5ADCF009D58EA /* Crashlytics.framework in Frameworks */,
 				741073B8CB2691ACF8956F84 /* Pods_Unify.framework in Frameworks */,
+				FBEA216A1F8146EF003DAF64 /* GooglePlaces.framework in Frameworks */,
+				FBEA21691F8146EF003DAF64 /* GoogleMaps.framework in Frameworks */,
 				FB95D4C01EE5ADCF009D58EA /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -471,6 +544,20 @@
 		1BC8F22ADA6477CE34D3DAA3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FBEA21851F81484F003DAF64 /* UIKit.framework */,
+				FBEA21831F814841003DAF64 /* Accelerate.framework */,
+				FBEA21811F814833003DAF64 /* CoreData.framework */,
+				FBEA217F1F814823003DAF64 /* CoreLocation.framework */,
+				FBEA217D1F814816003DAF64 /* CoreGraphics.framework */,
+				FBEA217B1F81480A003DAF64 /* CoreTelephony.framework */,
+				FBEA21791F8147FD003DAF64 /* CoreText.framework */,
+				FBEA21771F8147F2003DAF64 /* GLKit.framework */,
+				FBEA21751F8147D1003DAF64 /* ImageIO.framework */,
+				FBEA21731F8147C6003DAF64 /* libc++.tbd */,
+				FBEA21711F8147A9003DAF64 /* libz.tbd */,
+				FBEA216F1F814792003DAF64 /* OpenGLES.framework */,
+				FBEA216D1F814780003DAF64 /* QuartzCore.framework */,
+				FBEA216B1F81475A003DAF64 /* SystemConfiguration.framework */,
 				1C151D041F1DBE73004B23CE /* countly-sdk-ios-master 2 */,
 				D3E955438CC6FEAFC0EBFDA9 /* Pods_Unify.framework */,
 			);
@@ -523,6 +610,14 @@
 		1CAE5B771E913A06006EFF40 = {
 			isa = PBXGroup;
 			children = (
+				FBEA215B1F8146EF003DAF64 /* GoogleMapsBase.framework */,
+				FBEA215C1F8146EF003DAF64 /* GooglePlacePicker.bundle */,
+				FBEA215D1F8146EF003DAF64 /* GoogleMaps.bundle */,
+				FBEA215E1F8146EF003DAF64 /* GooglePlaces.bundle */,
+				FBEA215F1F8146EF003DAF64 /* GooglePlacePicker.framework */,
+				FBEA21601F8146EF003DAF64 /* GoogleMapsCore.framework */,
+				FBEA21611F8146EF003DAF64 /* GoogleMaps.framework */,
+				FBEA21621F8146EF003DAF64 /* GooglePlaces.framework */,
 				FB0F48611F1E9A0200EF9871 /* Default-568h@2x.png */,
 				1CBB1D601F1C6C43009698D9 /* Eureka.xcodeproj */,
 				FB95D4BD1EE5ADCF009D58EA /* Crashlytics.framework */,
@@ -743,6 +838,10 @@
 		FB37382B1EDDCE9E0074200F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				FBEA21871F81492C003DAF64 /* KSToken.swift */,
+				FBEA21881F81492C003DAF64 /* KSTokenField.swift */,
+				FBEA21891F81492C003DAF64 /* KSTokenView.swift */,
+				FBEA218A1F81492C003DAF64 /* KSUtils.swift */,
 				FB6975A11F68D33100D68C09 /* PostalAddressCell.swift */,
 				FB6975A21F68D33100D68C09 /* PostalAddressCell.xib */,
 				FB6975A31F68D33100D68C09 /* PostalAddressRow.swift */,
@@ -903,6 +1002,7 @@
 			children = (
 				1CB31CA61E94273E00A0C4A5 /* QuickShare-ViewController.swift */,
 				FBF933EE1F42406700FF80EF /* SocialMediaWebViewController.swift */,
+				FBEA218F1F814A8A003DAF64 /* LocationSelectionViewController.swift */,
 			);
 			name = Quickshare;
 			sourceTree = "<group>";
@@ -1016,13 +1116,16 @@
 				1C151D3B1F1DBE73004B23CE /* LICENSE in Resources */,
 				FB6975A51F68D33100D68C09 /* PostalAddressCell.xib in Resources */,
 				FBB797D71F68CF65004153C8 /* CustomNib.xib in Resources */,
+				FBEA21641F8146EF003DAF64 /* GooglePlacePicker.bundle in Resources */,
 				1C151D291F1DBE73004B23CE /* .gitattributes in Resources */,
+				FBEA21661F8146EF003DAF64 /* GooglePlaces.bundle in Resources */,
 				1CB31CA91E942BC500A0C4A5 /* SkeletonCell.xib in Resources */,
 				FB0F48621F1E9A0200EF9871 /* Default-568h@2x.png in Resources */,
 				FB03B6CD1F462C3900340518 /* UserInfoCell.xib in Resources */,
 				1CAE5B891E913A06006EFF40 /* Main.storyboard in Resources */,
 				FB24EE4A1F0D667B006A997D /* PMAlertController.xib in Resources */,
 				FB2F42861F1526CB00E3D6B5 /* KVNProgressView.xib in Resources */,
+				FBEA21651F8146EF003DAF64 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1102,6 +1205,7 @@
 				FBF2EFB71F45453000DDF9B4 /* Fuse.swift in Sources */,
 				FBE76C8B1EDF4A2900E37E0C /* UIImage+ImageEffects.m in Sources */,
 				FB6975A41F68D33100D68C09 /* PostalAddressCell.swift in Sources */,
+				FBEA218C1F81492C003DAF64 /* KSTokenField.swift in Sources */,
 				1C151D381F1DBE73004B23CE /* CountlyStarRating.m in Sources */,
 				1C31041A1E95B06600F4D70D /* EditProfileHeader.swift in Sources */,
 				FB199D051F339A9200FFFCC1 /* MediaThumbnailCell.swift in Sources */,
@@ -1116,6 +1220,7 @@
 				FB1A340C1EE1B5F9003B5A73 /* ISHPullUpHandleView.m in Sources */,
 				FB1A340B1EE1B5F9003B5A73 /* ISHPullUpViewController.m in Sources */,
 				1C3104101E94B7FC00F4D70D /* FollowUp-ViewController.swift in Sources */,
+				FBEA218E1F81492C003DAF64 /* KSUtils.swift in Sources */,
 				FB767D4F1F437BE90065F46E /* HideProfileDataViewController.swift in Sources */,
 				FB767D341F429DD40065F46E /* RSKInternalUtility.m in Sources */,
 				1CB31CB21E94358200A0C4A5 /* Helpers.swift in Sources */,
@@ -1172,6 +1277,7 @@
 				FBA1F5171F38FA1300CDCB76 /* CustomSearchBar.swift in Sources */,
 				FB62DA1E1F4A73B600B5CFB5 /* YIInnerShadowView.m in Sources */,
 				FBF871301EE71B3D00243CE2 /* Transaction.swift in Sources */,
+				FBEA218B1F81492C003DAF64 /* KSToken.swift in Sources */,
 				FB6975B11F6AC5C100D68C09 /* ProfileEditViewController.swift in Sources */,
 				FB24EE4E1F0EB721006A997D /* UDWrapper.swift in Sources */,
 				FB199D071F339D7300FFFCC1 /* SocialMediaDetailViewController.swift in Sources */,
@@ -1211,6 +1317,7 @@
 				FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */,
 				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,
 				FB3738291EDDCE970074200F /* TPKeyboardAvoidingScrollView.m in Sources */,
+				FBEA218D1F81492C003DAF64 /* KSTokenView.swift in Sources */,
 				FB767D301F429DD40065F46E /* CGGeometry+RSKImageCropper.m in Sources */,
 				1C151D2F1F1DBE73004B23CE /* CountlyCommon.m in Sources */,
 				FB03B6CC1F462C3900340518 /* UserInfoCell.swift in Sources */,
@@ -1241,6 +1348,7 @@
 				FB3738191EDDBA730074200F /* ContactManager.swift in Sources */,
 				FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */,
 				1C151D3C1F1DBE73004B23CE /* README.md in Sources */,
+				FBEA21901F814A8A003DAF64 /* LocationSelectionViewController.swift in Sources */,
 				1CB31C9D1E94087100A0C4A5 /* SelectRecipient-ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

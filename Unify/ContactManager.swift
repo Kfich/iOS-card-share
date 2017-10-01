@@ -33,6 +33,7 @@ class ContactManager{
     var userArrivedFromRadar = false
     var userArrivedFromIntro = false
     var userArrivedFromSocial = false
+    var userArrivedFromLocationVC = false
     var userArrivedFromRecipients = false
     var userDidCreateCard = false
     var userSelectedEditCard = false
@@ -124,6 +125,8 @@ class ContactManager{
     var userLat : Double = 0.0
     var userLong : Double = 0.0
     var userAddress : String = ""
+    // For google maps selection
+    var selectedLocation : String = ""
     
     // For radar list
     var radarUserCount = 0

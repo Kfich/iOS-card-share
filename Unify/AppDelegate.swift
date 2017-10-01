@@ -11,6 +11,9 @@ import UIKit
 import Firebase
 import Fabric
 import Crashlytics
+import GooglePlaces
+import GooglePlacePicker
+import GoogleMaps
 
 
 var global_uuid: String?
@@ -63,6 +66,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print(error)
         }
+        
+        
+        // Register google maps api
+        // Client auth w key
+        GMSPlacesClient.provideAPIKey("AIzaSyD_wRVPXQvx-CVjiXH8aEQxMc4Bzs6F-W0")
+        // Enable services
+        GMSServices.provideAPIKey("AIzaSyD_wRVPXQvx-CVjiXH8aEQxMc4Bzs6F-W0")
         
         /*
         // Listen for network reachability changes.
