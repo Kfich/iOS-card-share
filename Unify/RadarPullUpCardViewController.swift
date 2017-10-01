@@ -1005,10 +1005,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         //containerView.layer.borderColor = UIColor.clear as? CGColor
         
         // Create section header buttons
-        let imageName = "add-card-1"
+        let imageName = "addnew"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        //imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 0, y: 12, width: cell.contentView.frame.width - 10, height: cell.contentView.frame.height - 25)
         
         // Add gesture action
@@ -1033,9 +1033,10 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         containerView.backgroundColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         // Create section header buttons
-        let imageName = "add-card"
+        let imageName = "addnew"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
+        imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
         
         // Add gesture action
