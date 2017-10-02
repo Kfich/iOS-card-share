@@ -14,6 +14,7 @@ import Crashlytics
 import GooglePlaces
 import GooglePlacePicker
 import GoogleMaps
+import Contacts
 
 
 var global_uuid: String?
@@ -74,6 +75,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Enable services
         GMSServices.provideAPIKey("AIzaSyD_wRVPXQvx-CVjiXH8aEQxMc4Bzs6F-W0")
         
+        
+        // Check for access and get contacts
+        let status = CNContactStore.authorizationStatus(for: .contacts)
+        if status == .denied || status == .restricted {
+            
+            print("Permission status >> \(status)")
+        }else{
+            
+            // Not denied
+            print("Access is not denied to contacts")
+            // Get contacts if access allowed
+            ContactManager.sharedManager.getContacts()
+        }
+
+        
         /*
         // Listen for network reachability changes.
         
@@ -106,18 +122,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("CURRENT USER FROM APP DELEGATE")
             //ContactManager.sharedManager.currentUser.printUser()
             
-            
             var isPhoneVerified = ContactManager.sharedManager.currentUser.getVerificationStatus()
             
             if isPhoneVerified {
+            
+                // Send to home screen user is verified
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
+                TabBarViewController
+                window!.rootViewController = homeViewController
                 
-               
-                    // Send to home screen user is verified
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: "HomeTabView") as!
-                    TabBarViewController
-                    window!.rootViewController = homeViewController
-                    
                 
             } else {
             

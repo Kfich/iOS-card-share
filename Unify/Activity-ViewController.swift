@@ -41,6 +41,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     var selectedUserPhones = [String]()
     var searchTransactionList = [Transaction]()
     
+    var tableData = [String: [Transaction]]()
+    var sections = [String]()
+    
     var senderPhone = ""
     var senderEmail = ""
     
@@ -162,7 +165,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set selected trans
         if segmentedControl.selectedSegmentIndex == 0 {
             // All
-            self.selectedTransaction = transactionListReversed[indexPath.row]
+            self.selectedTransaction = (self.tableData[sections[indexPath.section]]?[indexPath.row])!//transactionListReversed[indexPath.row]
         }else if segmentedControl.selectedSegmentIndex == 1 {
             // Connections
             self.selectedTransaction = connections[indexPath.row]
@@ -227,7 +230,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Empty header
             lbl.text = ""
         }else{
-            lbl.text = "Recents"
+            lbl.text = sections[section]//"Recents"
         }
 
         lbl.textAlignment = .left
@@ -251,7 +254,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     //MARK: UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -263,7 +266,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             switch segmentedControl.selectedSegmentIndex {
             case 0:
-                return self.transactionListReversed.count
+                //return self.transactionListReversed.count
+                
+                return (self.tableData[sections[section]]?.count)!
             case 1:
                 return self.connections.count
             case 2:
@@ -314,7 +319,30 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }else {
             
-            let trans = transactionListReversed[indexPath.row]
+            // Set to tabledata
+            var trans = Transaction()
+            
+            
+            if segmentedControl.selectedSegmentIndex == 0 {
+                // norhing
+                trans = (self.tableData[sections[indexPath.section]]?[indexPath.row])!
+                
+            }else if segmentedControl.selectedSegmentIndex == 1 {
+                // Config for connections
+                trans = connections[indexPath.row]
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+                
+            }else if segmentedControl.selectedSegmentIndex == 2{
+                // Config for intro
+                trans = introductions[indexPath.row]
+                // Configure Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
+                // Execute func
+                configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+            }
             
             if trans.type == "introduction"{
                 
@@ -337,25 +365,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
                 //self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
                 
-            }
-            
-            if segmentedControl.selectedSegmentIndex == 0 {
-                // norhing
-            }else if segmentedControl.selectedSegmentIndex == 1 {
-                // Config for connections
-                //let trans = connections[indexPath.row]
-                // Configure Cell
-                cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
-                // Execute func
-                configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
-                
-            }else if segmentedControl.selectedSegmentIndex == 2{
-                // Config for intro
-                //let trans = introductions[indexPath.row]
-                // Configure Cell
-                cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
-                // Execute func
-                configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
             }
         
         }
@@ -937,6 +946,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Hit endpoint for updates on users nearby
         let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
         
+        // "eb9589ea-71fb-42da-ae36-477df6c0b264"
+        
+        //let parameters = ["uuid": "eb9589ea-71fb-42da-ae36-477df6c0b264"]
+        
+        
         print(">>> SENT PARAMETERS >>>> \n\(parameters))")
         // Show progress 
         KVNProgress.show(withStatus: "Fetching your activity feed...")
@@ -1016,12 +1030,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             self.transactionList.append(child)
         }
         
-        
+        // Sort list
         self.transactionList.sort(by: { $0.sortDate!.compare($1.sortDate! as Date) == ComparisonResult.orderedAscending })
-        
+        //Reverse list and set
+        self.transactionListReversed = self.transactionList.reversed()
         
         // Handle sorting into buckets here by date
-         for trans in self.transactionList{
+         for trans in self.transactionListReversed{
             print(trans.sortDate!)
             
             let elapsedTime = NSDate().timeIntervalSince(trans.sortDate!)
@@ -1029,17 +1044,42 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             let duration = Double(elapsedTime) / (60.0 * 60.0)
             print("The Elapsed Time Since Transaction >>> \(duration)")
             
-            if duration > 5.6 {
+            if duration < 72.0 {
                 // Send to recents
+                
+                if self.tableData["Recents"] == nil {
+                    
+                    // Init section
+                    self.tableData["Recents"] = []
+                    
+                    // Add to section list
+                    self.sections.append("Recents")
+                }
+                
+                // Send to recents
+                self.tableData["Recents"]!.append(trans)
+               
+                print("older then ")
+                
             }else{
+                // Check if section exists
+                if self.tableData["Older"] == nil {
+                    // Init section
+                    self.tableData["Older"] = []
+                    
+                    // Add to section list
+                    self.sections.append("Older")
+                }
+                
                 // Send to the old trans list
+                self.tableData["Older"]!.append(trans)
+                print("younger then ")
             }
             
-            //print(trans.sortDate)
          }
         
-        //Reverse list and set
-        self.transactionListReversed = self.transactionList.reversed()
+        // Test
+        print("The Table Data: >> \n", self.tableData)
         
         // Update the table values
         self.tableView.reloadData()

@@ -184,7 +184,7 @@ open class KSTokenView: UIView {
    }
    
    /// default is UIColor.grayColor()
-   open var cursorColor: UIColor = UIColor.gray {
+   open var cursorColor: UIColor = UIColor.white {
       didSet {
          _updateTokenField()
       }
@@ -328,14 +328,14 @@ open class KSTokenView: UIView {
    }
 
     /// default is UIColor.grayColor()
-    open var promptColor: UIColor = UIColor.gray {
+    open var promptColor: UIColor = UIColor.lightGray {
         didSet {
             _updateTokenField()
         }
     }
 
     /// default is UIColor.grayColor()
-    open var placeholderColor: UIColor = UIColor.gray {
+    open var placeholderColor: UIColor = UIColor.lightGray {
         didSet {
             _updateTokenField()
         }
@@ -387,7 +387,7 @@ open class KSTokenView: UIView {
       backgroundColor = UIColor.clear
       clipsToBounds = true
       _tokenField = KSTokenField(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height))
-      _tokenField.textColor = UIColor.black
+      _tokenField.textColor = UIColor.white
       _tokenField.isEnabled = true
       _tokenField.tokenFieldDelegate = self
       _tokenField.placeholder = ""

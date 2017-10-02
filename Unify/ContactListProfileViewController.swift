@@ -496,10 +496,10 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
     }
     // Set row height
-    
+    /*
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 55.0
-    }
+    }*/
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -634,6 +634,9 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             profileInfoTableView.tableHeaderView = self.cardWrapperViewEmptyWrapper
         }
         
+        // Set dynamic height for cells
+        profileInfoTableView.rowHeight = UITableViewAutomaticDimension
+        profileInfoTableView.estimatedRowHeight = 55
         
         //tableView.tableFooterView = self.profileImageCollectionView
         

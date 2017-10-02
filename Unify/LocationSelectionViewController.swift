@@ -79,6 +79,9 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate {
             // Set manager intent
             ContactManager.sharedManager.userArrivedFromLocationVC = true
             
+            // Set manager location
+            ContactManager.sharedManager.selectedLocation = self.searchController?.searchBar.text ?? ""
+            
             print("Dismissmal here when keyboard down")
             
             // Drop the quickshare vc
@@ -113,9 +116,17 @@ extension LocationSelectionViewController: GMSAutocompleteResultsViewControllerD
             print("figured it out")
         })
         
-        //self.navigationController?.popViewController(animated: true)
+        // Set manager
+        ContactManager.sharedManager.selectedLocation = place.name
         
-        //dismiss(animated: true, completion: nil)
+        // Set manager nav
+        ContactManager.sharedManager.userArrivedFromLocationVC = true
+        
+        // Drop results controller
+        self.dismiss(animated: true) { 
+            // Drop the quickshare vc
+            self.dismiss(animated: true, completion: nil)
+        }
         
     }
     

@@ -103,22 +103,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Unify/ContactManager.swift"
-            timestampString = "528569205.159261"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "773"
-            endingLineNumber = "773"
-            landmarkName = "getContacts()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Unify/CreateCardViewController.swift"
             timestampString = "527781206.591638"
             startingColumnNumber = "9223372036854775807"
@@ -212,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/QuickShare-ViewController.swift"
-            timestampString = "528569286.979062"
+            timestampString = "528581046.701337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "708"
-            endingLineNumber = "708"
+            startingLineNumber = "744"
+            endingLineNumber = "744"
             landmarkName = "uploadContactRecord()"
             landmarkType = "7">
          </BreakpointContent>
@@ -276,11 +260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/Activity-ViewController.swift"
-            timestampString = "528406627.437424"
+            timestampString = "528585752.122339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "388"
+            endingLineNumber = "388"
             landmarkName = "tableView(_:canEditRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -308,11 +292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/Activity-ViewController.swift"
-            timestampString = "528406627.437424"
+            timestampString = "528585752.122339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "567"
-            endingLineNumber = "567"
+            startingLineNumber = "576"
+            endingLineNumber = "576"
             landmarkName = "showActionAlert(phones:emails:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -324,11 +308,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarViewController.swift"
-            timestampString = "528152295.254811"
+            timestampString = "528596823.673017"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "653"
-            endingLineNumber = "653"
+            startingLineNumber = "660"
+            endingLineNumber = "660"
             landmarkName = "fetchUserBadges()"
             landmarkType = "7">
          </BreakpointContent>
@@ -372,11 +356,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/Activity-ViewController.swift"
-            timestampString = "528406627.437424"
+            timestampString = "528585752.122339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1935"
-            endingLineNumber = "1935"
+            startingLineNumber = "1975"
+            endingLineNumber = "1975"
             landmarkName = "messageComposeViewController(_:didFinishWith:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -482,11 +466,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/SelectRecipient-ViewController.swift"
-            timestampString = "528392944.526629"
+            timestampString = "528595729.88251"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1643"
-            endingLineNumber = "1643"
+            startingLineNumber = "1662"
+            endingLineNumber = "1662"
             landmarkName = "SelectRecipientViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -498,11 +482,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/Activity-ViewController.swift"
-            timestampString = "528406627.437424"
+            timestampString = "528585752.122339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "602"
-            endingLineNumber = "602"
+            startingLineNumber = "611"
+            endingLineNumber = "611"
             landmarkName = "showActionAlert(phones:emails:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -546,11 +530,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactManager.swift"
-            timestampString = "528569205.159261"
+            timestampString = "528587055.086849"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
             landmarkName = "load_image(urlString:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -594,11 +578,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactListViewController.swift"
-            timestampString = "528396433.351678"
+            timestampString = "528597514.137582"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1108"
-            endingLineNumber = "1108"
+            startingLineNumber = "1135"
+            endingLineNumber = "1135"
             landmarkName = "sortContacts()"
             landmarkType = "7">
          </BreakpointContent>

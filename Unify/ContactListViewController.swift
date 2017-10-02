@@ -90,7 +90,27 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         //loadListOfCountries()
         
-        self.getContacts()
+        if ContactManager.sharedManager.contactObjectList.count != 0 {
+            print("The manager count ", ContactManager.sharedManager.contactObjectList.count)
+            
+            // Set contact list from manager
+            self.phoneContacts = ContactManager.sharedManager.phoneContactList
+            self.contactObjectList = ContactManager.sharedManager.contactObjectList
+            self.letters = ContactManager.sharedManager.letters
+            self.dataArray = ContactManager.sharedManager.dataArray
+            self.tuples = ContactManager.sharedManager.tuples
+            self.contactObjectTable = ContactManager.sharedManager.contactObjectTable
+            
+            // Hide button
+            self.importContactsButton.isHidden = true
+            
+            // Fetch from server
+            //self.sortContacts()
+            
+        }else{
+            // Fetch contacts here
+            self.getContacts()
+        }
         
         //self.fetchContactsForUser()
         
@@ -313,24 +333,43 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func refreshTable() {
         
-        DispatchQueue.main.async {
+        if ContactManager.sharedManager.contactObjectList.count != 0 {
+            print("The manager count ", ContactManager.sharedManager.contactObjectList.count)
             
-            // Reset all the arrays
-            self.letters.removeAll()
-            self.contacts.removeAll()
-            self.contactObjectTable.removeAll()
-            //contactsHashTable.removeAll()
-            self.tuples.removeAll()
-            self.contactTuples.removeAll()
-            self.dataArray.removeAll()
+            // Set contact list from manager
+            self.phoneContacts = ContactManager.sharedManager.phoneContactList
+            self.contactObjectList = ContactManager.sharedManager.contactObjectList
+            self.letters = ContactManager.sharedManager.letters
+            self.dataArray = ContactManager.sharedManager.dataArray
+            self.tuples = ContactManager.sharedManager.tuples
             
+            // Fetch from server
+            self.sortContacts()
             
+        }else{
             
-            // Fetch contact list
-            self.getContacts()
-            //fetchContactsForUser()
-            
+            DispatchQueue.main.async {
+                
+                // Reset all the arrays
+                self.letters.removeAll()
+                self.contacts.removeAll()
+                self.contactObjectTable.removeAll()
+                //contactsHashTable.removeAll()
+                self.tuples.removeAll()
+                self.contactTuples.removeAll()
+                self.dataArray.removeAll()
+                
+                
+                
+                // Fetch contact list
+                self.getContacts()
+                //fetchContactsForUser()
+                
+            }
+
         }
+        
+    
     }
     
     func configureSelectedImageView(imageView: UIImageView) {
@@ -464,27 +503,15 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             self.fetchContactsForUser()
             
-            
-            
-            
             // Find out if contacts synced
             self.synced = UDWrapper.getBool("contacts_synced")
             print("Contacts sync value!! >> \(self.synced)")
-            //synced = false
-            //print("Contacts overwrite sync value!! >> \(synced)")
-            
             
             // Sync up with main queue
             DispatchQueue.main.async {
                 
-                // Upload Contacts
-                //self.uploadContactRecords()
-                // Reload the tableview.
-                //self.tblSearchResults.reloadData()
-                
-                
-                
-                /*
+            
+                // Check if data synced
                 if self.synced{
                     
                     print("Contacts synced!! >> \(self.synced)")
@@ -493,9 +520,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     
                 }else{
                     
-                    // Upload Contacts
-                    self.uploadContactRecords()
-                }*/
+                    // Set synced 
+                    UDWrapper.setBool("contacts_synced", value: true)
+                }
 
             }
             
@@ -541,7 +568,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     
                     // Init dict
                     let record = [label : digits]
-                    print("Phone record", record)
+                    //print("Phone record", record)
                     
                     // Append to object
                     //contactObject.setPhoneRecords(phoneRecord: digits)
@@ -558,7 +585,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     let label =  CNLabeledValue<NSString>.localizedString(forLabel: address.label ?? "work")
                     // Init dict
                     let record = ["email" : address.value as String, "type": label]
-                    print("Email record", record)
+                    //print("Email record", record)
                     
                     // Append to object
                     //contactObject.setEmailRecords(emailAddress: address.value as String)
@@ -678,7 +705,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 let label =  CNLabeledValue<NSString>.localizedString(forLabel: contact.postalAddresses.first?.label ?? "home")
                 let record = [label : addy]
 
-                print("Address record", record)
+                //print("Address record", record)
                 
                 //let formattedAddress = formatter.string(from: address!)
                 

@@ -194,7 +194,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         self.pencilIcon.addGestureRecognizer(tapGestureRecognizer)
         
         // If user only has one card, hide button
-        if ContactManager.sharedManager.viewableUserCards.count == 1{
+        if ContactManager.sharedManager.viewableUserCards.count == 2{
             // Hide
             self.deleteCardButton.isHidden = true
         }else{

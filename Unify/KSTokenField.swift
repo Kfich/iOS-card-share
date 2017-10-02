@@ -41,7 +41,7 @@ enum KSTokenFieldState {
 open class KSTokenField: UITextField {
    
    // MARK: - Private Properties
-   fileprivate var _cursorColor: UIColor = UIColor.gray {
+   fileprivate var _cursorColor: UIColor = UIColor.white {
       willSet {
          tintColor = newValue
       }
@@ -79,10 +79,10 @@ open class KSTokenField: UITextField {
    // MARK: - Public Properties
    
    /// default is grayColor()
-   var promptTextColor: UIColor = UIColor.gray
+   var promptTextColor: UIColor = UIColor.white
    
    /// default is grayColor()
-   var placeHolderColor: UIColor = UIColor.gray
+   var placeHolderColor: UIColor = UIColor.clear
    
    /// default is 120.0. After maximum limit is reached, tokens starts scrolling vertically
    var maximumHeight: CGFloat = 120.0
@@ -164,7 +164,7 @@ open class KSTokenField: UITextField {
       contentVerticalAlignment = UIControlContentVerticalAlignment.top
       returnKeyType = UIReturnKeyType.done
       text = KSTextEmpty
-      backgroundColor = UIColor.white
+      backgroundColor = UIColor.clear
       clipsToBounds = true
       _state = .closed
       

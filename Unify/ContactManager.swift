@@ -92,6 +92,13 @@ class ContactManager{
     // Phone ContactList Sync
     var phoneContactList = [CNContact]()
     var contactObjectList = [Contact]()
+    var contactObjectTable = [String : [Contact]]()
+    var dataArray = [String]()
+    var letters = [String]()
+    var synced = false
+    var tuples = [(String, String)]()
+    var contactTuples = [(String, CNContact)]()
+    
     
     // Transaction Handling
     var transaction = Transaction()
@@ -488,9 +495,9 @@ class ContactManager{
         var index = 0
         var selectedCardId = ""
         
-        for card in 0..<currentUserCards.count - 1 {
+        for card in 0..<viewableUserCards.count - 1 {
             // Find id match
-            let card = currentUserCards[index]
+            let card = viewableUserCards[index]
             
             if card.cardId == cardIdString {
                 
@@ -518,9 +525,9 @@ class ContactManager{
         var viewableIndex = 0
         
         // Viewable cards
-        for viewable in 0..<ContactManager.sharedManager.currentUserCards.count - 1{
+        for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count - 1{
             
-            let viewableCard = ContactManager.sharedManager.currentUserCards[viewableIndex]
+            let viewableCard = ContactManager.sharedManager.viewableUserCards[viewableIndex]
             
             if viewableCard.isHidden == true{
                 
@@ -758,9 +765,14 @@ class ContactManager{
     func getContacts() {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
-            presentSettingsActionSheet()
+            
+            print("Permission status >> \(status)")
+            
+            // Send them to the setting page
+            //self.presentSettingsActionSheet()
             return
         }
+        
         
         // open it
         
@@ -768,7 +780,7 @@ class ContactManager{
         store.requestAccess(for: .contacts) { granted, error in
             guard granted else {
                 DispatchQueue.main.async {
-                    self.presentSettingsActionSheet()
+                    //self.presentSettingsActionSheet()
                 }
                 return
             }
@@ -776,7 +788,7 @@ class ContactManager{
             // get the contacts
             
             var contacts = [CNContact]()
-            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor])
+            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactJobTitleKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactOrganizationNameKey as CNKeyDescriptor, CNContactSocialProfilesKey as CNKeyDescriptor, CNContactUrlAddressesKey as CNKeyDescriptor, CNContactNoteKey as CNKeyDescriptor, CNContactPostalAddressesKey as CNKeyDescriptor])
             // Sort users by last name
             request.sortOrder = CNContactSortOrder.familyName
             // Execute request
@@ -788,47 +800,101 @@ class ContactManager{
                 print(error)
             }
             
+            // Set phone contact list
+            self.phoneContactList = contacts
+            
             // do something with the contacts array (e.g. print the names)
             
             let formatter = CNContactFormatter()
             formatter.style = .fullName
+            
             for contact in contacts {
                 //print(formatter.string(from: contact) ?? "No Name")
                 
-                if contact.phoneNumbers.count > 0 {
-                  //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
-                }
-                if contact.emailAddresses.count > 0 {
-                    //print((contact.emailAddresses[0].value))
-                }
-                if contact.imageDataAvailable {
-                    //print((contact.phoneNumbers[0].value ).value(forKey: "digits") as! String)
-                    //print("Has IMAGE")
-                }
-                // Previous apprend area
-                 self.phoneContactList.append(contact)
+                // Generate ID String
+                let str = User().randomString(length: 10)
+                // Assign id to object
+                let contactTuple = (str, formatter.string(from: contact) ?? "No Name")
+                let objectTuple = (str, contact)
                 
-               // print(self.phoneContactList.count)
-                //print(contact)
+                // Create tuples and append to list
+                self.tuples.append(contactTuple)
+                //print("Tuple >> \(contactTuple)")
+                self.contactTuples.append(objectTuple)
+                //print("Object Tuple >> \(objectTuple)")
+                
+                
             }
             
             // Create contact objects
-            self.contactObjectList = self.createContactRecords()
+            //self.contactObjectList = self.createContactRecords(phoneContactList: self.phoneContacts)
             
-            // Set appeared to true
-            self.contactListHasAppeared = true
+            // Create contact objects
+            self.contactObjectList += self.createContactRecords()
             
-            // Post refresh
-            self.postContactListRefresh()
+            // Sort list
+            self.sortContacts()
             
-            //Set bool to indicate contacts have been synced
-            //UDWrapper.setBool("contacts_synced", value: true)
+            //self.fetchContactsForUser()
             
-            // Upload Contacts
-            //self.uploadContactRecords()
+            // Find out if contacts synced
+            self.synced = UDWrapper.getBool("contacts_synced")
+            print("Contacts sync value!! >> \(self.synced)")
+            
+            // Sync up with main queue
+            DispatchQueue.main.async {
+                
+                
+                // Check if data synced
+                if self.synced{
+                    
+                    print("Contacts synced!! >> \(self.synced)")
+                    
+                    // Notification for intro screen
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: self)
+                    
+                }else{
+                    
+                    // Set synced
+                    UDWrapper.setBool("contacts_synced", value: true)
+                }
+                
+            }
             
         }
     }
+
+    // Check if char is a letter
+    func isAlpha(char: Character) -> Bool {
+        switch char {
+        case "a"..."z":
+            return true
+        case "A"..."Z":
+            return true
+        default:
+            return false
+        }
+    }
+    // Check if string char is a letter
+    func isAlphaString(char: String) -> Bool {
+        let regex = try! NSRegularExpression(pattern: "[:alpha:]", options: [])
+        return regex.firstMatch(in: char, options: [], range: NSMakeRange(0, char.characters.count)) != nil
+    }
+    
+    // Rearrang idecies in an array
+    func rearrange<T>(array: Array<T>, fromIndex: Int, toIndex: Int) -> Array<T>{
+        var arr = array
+        // Set element
+        let element = arr[fromIndex]
+        // Append to array
+        arr.insert(element, at: toIndex)
+        // Now remove from beginning
+        arr.remove(at: fromIndex)
+        
+        return arr
+    }
+    
+    
    
     // Initialize contact objects for upload
     
@@ -877,6 +943,7 @@ class ContactManager{
             if contact.imageDataAvailable {
                 // Print to test
                 print("Has IMAGE Data")
+                contactObject.imageData = contact.imageData!
                 
                 // Create ID and add to dictionary
                 // Image data png
@@ -1020,6 +1087,96 @@ class ContactManager{
         
     }
     
+    func fetchContactsForUser() {
+        // Fetch the user data associated with users
+        
+        var errorOccured = false
+        
+        // Hit endpoint for updates on users nearby
+        let parameters = ["uuid": ContactManager.sharedManager.currentUser.userId]
+        
+        print(">>> SENT PARAMETERS >>>> \n\(parameters))")
+        // Show progress
+        //KVNProgress.show(withStatus: "Fetching details on the activity...")
+        
+        // Create User Objects
+        Connection(configuration: nil).getContactsCall(parameters, completionBlock: { response, error in
+            
+            if error == nil {
+                
+                //print("\n\nConnection - Radar Response: \n\n>>>>>> \(response)\n\n")
+                
+                // Init dictionary to capture response
+                let userArray = response as? NSDictionary
+                // // Parse dictionary for array of trans
+                //print(userArray)
+                
+                let userList = userArray?["data"] as! NSArray
+                
+                
+                // Iterate over array, append trans to list
+                for item in userList{
+                    
+                    print("Contact Item >> \(item)")
+                    
+                    let social = item as! NSDictionary
+                    
+                    print("The newest social", social["addresses"] as Any /*as? NSArray ?? NSArray()*/)
+                    
+                    // Init user objects from array
+                    let contact = Contact(arraySnapshot: item as! NSDictionary)
+                    
+                    //print("Contact Object Item >>")
+                    //print(contact.toAnyObject())
+                    
+                    // Append users to Selected array
+                    self.contactObjectList.append(contact)
+                    
+                    // Generate ID String
+                    let str = User().randomString(length: 10)
+                    // Assign id to object
+                    let contactTuple = (str, contact.name)
+                    
+                    // Create tuples and append to list
+                    self.tuples.append(contactTuple)
+                    print("Tuples array", self.tuples)
+                    
+                    //print(self.contactObjectList.count, "Object count")
+                }
+                
+                // sort contacts
+                self.sortContacts()
+                
+                // Show sucess
+                //KVNProgress.showSuccess()
+                
+                
+            } else {
+                print(error)
+                // Show user popup of error message
+                print("\n\nConnection - User Fetch Error: \n\n>>>>>>>> \(error)\n\n")
+                //KVNProgress.showError(withStatus: "There was an issue getting activities. Please try again.")
+                
+                // Set the bool to true
+                errorOccured = true
+                
+                if errorOccured == true{
+                    
+                    DispatchQueue.main.async {
+                        // Sort and refresh table
+                        self.sortContacts()
+                    }
+                    
+                }
+                
+            }
+            // Regardless, hide hud
+            KVNProgress.dismiss()
+            
+        })
+        
+    }
+
     
     
     
@@ -1091,22 +1248,45 @@ class ContactManager{
     func sortContacts() {
         // Test for sorting contacts by last name into sections
         
-        let data = ["Anton", "Anna", "John", "Caesar"] // Example data, use your phonebook data here.
+        //let data = self.dataArray // Example data, use your phonebook data here.
         
         // Build letters array:
         
-        var letters: [Character]
+        //letters: [Character]
+        // Init data array
+        dataArray = self.tuples.map { $0.1 }
         
-        letters = data.map { (name) -> Character in
-            print(name[name.startIndex])
-            return name[name.startIndex]
+        
+        letters = dataArray.map { (name) -> String in
+            //print("UPPER CASE HERE")
+            let nameToUpper = name.uppercased()
+            
+            var fullNameArr = nameToUpper.components(separatedBy: " ")  //split(contactName) {$0 == " "}
+            let firstName: String = fullNameArr[0]
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
+            
+            if lastName.isEmpty{
+                lastName = "No Name"
+            }
+            
+            // Check if letter in the alphabet
+            if isAlphaString(char: String(lastName[lastName.startIndex])){
+                
+                return String(lastName[lastName.startIndex])
+                
+            }else{
+                
+                // Otherwise return #
+                print("Not a string", String(lastName[lastName.startIndex]))
+                return "#"
+            }
         }
         
+        // Sort letters array
         letters = letters.sorted()
-        // Print letters array
-        print("\n\nLETTERS >>>> \(letters)")
         
-        letters = letters.reduce([], { (list, name) -> [Character] in
+        // Reduce letters to single count for each
+        letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
                 print("\n\nAdded >>>> \(list + [name])")
@@ -1115,30 +1295,86 @@ class ContactManager{
             return list
         })
         
+        // If first index is the misc, move to end of array
+        if letters.first == "#" {
+            // Move to end of array
+            letters = self.rearrange(array: letters, fromIndex: 0, toIndex: letters.endIndex)
+            // Test
+            print("The new letters array\n\(letters)")
+        }
         
-        // Build contacts array:
         
-        // Init sorted contacts array
-        var contacts = [Character: [String]]()
-        // Iterate over contact list
-        for entry in data {
+        // Create indicies based on letters
+        for letter in letters{
             
-            if contacts[entry[entry.startIndex]] == nil {
-                // Set index if doesn't exist
-                contacts[entry[entry.startIndex]] = [String]()
+            // Create section in hash table
+            contactsHashTable[letter] = [CNContact]()
+            // Unify contacts table
+            contactObjectTable[letter] = [Contact]()
+            
+        }
+        
+        
+        // Unify Contacts
+        for contact in self.contactObjectList{
+            // Init contact name
+            var contactName : String = contact.name
+            // Uppercase the name
+            contactName = contactName.uppercased()
+            
+            // Init full name
+            var fullNameArr = contactName.components(separatedBy: " ")
+            
+            // Init first name just in case no last exists
+            let firstName: String = fullNameArr[0]
+            // Retieve last name
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
+            
+            //print("First + Last", firstName, lastName)
+            
+            
+            // Check if letter in the alphabet
+            if isAlphaString(char: String(lastName.characters.first ?? "#")){
+                
+                // Check if section exists
+                if contactObjectTable[String(describing: lastName.characters.first ?? "#")] == nil{
+                    //print("Hash Section Empty!")
+                    // If empty, initialize list
+                    contactObjectTable[String(describing: lastName.characters.first ?? "#")] = []
+                }
+                // Add contact to list
+                //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+                let startIndex = String(describing: lastName.characters.first ?? "#")
+                //print("Start Index: >> \(startIndex)")
+                
+                contactObjectTable[startIndex]!.append(contact)
+                //print("Section count for added item", contact.toAnyObject())
+                //print(contactsHashTable[startIndex]?.count)
+                
+            }else{
+                
+                // Check if first name valid
+                // Check if section exists
+                if contactObjectTable[String(describing: firstName.characters.first ?? "#")] == nil{
+                    //print("Hash Section Empty!")
+                    // If empty, initialize list
+                    contactObjectTable[String(describing: firstName.characters.first ?? "#")] = []
+                }
+                // Add contact to list
+                //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
+                let startIndex = String(describing: firstName.characters.first ?? "#")
+                // Append to table
+                contactObjectTable[startIndex]!.append(contact)
+                
             }
             
-            // Add entry to section
-            contacts[entry[entry.startIndex]]!.append(entry)
-            
         }
         
-        // Sort list
-        for (letter, list) in contacts {
-            contacts[letter] = list.sorted()
-            // Test output
-            print(contacts[letter])
-        }
+        // Print to test 
+        print("The contact object list")
+        //print(contactObjectList)
+
+        
     }
     
     // END **** Functions for sorting contacts into sections *** END//

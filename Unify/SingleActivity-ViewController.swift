@@ -392,10 +392,10 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
     }
     // Set row height
-    
+    /*
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 55.0
-    }
+    }*/
     
     
     
@@ -504,7 +504,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Observer for notifs
         addObservers()
         
-        
+        profileInfoTableView.rowHeight = UITableViewAutomaticDimension
+        profileInfoTableView.estimatedRowHeight = 55
     }
     
     // Custom methods

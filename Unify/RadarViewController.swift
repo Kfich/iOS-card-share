@@ -544,6 +544,13 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.sendCardButton.clipsToBounds = true
         self.sendCardButton.layer.borderWidth = 1.0
         self.sendCardButton.layer.borderColor = UIColor.lightGray.cgColor
+        
+        // Configure borders
+        radarListContainer.layer.borderColor = UIColor.blue.cgColor
+        radarListContainer.layer.borderWidth = 1.5
+        radarListContainer.clipsToBounds = true
+        radarListContainer.layer.cornerRadius = 12
+        
     }
     
     

@@ -82,7 +82,26 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         //loadListOfCountries()
         
-        getContacts()
+        if ContactManager.sharedManager.contactObjectList.count != 0 {
+            print("The manager count ", ContactManager.sharedManager.contactObjectList.count)
+            
+            // Set contact list from manager
+            self.phoneContacts = ContactManager.sharedManager.phoneContactList
+            self.contactObjectList = ContactManager.sharedManager.contactObjectList
+            self.letters = ContactManager.sharedManager.letters
+            self.dataArray = ContactManager.sharedManager.dataArray
+            self.tuples = ContactManager.sharedManager.tuples
+            self.contactObjectTable = ContactManager.sharedManager.contactObjectTable
+
+            
+            // Fetch from server
+            //self.sortContacts()
+            
+        }else{
+            // Fetch contacts here
+            self.getContacts()
+        }
+
         
         // Uncomment the following line to enable the default search controller.
         // configureSearchController()

@@ -97,6 +97,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet var notesLabel: ACFloatingTextfield!
 
     
+    @IBOutlet var tokenView: UIView!
+    
 
     // Page setup 
     override func viewDidLoad() {
@@ -105,6 +107,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Do any additional setup after loading the view.
         // Set currentUser
         self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Set target for location field
+        notesLabel.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidBegin)
         
         // Init and configure segment controller
         segmentedControl = UISegmentedControl(frame: CGRect(x: 10, y: 5, width: 225, height: 30))
@@ -136,8 +141,28 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Set height
         //self.tableView.frame.height = self.view.frame.height
         
+        
+        
         // Get contacts
-        self.getContacts()
+        if ContactManager.sharedManager.contactObjectList.count != 0 {
+            print("The manager count ", ContactManager.sharedManager.contactObjectList.count)
+            
+            // Set contact list from manager
+            self.phoneContacts = ContactManager.sharedManager.phoneContactList
+            self.contactObjectList = ContactManager.sharedManager.contactObjectList
+            self.letters = ContactManager.sharedManager.letters
+            self.dataArray = ContactManager.sharedManager.dataArray
+            self.tuples = ContactManager.sharedManager.tuples
+            self.contactObjectTable = ContactManager.sharedManager.contactObjectTable
+
+            // Fetch from server
+            //self.sortContacts()
+            
+        }else{
+            // Fetch contacts here
+            self.getContacts()
+        }
+
         
         // Configure bar
         self.configureCustomSearchController()
@@ -155,6 +180,30 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         self.tableView.sectionIndexColor = UIColor.white//UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         
         
+        // Set token view
+        let tokenField = KSTokenView(frame: self.emailLabel.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
+        tokenField.delegate = self as? KSTokenViewDelegate
+        tokenField.promptText = " "
+        tokenField.font = UIFont.systemFont(ofSize: 18)
+        tokenField.placeholder = "Tags :"
+        tokenField.descriptionText = ""
+        tokenField.activityIndicatorColor = UIColor.green
+        tokenField.maxTokenLimit = 5
+        tokenField.style = .squared
+        tokenField.shouldHideSearchResultsOnSelect = true
+        tokenField.searchResultSize = CGSize()
+        tokenField.direction = .horizontal
+        
+        // Config container view
+        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 1, width: self.emailLabel.frame.size.width,  height: 1.0))
+        containerView.backgroundColor = UIColor.white
+        // Add to token field
+        self.tokenView.addSubview(containerView)
+        
+        
+        // Add to view
+        self.tokenView.addSubview(tokenField)
+        
 
     }
     
@@ -162,6 +211,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         super.viewWillAppear(true)
         // Fix tableview hight
         //tableView.frame = CGRect(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.frame.size.height)
+        
+        if ContactManager.sharedManager.userArrivedFromLocationVC{
+            // Set textfield text
+            self.notesLabel.text = ContactManager.sharedManager.selectedLocation
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -171,8 +225,12 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         tableView.frame = CGRect(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.view.frame.size.height - 50)
         
         // Lay out views again
-        self.view.layoutSubviews()
-        self.view.layoutIfNeeded()
+        //self.view.layoutSubviews()
+        //self.view.layoutIfNeeded()
+        
+        // Reset location selection
+        ContactManager.sharedManager.userArrivedFromLocationVC = false
+        ContactManager.sharedManager.selectedLocation = ""
     }
     
     override func didReceiveMemoryWarning() {
@@ -560,6 +618,27 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         //self.tableView.searchBar.resignFirstResponder()
     }
     
+    // Textfield Delegate
+    
+    // Textfield delegate
+    func textFieldDidChange(_ textField: UITextField) {
+        
+        // Show location
+        self.showLocationVC()
+        
+    }
+    
+    // Show location
+    
+    func showLocationVC(){
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "LocationVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    
     
     // MARK: UISearchResultsUpdating delegate function
     
@@ -924,7 +1003,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 // Upload Contacts
                 //self.uploadContactRecords()
                 // Reload the tableview.
-                self.tableView.reloadData()
+                //self.tableView.reloadData()
                 
                 /*
                  if self.synced{

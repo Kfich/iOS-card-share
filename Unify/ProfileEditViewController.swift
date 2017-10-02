@@ -489,6 +489,15 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         // Set tint
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         
+                                        $0.add(rule: RuleRequired())
+                                        $0.validationOptions = .validatesOnChangeAfterBlurred
+                                        // Add row rule
+                                        let ruleRequiredViaClosure = RuleClosure<String> { rowValue in
+                                            return (rowValue == nil || rowValue!.isEmpty) ? ValidationError(msg: "Field required!") : nil
+                                        }
+                                        $0.add(rule: ruleRequiredViaClosure)
+                                        
+                                        
                                         print("Printing section index ", index)
                                         
                                         // Init line view
@@ -505,6 +514,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            row.validationOptions = .validatesOnChangeAfterBlurred
+                                            row.add(rule: RuleRequired())
+                                            // Add row rule
+                                            let ruleRequiredViaClosure = RuleClosure<String> { rowValue in
+                                                return (rowValue == nil || rowValue!.isEmpty) ? ValidationError(msg: "Field required!") : nil
+                                            }
+                                            row.add(rule: ruleRequiredViaClosure)
                                             
                                             
                                             // Init line view
@@ -886,6 +903,13 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     return NameRow("emailsRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
+                                        // Add email validation
+                                        // Add email validation
+                                        $0.add(rule: RuleRequired())
+                                        $0.add(rule: RuleEmail())
+                                        //$0.validationOptions = .validatesAlways
+                                        $0.add(rule: RuleEmail())
+                                        $0.validationOptions = .validatesOnChange
                                         
                                         // Add label to labels
                                         self.emailLabels.append("home")
@@ -900,6 +924,12 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Email"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            // Add email validation
+                                            row.add(rule: RuleRequired())
+                                            row.add(rule: RuleEmail())
+                                            //row.validationOptions = .validatesAlways
+                                            row.validationOptions = .validatesOnChange
                                             
                                             if row.indexPath != nil{
                                                 // Add to label
@@ -1011,6 +1041,9 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("websitesRow_\(index)") {
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
+                                        
+                                        
+                                        //$0.add(rule: RuleURL())
                                         
                                         }.cellUpdate { cell, row in
                                             

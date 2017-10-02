@@ -51,10 +51,10 @@ open class KSToken : UIControl {
    open var sticky = false
    
    /// Token Title color
-   open var tokenTextColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+   open var tokenTextColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)//UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
    
    /// Token background color
-   open var tokenBackgroundColor = UIColor(red: 50/255, green: 50/255, blue: 255/255, alpha: 1)
+   open var tokenBackgroundColor = UIColor.white//(red: 50/255, green: 50/255, blue: 255/255, alpha: 1)
    
    /// Token title color in selected state
    open var tokenTextHighlightedColor: UIColor?

@@ -139,7 +139,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Return count
-             return ContactManager.sharedManager.currentUserCards.count
+             return ContactManager.sharedManager.viewableUserCards.count - 1
             
         }else{
             // Set titleview
@@ -158,7 +158,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Set current card
-            cell.currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
+            cell.currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             
             // Toggle switch based on value
             //cell.toggleSwitchOnInit()

@@ -46,7 +46,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     
     // IBOutlets
     // ---------------------------------------
-    @IBOutlet var contactCardView: ContactCardView!
+    @IBOutlet var tokenView: UIView!
     
     @IBOutlet var cardWrapperView: UIView!
     
@@ -111,6 +111,37 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         // Set target for location field
         locationTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidBegin)
         
+        // Set token view
+        let tokenField = KSTokenView(frame: self.tokenView.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
+        tokenField.delegate = self as? KSTokenViewDelegate
+        tokenField.promptText = " "
+        tokenField.font = UIFont.systemFont(ofSize: 18)
+        tokenField.placeholder = "Tags :"
+        tokenField.descriptionText = ""
+        tokenField.activityIndicatorColor = UIColor.green
+        tokenField.maxTokenLimit = 5
+        tokenField.style = .squared
+        tokenField.shouldHideSearchResultsOnSelect = true
+        tokenField.searchResultSize = CGSize()
+        tokenField.direction = .horizontal
+        
+        // Config container view
+        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 1, width: self.emailTextField.frame.size.width,  height: 1.0))
+        containerView.backgroundColor = UIColor.white
+        // Add to token field
+        self.tokenView.addSubview(containerView)
+        
+        
+        // Add to view
+        self.tokenView.addSubview(tokenField)
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,13 +168,18 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         lastNameTextField.disableFloatingLabel = true
         emailTextField.disableFloatingLabel = true
         //notesTextField.disableFloatingLabel = true
-        tagsTextField.disableFloatingLabel = true
+        //tagsTextField.disableFloatingLabel = true
         phoneTextField.disableFloatingLabel = true
         locationTextField.disableFloatingLabel = true
         
         // Set shadow
         self.shadowView.shadowRadius = 2
         self.shadowView.shadowMask = YIInnerShadowMaskTop
+        
+        if ContactManager.sharedManager.userArrivedFromLocationVC{
+            // Set textfield text
+            self.locationTextField.text = ContactManager.sharedManager.selectedLocation
+        }
         
 
     }
