@@ -34,11 +34,21 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CL
         super.viewDidLoad()
         
         resultsViewController = GMSAutocompleteResultsViewController()
+        //resultsViewController?.autocompleteBounds = GMSCoordinateBounds()
         resultsViewController?.delegate = self
+        
+        // Set a filter to return only addresses.
+        //let filter = GMSAutocompleteFilter()
+        //filter.type = .address
+        //filter.country = "US"
+
+        //filter.country =
         
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
+        
+        
         
         let subView = UIView(frame: CGRect(x: 0, y: 65.0, width: self.view.frame.width, height: 45.0))
         
@@ -116,6 +126,19 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CL
         
         // Set coordinate bounds
         //resultsViewController?.autocompleteBounds = GMSCoordinateBounds(locValue)
+        
+        // Set bounds to inner-west Sydney Australia.
+        let neBoundsCorner = CLLocationCoordinate2D(latitude: locValue.latitude,
+                                                    longitude: locValue.longitude)
+        let swBoundsCorner = CLLocationCoordinate2D(latitude: locValue.latitude + 1,
+                                                    longitude: locValue.longitude + 1)
+        let bounds = GMSCoordinateBounds(coordinate: neBoundsCorner,
+                                         coordinate: swBoundsCorner)
+        
+        print("The AutoComplete Bounds", bounds)
+        
+        // Add coordinate bounds
+        resultsViewController?.autocompleteBounds = bounds
         
         
     }

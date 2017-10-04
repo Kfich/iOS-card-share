@@ -127,7 +127,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         tokenField.direction = .horizontal
         
         // Config container view
-        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 1, width: self.emailTextField.frame.size.width,  height: 1.0))
+        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 0.5, width: self.emailTextField.frame.size.width,  height: 0.50))
         containerView.backgroundColor = UIColor.white
         // Add to token field
         self.tokenView.addSubview(containerView)
@@ -530,6 +530,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             
             if tokenField.text != ""{
             
+                print("The Tokens", tokenField.text)
             
                 contact.setTags(tag: tokenField.text ?? "")
             }
@@ -596,12 +597,12 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         //contactToAdd.familyName = self.lastNameLabel.text ?? ""
         
         // Parse for mobile
-        let mobileNumber = CNPhoneNumber(stringValue: (self.contact.phoneNumbers[0]["phone"] ?? ""))
+        let mobileNumber = CNPhoneNumber(stringValue: (self.contact.phoneNumbers[0].values.first ?? ""))
         let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
         contactToAdd.phoneNumbers = [mobileValue]
         
         // Parse for emails
-        let email = CNLabeledValue(label: CNLabelWork, value: self.emailLabel.text as? NSString ?? "")
+        let email = CNLabeledValue(label: CNLabelWork, value: self.emailTextField.text as NSString? ?? "")
         contactToAdd.emailAddresses = [email]
         
         // Set organizations
@@ -610,8 +611,15 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             contactToAdd.organizationName = self.contact.organizations[0]["organization"]!
         }
         
+        // Format location
+        var noteString = "Unify Location:\n\(self.locationTextField.text ?? "") "
+        noteString += "\nUnify Tags:\n\(self.tokenField.text ?? "")"
+        
+        
         // Set notes to contact
-        contactToAdd.note = self.locationTextField.text ?? ""
+        contactToAdd.note = noteString//self.locationTextField.text ?? ""
+        
+        //contactToAdd.note += self.tokenField.text ?? ""
         
         // **** Make a scheme for adding tags to contact **** //
         

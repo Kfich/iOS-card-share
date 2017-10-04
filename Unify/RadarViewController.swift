@@ -1552,92 +1552,85 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             //self.sendCardButton.isHidden = true
                         }
                         
+                        if  dictionary.count > 5{
+                            
+                            print("")
+                            // Set lat & long for user
+                            ContactManager.sharedManager.userLat = self.lat
+                            ContactManager.sharedManager.userLong = self.long
+                            ContactManager.sharedManager.userAddress = self.address
+                            
+                            // Remove people
+                            self.removePlottedPeople(self.pulseView)
+                            // Post notif
+                            self.postUpdateLocationNotification()
+                            // Show container
+                            self.radarListContainer.isHidden = false
+                            // Hide pulse view
+                            //self.pulseView.isHidden = true
+                            // End radar pulsing
+                            self.stopPulseAnimation()
+                            
+                            // Stop updating location
+                            self.locationManager.stopUpdatingLocation()
+                            
+                            
+                        }else{
+                            
+                            for item in dictionary {
+                                
+                                //print(item)
+                                
+                                let userDict = item as? NSDictionary
+                                
+                                // Init user objects from array
+                                let user = User(withRadarSnapshot: userDict!)
+                                //user.printUser()
+                                // Add to list of users on radar
+                                self.radarUsers.append(user)
+                                /*self.radarUsers.append(user)
+                                 self.radarUsers.append(user)*/
+                                
+                                // Create selected index
+                                let selectedIndex = Check(arrayIndex: self.counter, selected: false)
+                                // Set Selected index
+                                self.selectedUserList.append(selectedIndex)
+                                
+                                // Append users to radarContacts array
+                                self.radarContacts.append(user)
+                                //self.radarContacts.append(user)
+                                //print("Radar List Count >>>> \(self.radarContacts.count)")
+                                
+                                // Set random coordinates for plotting images on radar
+                                //let distance = user.distance
+                                //let direction = user.direction
+                                
+                                
+                                var distance = Int(random: -6..<12)
+                                var direction = Int(random: -2..<10)
+                                
+                                
+                                // Check if user count is at 7
+                                // Radar showing so plot people
+                                // plot person on map
+                                // The tag is used to tag images to identify their index in the array
+                                //self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                                
+                                //print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
+                                
+                                
+                                self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
+                                
+                                
+                                self.counter = self.counter + 1
+                                
+                                
+                                
+                            }
+                        }
                        
                         
-                        for item in dictionary {
-                            
-                            //print(item)
-                            
-                            let userDict = item as? NSDictionary
-                            
-                            // Init user objects from array
-                            let user = User(withRadarSnapshot: userDict!)
-                            //user.printUser()
-                            // Add to list of users on radar
-                            self.radarUsers.append(user)
-                            /*self.radarUsers.append(user)
-                            self.radarUsers.append(user)*/
-                            
-                            // Create selected index
-                            let selectedIndex = Check(arrayIndex: self.counter, selected: false)
-                            // Set Selected index
-                            self.selectedUserList.append(selectedIndex)
-                            
-                            // Append users to radarContacts array
-                            self.radarContacts.append(user)
-                            //self.radarContacts.append(user)
-                            //print("Radar List Count >>>> \(self.radarContacts.count)")
-                            
-                            // Set random coordinates for plotting images on radar
-                            //let distance = user.distance
-                            //let direction = user.direction
-                            
-                            
-                            var distance = Int(random: -6..<12)
-                            var direction = Int(random: -2..<10)
-                            
-                            
-                            // Check if user count is at 7 
-                            // Radar showing so plot people
-                            // plot person on map
-                            // The tag is used to tag images to identify their index in the array
-                            //self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            
-                            //print("\n\nPerson Plotted - >>>Dist : \(distance), Direction : \(direction)\n\n")
                         /*
-                            distance = Int(random: -6..<12)
-                            direction = Int(random: -2..<10)
-        
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            
-                            distance = Int(random: -6..<12)
-                            direction = Int(random: -2..<10)
-                            
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            
-                            distance = Int(random: -6..<12)
-                            direction = Int(random: -2..<10)
-                            
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)*/
-                            
-                            
-                            
-                           /* // Update counter
-                            self.counter = self.counter + 1
-                            
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                        
-                            
-                            self.counter = self.counter + 1*/
-                            
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            
-                            
-                            self.counter = self.counter + 1
-                            
-                            /*self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            
-                            
-                            self.counter = self.counter + 1
-                            
-                            self.plotPerson(distance: Int(distance), direction: Int(direction), tag: self.counter)
-                            
-                            
-                            self.counter = self.counter + 1*/
-                            
-                        }
-                        
-                        
                         // Test if user count over 7
                         if self.radarUsers.count > 5{
                             
@@ -1665,7 +1658,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             // Test
                             print("The count was less then 7")
 
-                        }
+                        }*/
                         
                     } else {
                         print(error)

@@ -436,16 +436,17 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         dismiss(animated: true, completion: nil)
     }
 
+    /*
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         // Show nav
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-    }
+    }*/
     
     // Page setup
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         // Really, we parse the card and profile infos to extract the list
         // Fill profile with example info
@@ -478,12 +479,12 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
         
         // Config header view based on counts
-        if self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0{
+        if self.currentUser.userProfile.socialLinks.count > 0 && ContactManager.sharedManager.badgeList.count > 0{
             print("The contact has both social and corp badges")
             // Set double collection wrapper as header
             profileInfoTableView.tableHeaderView = self.cardWrapperView
         
-        }else if (self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count == 0) || (self.currentUser.userProfile.socialLinks.count == 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0){
+        }else if (self.currentUser.userProfile.socialLinks.count > 0 && ContactManager.sharedManager.badgeList.count == 0) || (self.currentUser.userProfile.socialLinks.count == 0 && ContactManager.sharedManager.badgeList.count > 0){
             print("The contact has one list populated")
             // Set single collection wrapper as header
             profileInfoTableView.tableHeaderView = self.cardWrapperViewSingleWrapper
@@ -1098,7 +1099,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
-        cell.contentView.layer.borderWidth = 0.5
+        //cell.contentView.layer.borderWidth = 0.5
         //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view

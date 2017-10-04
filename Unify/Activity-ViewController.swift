@@ -1418,24 +1418,55 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             let duration = Double(elapsedTime) / (60.0 * 60.0)
             print("The Elapsed Time Since Transaction >>> \(duration)")
             
-            if duration < 72.0 {
+            
+            
+            if duration < 24.0 {
                 // Send to recents
                 
-                if self.tableData["Recents"] == nil {
+                if self.tableData["Today"] == nil {
                     
                     // Init section
-                    self.tableData["Recents"] = []
+                    self.tableData["Today"] = []
                     
                     // Add to section list
-                    self.sections.append("Recents")
+                    self.sections.append("Today")
                 }
                 
                 // Send to recents
-                self.tableData["Recents"]!.append(trans)
+                self.tableData["Today"]!.append(trans)
                
                 print("older then ")
                 
+            }else if (duration >= 24.0 && duration < 48.0){
+                // Check if section exists
+                if self.tableData["Yesterday"] == nil {
+                    // Init section
+                    self.tableData["Yesterday"] = []
+                    
+                    // Add to section list
+                    self.sections.append("Yesterday")
+                }
+                
+                // Send to the old trans list
+                self.tableData["Yesterday"]!.append(trans)
+                print("younger then ")
+            }else if (duration >= 48.0 && duration < 168.0){
+                
+                // Check if section exists
+                if self.tableData["This Week"] == nil {
+                    // Init section
+                    self.tableData["This Week"] = []
+                    
+                    // Add to section list
+                    self.sections.append("This Week")
+                }
+                
+                // Send to the old trans list
+                self.tableData["This Week"]!.append(trans)
+                print("Within the week")
+                
             }else{
+                
                 // Check if section exists
                 if self.tableData["Older"] == nil {
                     // Init section
@@ -1447,7 +1478,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Send to the old trans list
                 self.tableData["Older"]!.append(trans)
-                print("younger then ")
+                print("Over a week old")
+                
             }
             
          }

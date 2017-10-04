@@ -37,6 +37,7 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
     
    // @IBOutlet weak var cardDisplayName: UILabel!
    
+    @IBOutlet var cardOutlineView: UIView!
     
     @IBOutlet var cardDisplayName: UILabel!
     
@@ -173,7 +174,7 @@ class CardCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UI
         
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
-        cell.contentView.layer.borderWidth = 0.5
+        //cell.contentView.layer.borderWidth = 0.5
         //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view

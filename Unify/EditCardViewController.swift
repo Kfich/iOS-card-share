@@ -32,6 +32,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var tags = [String]()
     var addresses = [String]()
     var addressLabels = [String]()
+    var addressObjects = [NSDictionary]()
     var corpBadges : [CardProfile.Bagde] = []
 
     // Profile pics
@@ -49,6 +50,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     var selectedNotes = [String]()
     var selectedTags = [String]()
     var selectedAddress = [String]()
+    var selectedAddressObjects = [NSDictionary]()
     var selectedCorpBadges: [CardProfile.Bagde] = []
     var selectedCorpLinks = [String]()
     
@@ -202,7 +204,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
          */
         
         // Set button 
-        //self.cardNameButton.setTitle(card.cardName ?? "", for: .normal)
+        self.cardNameButton.setTitle(card.cardName ?? "", for: .normal)
+        self.cardNameButtonSingleWrapper.setTitle(card.cardName ?? "", for: .normal)
+        self.cardNameButtonEmptyWrapper.setTitle(card.cardName ?? "", for: .normal)
         
         // Add gesture tp pencil icon 
         
@@ -229,7 +233,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         // Config header view based on counts
-        if self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0{
+        if self.currentUser.userProfile.socialLinks.count > 0 && ContactManager.sharedManager.badgeList.count > 0{
             print("The contact has both social and corp badges")
             // Set double collection wrapper as header
             cardOptionsTableView.tableHeaderView = self.profileCardWrapperView
@@ -352,9 +356,15 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
         
         
-        // Add image to contact card profile images
-        self.card.cardProfile.setImages(imageRecords: imageDict)
-        print(imageDict)
+        if self.card.cardProfile.images.count > 0 {
+            // Overwrite index
+            self.card.cardProfile.images[0] = imageDict
+        }else{
+            
+            // Add image to contact card profile images
+            self.card.cardProfile.images.append(imageDict)
+           // print(imageDict)
+        }
         
         
         // Clear arrays for badges
@@ -943,6 +953,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         }else if collectionView == profileImageCollectionView{
             // Set profile image
             self.profileImageView.image = profileImagelist[indexPath.row]
+            self.profileImageViewSingleWrapper.image = profileImagelist[indexPath.row]
+            self.profileImageViewEmptyWrapper.image = profileImagelist[indexPath.row]
             
         }else{
             
@@ -1219,7 +1231,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             // Check if in list
-            if selectedAddress.contains(addresses[indexPath.row]) {
+            if selectedAddressObjects.contains(addressObjects[indexPath.row]) {
                 // Set to selected cells list
                 selectedCells.append(indexPath as NSIndexPath)
                 // Set cell accessory type
@@ -1270,15 +1282,35 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             
             if self.selectedBios.contains(bios[indexPath.row]) {
                 // Print Already selected
-                print("Item already selected")
+                print("Item already selected", selectedBios)
                 // Most likely show an alert
-                selectedBios.remove(at: indexPath.row)
-                // Remove from array
-                bios.remove(at: indexPath.row)
+                selectedBios = selectedBios.filter{$0 != bios[indexPath.row]}
+                
+                // Print Already selected
+                print("List after removal", selectedBios)
+                
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory 
+                selectedCell?.accessoryType = .none
+                
+                print("Card Bios Before Removal\n", card.cardProfile.bios)
+                // Remove the item from card by filtering list
+                card.cardProfile.bios = card.cardProfile.bios.filter{ $0["bio"] != bios[indexPath.row]}
+  
+                print("Card Bios Post Removal\n", card.cardProfile.bios)
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
                 
             }else{
+                // Add to selected list
+                selectedBios.append(bios[indexPath.row])
+                
                 // Append bio to list if not selected
                 card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
+                
+                print("The card added bio", card.cardProfile.bios)
             }
             
         case "Work":
@@ -1302,17 +1334,52 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedTitles.contains(titles[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedTitles.remove(at: indexPath.row)
-                self.titles.remove(at: indexPath.row)
+                self.selectedTitles = selectedTitles.filter{$0 != titles[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.titles = card.cardProfile.titles.filter{ $0["title"] != titles[indexPath.row]}
+                
+                print("Card Titles Post Removal\n", card.cardProfile.titles)
+                
+                // Check if title is populated in card wrapper
+                if self.titleLabel.text == titles[indexPath.row] || self.titleLabelSingleWrapper.text == titles[indexPath.row] || self.titleLabelEmptyWrapper.text == titles[indexPath.row] {
+                    // Remove text
+                    self.titleLabel.text = ""
+                    self.titleLabelSingleWrapper.text = ""
+                    self.titleLabelEmptyWrapper.text = ""
+                }
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
             }else{
                 // Add to list
                 //card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
                 
-                // Overwrite the selection to keep it only one selectable
-                card.cardProfile.titles[0] = ["title" : titles[indexPath.row]]
+                // Add to selected list
+                self.selectedTitles.append(titles[indexPath.row])
+                
+                
+                if card.cardProfile.titles.count > 0 {
+                    card.cardProfile.titles[0] = ["title" : titles[indexPath.row]]
+                }else{
+                    
+                    // Overwrite the selection to keep it only one selectable
+                    card.cardProfile.titles.append(["title" : titles[indexPath.row]])
+                    
+                }
                 
                 // Assign label value
                 self.titleLabel.text = titles[indexPath.row]
+                self.titleLabelSingleWrapper.text = titles[indexPath.row]
+                self.titleLabelEmptyWrapper.text = titles[indexPath.row]
             }
             
         case "Emails":
@@ -1320,18 +1387,51 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedEmails.contains(emails[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedEmails.remove(at: indexPath.row)
-                self.emails.remove(at: indexPath.row)
+                self.selectedEmails = selectedEmails.filter{ $0 != emails[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.emails = card.cardProfile.emails.filter{ $0["email"] != emails[indexPath.row]}
+                
+                print("Card Emails Post Removal\n", card.cardProfile.emails)
+                
+                // Check if title is populated in card wrapper
+                if self.emailLabel.text == emails[indexPath.row] || self.emailLabelSingleWrapper.text == emails[indexPath.row] || self.emailLabelEmptyWrapper.text == emails[indexPath.row]{
+                    // Remove text
+                    self.emailLabel.text = ""
+                    self.emailLabelSingleWrapper.text = ""
+                    self.emailLabelEmptyWrapper.text = ""
+                }
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
                 
             }else{
+                
+                // Add to selected
+                self.selectedEmails.append(emails[indexPath.row])
+                
                 // Append to list
                 card.cardProfile.emails.append(["email" : emails[indexPath.row]])
+                
+                // Test
                 print(card.cardProfile.emails as Any)
                 
                 // Assign label value
                 if emails.count != 0{
                     self.emailLabel.text = emails[indexPath.row]
+                    self.emailLabelSingleWrapper.text = emails[indexPath.row]
+                    self.emailLabelEmptyWrapper.text = emails[indexPath.row]
                 }
+                
+                
             }
             
             //self.emailLabel.text = emails[indexPath.row]
@@ -1342,9 +1442,36 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedPhoneNumbers.remove(at: indexPath.row)
-                self.phoneNumbers.remove(at: indexPath.row)
+                self.selectedPhoneNumbers = selectedPhoneNumbers.filter{ $0 != phoneNumbers[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.phoneNumbers = card.cardProfile.phoneNumbers.filter{ $0.values.first! != phoneNumbers[indexPath.row]}
+                
+                print("Card Phones Post Removal\n", card.cardProfile.phoneNumbers)
+                
+                // Check if title is populated in card wrapper
+                if self.numberLabel.text == phoneNumbers[indexPath.row] || self.numberLabelSingleWrapper.text == phoneNumbers[indexPath.row] || self.numberLabelEmptyWrapper.text == phoneNumbers[indexPath.row]{
+                    // Remove text
+                    self.numberLabel.text = ""
+                    self.numberLabelSingleWrapper.text = ""
+                    self.numberLabelEmptyWrapper.text = ""
+                }
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
+                
             }else{
+                // Add to selected list
+                selectedPhoneNumbers.append(phoneNumbers[indexPath.row])
+                
                 // Add dictionary value to cardProfile
                 card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
                 // Print for testing
@@ -1352,6 +1479,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 // Assign label value
                 self.numberLabel.text = phoneNumbers[indexPath.row]
+                self.numberLabelSingleWrapper.text = phoneNumbers[indexPath.row]
+                self.numberLabelEmptyWrapper.text = phoneNumbers[indexPath.row]
             }
             
         case "Tags":
@@ -1359,64 +1488,170 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             if self.selectedTags.contains(tags[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedTags.remove(at: indexPath.row)
-                self.tags.remove(at: indexPath.row)
+                self.selectedTags = selectedTags.filter{ $0 != tags[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.tags = card.cardProfile.tags.filter{ $0["tag"] != tags[indexPath.row]}
+                
+                print("Card Tags Post Removal\n", card.cardProfile.tags)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
             }else{
+                
+                // Add to selected
+                selectedTags.append(tags[indexPath.row])
+                
                 // Append to array
                 card.cardProfile.tags.append(["tag" : tags[indexPath.row]])
                 // Print for test
                 print(card.cardProfile.tags as Any)
             }
+            
         case "Websites":
             // Check if in array 
             if self.selectedWebsites.contains(websites[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedWebsites.remove(at: indexPath.row)
-                self.websites.remove(at: indexPath.row)
+                self.selectedWebsites = selectedWebsites.filter{ $0 != websites[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.websites = card.cardProfile.websites.filter{ $0["website"] != websites[indexPath.row]}
+                
+                print("Card Websites Post Removal\n", card.cardProfile.websites)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
             }else{
+                
+                // Add to selected array
+                selectedWebsites.append(websites[indexPath.row])
+                
                 // Append to array
                 card.cardProfile.websites.append(["website" : websites[indexPath.row]])
                 // Print for test
                 print(card.cardProfile.websites as Any)
             }
-        case "Organizations":
+            
+        case "Company":
+            
             if self.selectedOrganizations.contains(organizations[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedOrganizations.remove(at: indexPath.row)
-                self.organizations.remove(at: indexPath.row)
+                self.selectedOrganizations = selectedOrganizations.filter{ $0 != organizations[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.organizations = card.cardProfile.organizations.filter{ $0["organization"] != organizations[indexPath.row]}
+                
+                print("Card Websites Post Removal\n", card.cardProfile.websites)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
             }else{
                 // Append to array
                 //card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
                 
-                // Add organizartion
-                card.cardProfile.organizations[0] = ["organization" : organizations[indexPath.row]]
+                // Set selected
+                selectedOrganizations.append(organizations[indexPath.row])
+                
+                if card.cardProfile.organizations.count > 0 {
+                    // Overwrite object
+                    card.cardProfile.organizations[0] = ["organization" : organizations[indexPath.row]]
+                    
+                }else{
+                    // Add organizartion
+                    card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
+                }
                 
                 // Print for test
                 print(card.cardProfile.organizations as Any)
             }
         case "Notes":
+            
             if self.selectedNotes.contains(notes[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedNotes.remove(at: indexPath.row)
-                self.notes.remove(at: indexPath.row)
+                self.selectedNotes = selectedNotes.filter { $0 != notes[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.notes = card.cardProfile.notes.filter{ $0["note"] != notes[indexPath.row]}
+                
+                print("Card Notes Post Removal\n", card.cardProfile.notes)
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
             }else{
+                // Add to selected list
+                selectedNotes.append(notes[indexPath.row])
+                
                 // Append to array
                 card.cardProfile.notes.append(["note" : notes[indexPath.row]])
                 // Print for test
                 print(card.cardProfile.notes as Any)
             }
         case "Addresses":
-            if self.selectedAddress.contains(addresses[indexPath.row]) {
+            if self.selectedAddressObjects.contains(addressObjects[indexPath.row]) {
                 // Already in list
                 print("Item already in list")
-                self.selectedAddress.remove(at: indexPath.row)
-                self.addresses.remove(at: indexPath.row)
+                self.selectedAddressObjects = selectedAddressObjects.filter { $0 != addressObjects[indexPath.row]}
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.addresses = card.cardProfile.addresses.filter{ $0 != addressObjects[indexPath.row] as! [String : String]}
+                
+                
+                print("Card Addresse Post Removal\n", card.cardProfile.addresses)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
             }else{
+                
+                // Add to selected list
+                selectedAddressObjects.append(addressObjects[indexPath.row])
+                
                 // Append to array
-                card.cardProfile.addresses.append(["address" : addresses[indexPath.row]])
+                card.cardProfile.addresses.append(addressObjects[indexPath.row] as! [String : String])
                 // Print for test
                 print(card.cardProfile.addresses as Any)
             }
@@ -1595,6 +1830,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         if card.cardProfile.addresses.count > 0{
             for add in card.cardProfile.addresses{
                 selectedAddress.append(add.values.first!)
+                selectedAddressObjects.append(add as NSDictionary)
             }
         }
 
@@ -1770,6 +2006,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 // Append values
                 addresses.append(addressString)
                 addressLabels.append(add["type"] ?? "")
+                addressObjects.append(add as NSDictionary)
                 
             }
             // Create section data
@@ -1867,6 +2104,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                     self.card.cardName = alertVC.textFields[0].text
                     // Set Card Name label text
                     self.cardNameButton.titleLabel?.text = alertVC.textFields[0].text
+                    self.cardNameButtonSingleWrapper.titleLabel?.text = alertVC.textFields[0].text
+                    self.cardNameButtonEmptyWrapper.titleLabel?.text = alertVC.textFields[0].text
                 case "Add Tag":
                     // Take text and add it to the card
                     self.card.cardProfile.setTags(tagRecords: ["tag" : alertVC.textFields[0].text!])

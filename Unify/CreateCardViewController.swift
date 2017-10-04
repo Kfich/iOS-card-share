@@ -34,8 +34,26 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     var notes = [String]()
     var tags = [String]()
     var addresses = [String]()
+    var addressObjects = [NSDictionary]()
     var addressLabels = [String]()
     var corpBadges = [CardProfile.Bagde()]
+    
+    
+    // Selected Items
+    var selectedBios = [String]()
+    var selectedWorkInformation = [String]()
+    var selectedOrganizations = [String]()
+    var selectedTitles = [String]()
+    var selectedPhoneNumbers = [String]()
+    var selectedEmails = [String]()
+    var selectedWebsites = [String]()
+    var selectedSocialLinks = [String]()
+    var selectedNotes = [String]()
+    var selectedTags = [String]()
+    var selectedAddress = [String]()
+    var selectedAddressObjects = [NSDictionary]()
+    var selectedCorpBadges: [CardProfile.Bagde] = []
+    var selectedCorpLinks = [String]()
     
     // Profile pics
     var profileImagelist = [UIImage]()
@@ -139,10 +157,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         //self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Config header view based on counts
-        if self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0{
+        if self.currentUser.userProfile.socialLinks.count > 0 && ContactManager.sharedManager.badgeList.count > 0{
             print("The contact has both social and corp badges")
             // Set double collection wrapper as header
             cardOptionsTableView.tableHeaderView = self.profileCardWrapperView
+            //cardOptionsTableView.tableHeaderView = self.profileCardWrapperViewSingle
             
         }else if (self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count == 0) || (self.currentUser.userProfile.socialLinks.count == 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0){
             print("The contact has one list populated")
@@ -332,6 +351,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 // Append values
                 addresses.append(addressString)
                 addressLabels.append(add["type"] ?? "")
+                addressObjects.append(add as NSDictionary)
             }
             // Create section data
             self.tableData["Addresses"] = addresses
@@ -913,6 +933,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         }else if collectionView == profileImageCollectionView{
             // Profile image collection
             self.profileImageView.image = self.profileImagelist[indexPath.row]
+            self.profileImageViewSingleWrapper.image = self.profileImagelist[indexPath.row]
+            self.profileImageViewEmptyWrapper.image = self.profileImagelist[indexPath.row]
             
         }else{
             
@@ -1039,6 +1061,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set checkmark
         cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
         
+        
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
         return cell
@@ -1100,58 +1123,424 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Switch case to find right section
         switch sections[indexPath.section] {
         case "Bios":
-            card.cardProfile.bio = bios[indexPath.row]
+            
+            //card.cardProfile.bio = bios[indexPath.row]
             // Append bio to list
-            card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
+            //card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
+            
+            if self.selectedBios.contains(bios[indexPath.row]) {
+                // Print Already selected
+                print("Item already selected", selectedBios)
+                // Most likely show an alert
+                selectedBios = selectedBios.filter{$0 != bios[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Print Already selected
+                print("List after removal", selectedBios)
+                
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                print("Card Bios Before Removal\n", card.cardProfile.bios)
+                // Remove the item from card by filtering list
+                card.cardProfile.bios = card.cardProfile.bios.filter{ $0["bio"] != bios[indexPath.row]}
+                
+                print("Card Bios Post Removal\n", card.cardProfile.bios)
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+            }else{
+                // Add to selected list
+                selectedBios.append(bios[indexPath.row])
+                
+                // Append bio to list if not selected
+                card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
+                
+                print("The card added bio", card.cardProfile.bios)
+            }
+            
+            
         case "Work":
             card.cardProfile.workInfo = workInformation[indexPath.row]
             // Append to work list
             card.cardProfile.setWorkRecords(emailRecords: ["work" : workInformation[indexPath.row]])
         case "Titles":
-            card.cardProfile.title = titles[indexPath.row]
+            //card.cardProfile.title = titles[indexPath.row]
             // Add to list
-            card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
+            //card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
             
             // Assign label value
-            self.titleLabel.text = titles[indexPath.row]
+            //self.titleLabel.text = titles[indexPath.row]
+            
+            // Check if already selected
+            if self.selectedTitles.contains(titles[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedTitles = selectedTitles.filter{$0 != titles[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.titles = card.cardProfile.titles.filter{ $0["title"] != titles[indexPath.row]}
+                
+                print("Card Titles Post Removal\n", card.cardProfile.titles)
+                
+                // Check if title is populated in card wrapper
+                if self.titleLabel.text == titles[indexPath.row] || self.titleLabelSingleWrapper.text == titles[indexPath.row] || self.titleLabelEmptyWrapper.text == titles[indexPath.row]{
+                    // Remove text
+                    self.titleLabel.text = ""
+                    self.titleLabelSingleWrapper.text = ""
+                    self.titleLabelEmptyWrapper.text = ""
+                }
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
+            }else{
+                // Add to list
+                //card.cardProfile.setTitleRecords(emailRecords: ["title" : titles[indexPath.row]])
+                
+                // Add to selected list
+                
+                self.selectedTitles.append(titles[indexPath.row])
+                
+                
+                if card.cardProfile.titles.count > 0 {
+                    card.cardProfile.titles[0] = ["title" : titles[indexPath.row]]
+                }else{
+                    
+                    // Overwrite the selection to keep it only one selectable
+                    card.cardProfile.titles.append(["title" : titles[indexPath.row]])
+                    
+                }
+                
+                print("Card Titles", card.cardProfile.titles)
+                
+                // Assign label value
+                self.titleLabel.text = titles[indexPath.row]
+                self.titleLabelSingleWrapper.text = titles[indexPath.row]
+                self.titleLabelEmptyWrapper.text = titles[indexPath.row]
+            }
+            
         case "Emails":
             
-            card.cardProfile.emails.append(["email" : emails[indexPath.row], "type" : emailLabels[indexPath.row]])
-            print(card.cardProfile.emails as Any)
+            //card.cardProfile.emails.append(["email" : emails[indexPath.row], "type" : emailLabels[indexPath.row]])
+            //print(card.cardProfile.emails as Any)
             // Assign label value
-            self.emailLabel.text = emails[indexPath.row]
+            //self.emailLabel.text = emails[indexPath.row]
+            
+            // Check if in array already
+            if self.selectedEmails.contains(emails[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedEmails = selectedEmails.filter{ $0 != emails[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.emails = card.cardProfile.emails.filter{ $0["email"] != emails[indexPath.row]}
+                
+                print("Card Emails Post Removal\n", card.cardProfile.emails)
+                
+                // Check if title is populated in card wrapper
+                if self.emailLabel.text == emails[indexPath.row] || self.emailLabelSingleWrapper.text == emails[indexPath.row] || self.emailLabelEmptyWrapper.text == emails[indexPath.row]{
+                    // Remove text
+                    self.emailLabel.text = ""
+                }
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
+                
+            }else{
+                
+                // Add to selected
+                self.selectedEmails.append(emails[indexPath.row])
+                
+                // Append to list
+                card.cardProfile.emails.append(["email" : emails[indexPath.row]])
+                
+                // Test
+                print(card.cardProfile.emails as Any)
+                
+                // Assign label value
+                if emails.count != 0{
+                    self.emailLabel.text = emails[indexPath.row]
+                    self.emailLabelSingleWrapper.text = emails[indexPath.row]
+                    self.emailLabelEmptyWrapper.text = emails[indexPath.row]
+                }
+                
+                
+            }
+
            
         case "Phone Numbers":
+            
             // Add dictionary value to cardProfile
-            card.cardProfile.setPhoneRecords(phoneRecords: [phoneNumberLabels[indexPath.row] : phoneNumbers[indexPath.row]])
+            // card.cardProfile.setPhoneRecords(phoneRecords: [phoneNumberLabels[indexPath.row] : phoneNumbers[indexPath.row]])
             // Print for testing
-            print(card.cardProfile.phoneNumbers as Any)
+            //print(card.cardProfile.phoneNumbers as Any)
             // Assign label value
-            self.numberLabel.text = phoneNumbers[indexPath.row]
+            //self.numberLabel.text = phoneNumbers[indexPath.row]
+            
+            // Check if in array
+            if self.selectedPhoneNumbers.contains(phoneNumbers[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedPhoneNumbers = selectedPhoneNumbers.filter{ $0 != phoneNumbers[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.phoneNumbers = card.cardProfile.phoneNumbers.filter{ $0.values.first! != phoneNumbers[indexPath.row]}
+                
+                print("Card Phones Post Removal\n", card.cardProfile.phoneNumbers)
+                
+                // Check if title is populated in card wrapper
+                if self.numberLabel.text == phoneNumbers[indexPath.row] || self.numberLabelSingleWrapper.text == phoneNumbers[indexPath.row] || self.numberLabelEmptyWrapper.text == phoneNumbers[indexPath.row]{
+                    // Remove text
+                    self.numberLabel.text = ""
+                    self.numberLabelSingleWrapper.text = ""
+                    self.numberLabelEmptyWrapper.text = ""
+                }
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
+                
+            }else{
+                // Add to selected list
+                selectedPhoneNumbers.append(phoneNumbers[indexPath.row])
+                
+                // Add dictionary value to cardProfile
+                card.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumbers[indexPath.row]])
+                // Print for testing
+                print(card.cardProfile.phoneNumbers as Any)
+                
+                // Assign label value
+                self.numberLabel.text = phoneNumbers[indexPath.row]
+                self.numberLabelSingleWrapper.text = phoneNumbers[indexPath.row]
+                self.numberLabelEmptyWrapper.text = phoneNumbers[indexPath.row]
+            }
+
             
         case "Tags":
-            card.cardProfile.tags.append(["tag" : tags[indexPath.row]])
+            //card.cardProfile.tags.append(["tag" : tags[indexPath.row]])
             // Print for test
-            print(card.cardProfile.socialLinks as Any)
+            //print(card.cardProfile.socialLinks as Any)
+            
+            // Check if in array
+            if self.selectedTags.contains(tags[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedTags = selectedTags.filter{ $0 != tags[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.tags = card.cardProfile.tags.filter{ $0["tag"] != tags[indexPath.row]}
+                
+                print("Card Tags Post Removal\n", card.cardProfile.tags)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
+            }else{
+                
+                // Add to selected
+                selectedTags.append(tags[indexPath.row])
+                
+                // Append to array
+                card.cardProfile.tags.append(["tag" : tags[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.tags as Any)
+            }
+            
+            
+            
         case "Websites":
-            card.cardProfile.websites.append(["website" : websites[indexPath.row]])
+            //card.cardProfile.websites.append(["website" : websites[indexPath.row]])
             // Print for test
-            print(card.cardProfile.websites as Any)
+            //print(card.cardProfile.websites as Any)
+            // Check if in array
+            
+            if self.selectedWebsites.contains(websites[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedWebsites = selectedWebsites.filter{ $0 != websites[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.websites = card.cardProfile.websites.filter{ $0["website"] != websites[indexPath.row]}
+                
+                print("Card Websites Post Removal\n", card.cardProfile.websites)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
+            }else{
+                
+                // Add to selected array
+                selectedWebsites.append(websites[indexPath.row])
+                
+                // Append to array
+                card.cardProfile.websites.append(["website" : websites[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.websites as Any)
+            }
+            
+            
         case "Company":
-            card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
+            //card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
             // Print for test
-            print(card.cardProfile.organizations as Any)
+            //print(card.cardProfile.organizations as Any)
+            
+            if self.selectedOrganizations.contains(organizations[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedOrganizations = selectedOrganizations.filter{ $0 != organizations[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.organizations = card.cardProfile.organizations.filter{ $0["organization"] != organizations[indexPath.row]}
+                
+                print("Card Organizations Post Removal\n", card.cardProfile.organizations)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+            }else{
+                // Append to array
+                //card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
+                
+                // Set selected
+                selectedOrganizations.append(organizations[indexPath.row])
+                
+                if card.cardProfile.organizations.count > 0 {
+                    // Overwrite object
+                    card.cardProfile.organizations[0] = ["organization" : organizations[indexPath.row]]
+                    
+                }else{
+                    // Add organizartion
+                    card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
+                }
+                
+               
+                
+                // Print for test
+                print(card.cardProfile.organizations as Any)
+            }
+            
+            
         case "Notes":
             // Append to array
-            card.cardProfile.notes.append(["note" : notes[indexPath.row]])
+            //card.cardProfile.notes.append(["note" : notes[indexPath.row]])
             // Print for test
-            print(card.cardProfile.notes as Any)
+            //print(card.cardProfile.notes as Any)
+            
+            if self.selectedNotes.contains(notes[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedNotes = selectedNotes.filter { $0 != notes[indexPath.row]}//.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.notes = card.cardProfile.notes.filter{ $0["note"] != notes[indexPath.row]}
+                
+                print("Card Notes Post Removal\n", card.cardProfile.notes)
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+                
+            }else{
+                // Add to selected list
+                selectedNotes.append(notes[indexPath.row])
+                
+                // Append to array
+                card.cardProfile.notes.append(["note" : notes[indexPath.row]])
+                // Print for test
+                print(card.cardProfile.notes as Any)
+            }
             
         case "Addresses":
             // Append to array
-            card.cardProfile.addresses.append([addressLabels[indexPath.row] : addresses[indexPath.row]])
+            //card.cardProfile.addresses.append([addressLabels[indexPath.row] : addresses[indexPath.row]])
             // Print for test
-            print(card.cardProfile.addresses as Any)
+            //print(card.cardProfile.addresses as Any)
+            
+            if self.selectedAddressObjects.contains(addressObjects[indexPath.row]) {
+                // Already in list
+                print("Item already in list")
+                self.selectedAddressObjects = selectedAddressObjects.filter { $0 != addressObjects[indexPath.row]} //.remove(at: indexPath.row)
+                
+                // Remove cell from selected list
+                selectedCells = selectedCells.filter{ $0 as IndexPath != indexPath}
+                
+                // Set accessory
+                selectedCell?.accessoryType = .none
+                
+                // Remove the item from card by filtering list
+                card.cardProfile.addresses = card.cardProfile.addresses.filter{ $0 != addressObjects[indexPath.row] as! [String : String]}
+                
+                
+                print("Card Addresse Post Removal\n", card.cardProfile.addresses)
+                
+                
+                // Reload data
+                cardOptionsTableView.reloadData()
+                
+            }else{
+                
+                // Add to selected list
+                selectedAddressObjects.append(addressObjects[indexPath.row])
+                
+                // Append to array
+                card.cardProfile.addresses.append(addressObjects[indexPath.row] as! [String : String])
+                // Print for test
+                print(card.cardProfile.addresses as Any)
+            }
 
         default:
             print("Nothing doing here..")

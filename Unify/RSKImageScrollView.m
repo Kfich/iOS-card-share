@@ -68,7 +68,7 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        _aspectFill = NO;
+        _aspectFill = YES;
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator = NO;
         self.bouncesZoom = YES;
@@ -203,6 +203,7 @@
 
 - (void)setMaxMinZoomScalesForCurrentBounds
 {
+    
     CGSize boundsSize = self.bounds.size;
     
     // calculate min/max zoomscale
@@ -235,11 +236,12 @@
 
 - (void)setInitialZoomScale
 {
+    /*
     CGSize boundsSize = self.bounds.size;
     CGFloat xScale = boundsSize.width  / _imageSize.width;    // the scale needed to perfectly fit the image width-wise
     CGFloat yScale = boundsSize.height / _imageSize.height;   // the scale needed to perfectly fit the image height-wise
     CGFloat scale = MAX(xScale, yScale);
-    self.zoomScale = scale;
+    self.zoomScale = scale;*/
 }
 
 - (void)setInitialContentOffset
@@ -269,6 +271,7 @@
 
 - (void)prepareToResize
 {
+    
     CGPoint boundsCenter = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _pointToCenterAfterResize = [self convertPoint:boundsCenter toView:self.zoomView];
 

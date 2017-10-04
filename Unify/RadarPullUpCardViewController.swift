@@ -517,13 +517,22 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 if currentCard.cardDesign.logo != "" {
                     cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo)!, placeholderImage: UIImage(named: "social-blank"))
                 }
-                //cell.cardWrapperView.backgroundColor = UIColor.yellow
-                //cell.cardWrapperView.backgroundColor = UIColor(rgb: hexString)
+                
+                // Hide outline view
+                //cell.cardOutlineView.isHidden = false
                 
                 if ContactManager.sharedManager.currentUser.profileImages.count > 0{
                     cell.cardImage.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
                 }
+                
+                cell.cardOutlineView.layer.cornerRadius = 12.0
+                cell.cardOutlineView.clipsToBounds = true
+                cell.cardOutlineView.layer.borderWidth = 3.5
+                cell.cardOutlineView.layer.borderColor = UIColor.yellow.cgColor
 
+            }else{
+                
+                //cell.cardOutlineView.isHidden = true
             }
             
             
@@ -605,7 +614,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     }
     
     func snapToNearestCell(_ collectionView: UICollectionView) {
-        for i in 0..<collectionView.numberOfItems(inSection: 0) + 1 {
+        
+        /* *collectionView.numberOfItems(inSection: 0) + 1*/
+        for i in 0..<ContactManager.sharedManager.viewableUserCards.count - 1{
             
             let itemWithSpaceWidth = cardCollectionView.frame.width
             let itemWidth = cardCollectionView.frame.width
@@ -619,6 +630,11 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 
                 // Set selected card
                 ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
+                
+                // Parse card for socials
+                //let cell = collectionView.cellForItem(at: indexPath) as! CardCollectionViewCell
+                // Set badgelist
+                //cell.badgeList = self.parseCardForBagdes(card: ContactManager.sharedManager.viewableUserCards[indexPath.row])
                 
                 print("Page control value on center!! \(self.pageControl.currentPage)")
                 break
@@ -1079,6 +1095,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         cell.cardHeaderView.clipsToBounds = true
         cell.cardHeaderView.layer.borderWidth = 1.5
         cell.cardHeaderView.layer.borderColor = UIColor.white.cgColor
+        
+        
+        //cell.cardOutlineView.isHidden = true
         
         // Config shadow
         cell.shadowView.shadowRadius = 1

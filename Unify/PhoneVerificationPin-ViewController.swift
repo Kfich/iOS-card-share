@@ -65,6 +65,14 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     @IBOutlet weak var textField: UITextField!
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        
+        print("Phone pin dissappead")
+        
+        // Set the textfild to nil 
+        pinCodeArea.text = nil
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -76,13 +84,19 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         DispatchQueue.main.async {
             
             //self.textField.becomeFirstResponder()
-            self.pinCodeArea.becomeFirstResponder()
         }
 
+        // Show pincode field
+        self.pinCodeArea.becomeFirstResponder()
+        
+        self.view.becomeFirstResponder()
+        
+        print("Phone pin appeared")
+        /*
         
         // Notifications for keyboard delegate
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)*/
         
         /*
         //hide the assets
@@ -129,6 +143,8 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         self.termBox.frame.origin.y = self.verifyBtn.frame.origin.y - (self.verifyBtn.frame.height) + 20
         
         print("pin done")*/
+        
+        print("Finished editing bruh")
         
 
     }
@@ -216,7 +232,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         self.navigationController?.popViewController(animated: true)
         
         // Set bool
-        self.userCancelledEntry = true
+        //self.userCancelledEntry = true
         
         ContactManager.sharedManager.userCancelledPinEntry = true
         
@@ -288,11 +304,16 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         //self.verifyBtn.isHidden = true
         
         // Process pin
+        print("Pincount >>", pinCodeArea.text?.characters.count ?? "")
         
+        if pinCodeArea.text?.characters.count != nil {
+            // Process pin
+            processPin()
+        }
         
         if userCancelledEntry != true && self.keyboardDidHide == false {
             // Execute verification
-            processPin()
+            
         }else{
             // The user needed to resend
             print("User cancelled entry")
@@ -610,7 +631,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         if (pinEntry.characters.count == 4) {
             
             print("The pin entry output on 4 count .. \(pinEntry)")
-            //processPin()
+            processPin()
             
             return false
         }

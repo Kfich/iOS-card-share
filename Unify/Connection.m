@@ -145,6 +145,10 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString: kDeleteContacts];
 }
 
+- (NSURLSessionDataTask*)getContactVCardsCall:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString: kGetVCards];
+}
+
 
 
 // Events

@@ -497,6 +497,186 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     
     // Custom Methods
     
+    func createContactRecords(phoneContactList: [CNContact]) -> [Contact] {
+        // Create array of contacts
+        var contactObjectList = [Contact]()
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        for contact in phoneContactList{
+            
+            // Init temp contact object
+            let contactObject = Contact()
+            
+            // Set name
+            contactObject.name = formatter.string(from: contact) ?? "No Name"
+            
+            // Check for count
+            if contact.phoneNumbers.count > 0 {
+                // Iterate over items
+                for number in contact.phoneNumbers{
+                    // print to test
+                    //print("Number: \((number.value.value(forKey: "digits" )!))")
+                    
+                    // Init the number
+                    let digits = number.value.value(forKey: "digits") as! String
+                    
+                    // Append to object
+                    contactObject.setPhoneRecords(phoneRecord: digits)
+                }
+                
+            }
+            if contact.emailAddresses.count > 0 {
+                // Iterate over array and pull value
+                for address in contact.emailAddresses {
+                    // Print to test
+                    print("Email : \(address.value)")
+                    
+                    // Append to object
+                    contactObject.setEmailRecords(emailAddress: address.value as String)
+                }
+            }
+            if contact.imageDataAvailable {
+                // Print to test
+                //print("Has IMAGE Data")
+                
+                // Create ID and add to dictionary
+                // Image data png
+                
+                // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
+                
+                if let imageData = contact.imageData{
+                    // Set to contact object
+                    contactObject.imageData = imageData
+                    
+                    // Assign asset name and type
+                    let idString = contactObject.randomString(length: 20)
+                    
+                    // Name image with id string
+                    let fname = idString
+                    let mimetype = "image/png"
+                    
+                    // Create image dictionary
+                    let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+                    
+                    
+                    // Append to object
+                    contactObject.setContactImageId(id: idString)
+                    contactObject.imageDictionary = imageDict
+                    
+                    /*
+                     if self.synced != true {
+                     // Upload Record
+                     ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
+                     }else{
+                     //
+                     print("The users image has been uploaded already")
+                     }*/
+                    
+                }
+                
+                
+            }
+            if contact.urlAddresses.count > 0{
+                // Iterate over items
+                for address in contact.urlAddresses {
+                    // Print to test
+                    print("Website : \(address.value as String)")
+                    
+                    // Append to object
+                    contactObject.setWebsites(websiteRecord: address.value as String)
+                }
+                
+            }
+            if contact.socialProfiles.count > 0{
+                // Iterate over items
+                for profile in contact.socialProfiles {
+                    // Print to test
+                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                    
+                    // Create temp link
+                    let link = profile.value.value(forKey: "urlString")  as! String
+                    
+                    // Append to object
+                    contactObject.setSocialLinks(socialLink: link)
+                }
+                
+            }
+            
+            if contact.jobTitle != "" {
+                //Print to test
+                print("Job Title: \(contact.jobTitle)")
+                
+                // Append to object
+                contactObject.setTitleRecords(title: contact.jobTitle)
+            }
+            if contact.organizationName != "" {
+                //print to test
+                print("Organization : \(contact.organizationName)")
+                
+                // Append to object
+                contactObject.setOrganizations(organization: contact.organizationName)
+            }
+            if contact.note != "" {
+                //print to test
+                print(contact.note)
+                
+                // Append to object
+                contactObject.setNotes(note: contact.note)
+                
+            }
+            
+            if contact.postalAddresses.count > 0{
+                
+                print("The postal address")
+                let address = contact.postalAddresses.first?.value
+                
+                let formatter = CNPostalAddressFormatter()
+                formatter.style = .mailingAddress
+                
+                let city = contact.postalAddresses.first?.value.city ?? ""
+                let state = contact.postalAddresses.first?.value.state ?? ""
+                let street = contact.postalAddresses.first?.value.street ?? ""
+                let zip = contact.postalAddresses.first?.value.postalCode ?? ""
+                let country = contact.postalAddresses.first?.value.country ?? ""
+                
+                
+                let addy = "\(street), \(city) \(state) \(zip), \(country)"
+                
+                //let formattedAddress = formatter.string(from: address!)
+                
+                //let trimmed = String(formattedAddress.characters.filter { !"\n\t\r".characters.contains($0) })
+                
+                
+                
+                print("The address is \(addy)")
+                
+                
+                // Append to object
+                contactObject.setAddresses(address: addy)
+                
+            }
+            
+            // Test object
+            //print("Contact >> \n\(contactObject.toAnyObject()))")
+            
+            // Parse own record
+            contactObject.parseContactRecord()
+            
+            // Append object to contactObjectList
+            contactObjectList.append(contactObject)
+            
+            
+            // Print count
+            print("List Count ... \(contactObjectList.count)")
+        }
+        
+        return contactObjectList
+    }
+    
     func createTransaction(type: String) {
         
         // Set type & Transaction data
@@ -650,6 +830,294 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     }
     
     func contactToCNContact(contact: Contact) -> CNMutableContact {
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        //contactToAdd.givenName = self.firstNameLabel.text ?? ""
+        //contactToAdd.familyName = self.lastNameLabel.text ?? ""
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        
+        // Set name
+        //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        let fullName = contact.name
+        var fullNameArr = fullName.components(separatedBy: " ")
+        let firstName: String = fullNameArr[0]
+        let lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : ""
+        
+        // Add names
+        contactToAdd.givenName = firstName
+        contactToAdd.familyName = lastName
+        
+        /*
+         // Parse for mobile
+         let mobileNumber = CNPhoneNumber(stringValue: (contact.phoneNumbers[0].values.first ?? ""))
+         let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+         contactToAdd.phoneNumbers = [mobileValue]*/
+        
+        
+        // Set organizations
+        if contact.organizations.count > 0 {
+            // Add to contact
+            contactToAdd.organizationName = contact.organizations[0]["organization"]!
+        }
+        
+        
+        
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
+            
+            var mobiles = [CNLabeledValue<CNPhoneNumber>]()
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                // print to test
+                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                
+                // Parse for mobile
+                let mobileNumber = CNPhoneNumber(stringValue: (number.values.first ?? ""))
+                let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+                
+                // Add objects to phone list
+                mobiles.append(mobileValue)
+            }
+            // Add phones as value
+            contactToAdd.phoneNumbers = mobiles
+            
+            
+        }
+        
+        
+        
+        // Parse for emails
+        if contact.emails.count > 0 {
+            
+            var emails = [CNLabeledValue<NSString>]()
+            // Iterate over array and pull value
+            for address in contact.emails {
+                // Print to test
+                print("Email : \(address["email"]!)")
+                
+                // Parse for emails
+                let email = CNLabeledValue(label: address["type"] ?? CNLabelWork, value: address["email"] as NSString? ?? "")
+                emails.append(email)
+            }
+            
+            // Add array as value
+            contactToAdd.emailAddresses = emails
+            
+        }
+        
+        /*
+         // Parse for image data
+         if contact.imageId != "" {
+         // Assign
+         contactToAdd.imageData = contact.imageData
+         }*/
+        
+        
+        
+        // Parse sites
+        if contact.websites.count > 0{
+            // Add sites
+            for site in contact.websites {
+                // Format labeled value
+                contactToAdd.urlAddresses.append(CNLabeledValue(
+                    label: "url", value: site["website"]! as NSString))
+            }
+        }
+        
+        // Parse sites
+        if contact.socialLinks.count > 0{
+            
+            // Init list
+            var socials = [CNLabeledValue<CNSocialProfile>]()
+            
+            // Add sites
+            for site in contact.socialLinks {
+                
+                let profile = CNLabeledValue(label: "social", value: CNSocialProfile(urlString: site["link"]!, username: "", userIdentifier: "", service: nil))
+                
+                // Add to prof list
+                socials.append(profile)
+                
+                print("printing social link", site["link"]!)
+                
+                
+            }
+            
+            // Append to object
+            contactToAdd.socialProfiles = socials
+        }
+        
+        
+        
+        // Parse badges
+        if contact.badgeDictionaryList.count > 0{
+            // Add badge links as sites
+            // Parse for corp
+            for corp in contact.badgeDictionaryList {
+                
+                // Init badge
+                //let badge = Contact.Bagde(snapshot: corp)
+                
+                print("The badge on contact convert", corp)
+                
+                if corp["website"] is String {
+                    
+                    // Add to list
+                    contactToAdd.urlAddresses.append(CNLabeledValue(
+                        label: "badge", value: corp["url"] as? NSString ?? ""))
+                    
+                    // Add to list
+                    contactToAdd.urlAddresses.append(CNLabeledValue(
+                        label: "imageURL", value: corp["image"] as? NSString ?? ""))
+                }else{
+                    
+                    let websiteArray = corp["image"] as? NSArray ?? NSArray()
+                    
+                    for item in websiteArray {
+                        // Append items individually
+                        // Add to list
+                        contactToAdd.urlAddresses.append(CNLabeledValue(
+                            label: "badgeURL", value: item as? NSString ?? ""))
+                    }
+                    
+                    let imageArray = corp["url"] as? NSArray ?? NSArray()
+                    
+                    for item in imageArray {
+                        // Append items individually
+                        // Add to list
+                        contactToAdd.urlAddresses.append(CNLabeledValue(
+                            label: "imageURL", value: item as? NSString ?? ""))
+                        
+                    }
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }
+        
+        // Parse company info
+        if contact.organizations.count > 0 {
+            // add company
+            contactToAdd.organizationName = contact.organizations[0]["organization"] ?? ""
+        }
+        
+        // Parse titles
+        if contact.titles.count > 0 {
+            // add title
+            contactToAdd.jobTitle = contact.titles[0]["title"] ?? ""
+            
+        }
+        
+        // Format a notes string to hold extra data
+        var notesString = ""
+        
+        // Parse notes
+        if contact.notes.count > 0 {
+            
+            // Add label to notes string
+            notesString += "Unify Notes:"
+            
+            // Format notes field
+            for note in contact.notes {
+                // Add note to string
+                notesString += "\n\(note["note"] ?? "")"
+                
+            }
+        }
+        
+        // Parse notes
+        if contact.tags.count > 0 {
+            // Format notes field
+            // Add label to notes string
+            notesString += "\nUnify Tags:"
+            
+            // Format notes field
+            for tag in contact.tags {
+                // Add note to string
+                notesString += "\n\(tag["tag"] ?? "")"
+                
+            }
+        }
+        
+        // Parse notes
+        if contact.bioList != "" {
+            // Format notes field
+            // Add label to notes string
+            notesString += "\nUnify Bios:"
+            
+            // Append value to string
+            notesString += "\n\(contact.bioList)"
+            
+        }
+        
+        // Parse notes
+        if contact.isVerified == "1" {
+            // Format notes field
+            // Add label to notes string
+            notesString += "\nUnify Verified: 1"
+            
+            
+        }
+        
+        // Add note to contact object
+        contactToAdd.note = notesString
+        
+        
+        // Parse address info
+        if contact.addresses.count > 0 {
+            // Format in notes field
+            
+            for address in contact.addresses {
+                
+                // Parse address
+                let postal = CNMutablePostalAddress()
+                postal.street = address["street"] ?? ""
+                postal.city = address["city"] ?? ""
+                postal.state = address["state"] ?? ""
+                postal.postalCode = address["zip"] ?? ""
+                postal.country = address["country"] ?? ""
+                
+                let home = CNLabeledValue<CNPostalAddress>(label:CNLabelHome, value:postal)
+                
+                contactToAdd.postalAddresses = [home]
+                
+            }
+            
+            
+        }
+        
+        
+        // Cast mutable contact back to regular contact
+        //cnObject = contactToAdd as CNContact
+        
+        print("Immutable Copy \(contactToAdd)")
+        print("Immutable Copy Phones \(contactToAdd.phoneNumbers)")
+        print("Immutable Copy Emails \(contactToAdd.emailAddresses)")
+        print("Immutable Copy URLs \(contactToAdd.urlAddresses)")
+        print("Immutable Copy Notes \(contactToAdd.note)")
+        print("Immutable Copy address \(contactToAdd.postalAddresses)")
+        print("Immutable Copy Company \(contactToAdd.organizationName)")
+        
+        
+        // Return the non mutable copy
+        return contactToAdd
+        
+    }
+
+    
+    /*
+    func contactToCNContact(contact: Contact) -> CNMutableContact {
         var cnObject = CNContact()
         
         // Set text for name
@@ -718,7 +1186,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         return contactToAdd
         
     }
-    
+    */
     
     func syncContact() {
         
@@ -755,6 +1223,50 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Post notification for refresh
         //self.postRefreshNotification()
+        
+    }
+    
+    // Get VCards
+    
+    func getConatctVCards(contact: Contact){
+        
+        // Create dictionary
+        let parameters = ["data" : contact.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        Connection(configuration: nil).getContactVCardsCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                // Call successful
+                print("VCard Created Response --->\n \(String(describing: response))")
+                
+               /* // Parse array for
+                let array = response as! NSArray
+                print("Array List >> \(array)")
+                
+                // Set recipient list to transaction
+                self.transaction.recipientList = array as! [String]
+                // Test
+                print("Transaction List Count >> \(self.transaction.recipientList.count)")
+                print("Transaction List >> \(self.transaction.recipientList)")
+                
+                // Create transaction
+                self.createTransaction(type: "introduction")*/
+                
+                
+                // Hide HUD
+                //KVNProgress.dismiss()
+                
+            } else {
+                // Error occured
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection request. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
         
     }
 
@@ -888,6 +1400,34 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         print("Configured view for contact arrival from intro call \(ContactManager.sharedManager.userArrivedFromIntro)")
         print("Configured view for contact selected new form contact call \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+        
+        
+        if ContactManager.sharedManager.userSelectedNewContactForIntro {
+            
+            // Get VCard
+            //self.getConatctVCards(contact: ContactManager.sharedManager.contactObjectForIntro)
+        
+            //let cnContact = contactToCNContact(contact: ContactManager.sharedManager.contactObjectForIntro)
+            
+            //let vcard = CNContactVCardSerialization.data(with: [cnContact])
+            
+            
+            
+            
+            
+            
+        }else{
+            
+            // Convert from cncontact to contact
+            //let contactList = [ContactManager.sharedManager.contactToIntro]
+            
+            // Init contact object
+            //let newContact = self.createContactRecords(phoneContactList: contactList)
+            
+            // Upload new record
+            //self.getConatctVCards(contact: newContact[0])
+            
+        }
         
         
         

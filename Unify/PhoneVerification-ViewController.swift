@@ -51,6 +51,13 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var sendCodeButton: UIButton!
     
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        
+        // Reset object
+        self.currentUser = User()
+    }
+    
     
     // Page Setup
     
@@ -96,6 +103,11 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         // Present keyboard everytime page loads
         phoneNumberInput.becomeFirstResponder()
         
+        
+        // Set current user on will appear
+        //self.currentUser = ContactManager.sharedManager.currentUser
+       
+        /*
         // Add Oberservers for keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
@@ -107,7 +119,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         }else{
             print("Current user stays blank")
         }
-        
+        */
         
         
     }
@@ -159,6 +171,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
     }
+    
+    
     
     
     // Keyboard Delegate Methods

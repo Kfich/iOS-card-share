@@ -183,7 +183,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         
         // Set token view
-        tokenField = KSTokenView(frame: self.emailLabel.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
+        tokenField = KSTokenView(frame: self.tokenView.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
         tokenField.delegate = self as? KSTokenViewDelegate
         tokenField.promptText = " "
         tokenField.font = UIFont.systemFont(ofSize: 18)
@@ -197,7 +197,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         tokenField.direction = .horizontal
         
         // Config container view
-        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 1, width: self.emailLabel.frame.size.width,  height: 1.0))
+        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x, y: tokenField.frame.height - 0.5, width: self.tagsLabel.frame.size.width,  height: 0.50))
         containerView.backgroundColor = UIColor.white
         // Add to token field
         self.tokenView.addSubview(containerView)
@@ -1926,14 +1926,15 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 contact.emails.append(["email": emailLabel.text!])
             }
             
-            /*
+            
             if self.syncContactSwitch.isOn == true {
                 
                 // Set bool for contact sync
                 ContactManager.sharedManager.syncIntroContactSwitch = true
                 print("The intro switch was on")
+                self.syncContact()
                 
-            }*/
+            }
             
             // Set manager navigation path
             ContactManager.sharedManager.userSelectedNewContactForIntro = true
@@ -2262,7 +2263,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         contactToAdd.familyName = self.lastNameLabel.text ?? ""
         
         // Parse for mobile
-        let mobileNumber = CNPhoneNumber(stringValue: (self.contact.phoneNumbers[0]["phone"] ?? ""))
+        let mobileNumber = CNPhoneNumber(stringValue: (self.contact.phoneNumbers[0].values.first ?? ""))
         let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
         contactToAdd.phoneNumbers = [mobileValue]
         
@@ -2276,8 +2277,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             contactToAdd.organizationName = self.contact.organizations[0]["organization"]!
         }
         
+        // Configure notes field
+        var notesString = "Unify Location:\n\(self.notesLabel.text ?? "") "
+        
+        notesString += "\nUnify Tags:\n\(self.tokenField.text ?? "")"
+        
         // Set notes to contact
-        contactToAdd.note = self.notesLabel.text ?? ""
+        contactToAdd.note = notesString
         
         // **** Make a scheme for adding tags to contact **** //
         
