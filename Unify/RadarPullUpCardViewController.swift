@@ -246,6 +246,9 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             // Reload table
             self.cardCollectionView.reloadData()
         }
+        
+        // Parse for cards
+        //self.cardUpdated()
     }
     
     func cardDeleted() {

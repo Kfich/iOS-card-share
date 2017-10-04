@@ -126,9 +126,31 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         tokenField.searchResultSize = CGSize()
         tokenField.direction = .horizontal
         
-        // Config container view
-        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 0.5, width: self.emailTextField.frame.size.width,  height: 0.50))
-        containerView.backgroundColor = UIColor.white
+        // Swift 3
+        let modelName = UIDevice.current.modelName
+        
+        print("Model Name \(modelName)")
+        
+        
+        var containerView = UIView()
+        
+        if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
+            //standard device
+            
+            // Config container view
+            containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 0.5, width: self.emailTextField.frame.size.width + 40,  height: 0.50))
+            containerView.backgroundColor = UIColor.white
+            
+        }else{
+            
+            // Config container view
+            containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x + 6, y: tokenField.frame.height - 0.5, width: self.emailTextField.frame.size.width,  height: 0.50))
+            containerView.backgroundColor = UIColor.white
+            
+        }
+        
+       
         // Add to token field
         self.tokenView.addSubview(containerView)
         
