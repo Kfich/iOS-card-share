@@ -53,13 +53,10 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     @IBOutlet var followupActionToolbar: UIToolbar!
     @IBOutlet var socialMediaToolbar: UIToolbar!
     @IBOutlet var cardWrapperView: UIView!
+    @IBOutlet var cardWrapperViewSingle: UIView!
+    @IBOutlet var cardWrapperViewEmpty: UIView!
     @IBOutlet var cardShadowView: UIView!
     @IBOutlet var contactOutreachToolbar: UIToolbar!
-    
-    // Outreach toolbar
-    @IBOutlet var outreachChatButton: UIBarButtonItem!
-    @IBOutlet var outreachCallButton: UIBarButtonItem!
-    @IBOutlet var outreachMailButton: UIBarButtonItem!
     
     
     // Tableview
@@ -71,20 +68,31 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var phoneLabel: UILabel!
     @IBOutlet var contactImageView: UIImageView!
-    @IBOutlet var smsButton: UIBarButtonItem!
-    @IBOutlet var emailButton: UIBarButtonItem!
-    @IBOutlet var callButton: UIBarButtonItem!
-    
     @IBOutlet var cardNameLabel: UILabel!
     
-    @IBOutlet var socialBadgeCollectionView: UICollectionView!
+    // Collection views
+    @IBOutlet var singleBadgeCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
-    
     @IBOutlet var socialCollectionView: UICollectionView!
     
     @IBOutlet var editCardButton: UIButton!
-    @IBOutlet var shadowView: YIInnerShadowView!
+
     
+    // Card info outlets for single
+    @IBOutlet var nameLabelSingleWrapper: UILabel!
+    @IBOutlet var titleLabelSingleWrapper: UILabel!
+    @IBOutlet var emailLabelSingleWrapper: UILabel!
+    @IBOutlet var phoneLabelSingleWrapper: UILabel!
+    @IBOutlet var contactImageViewSingleWrapper: UIImageView!
+    @IBOutlet var cardNameLabelSingleWrapper: UILabel!
+    
+    // Labels for empty wrapper
+    @IBOutlet var nameLabelEmptyWrapper: UILabel!
+    @IBOutlet var titleLabelEmptyWrapper: UILabel!
+    @IBOutlet var emailLabelEmptyWrapper: UILabel!
+    @IBOutlet var phoneLabelEmptyWrapper: UILabel!
+    @IBOutlet var contactImageViewEmptyWrapper: UIImageView!
+    @IBOutlet var cardNameLabelEmptyWrapper: UILabel!
     
     
     // IBActions / Buttons Pressed
@@ -163,8 +171,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         //self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Set shadow
-        self.shadowView.shadowRadius = 2
-        self.shadowView.shadowMask = YIInnerShadowMaskTop
+        //self.shadowView.shadowRadius = 2
+        //self.shadowView.shadowMask = YIInnerShadowMaskTop
         
         // Register
         //self.socialCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier:"Cell")
@@ -185,6 +193,26 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         // Add observers for notifs
         addObservers()
+        
+        // Config header view based on counts
+        if self.selectedCard.cardProfile.socialLinks.count > 0 && self.selectedCard.cardProfile.badgeDictionaryList.count > 0{
+            print("The contact has both social and corp badges")
+            // Set double collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperView
+            
+        }else if (self.selectedCard.cardProfile.socialLinks.count > 0 && self.selectedCard.cardProfile.badgeDictionaryList.count == 0) || (self.selectedCard.cardProfile.socialLinks.count == 0 && self.selectedCard.cardProfile.badgeDictionaryList.count > 0){
+            print("The contact has one list populated")
+            // Set single collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperViewSingle
+            
+        }else{
+            print("The contact has neither list populated")
+            // Set empty collection wrapper as header
+            profileInfoTableView.tableHeaderView = self.cardWrapperViewEmpty
+        }
+        
+
+        
     }
 
     // Page Setup
@@ -371,14 +399,20 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add section
             sections.append("Addresses")
             for add in selectedCard.cardProfile.addresses{
-                addresses.append(add.values.first!)
                 
-                addressLabels.append(add.keys.first!)
+                // Set all values for the cells
+                let street = add["street"] ?? ""
+                let city = add["city"] ?? ""
+                let state = add["state"] ?? ""
+                let zip = add["zip"] ?? ""
+                let country = add["country"] ?? ""
                 
-                // Init record
-                let record = [add.keys.first! : add.values.first!]
-                // Test
-                print("Address record", record)
+                // Create Address String
+                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                
+                // Append values
+                addresses.append(addressString)
+                addressLabels.append(add["type"] ?? "")
             }
             // Create section data
             self.tableData["Addresses"] = addresses
@@ -412,6 +446,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         // Set card name label 
         self.nameLabel.text = selectedCard.cardHolderName ?? ""
+        self.nameLabelSingleWrapper.text = selectedCard.cardHolderName ?? ""
+        self.nameLabelEmptyWrapper.text = selectedCard.cardHolderName ?? ""
 
         
     }
@@ -430,9 +466,17 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         if collectionView == self.badgeCollectionView {
             // Return count
             return self.corpBadges.count//self.selectedCard.cardProfile.badges.count//ContactManager.sharedManager.currentUser.userProfile.badgeList.count
-        }else{
+        }else if collectionView == self.socialCollectionView{
             
             return self.socialBadges.count
+        }else{
+            if self.socialBadges.count > 0 {
+                // Assign the socials to single collection
+                return self.socialBadges.count
+            }else{
+                // The corp badges are the move
+                return corpBadges.count
+            }
         }
         //return 10
     }
@@ -461,7 +505,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add subview
             cell.contentView.addSubview(imageView)
             
-        }else{
+        }else if collectionView == badgeCollectionView{
             
             //cell.contentView.backgroundColor = UIColor.red
             self.configureBadges(cell: cell)
@@ -476,6 +520,35 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             // Add subview
             cell.contentView.addSubview(imageView)
         
+        }else{
+            
+            // Check which list populated
+            if self.socialBadges.count > 0 {
+                // Config for social
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                let image = self.socialBadges[indexPath.row]
+                
+                // Set image
+                imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }else{
+                // Config for corp
+                let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl/*selectedCard.cardProfile.badgeList[indexPath.row].pictureUrl*/)
+                
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                imageView.setImageWith(fileUrl! as URL)
+                // Set image
+                //imageView.image = image
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }
         }
         
         return cell
@@ -514,7 +587,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -690,7 +763,12 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
         
+        // Drop view after delete
         NotificationCenter.default.addObserver(self, selector: #selector(CardSelectionViewController.backButtonPressed(_:)), name: NSNotification.Name(rawValue: "CardDeleted"), object: nil)
+        
+        // Drop view after card edit
+        NotificationCenter.default.addObserver(self, selector: #selector(CardSelectionViewController.backButtonPressed(_:)), name: NSNotification.Name(rawValue: "CardFinishedEditing"), object: nil)
+        
         
     }
     
@@ -935,23 +1013,35 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         // Populate image view
         if selectedCard.cardProfile.images.count > 0{
             contactImageView.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
+            contactImageViewSingleWrapper.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
+            contactImageViewEmptyWrapper.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
         }else if selectedCard.isVerified{
             contactImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            contactImageViewSingleWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            contactImageViewEmptyWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
         }
         
         // Populate label fields
         if let name = selectedCard.cardName{
             cardNameLabel.text = name
+            cardNameLabelSingleWrapper.text = name
+            cardNameLabelEmptyWrapper.text = name
         }
         if selectedCard.cardProfile.phoneNumbers.count > 0{
             // Format number 
             phoneLabel.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0].values.first!)
+            phoneLabelSingleWrapper.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0].values.first!)
+            phoneLabelEmptyWrapper.text = self.format(phoneNumber: selectedCard.cardProfile.phoneNumbers[0].values.first!)
         }
         if selectedCard.cardProfile.emails.count > 0{
             emailLabel.text = selectedCard.cardProfile.emails[0]["email"]
+            emailLabelSingleWrapper.text = selectedCard.cardProfile.emails[0]["email"]
+            emailLabelEmptyWrapper.text = selectedCard.cardProfile.emails[0]["email"]
         }
         if selectedCard.cardProfile.titles.count > 0{
             titleLabel.text = selectedCard.cardProfile.titles[0]["title"]
+            titleLabelSingleWrapper.text = selectedCard.cardProfile.titles[0]["title"]
+            titleLabelEmptyWrapper.text = selectedCard.cardProfile.titles[0]["title"]
         }
         // Here, parse data to populate tableview
     }
@@ -976,8 +1066,20 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         self.cardWrapperView.layer.borderWidth = 2.0
         self.cardWrapperView.layer.borderColor = UIColor.white.cgColor
         
+        self.cardWrapperViewSingle.layer.cornerRadius = 12.0
+        self.cardWrapperViewSingle.clipsToBounds = true
+        self.cardWrapperViewSingle.layer.borderWidth = 2.0
+        self.cardWrapperViewSingle.layer.borderColor = UIColor.white.cgColor
+        
+        self.cardWrapperViewEmpty.layer.cornerRadius = 12.0
+        self.cardWrapperViewEmpty.clipsToBounds = true
+        self.cardWrapperViewEmpty.layer.borderWidth = 2.0
+        self.cardWrapperViewEmpty.layer.borderColor = UIColor.white.cgColor
+        
         // Config imageview 
         self.configureSelectedImageView(imageView: self.contactImageView)
+        self.configureSelectedImageView(imageView: self.contactImageViewSingleWrapper)
+        self.configureSelectedImageView(imageView: self.contactImageViewEmptyWrapper)
         
         self.profileInfoTableView.layer.cornerRadius = 12.0
         self.profileInfoTableView.clipsToBounds = true

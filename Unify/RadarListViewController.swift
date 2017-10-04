@@ -60,6 +60,13 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         // Do any additional setup after loading the view.
         
         // Listen for notifications 
+        //self.addObservers()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Listen for notifications
         self.addObservers()
     }
 
@@ -384,7 +391,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         // Configure borders
         imageView.layer.borderWidth = 1
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 23    // Create container for image and name
+        imageView.layer.cornerRadius = 15    // Create container for image and name
         
     }
     
@@ -440,8 +447,12 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         // Print tranny
         transaction.printTransaction()
         
+        // Post notif to hide button
+        self.postHideSendCard()
+        
         // Call create transaction function
         createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
+        
         
         Countly.sharedInstance().recordEvent("shared contacts from radar")
         
@@ -451,6 +462,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
 
     
     func createTransaction(type: String, uuid: String) {
+
         // Set type & Transaction data
         transaction.type = type
         transaction.senderName = ContactManager.sharedManager.currentUser.getName()
@@ -490,7 +502,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         Connection(configuration: nil).createTransactionCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Card Created Response ---> \(String(describing: response))")
+                print("Radar list Transaction Created Response ---> \(String(describing: response))")
                 
                 // Set card uuid with response from network
                 /*let dictionary : Dictionary = response as! [String : Any]
@@ -508,8 +520,14 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 // Remove all ids
                 self.selectedUserIds.removeAll()
+                
+                // Remove selected cells
+                self.selectedCells.removeAll()
+                
+                
                 // Remove selected indecies
-                self.selectedUserList.removeAll()
+                //self.selectedUserList.removeAll()
+                
                 
                 var count = 0
                 for item in self.selectedUserList{
@@ -521,8 +539,12 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                     self.tableView.reloadData()
                 }
                 
+                //Clear list
+                //self.radarContactList.removeAll()
+                
                 // Reload table
                 self.tableView.reloadData()
+                
                 
                 
             } else {
@@ -531,6 +553,7 @@ class RadarListViewController: UIViewController, UITableViewDelegate, UITableVie
                 KVNProgress.showError(withStatus: "There was an error. Please try again.")
                 
             }
+
             
         }
     }

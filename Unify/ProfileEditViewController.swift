@@ -324,12 +324,13 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         // Parse bio info
         
-        /*if contact.bios.count > 0{
-         // Iterate throught array and append available content
-         for bio in currentUser.userProfile.bios{
-         bios.append(bio["bio"]!)
-         }
-         }*/
+        
+        if ContactManager.sharedManager.currentUser.userProfile.bios.count > 0{
+            // Iterate throught array and append available content
+            for bio in ContactManager.sharedManager.currentUser.userProfile.bios{
+                bios.append(bio["bio"]!)
+            }
+        }
         
         // Parse work info
         /*if contact.workInformationList.count > 0{
@@ -490,7 +491,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         
                                         $0.add(rule: RuleRequired())
-                                        $0.validationOptions = .validatesOnChangeAfterBlurred
+                                        $0.validationOptions = .validatesOnChange
                                         // Add row rule
                                         let ruleRequiredViaClosure = RuleClosure<String> { rowValue in
                                             return (rowValue == nil || rowValue!.isEmpty) ? ValidationError(msg: "Field required!") : nil
@@ -514,14 +515,18 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                            
+                                            /*
                                             row.validationOptions = .validatesOnChangeAfterBlurred
                                             row.add(rule: RuleRequired())
                                             // Add row rule
                                             let ruleRequiredViaClosure = RuleClosure<String> { rowValue in
                                                 return (rowValue == nil || rowValue!.isEmpty) ? ValidationError(msg: "Field required!") : nil
                                             }
-                                            row.add(rule: ruleRequiredViaClosure)
+                                            row.add(rule: ruleRequiredViaClosure)*/
+                                            
+                                            if !row.isValid {
+                                                cell.titleLabel?.textColor = .red
+                                            }
                                             
                                             
                                             // Init line view
@@ -617,12 +622,30 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                     
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                             
                                             
                                     }
@@ -692,6 +715,30 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         self.count = self.count + 1
                         //$0.tag = "Add Bio"
                         
+                        // Init line view
+                        let headerView = UIView()
+                        
+                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                        headerView.backgroundColor = UIColor.lightGray
+                        // Add seperator to label
+                        $0.cell.addSubview(headerView)
+                        
+                        }.cellUpdate { cell, row in
+                            
+                            cell.textField.textAlignment = .left
+                            cell.textField.placeholder = "Bio"
+                            cell.titleLabel?.textColor = self.view.tintColor
+                            
+                            // Init line view
+                            let headerView = UIView()
+                            
+                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                            headerView.backgroundColor = UIColor.lightGray
+                            
+                            
+                            // Add seperator to label
+                            cell.addSubview(headerView)
+                            
                     }
                 }
                 //$0.footer?.height = 100.0 as CGFloat
@@ -783,17 +830,17 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 
                                             }
                                             
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                            
+                                            
                                             
                                     
                                             
@@ -940,20 +987,17 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 
                                             }
 
+                                            // Init line view
+                                            let headerView = UIView()
                                             
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
                                             
-                                            print("Cell updating !!")
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                            
+                                           
                                             
                                     }
                                     
@@ -1043,6 +1087,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         
                                         
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         //$0.add(rule: RuleURL())
                                         
                                         }.cellUpdate { cell, row in
@@ -1054,6 +1106,16 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Config auto correct
                                             cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                             cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
                                             
                                         
                                             
@@ -1091,116 +1153,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
             // Filler section
             //+++ Section("")
             
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "",
-                               footer: "") {
-                                $0.tag = "Tag Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Tag"
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                            
-                                            // Init line view
-                                            let headerView = UIView()
-                                            
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
-                                            headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
-                                            // Add seperator to label
-                                            cell.addSubview(headerView)
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("tagRow_\(index)") {
-                                     $0.placeholder = "Tag"
-                                     //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                     //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                     //$0.tag = "Add Media Info"
-                                     }
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in tags{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Tag"
-                                        $0.value = val
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate({ (cell, row) in
-                                            
-                                            // Init line view
-                                            let headerView = UIView()
-                                            
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
-                                            headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
-                                            // Add seperator to label
-                                            cell.addSubview(headerView)
-                                        })
-                                }
-            }
-            
-            // Filler section
-            //+++ Section("")
-            
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "",
-                               footer: "") {
-                                $0.tag = "Notes Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Notes"
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                            
-                                            // Init line view
-                                            let headerView = UIView()
-                                            
-                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
-                                            headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
-                                            // Add seperator to label
-                                            cell.addSubview(headerView)
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("notesRow_\(index)") {
-                                     $0.placeholder = "Note"
-                                     $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                     $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
-                                     //$0.tag = "Add Media Info"
-                                     }
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in notes{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Note"
-                                        $0.value = val
-                                        //$0.tag = "Add Media Info"
-                                    }.cellUpdate({ (cell, row) in
-                                        
-                                        // Init line view
-                                        let headerView = UIView()
-                                        
-                                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
-                                        headerView.backgroundColor = UIColor.lightGray
-                                        
-                                        
-                                        // Add seperator to label
-                                        cell.addSubview(headerView)
-                                    })
-                                }
-            }
             
             // Filler section
             //+++ Section("")
@@ -1235,11 +1187,15 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.statePlaceholder = "State"
                                         $0.cityPlaceholder = "City"
                                         $0.countryPlaceholder = "Country"
-                                        $0.postalCodePlaceholder = "Zip code"
+                                        $0.postalCodePlaceholder = "Zip Code"
                                         
                                         // Add label to labelArrays
                                         self.addressLabels.append("home")
                                         self.addresses.append(["home" : ""])
+                                        
+                                        
+                                        // Make all
+                                        $0.cell.stateTextField?.autocapitalizationType = UITextAutocapitalizationType.allCharacters
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -1356,6 +1312,161 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                 }
             }
             
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Tag Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Tag"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("tagRow_\(index)") {
+                                        $0.placeholder = "Tag"
+                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
+                                        //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                        //$0.tag = "Add Media Info"
+                                    }.cellUpdate({ (cell, row) in
+                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        
+                                        
+                                        // Add seperator to label
+                                        cell.addSubview(headerView)
+                                    })
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in tags{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Tag"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate({ (cell, row) in
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                        })
+                                }
+            }
+            
+            // Filler section
+            //+++ Section("")
+            
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Notes Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Notes"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("notesRow_\(index)") {
+                                        $0.placeholder = "Note"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
+                                        //$0.tag = "Add Media Info"
+                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
+                                        }.cellUpdate({ (cell, row) in
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                        })
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in notes{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Note"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate({ (cell, row) in
+                                            
+                                            // Init line view
+                                            let headerView = UIView()
+                                            
+                                            headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                            headerView.backgroundColor = UIColor.lightGray
+                                            
+                                            
+                                            // Add seperator to label
+                                            cell.addSubview(headerView)
+                                        })
+                                }
+        }
+
+        
+    
+        
+        
             
             /*
             +++
@@ -1451,147 +1562,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
-        /*
-        // Assign all the items in each list to the contact profile on manager
-        // Parse table section vals
-        
-        if ContactManager.sharedManager.userCreatedNewContact {
-            
-            
-            
-            // Titles Section
-            let titleValues = form.sectionBy(tag: "Title Section")
-            for val in titleValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.titles.append(["title" : str])
-                        titles.append(str)
-                    }
-                }
-            }
-            
-            // Phone Number section
-            let phoneValues = form.sectionBy(tag: "Phone Section")
-            for val in phoneValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.setPhoneRecords(phoneRecord: str)
-                        phoneNumbers.append(str)
-                    }
-                }
-            }
-            
-            // Email Section
-            let emailValues = form.sectionBy(tag: "Email Section")
-            for val in emailValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Append to arrays
-                        contact.setEmailRecords(emailAddress: str)
-                        emails.append(str)
-                    }
-                }
-            }
-            
-            // Website Section
-            let websiteValues = form.sectionBy(tag: "Website Section")
-            for val in websiteValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Append to array
-                        contact.setWebsites(websiteRecord: str)
-                    }
-                }
-            }
-            
-            /*// Social Media Section
-             let mediaValues = form.sectionBy(tag: "Media Section")
-             for val in mediaValues! {
-             print(val.baseValue ?? "")
-             if let str = "\(val.baseValue ?? "")" as? String{
-             if str != "nil" && str != "" {
-             // Append to array
-             contact.setSocialLinks(socialLink: str)
-             socialLinks.append(str)
-             }
-             }
-             }*/
-            
-            // Notes Section
-            let noteValues = form.sectionBy(tag: "Notes Section")
-            for val in noteValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Set values to arrays
-                        contact.setNotes(note: str)
-                        notes.append(str)
-                    }
-                }
-            }
-            
-            // Social Media Section
-            let tagValues = form.sectionBy(tag: "Tag Section")
-            for val in tagValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.setTags(tag: str)
-                        tags.append(str)
-                        
-                        //print("Social links not needed here anymore")
-                    }
-                }
-            }
-            
-            // Address Section
-            let addressValues = form.sectionBy(tag: "Address Section")
-            for val in addressValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        contact.setAddresses(address: str)
-                        addresses.append(str)
-                        
-                        //print("Social links not needed here anymore")
-                    }
-                }
-            }
-            
-            // Organization section
-            let organizationValues = form.sectionBy(tag: "Organization Section")
-            for val in organizationValues! {
-                print(val.baseValue ?? "")
-                if let str = "\(val.baseValue ?? "")" as? String{
-                    if str != "nil" && str != "" {
-                        // Append to arrays
-                        contact.setOrganizations(organization: str)
-                        organizations.append(str)
-                    }
-                }
-            }
-            
-            // Add origin
-            self.contact.origin = "unify"
-            
-            // Set contact to shared manager
-            ContactManager.sharedManager.newContact = self.contact
-            
-            
-            // Test to print profile
-            ContactManager.sharedManager.newContact.printContact()
-            
-            
-            // Post Alert
-            self.postNotification()
-            
-        }else{
-            print("They cancelled")
-        }*/
         
     }
     
@@ -1757,7 +1727,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     func updateCurrentUser() {
         // Configure to send to server
         
-        // Assign current user object
+        // Get verification phone
+        let phone = UDWrapper.getString("verification_phone")
+        
+        ContactManager.sharedManager.currentUser.userPhoneForVerification = phone ?? ""
+        
         
         // Send to server
         let parameters = ["data" : ContactManager.sharedManager.currentUser.toAnyObject(), "uuid" : ContactManager.sharedManager.currentUser.userId] as [String : Any]
@@ -2086,6 +2060,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         ContactManager.sharedManager.currentUser.userProfile.workInformationList.removeAll()
         ContactManager.sharedManager.currentUser.userProfile.tags.removeAll()
         ContactManager.sharedManager.currentUser.userProfile.addresses.removeAll()
+        ContactManager.sharedManager.currentUser.userProfile.notes.removeAll()
         
     }
     
@@ -2111,6 +2086,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         workInformation.removeAll()
         tags.removeAll()
         addresses.removeAll()
+        notes.removeAll()
         
         
     }
@@ -2189,8 +2165,11 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         // Add to label list
                         phoneLabels.append(label)
                         
+                        // Strip phone to all numbers
+                        let result = String(str.characters.filter { "01234567890.".characters.contains($0) })
+                        
                         // Add to manager
-                        ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: [label : str])
+                        ContactManager.sharedManager.currentUser.userProfile.setPhoneRecords(phoneRecords: [label : result])
                         
                         phoneNumberDictionaryArray.append(["email": str, "type": label])
                         //print("Phone dict", phoneNumberDictionaryArray)
@@ -2220,19 +2199,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     }
                 }
             }
-            /*
-             // Work Info Section
-             let workValues = form.sectionBy(tag: "Work Section")
-             for val in workValues! {
-             print(val.baseValue ?? "")
-             if let str = "\(val.baseValue ?? "")" as? String{
-             if str != "nil" && str != "" {
-             ContactManager.sharedManager.currentUser.userProfile.workInformationList.append(["work" :str])
-             workInformation.append(str)
-             }
-             }
-             }*/
-            
+        
             // Website Section
             let websiteValues = form.sectionBy(tag: "Website Section")
             for val in websiteValues! {
@@ -2270,6 +2237,20 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     }
                 }
             }
+        
+        
+        // Work Info Section
+        let workValues = form.sectionBy(tag: "Notes Section")
+        for val in workValues! {
+            print(val.baseValue ?? "")
+            if let str = "\(val.baseValue ?? "")" as? String{
+                if str != "nil" && str != "" {
+                    ContactManager.sharedManager.currentUser.userProfile.notes.append(["note" :str])
+                    notes.append(str)
+                }
+            }
+        }
+
             
             // Organization section
             let addressValues = form.sectionBy(tag: "Address Section")

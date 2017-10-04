@@ -284,6 +284,8 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             // Check for nil vals
             
             var phone = ""
+            var name = ""
+            var recipientName = ""
 
             if ContactManager.sharedManager.userSelectedNewContactForIntro || ContactManager.sharedManager.userSelectedNewRecipientForIntro{
                 
@@ -299,6 +301,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                     // Set intro contact
                     introContact = ContactManager.sharedManager.recipientToIntro
                 }
+                
                 
         
                 if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
@@ -316,6 +319,10 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                     
                 }
                 
+                // Set names
+                name = formatter.string(from: introContact) ?? "No Name"
+                recipientName = contact.name
+                
                 
                 
             }else{
@@ -323,6 +330,10 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 // CNContact Objects
                 let contact = ContactManager.sharedManager.contactToIntro
                 let recipient = ContactManager.sharedManager.recipientToIntro
+                
+                // Set names
+                name = formatter.string(from: contact) ?? "No Name"
+                recipientName = formatter.string(from: recipient) ?? "No Name"
                 
                 // Check if they both have email
                 //name = formatter.string(from: contact) ?? "No Name"
@@ -341,17 +352,27 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                     composeVC.recipients = [phone, recipientPhone!]
                 }
 
-                
             }
             
-            // Configure message
-            //let str = "Hi \(name), Please meet \(recipientName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n"
+            
+            let fullName = name
+            var fullNameArr = fullName.components(separatedBy: " ")
+            let firstName: String = fullNameArr[0]
+            
+            let recipientFullName = recipientName
+            var recipientFullNameArr = recipientFullName.components(separatedBy: " ")
+            let recipientFirstName: String = recipientFullNameArr[0]
+            
             
             // Set card link from cardID
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
             
             // Configure message
-            let str = "\n\n\n\(cardLink)"
+            let str = "Hi \(firstName), please meet \(recipientFirstName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            
+            
+            // Configure message
+            //let str = "\n\n\n\(cardLink)"
             
             composeVC.body = str
             
@@ -426,6 +447,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             recipientName = formatter.string(from: introContact) ?? "No Name"
             name = contact.name
             
+            
             if introContact.emailAddresses.count > 0 && contact.emails.count > 0 {
                 
                 // Set selected email
@@ -446,8 +468,19 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         // Set card link from cardID
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
         
+        let fullName = name
+        var fullNameArr = fullName.components(separatedBy: " ")
+        let firstName: String = fullNameArr[0]
+        
+        let recipientFullName = recipientName
+        var recipientFullNameArr = recipientFullName.components(separatedBy: " ")
+        let recipientFirstName: String = recipientFullNameArr[0]
+        
+        
+        
+        
         // Configure message
-        let str = "\n\n\n\(cardLink)"
+        let str = "Hi \(firstName), please meet \(recipientFirstName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")

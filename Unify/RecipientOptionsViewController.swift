@@ -70,6 +70,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     var phoneContacts = [CNContact]()
     var synced = false
+    
+    var tokenField = KSTokenView()
 
     
     // Radar 
@@ -181,11 +183,11 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         
         // Set token view
-        let tokenField = KSTokenView(frame: self.emailLabel.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
+        tokenField = KSTokenView(frame: self.emailLabel.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
         tokenField.delegate = self as? KSTokenViewDelegate
         tokenField.promptText = " "
         tokenField.font = UIFont.systemFont(ofSize: 18)
-        tokenField.placeholder = "Tags :"
+        tokenField.placeholder = "Tags"
         tokenField.descriptionText = ""
         tokenField.activityIndicatorColor = UIColor.green
         tokenField.maxTokenLimit = 5
@@ -1890,6 +1892,12 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 contact.setNotes(note: notesLabel.text!)
             }
             
+            if tokenField.text != "" {
+                // Iterate and set
+                contact.setTags(tag: tokenField.text ?? "")
+            }
+            
+            /*
             // Set notes
             if tagsLabel.text != nil{
                 
@@ -1905,7 +1913,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 }
                 
                 
-            }
+            }*/
             
             // Check for phone
             if phoneLabel.text != nil {

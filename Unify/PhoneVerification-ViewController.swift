@@ -278,6 +278,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         
         currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone": result])
         currentUser.setVerificationPhone(phone: result)
+        
+        // Save verification number on device
+        UDWrapper.setString("verification_phone", value: result as NSString)
 
         
         // Assign phone to card
@@ -297,7 +300,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         Connection(configuration: nil).issuePinCall(parameters, completionBlock: { response, error in
             if error == nil {
                 
-                print("\n\nConnection - Create User Response: \(String(describing: response))\n\n")
+                print("\n\nIssuing Pin Response on PhoneVerifVC: \(String(describing: response))\n\n")
                 
                 // Here you set the id for the user and resubmit the object
                 

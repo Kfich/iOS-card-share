@@ -27,6 +27,7 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     var selectedEmail = ""
     var selectedPhone = ""
     
+    var tokenField = KSTokenView()
     
     // Arrays to hold contact info
     var phoneNumbers = [String]()
@@ -112,11 +113,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         locationTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidBegin)
         
         // Set token view
-        let tokenField = KSTokenView(frame: self.tokenView.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
+        tokenField = KSTokenView(frame: self.tokenView.bounds)//CGRect(x: 10, y: 250, width: 300, height: 40))
         tokenField.delegate = self as? KSTokenViewDelegate
         tokenField.promptText = " "
         tokenField.font = UIFont.systemFont(ofSize: 18)
-        tokenField.placeholder = "Tags :"
+        tokenField.placeholder = "Tags"
         tokenField.descriptionText = ""
         tokenField.activityIndicatorColor = UIColor.green
         tokenField.maxTokenLimit = 5
@@ -527,8 +528,14 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             // Pass form values into contact object 
             contact.name = "\(firstNameTextField.text!) \(lastNameTextField.text!)"
             
+            if tokenField.text != ""{
+            
+            
+                contact.setTags(tag: tokenField.text ?? "")
+            }
+            
             // Set notes
-            if tagsTextField.text != nil{
+           /* if tagsTextField.text != nil{
                 
                 let fullString = tagsTextField.text!
                 
@@ -542,7 +549,9 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
                 }
 
                 //contact.setTags(tag: tagsTextField.text!)
-            }
+            }*/
+            
+            
             
             // Execute send actions
             
@@ -863,6 +872,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             // Set contacts name
             let name = contact.name //"\(firstNameTextField.text!) \(lastNameTextField.text!)"
             
+            let fullName = contact.name
+            var fullNameArr = fullName.components(separatedBy: " ")
+            let firstName: String = fullNameArr[0]
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : ""
+            
             /*if contact.phoneNumbers.count > 0 {
                 // Set contact phone
                 let contactPhone = contact.phoneNumbers[0]["phone"]
@@ -879,8 +893,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             // Set card link from cardID
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
             
+            let str = "Hi \(firstName), it was great meeting you today. Looking forward to continuing our conversation.\n\n\(cardLink)"
+            
+            
             // Test String
-            let str = "\n\n\n\(cardLink)"
+            //let str = string
             
             // Set string as message body
             composeVC.body = str
@@ -904,6 +921,11 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         var emailContact = ""
         let contactName = contact.name //"\(firstNameTextField.text!) \(lastNameTextField.text!)"
         
+        let fullName = contact.name
+        var fullNameArr = fullName.components(separatedBy: " ")
+        let firstName: String = fullNameArr[0]
+        var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : ""
+        
         // Check for nil values
         /*if contact.emails.count > 0{
             // Set email string
@@ -917,17 +939,17 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         
         // Create Message
         
-        //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
-        
         // Set card link from cardID
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(selectedCard.cardId!)"
         
         // Test String
-        let str = "\n\n\n\(cardLink)"
+       // let str = "\n\n\n\(cardLink)"
+        
+        let str = "Hi \(firstName), it was great meeting you today. Looking forward to continuing our conversation. \n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([self.selectedEmail])
-        mailComposerVC.setSubject("Unify Connection - I'd like to connect with you")
+        mailComposerVC.setSubject("\(currentUser.getName()) - Nice to meet you!")
         mailComposerVC.setMessageBody(str, isHTML: false)
         
         return mailComposerVC

@@ -126,12 +126,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Fetch cards for missing values
         self.fetchUserCards()
         
-        
+        /*
         // Set background image on collectionview
         let bgImage = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width + 10, height: self.view.frame.height + 10));
         bgImage.image = UIImage(named: "backgroundGradient");
         bgImage.contentMode = .scaleToFill
-        self.cardCollectionView.backgroundView = bgImage
+        self.cardCollectionView.backgroundView = bgImage*/
         
         // Add card to whatever the count is 
         //ContactManager.sharedManager.currentUserCards.append(ContactCard())
@@ -238,7 +238,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let bgImage = UIImageView();
         bgImage.image = UIImage(named: "backgroundGradient");
         bgImage.contentMode = .scaleToFill
-        self.cardCollectionView.backgroundView = bgImage
+       // self.cardCollectionView.backgroundView = bgImage
         
         // Sync up with main queue
         DispatchQueue.main.async {
@@ -273,7 +273,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let bgImage = UIImageView();
         bgImage.image = UIImage(named: "backgroundGradient");
         bgImage.contentMode = .scaleToFill
-        self.cardCollectionView.backgroundView = bgImage
+        //self.cardCollectionView.backgroundView = bgImage
         
         // Clear card arrays 
         ContactManager.sharedManager.currentUserCards.removeAll()
@@ -551,10 +551,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 cell.cardName.text = currentCard.cardName
             }
             
-            // Test to see if hidden working
-            if currentCard.isHidden {
-                cell.backgroundColor = UIColor.green
-            }
+            
             
             // Configure the card view
             configureViews(cell: cell)
@@ -616,7 +613,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             if collectionView.contentOffset.x <= CGFloat(i) * itemWithSpaceWidth + itemWidth / 2 {
                 let indexPath = IndexPath(item: i, section: 0)
                 collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                
+                // Set page control
                 self.pageControl.currentPage = indexPath.row
+                
+                // Set selected card
+                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
+                
                 print("Page control value on center!! \(self.pageControl.currentPage)")
                 break
             }
@@ -1008,8 +1011,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         let imageName = "addnew"
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image!)
-        imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 0, y: 12, width: cell.contentView.frame.width - 10, height: cell.contentView.frame.height - 25)
+        imageView.contentMode = .scaleToFill
+        imageView.frame = CGRect(x: 0, y: 12, width: cell.contentView.frame.width - 10, height: cell.contentView.frame.height - 30)
         
         // Add gesture action
         

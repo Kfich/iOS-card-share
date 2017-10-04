@@ -10,6 +10,7 @@ import UIKit
 import PopupDialog
 import UIDropDown
 import MessageUI
+import Contacts
 
 
 class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIActionSheetDelegate{
@@ -27,8 +28,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var selectedUsers = [User]()
     var selectedContacts = [Contact]()
+    var approvedContact = Contact()
     
     var selectedIndex = Int()
+    var selectedIndexPath = IndexPath()
     var selectedTransaction = Transaction()
     var segmentedControl = UISegmentedControl()
     
@@ -46,6 +49,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var senderPhone = ""
     var senderEmail = ""
+    
+    // Sync contact bool
+    var sync = false
     
     
     @IBOutlet var navigationBar: UINavigationItem!
@@ -72,6 +78,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.transactionListReversed = [Transaction]()
         self.connections.removeAll()
         self.introductions.removeAll()
+        self.sections.removeAll()
+        
+        self.tableData.removeAll()
         
         self.tableView.reloadData()
     }
@@ -93,7 +102,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.transactionListReversed = [Transaction]()
         self.connections.removeAll()
         self.introductions.removeAll()
-    
+        self.tableData.removeAll()
+        self.sections.removeAll()
         
         // Fetch the users transactions 
         getTranstactions()
@@ -254,7 +264,25 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     //MARK: UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        if shouldShowSearchResults {
+            
+            return 1
+            
+        }else {
+            
+            switch segmentedControl.selectedSegmentIndex {
+            case 0:
+                //return self.transactionListReversed.count
+                
+                return self.sections.count
+            case 1:
+                return 1
+            case 2:
+                return 1
+            default:
+                return 1
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -268,7 +296,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             case 0:
                 //return self.transactionListReversed.count
                 
-                return (self.tableData[sections[section]]?.count)!
+                return self.tableData[sections[section]]?.count ?? 0 //(self.tableData[sections[section]]?.count)!
             case 1:
                 return self.connections.count
             case 2:
@@ -298,20 +326,20 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForIntro(cell: cell , index: indexPath.row)
+                configureViewsForIntro(cell: cell , index: indexPath.row, section: indexPath.section)
                 
                 // Add tap gesture to cell labels
-                self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve", section: indexPath.section)
                 //self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
                 
             }else {
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForConnection(cell: cell , index: indexPath.row)
+                configureViewsForConnection(cell: cell , index: indexPath.row, section: indexPath.section)
                 
                 // Add tap gesture to cell labels
-                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve", section: indexPath.section)
                 //self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
                 
             }
@@ -333,7 +361,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForConnection(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+                configureViewsForConnection(cell: cell, index: indexPath.row, section: indexPath.section)
                 
             }else if segmentedControl.selectedSegmentIndex == 2{
                 // Config for intro
@@ -341,7 +369,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForIntro(cell: cell as! ActivityCardTableCell, index: indexPath.row)
+                configureViewsForIntro(cell: cell, index: indexPath.row, section: indexPath.section)
             }
             
             if trans.type == "introduction"{
@@ -349,20 +377,20 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellD") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForIntro(cell: cell , index: indexPath.row)
+                configureViewsForIntro(cell: cell , index: indexPath.row, section: indexPath.section)
                 
                 // Add tap gesture to cell labels
-                self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.approveButton, index: indexPath.row, intent: "approve", section: indexPath.section)
                 //self.addGestureToLabel(label: cell.rejectButton, index: indexPath.row, intent: "reject")
                 
             }else {
                 // Configure Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: "CellDb") as! ActivityCardTableCell
                 // Execute func
-                configureViewsForConnection(cell: cell , index: indexPath.row)
+                configureViewsForConnection(cell: cell , index: indexPath.row, section: indexPath.section)
                 
                 // Add tap gesture to cell labels
-                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve")
+                self.addGestureToLabel(label: cell.connectionApproveButton, index: indexPath.row, intent: "approve", section: indexPath.section)
                 //self.addGestureToLabel(label: cell.connectionRejectButton, index: indexPath.row, intent: "reject")
                 
             }
@@ -636,7 +664,320 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     
     
+    
+    
     // Custom Methods
+    func syncContact(contactToAdd: CNMutableContact) {
+        
+        // Init store
+        let store = CNContactStore()
+        // Save contact to phone
+        let saveRequest = CNSaveRequest()
+        saveRequest.add(contactToAdd, toContainerWithIdentifier: nil)
+        
+        print("Testing contact to add")
+        print(contactToAdd)
+        
+        do {
+            try store.execute(saveRequest)
+            print("The CNError occured saving")
+        } catch {
+            
+            print("The CNError occured saving", error.localizedDescription)
+        }
+        
+    }
+    
+    // Contact management
+    
+    func contactToCNContact(contact: Contact) -> CNMutableContact {
+        
+        // Set text for name
+        let contactToAdd = CNMutableContact()
+        //contactToAdd.givenName = self.firstNameLabel.text ?? ""
+        //contactToAdd.familyName = self.lastNameLabel.text ?? ""
+        
+        // Init formatter
+        let formatter = CNContactFormatter()
+        formatter.style = .fullName
+        
+        // Iterate over list and itialize contact objects
+        
+        // Set name
+        //contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        let fullName = contact.name
+        var fullNameArr = fullName.components(separatedBy: " ")
+        let firstName: String = fullNameArr[0]
+        let lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : ""
+        
+        // Add names
+        contactToAdd.givenName = firstName
+        contactToAdd.familyName = lastName
+        
+        /*
+        // Parse for mobile
+        let mobileNumber = CNPhoneNumber(stringValue: (contact.phoneNumbers[0].values.first ?? ""))
+        let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+        contactToAdd.phoneNumbers = [mobileValue]*/
+        
+        
+        // Set organizations
+        if contact.organizations.count > 0 {
+            // Add to contact
+            contactToAdd.organizationName = contact.organizations[0]["organization"]!
+        }
+
+        
+        
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
+            
+            var mobiles = [CNLabeledValue<CNPhoneNumber>]()
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                // print to test
+                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                
+                // Parse for mobile
+                let mobileNumber = CNPhoneNumber(stringValue: (number.values.first ?? ""))
+                let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
+                
+                // Add objects to phone list
+                mobiles.append(mobileValue)
+            }
+            // Add phones as value
+            contactToAdd.phoneNumbers = mobiles
+            
+            
+        }
+        
+    
+        
+        // Parse for emails
+        if contact.emails.count > 0 {
+            
+            var emails = [CNLabeledValue<NSString>]()
+            // Iterate over array and pull value
+            for address in contact.emails {
+                // Print to test
+                print("Email : \(address["email"]!)")
+            
+                // Parse for emails
+                let email = CNLabeledValue(label: address["type"] ?? CNLabelWork, value: address["email"] as NSString? ?? "")
+                emails.append(email)
+            }
+            
+            // Add array as value
+            contactToAdd.emailAddresses = emails
+            
+        }
+        
+        /*
+        // Parse for image data
+        if contact.imageId != "" {
+            // Assign
+            contactToAdd.imageData = contact.imageData
+        }*/
+        
+        
+        
+        // Parse sites
+        if contact.websites.count > 0{
+            // Add sites
+            for site in contact.websites {
+                // Format labeled value
+                contactToAdd.urlAddresses.append(CNLabeledValue(
+                    label: "url", value: site["website"]! as NSString))
+            }
+        }
+        
+        // Parse sites
+        if contact.socialLinks.count > 0{
+            
+            // Init list
+            var socials = [CNLabeledValue<CNSocialProfile>]()
+            
+            // Add sites
+            for site in contact.socialLinks {
+                
+                let profile = CNLabeledValue(label: "social", value: CNSocialProfile(urlString: site["link"]!, username: "", userIdentifier: "", service: nil))
+                
+                // Add to prof list
+                socials.append(profile)
+                
+                print("printing social link", site["link"]!)
+                
+            
+            }
+            
+            // Append to object
+            contactToAdd.socialProfiles = socials
+        }
+        
+        
+        
+        // Parse badges
+        if contact.badgeDictionaryList.count > 0{
+            // Add badge links as sites
+            // Parse for corp
+            for corp in contact.badgeDictionaryList {
+                
+                // Init badge
+                //let badge = Contact.Bagde(snapshot: corp)
+                
+                print("The badge on contact convert", corp)
+                
+                if corp["website"] is String {
+                    
+                    // Add to list
+                    contactToAdd.urlAddresses.append(CNLabeledValue(
+                        label: "badge", value: corp["url"] as? NSString ?? ""))
+                    
+                    // Add to list
+                    contactToAdd.urlAddresses.append(CNLabeledValue(
+                        label: "imageURL", value: corp["image"] as? NSString ?? ""))
+                }else{
+                    
+                    let websiteArray = corp["image"] as? NSArray ?? NSArray()
+                    
+                    for item in websiteArray {
+                        // Append items individually
+                        // Add to list
+                        contactToAdd.urlAddresses.append(CNLabeledValue(
+                            label: "badgeURL", value: item as? NSString ?? ""))
+                    }
+
+                    let imageArray = corp["url"] as? NSArray ?? NSArray()
+                    
+                    for item in imageArray {
+                        // Append items individually
+                        // Add to list
+                        contactToAdd.urlAddresses.append(CNLabeledValue(
+                            label: "imageURL", value: item as? NSString ?? ""))
+                        
+                    }
+
+                    
+                    
+                }
+                
+                
+
+            }
+        }
+        
+        // Parse company info
+        if contact.organizations.count > 0 {
+            // add company
+            contactToAdd.organizationName = contact.organizations[0]["organization"] ?? ""
+        }
+        
+        // Parse titles
+        if contact.titles.count > 0 {
+            // add title
+            contactToAdd.jobTitle = contact.titles[0]["title"] ?? ""
+            
+        }
+        
+        // Format a notes string to hold extra data
+        var notesString = ""
+        
+        // Parse notes
+        if contact.notes.count > 0 {
+            
+            // Add label to notes string
+            notesString += "Unify Notes:"
+            
+            // Format notes field
+            for note in contact.notes {
+                // Add note to string
+                notesString += "\n\(note["note"] ?? "")"
+                
+            }
+        }
+        
+        // Parse notes
+        if contact.tags.count > 0 {
+            // Format notes field
+            // Add label to notes string
+            notesString += "\nUnify Tags:"
+            
+            // Format notes field
+            for tag in contact.tags {
+                // Add note to string
+                notesString += "\n\(tag["tag"] ?? "")"
+                
+            }
+        }
+        
+        // Parse notes
+        if contact.bioList != "" {
+            // Format notes field
+            // Add label to notes string
+            notesString += "\nUnify Bios:"
+            
+            // Append value to string
+            notesString += "\n\(contact.bioList)"
+
+        }
+        
+        // Parse notes
+        if contact.isVerified == "1" {
+            // Format notes field
+            // Add label to notes string
+            notesString += "\nUnify Verified: 1"
+            
+            
+        }
+        
+        // Add note to contact object
+        contactToAdd.note = notesString
+        
+        
+        // Parse address info
+        if contact.addresses.count > 0 {
+            // Format in notes field
+            
+            for address in contact.addresses {
+                
+                // Parse address
+                let postal = CNMutablePostalAddress()
+                postal.street = address["street"] ?? ""
+                postal.city = address["city"] ?? ""
+                postal.state = address["state"] ?? ""
+                postal.postalCode = address["zip"] ?? ""
+                postal.country = address["country"] ?? ""
+                
+                let home = CNLabeledValue<CNPostalAddress>(label:CNLabelHome, value:postal)
+                
+                contactToAdd.postalAddresses = [home]
+                
+            }
+            
+            
+        }
+        
+        
+        // Cast mutable contact back to regular contact
+        //cnObject = contactToAdd as CNContact
+        
+        print("Immutable Copy \(contactToAdd)")
+        print("Immutable Copy Phones \(contactToAdd.phoneNumbers)")
+        print("Immutable Copy Emails \(contactToAdd.emailAddresses)")
+        print("Immutable Copy URLs \(contactToAdd.urlAddresses)")
+        print("Immutable Copy Notes \(contactToAdd.note)")
+        print("Immutable Copy address \(contactToAdd.postalAddresses)")
+        print("Immutable Copy Company \(contactToAdd.organizationName)")
+
+        
+        // Return the non mutable copy
+        return contactToAdd
+        
+    }
+
+    
+    
     
     // Event handler for segment control
     func reloadTableWithList(sender: UISegmentedControl) {
@@ -675,10 +1016,22 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Call Contacts sync
         NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.setSelectedTransaction(sender:)), name: NSNotification.Name(rawValue: "Reject Connection"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ActivtiyViewController.syncApprovedContact), name: NSNotification.Name(rawValue: "SyncApprovedContact"), object: nil)
+        
         
     }
     
-    func addGestureToLabel(label: UILabel, index: Int, intent: String) {
+    func syncApprovedContact() {
+        // Init contact record
+        let newContact = self.contactToCNContact(contact: self.approvedContact)
+        
+        // sync to device
+        self.syncContact(contactToAdd: newContact)
+        
+        
+    }
+    
+    func addGestureToLabel(label: UILabel, index: Int, intent: String, section: Int) {
         // Init tap gesture
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(setSelectedTransaction(sender:)))
         label.isUserInteractionEnabled = true
@@ -688,12 +1041,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         label.tag = index
         
         // Set description to view 
-        //label.
+        label.accessibilityLabel = String(section)
     }
     
     func setSelectedTransaction(sender: UITapGestureRecognizer){
         
         let label = sender.view as! UILabel
+        let section = Int((sender.view?.accessibilityLabel)!)
         let intent = label.text!
         
         print("Sender Index: \((sender.view?.tag)!)")
@@ -702,7 +1056,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if segmentedControl.selectedSegmentIndex == 0 {
             // All
-            self.selectedTransaction = transactionListReversed[(sender.view?.tag)!]
+            self.selectedTransaction = (tableData[sections[section!]]?[(sender.view?.tag)!])!//transactionListReversed[(sender.view?.tag)!]
         }else if segmentedControl.selectedSegmentIndex == 1 {
             // Connections
             self.selectedTransaction = connections[(sender.view?.tag)!]
@@ -722,7 +1076,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Assign selected transaction
         if segmentedControl.selectedSegmentIndex == 0 {
             // All
-            self.selectedTransaction = transactionListReversed[(sender.view?.tag)!]
+            self.selectedTransaction = (tableData[sections[section!]]?[(sender.view?.tag)!])!//transactionListReversed[(sender.view?.tag)!]
         }else if segmentedControl.selectedSegmentIndex == 1 {
             // Connections
             self.selectedTransaction = connections[(sender.view?.tag)!]
@@ -773,15 +1127,28 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         Connection(configuration: nil).approveTransactionCall(parameters as [AnyHashable : Any]){ response, error in
             if error == nil {
-                print("Approval Response ---> \(String(describing: response))")
+                //print("Approval Response ---> \(String(describing: response))")
                 
                 // Set response from network
-                let dictionary : Dictionary = response as! [String : Any]
+                let dictionary : NSDictionary = response as! NSDictionary
                 // Test callback
-                print("THE DICTIONARY OF APPROVAL", dictionary)
+                print("THE DICTIONARY OF APPROVAL", dictionary as Any)
+                
+                // Init contact from response
+                self.approvedContact = Contact(arraySnapshot: dictionary)
+                // Test
+                print("Contact Send Back On Approve", self.approvedContact.toAnyObject())
+                
+                // Set bool
+                self.sync = true
+                
+                self.postSyncNotification()
+                
+                // Sync contact to list
+                //self.sync
                 
                 // Change status for trans
-                self.transactions[self.selectedIndex].approved = true
+                //self.transactions[self.selectedIndex].approved = true
                 
                 // Refresh transaction feed
                 self.getTranstactions()
@@ -790,7 +1157,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Reload table
                 //self.tableView.reloadData()
                 // Hide HUD
-                KVNProgress.showSuccess(withStatus: "Approved.")
+                KVNProgress.showSuccess(withStatus: "Approved")
                 
             } else {
                 print("Approval Error Response ---> \(String(describing: error))")
@@ -798,9 +1165,12 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
             }
-            // Hide indicator
-            KVNProgress.dismiss()
+        
+            print("Sync bool", self.sync)
+            
         }
+        
+        print("Sync bool outside call", self.sync)
     }
     
     func rejectTransaction(index: Int) {
@@ -941,6 +1311,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         self.transactions = [Transaction]()
         self.transactionListReversed = [Transaction]()
         self.transactionList.removeAll()
+        self.tableData.removeAll()
+        self.sections.removeAll()
+        
+        
         
         // 
         // Hit endpoint for updates on users nearby
@@ -971,8 +1345,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                         // Update counter
                         // Init user objects from array
                         let trans = Transaction(snapshot: item as! NSDictionary)
-                        print("Transaction Individual item after get")
-                        trans.printTransaction()
+                        //print("Transaction Individual item after get")
+                        //trans.printTransaction()
                         
                         
                         // Append users to radarContacts array
@@ -987,7 +1361,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.view.layoutIfNeeded()
                     
                     // Update the table values
-                    self.tableView.reloadData()
+                    //self.tableView.reloadData()
                     
                     // Parse lists for segment control 
                     self.parseTransactionList(transactionList: self.transactions)
@@ -1467,7 +1841,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // View Configuration
     
     
-    func configureViewsForIntro(cell: ActivityCardTableCell, index: Int){
+    func configureViewsForIntro(cell: ActivityCardTableCell, index: Int, section: Int){
         // Set transaction values for cell
         var trans = Transaction()
        
@@ -1479,7 +1853,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             if segmentedControl.selectedSegmentIndex == 0 {
                 // All
-                trans = transactionListReversed[index]
+                trans = (tableData[sections[section]]?[index])!
             }else if segmentedControl.selectedSegmentIndex == 1 {
                 // Connections
                 trans = connections[index]
@@ -1576,7 +1950,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     
-    func configureViewsForConnection(cell: ActivityCardTableCell, index: Int){
+    func configureViewsForConnection(cell: ActivityCardTableCell, index: Int, section: Int){
         // Set transaction values for cell
         var trans = Transaction()
         
@@ -1588,7 +1962,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             if segmentedControl.selectedSegmentIndex == 0 {
                 // All
-                trans = transactionListReversed[index]
+                trans = (tableData[sections[section]]?[index])!
+                
             }else if segmentedControl.selectedSegmentIndex == 1 {
                 // Connections
                 trans = connections[index]
@@ -1830,6 +2205,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Notification for radar screen
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TurnOnRadar"), object: self)
+        
+    }
+    
+    func postSyncNotification() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SyncApprovedContact"), object: self)
         
     }
     

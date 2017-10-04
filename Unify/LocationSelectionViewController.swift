@@ -9,7 +9,7 @@
 import UIKit
 import GooglePlaces
 
-class LocationSelectionViewController: UIViewController, UISearchBarDelegate {
+class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDelegate {
     
     // Properties
     // ----------------------------------
@@ -17,6 +17,8 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate {
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
+    let locationManager = CLLocationManager()
+
     
     // IBActions
     // ----------------------------------
@@ -33,6 +35,7 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate {
         
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
+        
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
@@ -52,6 +55,17 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate {
         // Notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            print("Location is updating")
+            locationManager.startUpdatingLocation()
+        }
+
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -92,6 +106,17 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate {
                 
             })
         }
+        
+    }
+    
+    // Location manager
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        
+        // Set coordinate bounds
+        //resultsViewController?.autocompleteBounds = GMSCoordinateBounds(locValue)
+        
         
     }
     

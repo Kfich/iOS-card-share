@@ -1423,8 +1423,8 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
         cell.contentView.layer.cornerRadius = 20.0
         cell.contentView.clipsToBounds = true
-        cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderWidth = 0.5
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -1440,7 +1440,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         cell.contentView.layer.cornerRadius = 45.0
         cell.contentView.clipsToBounds = true
         cell.contentView.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        //cell.contentView.layer.borderColor = UIColor.blue.cgColor
         
         // Set shadow on the container view
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -1745,13 +1745,13 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
         // Create Message
         
-        //let str = "Hi, I'd like to connect with you. Here's my information \n\n\(String(describing: card.cardHolderName))\n\(String(describing: card.cardProfile.emails[0]["email"]))\n\(String(describing: card.cardProfile.title))\n\nBest, \n\(currentUser.getName()) \n\n"
-        
         // Set card link from cardID
         let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
         
+        let str = "Hi, I'd like to connect with you. Here's my information\n\nBest, \n\(currentUser.getName())\n\n\(cardLink)"
+        
         // Test String
-        let str = "\n\n\n\(cardLink)"
+        //let str = "\n\n\n\(cardLink)"
         
         // Create Message
         mailComposerVC.setToRecipients([selectedUserEmail])

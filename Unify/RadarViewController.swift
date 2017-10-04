@@ -180,7 +180,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         }else if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
             print("Now entering iphone plus landia my friend to tread light")
             //standard device
-            halo.position.y = pulseView.frame.height / 2.7
+            halo.position.y = pulseView.frame.height / 2.3
             halo.position.x = pulseView.frame.width / 1.82
             
             //self.radarLogoImage.frame = CGRect(x: radarLogoImage.frame.origin.x, y: radarLogoImage.frame.origin.y , width: 10, height: 10)
@@ -461,6 +461,9 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             self.sendCardButton.isEnabled = false
             self.sendCardButton.isHidden = true
             
+            // Hide list
+            self.radarListContainer.isHidden = true
+            
             // Post notification for list VC
             //self.postEndRadarNotification()
             
@@ -546,7 +549,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         self.sendCardButton.layer.borderColor = UIColor.lightGray.cgColor
         
         // Configure borders
-        radarListContainer.layer.borderColor = UIColor.blue.cgColor
+        radarListContainer.layer.borderColor = UIColor.white.cgColor
         radarListContainer.layer.borderWidth = 1.5
         radarListContainer.clipsToBounds = true
         radarListContainer.layer.cornerRadius = 12
@@ -785,7 +788,7 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
     
     func hideSendCard() {
         // Toggle button on
-        //self.sendCardButton.isHidden = true
+        self.sendCardButton.isHidden = true
         self.sendCardButton.isEnabled = false
     }
     
@@ -1655,6 +1658,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                             // End radar pulsing
                             self.stopPulseAnimation()
                             
+                            // Stop updating location
+                            self.locationManager.stopUpdatingLocation()
                             
                         }else{
                             // Test

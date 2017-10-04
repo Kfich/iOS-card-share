@@ -9,6 +9,7 @@
 
 import UIKit
 import MBPhotoPicker
+import Alamofire
 
 
 class CreateCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, RSKImageCropViewControllerDelegate {
@@ -73,9 +74,12 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet var cardOptionsTableView: UITableView!
 
     @IBOutlet var profileCardWrapperView: UIView!
+    @IBOutlet var profileCardWrapperViewSingle: UIView!
+    @IBOutlet var profileCardWrapperViewEmpty: UIView!
     
     @IBOutlet var socialBadgeCollectionView: UICollectionView!
     
+    @IBOutlet var singleCollectionView: UICollectionView!
     @IBOutlet var badgeCollectionView: UICollectionView!
     @IBOutlet var profileImageCollectionView: UICollectionView!
     
@@ -85,23 +89,33 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var profileImageView: UIImageView!
-    @IBOutlet var socialMediaToolBar: UIToolbar!
     
     
-    // Buttons on social toolbar
+    // Card info outlets for single
+    @IBOutlet var nameLabelSingleWrapper: UILabel!
+    @IBOutlet var titleLabelSingleWrapper: UILabel!
+    @IBOutlet var emailLabelSingleWrapper: UILabel!
+    @IBOutlet var numberLabelSingleWrapper: UILabel!
+    @IBOutlet var profileImageViewSingleWrapper: UIImageView!
+    @IBOutlet var cardNameLabelSingleWrapper: UILabel!
     
-    @IBOutlet var mediaButton1: UIBarButtonItem!
-    @IBOutlet var mediaButton2: UIBarButtonItem!
-    @IBOutlet var mediaButton3: UIBarButtonItem!
-    @IBOutlet var mediaButton4: UIBarButtonItem!
-    @IBOutlet var mediaButton5: UIBarButtonItem!
-    @IBOutlet var mediaButton6: UIBarButtonItem!
-    @IBOutlet var mediaButton7: UIBarButtonItem!
+    // Labels for empty wrapper
+    @IBOutlet var nameLabelEmptyWrapper: UILabel!
+    @IBOutlet var titleLabelEmptyWrapper: UILabel!
+    @IBOutlet var emailLabelEmptyWrapper: UILabel!
+    @IBOutlet var numberLabelEmptyWrapper: UILabel!
+    @IBOutlet var profileImageViewEmptyWrapper: UIImageView!
+    @IBOutlet var cardNameLabelEmptyWrapper: UILabel!
     
     // Action buttons
-    
     @IBOutlet var addImageButton: UIButton!
+    @IBOutlet var addImageButtonSingleWrapper: UIButton!
+    @IBOutlet var addImageButtonEmptyWrapper: UIButton!
+    
+    //
     @IBOutlet var addCardNameButton: UIButton!
+    @IBOutlet var addCardNameButtonSingleWrapper: UIButton!
+    @IBOutlet var addCardNameButtonEmptyWrapper: UIButton!
     
     @IBOutlet var shadowView: YIInnerShadowView!
     
@@ -115,12 +129,33 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // If user has default image, set as container view
         if currentUser.profileImages.count > 0{
             profileImageView.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+            profileImageViewSingleWrapper.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
+            profileImageViewEmptyWrapper.image = UIImage(data: currentUser.profileImages[0]["image_data"] as! Data)
         }
         
         
         // Set shadow
-        self.shadowView.shadowRadius = 3
-        self.shadowView.shadowMask = YIInnerShadowMaskTop
+        //self.shadowView.shadowRadius = 3
+        //self.shadowView.shadowMask = YIInnerShadowMaskTop
+        
+        // Config header view based on counts
+        if self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0{
+            print("The contact has both social and corp badges")
+            // Set double collection wrapper as header
+            cardOptionsTableView.tableHeaderView = self.profileCardWrapperView
+            
+        }else if (self.currentUser.userProfile.socialLinks.count > 0 && self.currentUser.userProfile.badgeDictionaryList.count == 0) || (self.currentUser.userProfile.socialLinks.count == 0 && self.currentUser.userProfile.badgeDictionaryList.count > 0){
+            print("The contact has one list populated")
+            // Set single collection wrapper as header
+            cardOptionsTableView.tableHeaderView = self.profileCardWrapperViewSingle
+            
+        }else{
+            print("The contact has neither list populated")
+            // Set empty collection wrapper as header
+            cardOptionsTableView.tableHeaderView = self.profileCardWrapperViewEmpty
+        }
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -165,6 +200,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set name as default value
         if currentUser.fullName != ""{
             nameLabel.text = currentUser.fullName
+            nameLabelSingleWrapper.text = currentUser.fullName
+            nameLabelEmptyWrapper.text = currentUser.fullName
         }
         
         // Parse card for profile info
@@ -282,13 +319,19 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Add section
             sections.append("Addresses")
             for add in currentUser.userProfile.addresses{
-                addresses.append(add.values.first!)
-                addressLabels.append(add.keys.first!)
+                // Set all values for the cells
+                let street = add["street"] ?? ""
+                let city = add["city"] ?? ""
+                let state = add["state"] ?? ""
+                let zip = add["zip"] ?? ""
+                let country = add["country"] ?? ""
                 
-                // Make record
-                let record = [add.keys.first! : add.values.first!]
-                // Test
-                print("Address record", record)
+                // Create Address String
+                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                
+                // Append values
+                addresses.append(addressString)
+                addressLabels.append(add["type"] ?? "")
             }
             // Create section data
             self.tableData["Addresses"] = addresses
@@ -432,12 +475,14 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Image data png
         let imageData = UIImagePNGRepresentation(self.profileImageView.image!)
         print(imageData!)
+
+        // Init id string
+        let idString = currentUser.randomString(length: 20)
         
         // Assign asset name and type
-        let fname = "asset.png"
         let mimetype = "image/png"
+        let fname = idString
         
-        let idString = currentUser.randomString(length: 20)
         
         // Create image dictionary
         let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
@@ -447,6 +492,52 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         self.card.cardProfile.setImages(imageRecords: imageDict)
         print(imageDict)
         
+        
+        // Init imageURLS
+        let urls = ImageURLS()
+        
+        // Create URL For Prod
+        //let prodURL = urls.uploadToStagingURL
+        
+        // Create URL For Test
+        let testURL = urls.uploadToDevelopmentURL
+        
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+             }*/
+            
+            // Currently Set to point to Prod Server
+        }, to:testURL)
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n success...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                    // Dismiss hud
+                    //KVNProgress.dismiss()
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
+         
         // Counter to iterate
         var index = 0
         // Iterate over list and append selected badges
@@ -578,9 +669,17 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         }else if collectionView == self.socialBadgeCollectionView{
             
             return self.socialBadges.count
-        }else{
+        }else if collectionView == profileImageCollectionView{
             // Profile collection view
             return self.profileImagelist.count
+        }else{
+            if self.socialBadges.count > 0 {
+                // Assign the socials to single collection
+                return self.socialBadges.count
+            }else{
+                // The corp badges are the move
+                return corpBadges.count
+            }
         }
         //return 5
     }
@@ -666,7 +765,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.contentView.addSubview(imageView)
 
         
-        }else{
+        }else if collectionView == profileImageCollectionView{
             
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
             
@@ -684,6 +783,84 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.contentView.addSubview(imageView)
             
             
+        }else{
+            
+            // Check which list populated
+            if self.socialBadges.count > 0 {
+                
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+                //cell.contentView.backgroundColor = UIColor.red
+                self.configureBadges(cell: cell)
+                
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                let image = self.socialBadges[indexPath.row]
+                
+                
+                // Init add image
+                let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                
+                if self.selectedSocialLinkList[indexPath.row].isSelected {
+                    // Add minus sign
+                    
+                    let addImage = UIImage(named: "icn-minus-red")
+                    addView.image = addImage
+                    
+                }else{
+                    // Add plus sign
+                    let addImage = UIImage(named: "icn-plus-green")
+                    addView.image = addImage
+                    
+                }
+                
+                
+                // Set image
+                imageView.image = image
+                // Add to imageview
+                imageView.addSubview(addView)
+                
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }else{
+                // Badge config
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+                
+                self.configureBadges(cell: cell)
+                
+                ///cell.contentView.backgroundColor = UIColor.red
+                self.configureBadges(cell: cell)
+                
+                let fileUrl = NSURL(string: self.corpBadges[indexPath.row].pictureUrl/*ContactManager.sharedManager.badgeList[indexPath.row].pictureUrl ContactManager.sharedManager.currentUser.userProfile.badgeList[indexPath.row].pictureUrl*/)
+                
+                // Configure corner radius
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+                imageView.setImageWith(fileUrl! as URL)
+                
+                // Init add image
+                let addView = UIImageView(frame: CGRect(x: 20, y: 5, width: 20, height: 20))
+                
+                if self.selectedCorpBadgeList[indexPath.row].isSelected {
+                    // Add minus sign
+                    
+                    let addImage = UIImage(named: "icn-minus-red")
+                    addView.image = addImage
+                    
+                }else{
+                    // Add plus sign
+                    let addImage = UIImage(named: "icn-plus-green")
+                    addView.image = addImage
+                    
+                }
+                
+                // Add to imageview
+                imageView.addSubview(addView)
+                
+                // Add subview
+                cell.contentView.addSubview(imageView)
+                
+            }
         }
         
         return cell
@@ -733,8 +910,57 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
             // Highlight cell
             print("Social Card List >> \(card.cardProfile.socialLinks)")
-        }else{
+        }else if collectionView == profileImageCollectionView{
+            // Profile image collection
             self.profileImageView.image = self.profileImagelist[indexPath.row]
+            
+        }else{
+            
+            // Check which list populated
+            if self.socialBadges.count > 0 {
+                
+                if self.selectedSocialLinkList[indexPath.row].isSelected == true {
+                    // Remove
+                    self.selectedSocialLinkList[indexPath.row].isSelected = false
+                    // Add social to card
+                    //card.cardProfile.socialLinks.remove(at: indexPath.row)
+                }else{
+                    // Set selected index
+                    self.selectedSocialLinkList[indexPath.row].isSelected = true
+                    // Add social to card
+                    //card.cardProfile.socialLinks.append(["link" : socialLinks[indexPath.row]])
+                    
+                }
+                
+                // Highlight cell
+                print("Social Card List >> \(card.cardProfile.socialLinks)")
+                
+            }else{
+                
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BadgeCell", for: indexPath)
+                
+                // Highlight cell
+                print("Badge Card List >> \(card.cardProfile.badgeList)")
+                
+                if self.selectedCorpBadgeList[indexPath.row].isSelected == true {
+                    // Remove
+                    self.selectedCorpBadgeList[indexPath.row].isSelected = false
+                    // Add social to card
+                    print("Badge to be removed \(corpBadges[indexPath.row].toAnyObject())")
+                }else{
+                    // Set selected index
+                    self.selectedCorpBadgeList[indexPath.row].isSelected = true
+                    // Add social to card
+                    //card.cardProfile.badgeList.append(corpBadges[indexPath.row])
+                    
+                    print("The corp badge to any to be added!")
+                    print(corpBadges[indexPath.row].toAnyObject())
+                    
+                }
+
+                
+            }
+            
         }
         
         collectionView.reloadData()
@@ -1138,6 +1364,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Config image
         self.configureSelectedImageView(imageView: self.profileImageView)
+        self.configureSelectedImageView(imageView: self.profileImageViewSingleWrapper)
+        self.configureSelectedImageView(imageView: self.profileImageViewEmptyWrapper)
         
         // Round borders on table
         self.cardOptionsTableView.layer.cornerRadius = 12.0
@@ -1298,6 +1526,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                     self.card.cardName = alertVC.textFields[0].text
                     // Set Card Name label text
                     self.addCardNameButton.titleLabel?.text = alertVC.textFields[0].text
+                    self.addCardNameButtonSingleWrapper.titleLabel?.text = alertVC.textFields[0].text
+                    self.addCardNameButtonEmptyWrapper.titleLabel?.text = alertVC.textFields[0].text
                 case "Add Tag":
                     // Take text and add it to the card
                     self.card.cardProfile.setTags(tagRecords: ["tag" : alertVC.textFields[0].text!])

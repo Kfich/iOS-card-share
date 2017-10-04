@@ -615,6 +615,21 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             self.labels["Bios"] = labelList
         }
         
+        // Parse websites
+        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+            // Add section
+            sections.append("Websites")
+            var labelList = [String]()
+            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
+                websites.append(site["website"]!)
+                labelList.append("url")
+            }
+            // Create section data
+            self.tableData["Websites"] = websites
+            self.labels["Websites"] = labelList
+            
+        }
+        
         if ContactManager.sharedManager.currentUser.userProfile.phoneNumbers.count > 0{
             // Add section
             sections.append("Phone Numbers")
@@ -651,7 +666,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             self.tableData["Emails"] = emails
         }
         // Parse work info
-        
+        /*
         if ContactManager.sharedManager.currentUser.userProfile.workInformationList.count > 0{
             // Add section
             sections.append("Work")
@@ -661,22 +676,35 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             }
             // Create section data
             self.tableData["Work"] = workInformation
-        }
+        }*/
         
-        // Parse websites
-        if ContactManager.sharedManager.currentUser.userProfile.websites.count > 0{
+        // Parse notes
+        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
+            
             // Add section
-            sections.append("Websites")
-            var labelList = [String]()
-            for site in ContactManager.sharedManager.currentUser.userProfile.websites{
-                websites.append(site["website"]!)
-                labelList.append("url")
+            sections.append("Addresses")
+            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
+                
+                
+                // Set all values for the cells
+                let street = add["street"]!
+                let city = add["city"]!
+                let state = add["state"]!
+                let zip = add["zip"]!
+                let country = add["country"]!
+                
+                // Create Address String
+                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                
+                // Append values
+                addresses.append(addressString)
+                addressLabels.append(add["type"]!)
+                
             }
             // Create section data
-            self.tableData["Websites"] = websites
-            self.labels["Websites"] = labelList
-            
+            self.tableData["Addresses"] = addresses
         }
+        
         // Parse Tags
         if ContactManager.sharedManager.currentUser.userProfile.tags.count > 0{
             // Add section
@@ -709,32 +737,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
             self.tableData["Notes"] = notes
             self.labels["Notes"] = labelList
         }
-        // Parse notes
-        if ContactManager.sharedManager.currentUser.userProfile.addresses.count > 0{
-            
-            // Add section
-            sections.append("Addresses")
-            for add in ContactManager.sharedManager.currentUser.userProfile.addresses{
-                
-                
-                // Set all values for the cells
-                let street = add["street"]!
-                let city = add["city"]!
-                let state = add["state"]!
-                let zip = add["zip"]!
-                let country = add["country"]!
-                
-                // Create Address String
-                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
-                
-                // Append values
-                addresses.append(addressString)
-                addressLabels.append(add["type"]!)
-                
-            }
-            // Create section data
-            self.tableData["Addresses"] = addresses
-        }
+
         
         // Parse socials links
         if ContactManager.sharedManager.currentUser.userProfile.socialLinks.count > 0{
