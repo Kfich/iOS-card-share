@@ -494,6 +494,9 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         // Populate image view
         if selectedCard.cardProfile.images.count > 0{
             profileImageView.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
+        }else if selectedCard.isVerified{
+            profileImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            
         }
         
         // Populate label fields

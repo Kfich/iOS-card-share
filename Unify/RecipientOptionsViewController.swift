@@ -196,9 +196,30 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         tokenField.searchResultSize = CGSize()
         tokenField.direction = .horizontal
         
+        var containerView = UIView()
+        // Swift 3
+        let modelName = UIDevice.current.modelName
+        
+        if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
+            //standard device
+            
+            // Config container view
+            containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x, y: tokenField.frame.height - 0.5, width: self.tagsLabel.frame.size.width + 40,  height: 0.50))
+            containerView.backgroundColor = UIColor.white
+            
+        }else{
+            
+            // Config container view
+            containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x, y: tokenField.frame.height - 0.5, width: self.tagsLabel.frame.size.width,  height: 0.50))
+            containerView.backgroundColor = UIColor.white
+            
+        }
+        
+        /*
         // Config container view
         let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x, y: tokenField.frame.height - 0.5, width: self.tagsLabel.frame.size.width,  height: 0.50))
-        containerView.backgroundColor = UIColor.white
+        containerView.backgroundColor = UIColor.white*/
         // Add to token field
         self.tokenView.addSubview(containerView)
         
