@@ -1254,11 +1254,15 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Create Cell
-        _ = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
         
         
         // Deselect row
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // Set bg to white for cell
+        cell.backgroundColor = UIColor.white
+        
         
         // Set Checkmark
         let selectedCell = tableView.cellForRow(at: indexPath)

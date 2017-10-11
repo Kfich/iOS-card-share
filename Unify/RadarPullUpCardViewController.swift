@@ -632,6 +632,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func snapToNearestCell(_ collectionView: UICollectionView) {
         
+        
+        
         /* *collectionView.numberOfItems(inSection: 0) + 1*/
         for i in 0...ContactManager.sharedManager.viewableUserCards.count + 1{
             
@@ -640,20 +642,32 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             if collectionView.contentOffset.x <= CGFloat(i) * itemWithSpaceWidth + itemWidth / 2 {
                 let indexPath = IndexPath(item: i, section: 0)
-                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
                 
-                // Set page control
-                self.pageControl.currentPage = indexPath.row
+                if i != ContactManager.sharedManager.viewableUserCards.count - 2{
+                    // Snap the scroller to index
+                    collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                    
+                    // Set page control
+                    self.pageControl.currentPage = indexPath.row
+                    
+                    // Set selected card
+                    ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
+                    
+                    // Parse card for socials
+                    //let cell = collectionView.cellForItem(at: indexPath) as! CardCollectionViewCell
+                    // Set badgelist
+                    //cell.badgeList = self.parseCardForBagdes(card: ContactManager.sharedManager.viewableUserCards[indexPath.row])
+                    
+                    print("Page control value on center!! \(self.pageControl.currentPage)")
+                    
+                }else{
+                    // Test
+                    print("You hit the end of the list")
+                    // Set page control
+                    self.pageControl.currentPage = indexPath.row
+                }
                 
-                // Set selected card
-                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
-                
-                // Parse card for socials
-                //let cell = collectionView.cellForItem(at: indexPath) as! CardCollectionViewCell
-                // Set badgelist
-                //cell.badgeList = self.parseCardForBagdes(card: ContactManager.sharedManager.viewableUserCards[indexPath.row])
-                
-                print("Page control value on center!! \(self.pageControl.currentPage)")
+                // Exit
                 break
             }
         }

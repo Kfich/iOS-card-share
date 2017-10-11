@@ -472,7 +472,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
-                                            /*
+                                            
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -481,7 +481,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)*/
+                                            cell.addSubview(headerView)
                                             
                                     }
                                 }
@@ -504,7 +504,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         // Init line view
                                         let headerView = UIView()
-                                        
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
@@ -530,13 +530,29 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             }
                                             
                                             
+                                            
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                   
+                                                }
+                                            }
+                                        
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
                                             cell.addSubview(headerView)
+                                            
                                             
                                     
                                         }
@@ -556,13 +572,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Title"
                                         $0.value = val
                                         
-                                        // Init line view
-                                        /*let headerView = UIView()
                                         
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)*/
+                                        $0.cell.addSubview(headerView)
                                         
                                         
                                         print("section index: ", $0.indexPath ?? IndexPath())
@@ -573,14 +590,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                            
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
                                             
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
            
@@ -625,7 +653,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     
                                         // Init line view
                                         let headerView = UIView()
-                                        
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
@@ -638,13 +666,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                             
@@ -659,21 +699,39 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.value = val
                                         
                                         // Add lineview
-                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
-                                    
+                                            
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                             
@@ -718,7 +776,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         
                         // Init line view
                         let headerView = UIView()
-                        
+                        headerView.accessibilityIdentifier = "header"
                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                         headerView.backgroundColor = UIColor.lightGray
                         // Add seperator to label
@@ -730,13 +788,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                             cell.textField.placeholder = "Bio"
                             cell.titleLabel?.textColor = self.view.tintColor
                             
+                            // Check if view exists
+                            for view in cell.subviews{
+                                
+                                if view.accessibilityIdentifier == "header"{
+                                    
+                                    // Don't add header
+                                    print("Cell has view already")
+                                    
+                                    // Remove view
+                                    view.removeFromSuperview()
+                                    
+                                }
+                            }
+                            
                             // Init line view
                             let headerView = UIView()
-                            
+                            headerView.accessibilityIdentifier = "header"
                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                             headerView.backgroundColor = UIColor.lightGray
-                            
-                            
                             // Add seperator to label
                             cell.addSubview(headerView)
                             
@@ -751,17 +821,38 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     $0 <<< NameRow() {
                         $0.placeholder = "Bio"
                         $0.value = val
-                        //$0.tag = "b_row\(IndexPath())"
-                    }.cellUpdate({ (cell, row) in
-                        
                         
                         // Init line view
                         let headerView = UIView()
+                        headerView.accessibilityIdentifier = "header"
+                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                        headerView.backgroundColor = UIColor.lightGray
+                        // Add seperator to label
+                        $0.cell.addSubview(headerView)
                         
+                        
+                    }.cellUpdate({ (cell, row) in
+                        
+                        
+                        // Check if view exists
+                        for view in cell.subviews{
+                            
+                            if view.accessibilityIdentifier == "header"{
+                                
+                                // Don't add header
+                                print("Cell has view already")
+                                
+                                // Remove view
+                                view.removeFromSuperview()
+                                
+                            }
+                        }
+                        
+                        // Init line view
+                        let headerView = UIView()
+                        headerView.accessibilityIdentifier = "header"
                         headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                         headerView.backgroundColor = UIColor.lightGray
-                        
-                        
                         // Add seperator to label
                         cell.addSubview(headerView)
                     })
@@ -812,6 +903,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         self.phoneLabels.append("mobile")
                                         self.phoneNumbers.append(["mobile" : ""])
                                         
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
@@ -831,19 +930,27 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 
                                             }
                                             
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
-                                            
-                                            
-                                            
-                                    
                                             
                                     }
                                     
@@ -867,9 +974,10 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         // Set label
                                         $0.title = val.keys.first!
                                         
+                                        
                                         // Init line view
                                         let headerView = UIView()
-                                        
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
@@ -886,13 +994,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Set the label frame to align the values against left edge
                                             cell.titleLabel!.frame = CGRect(x: (cell.titleLabel?.frame.origin.x)!, y: (cell.titleLabel?.frame.origin.x)!, width: 160.0 , height: (cell.titleLabel?.frame.height)!)
                                             
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                             
@@ -902,17 +1022,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Add gesture to cell
                                             self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
                                             
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
                                             
                                     }
 
@@ -967,6 +1076,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                         $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
@@ -987,14 +1104,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 print("Cell updating with index Path", row.indexPath!)
                                                 
                                             }
-
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                             
@@ -1018,6 +1146,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.value = val["email"]!
                                         $0.title = val["type"] ?? "work"
                                         
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         }.cellUpdate { cell, row in
                                             // Reconfig alignment
                                             cell.textField.textAlignment = .left
@@ -1029,27 +1165,27 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             cell.titleLabel?.text = val["type"] ?? "work"
                                             
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
-                                            
-                                            /*
-                                             // Init line view
-                                             let headerView = UIImageView()
-                                             
-                                             headerView.frame = CGRect(x: cell.textField.frame.width, y: 2, width: 10, height: 10)
-                                             headerView.image = UIImage(named: "arrow-left")
-                                             headerView.backgroundColor = UIColor.gray
-                                             headerView.tintColor = UIColor.gray
-                                             
-                                             // Add seperator to label
-                                             cell.titleLabel?.addSubview(headerView)*/
                                             
                                     }
 
@@ -1090,7 +1226,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         // Init line view
                                         let headerView = UIView()
-                                        
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
@@ -1108,13 +1244,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                             cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                             
@@ -1130,19 +1278,39 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Site"
                                         $0.value = val
                                         
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
                                             cell.textField.placeholder = "Url"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                             
@@ -1343,7 +1511,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         // Init line view
                                         let headerView = UIView()
-                                        
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
@@ -1354,13 +1522,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         //$0.tag = "Add Media Info"
                                     }.cellUpdate({ (cell, row) in
                                         
+                                        // Check if view exists
+                                        for view in cell.subviews{
+                                            
+                                            if view.accessibilityIdentifier == "header"{
+                                                
+                                                // Don't add header
+                                                print("Cell has view already")
+                                                
+                                                // Remove view
+                                                view.removeFromSuperview()
+                                                
+                                            }
+                                        }
+                                        
                                         // Init line view
                                         let headerView = UIView()
-                                        
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
-                                        
-                                        
                                         // Add seperator to label
                                         cell.addSubview(headerView)
                                     })
@@ -1371,16 +1551,36 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Tag"
                                         $0.value = val
-                                        //$0.tag = "Add Media Info"
+                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         }.cellUpdate({ (cell, row) in
+                                            
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
                                             
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                         })
@@ -1423,7 +1623,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         // Init line view
                                         let headerView = UIView()
-                                        
+                                        headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
@@ -1431,13 +1631,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         }.cellUpdate({ (cell, row) in
                                             
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
+                                            
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                         })
@@ -1448,16 +1660,36 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                     $0 <<< NameRow() {
                                         $0.placeholder = "Note"
                                         $0.value = val
-                                        //$0.tag = "Add Media Info"
+                                        
+                                        // Init line view
+                                        let headerView = UIView()
+                                        headerView.accessibilityIdentifier = "header"
+                                        headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
+                                        headerView.backgroundColor = UIColor.lightGray
+                                        // Add seperator to label
+                                        $0.cell.addSubview(headerView)
+                                        
                                         }.cellUpdate({ (cell, row) in
+                                            
+                                            // Check if view exists
+                                            for view in cell.subviews{
+                                                
+                                                if view.accessibilityIdentifier == "header"{
+                                                    
+                                                    // Don't add header
+                                                    print("Cell has view already")
+                                                    
+                                                    // Remove view
+                                                    view.removeFromSuperview()
+                                                    
+                                                }
+                                            }
                                             
                                             // Init line view
                                             let headerView = UIView()
-                                            
+                                            headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
-                                            
-                                            
                                             // Add seperator to label
                                             cell.addSubview(headerView)
                                         })

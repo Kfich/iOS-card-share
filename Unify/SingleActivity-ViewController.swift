@@ -368,6 +368,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         //cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
         cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
+        cell.descriptionLabel.textColor = UIColor.black
        
         if sections[indexPath.section] == "Phone Numbers" || sections[indexPath.section] == "Emails" || sections[indexPath.section] == "Addresses"{
             

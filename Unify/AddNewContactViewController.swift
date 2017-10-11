@@ -630,6 +630,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                     return NameRow("emailsRow_\(index)") {
                                         $0.title = "home "
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
+                                        $0.cell.textField.autocapitalizationType = .none
                                         
                                         // Add label to labels
                                         self.emailLabels.append("home")
@@ -797,70 +798,6 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                header: "",
                                footer: "") {
-                                $0.tag = "Tag Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Tag"
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("tagRow_\(index)") {
-                                        $0.placeholder = "Tag"
-                                        //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
-                                        //$0.tag = "Add Media Info"
-                                    }
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in tags{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Tag"
-                                        $0.value = val
-                                        //$0.tag = "Add Media Info"
-                                    }
-                                }
-            }
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "",
-                               footer: "") {
-                                $0.tag = "Notes Section"
-                                $0.addButtonProvider = { section in
-                                    return ButtonRow(){
-                                        $0.title = "Add Notes"
-                                        //$0.tag = "Add Media Info"
-                                        }.cellUpdate { cell, row in
-                                            cell.textLabel?.textAlignment = .left
-                                    }
-                                }
-                                $0.multivaluedRowToInsertAt = { index in
-                                    return NameRow("notesRow_\(index)") {
-                                        $0.placeholder = "Note"
-                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
-                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
-                                        //$0.tag = "Add Media Info"
-                                    }
-                                }
-                                
-                                // Iterate through array and set val
-                                for val in notes{
-                                    $0 <<< NameRow() {
-                                        $0.placeholder = "Note"
-                                        $0.value = val
-                                        //$0.tag = "Add Media Info"
-                                    }
-                                }
-            }
-            +++
-            
-            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                               header: "",
-                               footer: "") {
                                 $0.tag = "Address Section"
                                 $0.addButtonProvider = { section in
                                     return ButtonRow(){
@@ -987,7 +924,75 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                 
                                 }
         
+        
+        
         }
+        
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Tag Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Tag"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("tagRow_\(index)") {
+                                        $0.placeholder = "Tag"
+                                        //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in tags{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Tag"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+            }
+            +++
+            
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                               header: "",
+                               footer: "") {
+                                $0.tag = "Notes Section"
+                                $0.addButtonProvider = { section in
+                                    return ButtonRow(){
+                                        $0.title = "Add Notes"
+                                        //$0.tag = "Add Media Info"
+                                        }.cellUpdate { cell, row in
+                                            cell.textLabel?.textAlignment = .left
+                                    }
+                                }
+                                $0.multivaluedRowToInsertAt = { index in
+                                    return NameRow("notesRow_\(index)") {
+                                        $0.placeholder = "Note"
+                                        $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
+                                        $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+                                
+                                // Iterate through array and set val
+                                for val in notes{
+                                    $0 <<< NameRow() {
+                                        $0.placeholder = "Note"
+                                        $0.value = val
+                                        //$0.tag = "Add Media Info"
+                                    }
+                                }
+        }
+
         
         
         

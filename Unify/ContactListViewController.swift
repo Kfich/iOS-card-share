@@ -68,6 +68,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     var synced = false
     var searchText = ""
     
+    var refreshControl: UIRefreshControl!
     
     // Page setup
     
@@ -87,6 +88,12 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // View to remove separators
         tblSearchResults.tableFooterView = UIView()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Syncing Contacts...")
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tblSearchResults.addSubview(refreshControl)
+        
         
         //loadListOfCountries()
         
@@ -215,13 +222,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         else {
             // Assign contact object
             
-            let contact = contactObjectTable[letters[indexPath.section]]?[indexPath.row]
-            let name = contact?.name //self.formatter.string(from: contact!) ?? "No Name"
+            let contact = contactObjectTable[letters[indexPath.section]]?[indexPath.row] ?? Contact()
+            let name = contact.name //self.formatter.string(from: contact!) ?? "No Name"
             // Set name
             cell.contactNameLabel?.text = name//contactsHashTable[letters[indexPath.section]]?[indexPath.row].givenName ?? "Nothing"//dataArray[indexPath.row]
             
             // Set image data here
-            if contact?.imageId != "" {
+            if contact.imageId != "" {
                 /*print("Has IMAGE")
                  // Set id
                  let id = contact.imageId
@@ -233,7 +240,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                  cell.contactImageView?.setImageWith(url)*/
                
                 // Set from image data
-                cell.contactImageView.image = UIImage(data: (contact?.imageData)!)
+                cell.contactImageView.image = UIImage(data: (contact.imageData))
                 
                 
             }else{
@@ -323,7 +330,33 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
+    
+    
     // MARK: Custom functions
+    
+    func refresh(sender:AnyObject) {
+        // Code to refresh table view
+        
+        DispatchQueue.main.async {
+            
+            /*
+            // Reset all the arrays
+            self.letters.removeAll()
+            self.contacts.removeAll()
+            self.contactObjectTable.removeAll()
+            //contactsHashTable.removeAll()
+            self.tuples.removeAll()
+            self.contactTuples.removeAll()
+            self.dataArray.removeAll()*/
+            
+            
+            
+            // Fetch contact list
+            self.getContacts()
+            //fetchContactsForUser()
+            
+        }
+    }
     
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
@@ -1262,6 +1295,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             // Reload data
             self.tblSearchResults.reloadData()
+            
+            // End refreshing
+            self.refreshControl.endRefreshing()
         }
         
         // Set hash to contact manager
