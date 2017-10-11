@@ -85,6 +85,8 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var radarSwitch: UISwitch!
     
+    @IBOutlet var bgImageView: UIImageView!
+    
     @IBOutlet var syncContactSwitch: UISwitch!
     
     
@@ -108,6 +110,13 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
         // Do any additional setup after loading the view.
         // Set currentUser
         self.currentUser = ContactManager.sharedManager.currentUser
+        
+        // Set contact in case of edit
+        contact = ContactManager.sharedManager.contactObjectForIntro
+        
+        print("Selected Contact\n\(contact.toAnyObject())")
+        
+        
         
         // Set target for location field
         notesLabel.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidBegin)
@@ -134,14 +143,19 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
         bgImage.contentMode = .scaleToFill
         self.navigationBar.titleView = bgImage
         
+        // Set bg to bounds
+        bgImageView.frame = self.view.bounds
         
+        
+        
+        /*
         // Set background image on collectionview
         let bgImageView = UIImageView();
         bgImageView.image = UIImage(named: "backgroundGradient");
         bgImageView.contentMode = .scaleToFill
         bgImageView.frame = self.view.bounds
         self.view.addSubview(bgImageView)
-        self.view.sendSubview(toBack: bgImageView)
+        self.view.sendSubview(toBack: bgImageView)*/
         
         // Add segment control to navigation bar
         self.navigationBar.titleView = segmentedControl
@@ -246,6 +260,39 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
         if ContactManager.sharedManager.userArrivedFromLocationVC{
             // Set textfield text
             self.notesLabel.text = ContactManager.sharedManager.selectedLocation
+        }
+        
+        // Set contact in case of edit
+        contact = ContactManager.sharedManager.contactObjectForIntro
+        
+        // Populate form data in case of edit
+        if contact.first != "" {
+            // Set text
+            firstNameLabel.text = contact.first
+        }
+        if contact.last != "" {
+            // Set text
+            lastNameLabel.text = contact.last
+        }
+        
+        if contact.tags.count > 0{
+            // Set text
+            tokenField.text = contact.tags[0].values.first ?? ""
+            
+        }
+        if contact.notes.count > 0{
+            // Set text
+            notesLabel.text = contact.notes.first?.values.first ?? ""
+        }
+        if contact.phoneNumbers.count > 0{
+            // Set text
+            phoneLabel.text = contact.phoneNumbers.first?.values.first ?? ""
+            
+        }
+        if contact.emails.count > 0{
+            // Set text
+            emailLabel.text = contact.emails.first?.values.first ?? ""
+            
         }
     }
     
@@ -1950,6 +1997,8 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
             
             // Pass form values into contact object
             contact.name = "\(firstNameLabel.text!) \(lastNameLabel.text!)"
+            contact.first = firstNameLabel.text!
+            contact.last = lastNameLabel.text!
             
             // Set notes
             if notesLabel.text != nil{

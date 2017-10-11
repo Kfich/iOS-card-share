@@ -93,6 +93,7 @@ class ContactManager{
     var recipientToIntro = CNContact()
     var contactToInvite = Contact()
     var contactObjectForIntro = Contact()
+    var recipientObjectForIntro = Contact()
     var contactsHashTable = [String: [CNContact]]()
     
     // Contact for sending cards

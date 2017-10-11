@@ -239,6 +239,39 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Set textfield text
             self.notesLabel.text = ContactManager.sharedManager.selectedLocation
         }
+        
+        // Set contact in case of edit
+        contact = ContactManager.sharedManager.contactObjectForIntro
+        
+        // Populate form data in case of edit
+        if contact.first != "" {
+            // Set text
+            firstNameLabel.text = contact.first
+        }
+        if contact.last != "" {
+            // Set text
+            lastNameLabel.text = contact.last
+        }
+        
+        if contact.tags.count > 0{
+            // Set text
+            tokenField.text = contact.tags[0].values.first ?? ""
+            
+        }
+        if contact.notes.count > 0{
+            // Set text
+            notesLabel.text = contact.notes.first?.values.first ?? ""
+        }
+        if contact.phoneNumbers.count > 0{
+            // Set text
+            phoneLabel.text = contact.phoneNumbers.first?.values.first ?? ""
+            
+        }
+        if contact.emails.count > 0{
+            // Set text
+            emailLabel.text = contact.emails.first?.values.first ?? ""
+            
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -536,6 +569,8 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             self.selectedContactObject = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
             print("The selected contact \(self.selectedContactObject.toAnyObject())")
         }
+        
+        
 
         // Set selected contact from conversion
         self.selectedContact = self.contactToCNContact(contact: self.selectedContactObject)
@@ -1944,6 +1979,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             // Pass form values into contact object
             contact.name = "\(firstNameLabel.text!) \(lastNameLabel.text!)"
+            contact.first = firstNameLabel.text!
+            contact.last = lastNameLabel.text!
+            
             
             // Set notes
             if notesLabel.text != nil{

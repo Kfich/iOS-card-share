@@ -51,6 +51,10 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     var addContactSelected = false
     var addRecipientSelected = false
     
+    // Links
+    var contactVCardLink = ""
+    var recipientVCardLink = ""
+    
     
     
     // Contact formatter
@@ -404,7 +408,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
             
             // Configure message
-            let str = "Hi \(firstName), please meet \(recipientFirstName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+            let str = "Hi \(firstName), please meet \(recipientFirstName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(firstName)'s Contact Information\n\n\(contactVCardLink)\n\n\(recipientFirstName)'s Contact Information\n\n\(recipientVCardLink)"
             
             
             // Configure message
@@ -516,7 +520,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         
         // Configure message
-        let str = "Hi \(firstName), please meet \(recipientFirstName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName()) \n\n\(cardLink)"
+        let str = "Hi \(firstName), please meet \(recipientFirstName). Thought you should connect. You are both doing some cool projects and thought you might be able to work together. \n\nYou two can take it from here! \n\nBest, \n\(currentUser.getName())\n\n\(firstName)'s Contact Information\n\n\(contactVCardLink)\n\n\(recipientFirstName)'s Contact Information\n\n\(recipientVCardLink)"
         
         // Create Message
         mailComposerVC.setSubject("Unify Intro - \(name) meet \(recipientName)")
@@ -1276,7 +1280,16 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 // Call successful
                 print("VCard Created Response --->\n \(String(describing: response))")
                 
-               /* // Parse array for
+               
+                // Get response object
+                let dict = response as! NSDictionary
+                
+                // Set the link
+                self.contactVCardLink = dict["url"] as! String
+                
+                
+                
+                /* // Parse array for
                 let array = response as! NSArray
                 print("Array List >> \(array)")
                 
@@ -1288,6 +1301,56 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 
                 // Create transaction
                 self.createTransaction(type: "introduction")*/
+                
+                
+                // Hide HUD
+                //KVNProgress.dismiss()
+                
+            } else {
+                // Error occured
+                print("Transaction Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your connection request. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
+
+    func getRecipientVCards(contact: Contact){
+        
+        // Create dictionary
+        let parameters = ["data" : contact.toAnyObject()]
+        print(parameters)
+        
+        // Send to server
+        Connection(configuration: nil).getContactVCardsCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                // Call successful
+                print("VCard Created Response --->\n \(String(describing: response))")
+                
+                
+                // Get response object
+                let dict = response as! NSDictionary
+                
+                // Set the link
+                self.recipientVCardLink = dict["url"] as! String
+                
+                
+                /* // Parse array for
+                 let array = response as! NSArray
+                 print("Array List >> \(array)")
+                 
+                 // Set recipient list to transaction
+                 self.transaction.recipientList = array as! [String]
+                 // Test
+                 print("Transaction List Count >> \(self.transaction.recipientList.count)")
+                 print("Transaction List >> \(self.transaction.recipientList)")
+                 
+                 // Create transaction
+                 self.createTransaction(type: "introduction")*/
                 
                 
                 // Hide HUD
@@ -1324,14 +1387,14 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             DispatchQueue.main.async {
                 // Set selected tab
                 //self.performSegue(withIdentifier: "showIntroContactList", sender: self)
-                self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
+                self.performSegue(withIdentifier: "showContactOptions", sender: self)
             }
         }else if ContactManager.sharedManager.userSelectedNewContactForIntro && ContactManager.sharedManager.userArrivedFromIntro{
             //self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
-            self.performSegue(withIdentifier: "showIntroContactList", sender: self)
+            self.performSegue(withIdentifier: "showIntroList", sender: self)
         }else{
             // Show recipient options again bacuse they
-            self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
+            self.performSegue(withIdentifier: "showContactOptions", sender: self)
         }
     }
     
@@ -1516,7 +1579,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         if ContactManager.sharedManager.userSelectedNewContactForIntro {
             
             // Get VCard
-            //self.getConatctVCards(contact: ContactManager.sharedManager.contactObjectForIntro)
+            self.getConatctVCards(contact: ContactManager.sharedManager.contactObjectForIntro)
         
             //let cnContact = contactToCNContact(contact: ContactManager.sharedManager.contactObjectForIntro)
             
@@ -1530,13 +1593,13 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         }else{
             
             // Convert from cncontact to contact
-            //let contactList = [ContactManager.sharedManager.contactToIntro]
+            let contactList = [ContactManager.sharedManager.contactToIntro]
             
             // Init contact object
-            //let newContact = self.createContactRecords(phoneContactList: contactList)
+            let newContact = self.createContactRecords(phoneContactList: contactList)
             
             // Upload new record
-            //self.getConatctVCards(contact: newContact[0])
+            self.getConatctVCards(contact: newContact[0])
             
         }
         
@@ -1605,6 +1668,30 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         
         // Show share button 
         shareButton.isHidden = false
+        
+        
+        if ContactManager.sharedManager.userSelectedNewRecipientForIntro {
+            
+            // Get VCard
+            self.getRecipientVCards(contact: ContactManager.sharedManager.contactObjectForIntro)
+            
+            //let cnContact = contactToCNContact(contact: ContactManager.sharedManager.contactObjectForIntro)
+            
+            //let vcard = CNContactVCardSerialization.data(with: [cnContact])
+            
+            
+        }else{
+            
+            // Convert from cncontact to contact
+            let contactList = [ContactManager.sharedManager.contactToIntro]
+            
+            // Init contact object
+            let newContact = self.createContactRecords(phoneContactList: contactList)
+            
+            // Upload new record
+            self.getRecipientVCards(contact: newContact[0])
+            
+        }
         
     }
     
