@@ -141,7 +141,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Configure page control dots
         // Set page control count
-        pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count - 1
+        pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count
         
         // Register cell
         cardCollectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: "AddNewCardCell")
@@ -229,7 +229,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             KVNProgress.showSuccess(withStatus: "Card Created Successfully!")
         }
         
-        
+        /*
         print("New Card Added")
         print("\(ContactManager.sharedManager.currentUserCards.count)")
         ContactManager.sharedManager.viewableUserCards.insert(ContactManager.sharedManager.currentUserCards[0], at: 0)
@@ -237,7 +237,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         // Set background image on collectionview
         let bgImage = UIImageView();
         bgImage.image = UIImage(named: "backgroundGradient");
-        bgImage.contentMode = .scaleToFill
+        bgImage.contentMode = .scaleToFill*/
        // self.cardCollectionView.backgroundView = bgImage
         
         // Sync up with main queue
@@ -248,7 +248,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
         
         // Parse for cards
-        //self.cardUpdated()
+        self.cardUpdated()
     }
     
     func cardDeleted() {
@@ -494,50 +494,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         }else{
             
+            
             // Find current card index
             let currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
             self.pageControl.currentPage = indexPath.row
             print("Page control value!! \(self.pageControl.currentPage)")
             
-            // Get badge list
-            cell.badgeList = self.parseCardForBagdes(card: currentCard)
-            cell.corpList = currentCard.cardProfile.badgeDictionaryList
-            
             //cell.badgeList += self.parseCardForCorpBagdes(card: currentCard)
-            
-            if currentCard.isVerified{
-                cell.cardWrapperView.layer.borderWidth = 1.5
-                
-                //let str = currentCard.cardDesign.color
-                //let data = str.data(using: .utf8)!
-                //let hexString = data.map{ String(format:"%02x", $0) }.joined()
-                
-                print("\(currentCard.cardDesign.logo) The company logo link")
-                
-                // Set logo 
-                //cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo))
-                
-                if currentCard.cardDesign.logo != "" {
-                    cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo)!, placeholderImage: UIImage(named: "social-blank"))
-                }
-                
-                // Hide outline view
-                //cell.cardOutlineView.isHidden = false
-                
-                if ContactManager.sharedManager.currentUser.profileImages.count > 0{
-                    cell.cardImage.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
-                }
-                
-                cell.cardOutlineView.layer.cornerRadius = 12.0
-                cell.cardOutlineView.clipsToBounds = true
-                cell.cardOutlineView.layer.borderWidth = 3.5
-                cell.cardOutlineView.layer.borderColor = UIColor.yellow.cgColor
-
-            }else{
-                
-                //cell.cardOutlineView.isHidden = true
-            }
-            
             
             // Populate text field data
             
@@ -564,10 +527,55 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             }
             
             
-            
+            // Check if verified
+            if currentCard.isVerified{
+                cell.cardWrapperView.layer.borderWidth = 1.5
+                
+                //let str = currentCard.cardDesign.color
+                //let data = str.data(using: .utf8)!
+                //let hexString = data.map{ String(format:"%02x", $0) }.joined()
+                
+                print("\(currentCard.cardDesign.logo) The company logo link")
+                
+                // Set logo
+                //cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo))
+                
+                if currentCard.cardDesign.logo != "" {
+                    cell.companyImageView.setImageWith(URL(string: currentCard.cardDesign.logo)!, placeholderImage: UIImage(named: "social-blank"))
+                }
+                
+                // Hide outline view
+                //cell.cardOutlineView.isHidden = false
+                
+                if ContactManager.sharedManager.currentUser.profileImages.count > 0{
+                    cell.cardImage.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+                }
+                
+                cell.cardOutlineView.layer.cornerRadius = 12.0
+                cell.cardOutlineView.clipsToBounds = true
+                cell.cardOutlineView.layer.borderWidth = 3.5
+                cell.cardOutlineView.layer.borderColor = UIColor.red.cgColor
+                
+                // Reload view for card
+                cell.reloadInputViews()
+                
+            }else{
+                
+                // Set to clear
+                cell.cardOutlineView.layer.borderColor = UIColor.clear.cgColor
+                cell.companyImageView.image = UIImage()
+                // Reload view for card
+                cell.reloadInputViews()
+            }
+
             // Configure the card view
             configureViews(cell: cell)
-
+            
+            // Get badge list
+            cell.badgeList = self.parseCardForBagdes(card: currentCard)
+            cell.corpList = currentCard.cardProfile.badgeDictionaryList
+            // Reload the collection view for cell
+            cell.collectionView.reloadData()
         }
 
         return cell
@@ -613,13 +621,19 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         snapToNearestCell(scrollView as! UICollectionView)
+        
+        
+        // Get badge list
+        //cell.badgeList = self.parseCardForBagdes(card: currentCard)
+        //cell.corpList = currentCard.cardProfile.badgeDictionaryList
+        
         //scrollToNearestVisibleCollectionViewCell()
     }
     
     func snapToNearestCell(_ collectionView: UICollectionView) {
         
         /* *collectionView.numberOfItems(inSection: 0) + 1*/
-        for i in 0..<ContactManager.sharedManager.viewableUserCards.count - 1{
+        for i in 0...ContactManager.sharedManager.viewableUserCards.count + 1{
             
             let itemWithSpaceWidth = cardCollectionView.frame.width
             let itemWidth = cardCollectionView.frame.width
@@ -645,6 +659,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         }
     }
     
+    /*
     func scrollToNearestVisibleCollectionViewCell() {
         let visibleCenterPositionOfScrollView = Float(cardCollectionView.contentOffset.x + (self.cardCollectionView!.bounds.size.width / 2))
         var closestCellIndex = -1
@@ -664,7 +679,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         if closestCellIndex != -1 {
             self.cardCollectionView!.scrollToItem(at: IndexPath(row: closestCellIndex, section: 0), at: .centeredHorizontally, animated: true)
         }
-    }
+    }*/
     
     // center content 
     
@@ -981,7 +996,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 ContactManager.sharedManager.viewableUserCards.append(dummyCard)
                 
                 // Set page control count
-                self.pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count - 1
+                self.pageControl.numberOfPages = ContactManager.sharedManager.viewableUserCards.count
                 ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[0]
                 
                 // Sync up with main queue

@@ -449,12 +449,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 KVNProgress.dismiss()
                 
                 // Post notification for radar view to refresh
-                self.postNotification()
-                // Dismiss VC
-                self.dismiss(animated: true, completion: {
-                    // Send to database to update card with the new uuid
-                    print("Send to db")
-                })
+                self.postDeleteNotification()
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
@@ -464,6 +459,12 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             // Hide indicator
             KVNProgress.dismiss()
         }
+        // Dismiss VC
+        self.dismiss(animated: true, completion: {
+            // Send to database to update card with the new uuid
+            print("Send to db from done call")
+            
+        })
         
     }
     
@@ -2001,7 +2002,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
                 let country = add["country"] ?? ""
                 
                 // Create Address String
-                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                let addressString = "\(street) \(city) \(state) \(zip) \(country)"
                 
                 // Append values
                 addresses.append(addressString)

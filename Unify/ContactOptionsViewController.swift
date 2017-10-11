@@ -1,8 +1,8 @@
 //
-//  RecipientOptionsViewController.swift
+//  ContactOptionsViewController.swift
 //  Unify
 //
-//  Created by Kevin Fich on 7/27/17.
+//  Created by Kevin Fich on 10/11/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
@@ -12,8 +12,7 @@ import Contacts
 import MessageUI
 import ACFloatingTextfield_Swift
 
-
-class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate {
+class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate {
     
     // Properties
     // --------------------------
@@ -32,16 +31,16 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var selectedContactPhone : String = ""
     var selectedEmail : String = ""
     
-    // Contact Object 
+    // Contact Object
     var contact = Contact()
     
-    // Location 
+    // Location
     var lat : Double = 0.0
     var long : Double = 0.0
     var address = String()
     var updateLocation_tick = 5
     let locationManager = CLLocationManager()
-
+    
     var cellReuseIdentifier = "ContactListCell"
     
     // For search results
@@ -72,9 +71,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     var synced = false
     
     var tokenField = KSTokenView()
-
     
-    // Radar 
+    
+    // Radar
     var radarStatus: Bool = false
     var formatter = CNContactFormatter()
     
@@ -97,15 +96,15 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBOutlet var tagsLabel: ACFloatingTextfield!
     @IBOutlet var notesLabel: ACFloatingTextfield!
-
+    
     
     @IBOutlet var tokenView: UIView!
     
-
-    // Page setup 
+    
+    // Page setup
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         // Set currentUser
         self.currentUser = ContactManager.sharedManager.currentUser
@@ -128,12 +127,21 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Add target action method
         segmentedControl.addTarget(self, action: #selector(RecipientOptionsViewController.toggleViews(sender:)), for: .valueChanged)
         
-        // Set nav background 
+        // Set nav background
         // Set background image on collectionview
         let bgImage = UIImageView();
         bgImage.image = UIImage(named: "backgroundGradient");
         bgImage.contentMode = .scaleToFill
         self.navigationBar.titleView = bgImage
+        
+        
+        // Set background image on collectionview
+        let bgImageView = UIImageView();
+        bgImageView.image = UIImage(named: "backgroundGradient");
+        bgImageView.contentMode = .scaleToFill
+        bgImageView.frame = self.view.bounds
+        self.view.addSubview(bgImageView)
+        self.view.sendSubview(toBack: bgImageView)
         
         // Add segment control to navigation bar
         self.navigationBar.titleView = segmentedControl
@@ -156,7 +164,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             self.dataArray = ContactManager.sharedManager.dataArray
             self.tuples = ContactManager.sharedManager.tuples
             self.contactObjectTable = ContactManager.sharedManager.contactObjectTable
-
+            
             // Fetch from server
             //self.sortContacts()
             
@@ -164,7 +172,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Fetch contacts here
             self.getContacts()
         }
-
+        
         
         // Configure bar
         self.configureCustomSearchController()
@@ -217,9 +225,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }
         
         /*
-        // Config container view
-        let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x, y: tokenField.frame.height - 0.5, width: self.tagsLabel.frame.size.width,  height: 0.50))
-        containerView.backgroundColor = UIColor.white*/
+         // Config container view
+         let containerView = UIView(frame: CGRect(x: tokenField.frame.origin.x, y: tokenField.frame.height - 0.5, width: self.tagsLabel.frame.size.width,  height: 0.50))
+         containerView.backgroundColor = UIColor.white*/
         // Add to token field
         self.tokenView.addSubview(containerView)
         
@@ -227,7 +235,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Add to view
         self.tokenView.addSubview(tokenField)
         
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -240,7 +248,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             self.notesLabel.text = ContactManager.sharedManager.selectedLocation
         }
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
@@ -275,7 +283,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Show table
             //self.tableView.isHidden = false
             
-            // Toggle radar status 
+            // Toggle radar status
             //self.radarStatus = true
             
             // Start updating location
@@ -285,7 +293,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBAction func dismissViewController(_ sender: Any) {
         
-        // Pop view 
+        // Pop view
         navigationController?.popViewController(animated: true)
     }
     
@@ -309,61 +317,61 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         
         /*else{
-            
-            if ContactManager.sharedManager.userSelectedRecipient {
-                
-            }
-            // CNContact Objects
-            let contact = ContactManager.sharedManager.contactToIntro
-            let recipient = ContactManager.sharedManager.recipientToIntro
-            
-            // Check if they both have email
-            
-            if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
-                
-                print("Contact Object 1 \n\n\(contact.emailAddresses)")
-                print("\n\nContact Object 2 \n\n\(recipient.emailAddresses)")
-                
-                
-                let contactEmail = contact.emailAddresses[0].value as String
-                let recipientEmail = recipient.emailAddresses[0].value as String
-                
-                // Add to transaction
-                self.transaction.recipientEmails = []
-                self.transaction.recipientEmails?.append(contactEmail)
-                self.transaction.recipientEmails?.append(recipientEmail)
-                
-                // Launch Email client
-                showEmailCard()
-                
-            }else if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
-                
-                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
-                
-                // Add to transaction
-                self.transaction.recipientPhones = []
-                self.transaction.recipientPhones?.append(contactPhone!)
-                self.transaction.recipientPhones?.append(recipientPhone!)
-                
-                // Launch text client
-                showSMSCard()
-                
-            }else{
-                // No mutual way to connect
-                // Pick default based on what the contact object has populated
-                
-                // ***** Handle this off case tomorrow ****
-                print("No Mutual Info")
-            }
-            
-        }*/
-    
+         
+         if ContactManager.sharedManager.userSelectedRecipient {
+         
+         }
+         // CNContact Objects
+         let contact = ContactManager.sharedManager.contactToIntro
+         let recipient = ContactManager.sharedManager.recipientToIntro
+         
+         // Check if they both have email
+         
+         if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+         
+         print("Contact Object 1 \n\n\(contact.emailAddresses)")
+         print("\n\nContact Object 2 \n\n\(recipient.emailAddresses)")
+         
+         
+         let contactEmail = contact.emailAddresses[0].value as String
+         let recipientEmail = recipient.emailAddresses[0].value as String
+         
+         // Add to transaction
+         self.transaction.recipientEmails = []
+         self.transaction.recipientEmails?.append(contactEmail)
+         self.transaction.recipientEmails?.append(recipientEmail)
+         
+         // Launch Email client
+         showEmailCard()
+         
+         }else if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+         
+         let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+         let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+         
+         // Add to transaction
+         self.transaction.recipientPhones = []
+         self.transaction.recipientPhones?.append(contactPhone!)
+         self.transaction.recipientPhones?.append(recipientPhone!)
+         
+         // Launch text client
+         showSMSCard()
+         
+         }else{
+         // No mutual way to connect
+         // Pick default based on what the contact object has populated
+         
+         // ***** Handle this off case tomorrow ****
+         print("No Mutual Info")
+         }
+         
+         }*/
+        
         
     }
     
     
-// ++++++++++++ Tableview ++++++++++++++++++++++++++
+    // ++++++++++++ Tableview ++++++++++++++++++++++++++
     
     
     
@@ -421,14 +429,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Set image data here
             if contact.imageId != "" {
                 /*print("Has IMAGE")
-                // Set id
-                let id = contact.imageId
-                
-                // Set image for contact
-                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
-                //let placeholderImage = UIImage(named: "profile")!
-                // Set image
-                cell.contactImageView?.setImageWith(url)*/
+                 // Set id
+                 let id = contact.imageId
+                 
+                 // Set image for contact
+                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                 //let placeholderImage = UIImage(named: "profile")!
+                 // Set image
+                 cell.contactImageView?.setImageWith(url)*/
                 
                 // Set from data
                 cell.contactImageView?.image = UIImage(data: contact.imageData)
@@ -452,14 +460,14 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Set image data here
             if contact?.imageId != "" {
                 /*print("Has IMAGE")
-                // Set id
-                let id = contact?.imageId
-                
-                // Set image for contact
-                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
-                //let placeholderImage = UIImage(named: "profile")!
-                // Set image
-                cell.contactImageView?.setImageWith(url)*/
+                 // Set id
+                 let id = contact?.imageId
+                 
+                 // Set image for contact
+                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                 //let placeholderImage = UIImage(named: "profile")!
+                 // Set image
+                 cell.contactImageView?.setImageWith(url)*/
                 
                 // Set from data
                 cell.contactImageView.image = UIImage(data: (contact?.imageData)!)
@@ -536,7 +544,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             self.selectedContactObject = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
             print("The selected contact \(self.selectedContactObject.toAnyObject())")
         }
-
+        
         // Set selected contact from conversion
         self.selectedContact = self.contactToCNContact(contact: self.selectedContactObject)
         
@@ -545,9 +553,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Print to test
         print(self.selectedContact.givenName)
         // Make conditional checks to see where user navigated from
-       
-        
-        /*if ContactManager.sharedManager.userArrivedFromIntro != true || ContactManager.sharedManager.editContact{
+       /* if ContactManager.sharedManager.userArrivedFromIntro != true || ContactManager.sharedManager.editContact{*/
             
             // Set bool to true
             ContactManager.sharedManager.userArrivedFromIntro = true
@@ -566,26 +572,26 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             // Drop view
             dismiss(animated: true, completion: nil)
-        }else{*/
-        
-       // }
-        
-        // Set Contact on Manager
-        ContactManager.sharedManager.recipientToIntro = selectedContact
-        
-        // Set nav bool
-        //ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
         
         
-        print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
-        print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
-        print("User selected recipient on second selection \(ContactManager.sharedManager.userSelectedNewRecipientForIntro)")
-        
-        // Post for recipient selected
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
-        
-        // Drop View
-        dismiss(animated: true, completion: nil)
+        /*}else{
+            // Set Contact on Manager
+            ContactManager.sharedManager.recipientToIntro = selectedContact
+            
+            // Set nav bool
+            //ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
+            
+            
+            print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+            print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+            print("User selected recipient on second selection \(ContactManager.sharedManager.userSelectedNewRecipientForIntro)")
+            
+            // Post for recipient selected
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+            
+            // Drop View
+            dismiss(animated: true, completion: nil)
+        }*/
         
         
         
@@ -600,10 +606,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Drop view
             self.navigationController?.popViewController(animated: true)
         }
-
+        
         
     }
-
+    
     // Search Bar Configuration & Delegates
     
     
@@ -745,7 +751,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         self.searchText = searchText
         
         print("self search text \(self.searchText)")
-
+        
     }
     
     
@@ -770,7 +776,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     
     // Contact management
-
+    
     func contactToCNContact(contact: Contact) -> CNContact {
         var cnObject = CNContact()
         
@@ -815,7 +821,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
         }
         if contact.emails.count > 0 {
-        
+            
             // Iterate over array and pull value
             for address in contact.emails {
                 // Print to test
@@ -824,9 +830,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 // Parse for emails
                 let email = CNLabeledValue(label: CNLabelWork, value: address["email"] as NSString? ?? "")
                 contactToAdd.emailAddresses = [email]
-            
+                
             }
-        
+            
         }
         
         
@@ -834,7 +840,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             // Assign
             contactToAdd.imageData = contact.imageData
         }
-
+        
         
         // Cast mutable contact back to regular contact
         cnObject = contactToAdd as CNContact
@@ -846,7 +852,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Return the non mutable copy
         return cnObject
-    
+        
     }
     
     
@@ -939,7 +945,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         })
         
     }
-
+    
     
     func getContacts() {
         let status = CNContactStore.authorizationStatus(for: .contacts)
@@ -1409,13 +1415,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                     contactObject.imageDictionary = imageDict
                     
                     /*
-                    if self.synced != true {
-                        // Upload Record
-                        ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
-                    }else{
-                        //
-                        print("The users image has been uploaded already")
-                    }*/
+                     if self.synced != true {
+                     // Upload Record
+                     ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
+                     }else{
+                     //
+                     print("The users image has been uploaded already")
+                     }*/
                     
                 }
                 
@@ -1517,7 +1523,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         return contactObjectList
     }
-
+    
     
     
     
@@ -1530,7 +1536,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }else{
             return true
         }
-
+        
     }
     
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
@@ -1592,16 +1598,16 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Sync contact list
         self.getContacts()
     }
-
-
-// ++++++++++++ Tableview ++++++++++++++++++++++++++
+    
+    
+    // ++++++++++++ Tableview ++++++++++++++++++++++++++
     // Location Managment
     
     func updateLocation(){
         
         // Update location tick
         updateLocation_tick = updateLocation_tick + 1
-    
+        
         print(updateLocation_tick)
         
         // Check is list should be refreshed
@@ -1627,7 +1633,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                     let dictionary : NSArray = response as! NSArray
                     
                     print("data length", dictionary.count)
-            
+                    
                     
                     for item in dictionary {
                         
@@ -1644,10 +1650,10 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                         // Append users to radarContacts array
                         self.radarContactList.append(user)
                         print("Radar List Count >>>> \(self.radarContactList.count)")
-                    
+                        
                     }
                     
-                    // Reload table 
+                    // Reload table
                     self.tableView.reloadData()
                     
                     
@@ -1752,7 +1758,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         if(MFMessageComposeViewController .canSendText()){
             
             composeVC.messageComposeDelegate = self
-        
+            
             // Check for nil vals
             
             var name = ""
@@ -1794,18 +1800,18 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                     
                     let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
                     // Set contact phone number
-                   // phone = contactPhone!
+                    // phone = contactPhone!
                     
                     let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
                     
                     // Launch text client
                     composeVC.recipients = [contactPhone!, recipientPhone!]
                 }
-
+                
                 
             }
             
-
+            
             
             composeVC.body = str
             
@@ -1901,7 +1907,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         sendMailErrorAlert.show()
     }
     
-
+    
     // Custom Methods
     
     func configureSelectedImageView(imageView: UIImageView) {
@@ -1915,7 +1921,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func validateForm() -> Bool {
-
+        
         // Here, configure form validation
         
         if (firstNameLabel.text == nil || lastNameLabel.text == nil || (emailLabel.text == nil && phoneLabel.text == nil)) {
@@ -1956,22 +1962,22 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             }
             
             /*
-            // Set notes
-            if tagsLabel.text != nil{
-                
-                var fullString = tagsLabel.text!
-                
-                let tokenArray = fullString.components(separatedBy: " ")//split(fullString) {$0 == " "}
-                
-                print("Token Array\n\(tokenArray)")
-                
-                for item in tokenArray {
-                    // Iterate and set
-                    contact.setTags(tag: item)
-                }
-                
-                
-            }*/
+             // Set notes
+             if tagsLabel.text != nil{
+             
+             var fullString = tagsLabel.text!
+             
+             let tokenArray = fullString.components(separatedBy: " ")//split(fullString) {$0 == " "}
+             
+             print("Token Array\n\(tokenArray)")
+             
+             for item in tokenArray {
+             // Iterate and set
+             contact.setTags(tag: item)
+             }
+             
+             
+             }*/
             
             // Check for phone
             if phoneLabel.text != nil {
@@ -2001,7 +2007,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             ContactManager.sharedManager.contactObjectForIntro = self.contact
             
             // Check intent
-           /* if ContactManager.sharedManager.userArrivedFromIntro != true {
+            /*if ContactManager.sharedManager.userArrivedFromIntro != true {*/
                 
                 // Set bool to true
                 ContactManager.sharedManager.userArrivedFromIntro = true
@@ -2009,15 +2015,17 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
                 // Let off notification
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
                 
-            }else{*/
+           
             
-            // Set bool to true
-            ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
             
-            // Let off notification
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
-            
-            //}
+            /*}else{
+                // Set bool to true
+                ContactManager.sharedManager.userSelectedNewRecipientForIntro = true
+                
+                // Let off notification
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+                
+            }*/
             
             
             
@@ -2027,47 +2035,47 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             
             /*
-            // Check for match in contact info
-            let introContact = ContactManager.sharedManager.contactToIntro
-            
-            if introContact.emailAddresses.count > 0 && contact.emails.count > 0 {
-                
-                //
-                self.selectedEmail = introContact.emailAddresses[0].value as String
-                
-                //let recipientEmail = recipient.emailAddresses[0].value as String
- 
-                
-                // Launch Email client
-                //showEmailCard()
-                
-            }else if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
-                // Set selected phone
-                self.selectedContactPhone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
-                
-                // Launch text client
-                //showSMSCard()
-                
-            }else{
-                // Users don't have things in common
-                // form invalid
-                let message = "The two people have no contact info in common"
-                let title = "Unable to Connect"
-                
-                // Configure alertview
-                let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
-                    
-                    // Dismiss alert
-                    self.dismiss(animated: true, completion: nil)
-                    
-                })
-                
-                // Add action to alert
-                alertView.addAction(cancel)
-                self.present(alertView, animated: true, completion: nil)
-            
-            }*/
+             // Check for match in contact info
+             let introContact = ContactManager.sharedManager.contactToIntro
+             
+             if introContact.emailAddresses.count > 0 && contact.emails.count > 0 {
+             
+             //
+             self.selectedEmail = introContact.emailAddresses[0].value as String
+             
+             //let recipientEmail = recipient.emailAddresses[0].value as String
+             
+             
+             // Launch Email client
+             //showEmailCard()
+             
+             }else if introContact.phoneNumbers.count > 0 && contact.phoneNumbers.count > 0 {
+             // Set selected phone
+             self.selectedContactPhone = ((introContact.phoneNumbers[0].value).value(forKey: "digits") as? String)!
+             
+             // Launch text client
+             //showSMSCard()
+             
+             }else{
+             // Users don't have things in common
+             // form invalid
+             let message = "The two people have no contact info in common"
+             let title = "Unable to Connect"
+             
+             // Configure alertview
+             let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
+             let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
+             
+             // Dismiss alert
+             self.dismiss(animated: true, completion: nil)
+             
+             })
+             
+             // Add action to alert
+             alertView.addAction(cancel)
+             self.present(alertView, animated: true, completion: nil)
+             
+             }*/
             
             // Form valid
             return true
@@ -2076,7 +2084,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     
-
+    
     
     func toggleViews(sender: UISegmentedControl) {
         
@@ -2086,7 +2094,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         case 1:
             // Test
             print("Segment Two")
-            // Hide view 
+            // Hide view
             self.tableView.isHidden = true
             
         case 0:
@@ -2094,13 +2102,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             print("Segment One")
             // Hide view
             self.tableView.isHidden = false
-
+            
         default:
             // Test
             print("Segment One")
             // Hide view
             self.tableView.isHidden = false
-
+            
         }
     }
     
@@ -2108,17 +2116,17 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Check user intent
         /*if self.tableView.isHidden == false{
-            // Use introContact from manager
-            /*let temp = ContactManager.sharedManager.recipientToIntro
-            
-            self.contact = self.createContactRecord(contact: temp)*/
-            
-            // Parse contact
-        }else{
-            // User filled out form
-            
-            
-        }*/
+         // Use introContact from manager
+         /*let temp = ContactManager.sharedManager.recipientToIntro
+         
+         self.contact = self.createContactRecord(contact: temp)*/
+         
+         // Parse contact
+         }else{
+         // User filled out form
+         
+         
+         }*/
         
         // Assign contact
         let contact = self.contact
@@ -2126,16 +2134,16 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         // Show progress hud
         
         /*let conf = KVNProgressConfiguration.default()
-        conf?.isFullScreen = true
-        conf?.statusColor = UIColor.white
-        conf?.successColor = UIColor.white
-        conf?.circleSize = 170
-        conf?.lineWidth = 10
-        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
-        conf?.circleStrokeBackgroundColor = UIColor.white
-        conf?.circleStrokeForegroundColor = UIColor.white
-        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf!)*/
+         conf?.isFullScreen = true
+         conf?.statusColor = UIColor.white
+         conf?.successColor = UIColor.white
+         conf?.circleSize = 170
+         conf?.lineWidth = 10
+         conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
+         conf?.circleStrokeBackgroundColor = UIColor.white
+         conf?.circleStrokeForegroundColor = UIColor.white
+         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+         KVNProgress.setConfiguration(conf!)*/
         
         // Set text to HUD
         KVNProgress.show(withStatus: "Saving to your contacts...")
@@ -2191,121 +2199,121 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Iterate over list and itialize contact objects
         
-            
-            // Init temp contact object
-            let contactObject = Contact()
-            
-            // Set name
-            contactObject.name = formatter.string(from: contact) ?? "No Name"
-            
-            // Check for count
-            if contact.phoneNumbers.count > 0 {
-                // Iterate over items
-                for number in contact.phoneNumbers{
-                    // print to test
-                    print("Number: \((number.value.value(forKey: "digits" )!))")
-                    
-                    // Init the number
-                    let digits = number.value.value(forKey: "digits") as! String
-                    
-                    // Append to object
-                    contactObject.setPhoneRecords(phoneRecord: digits)
-                }
+        
+        // Init temp contact object
+        let contactObject = Contact()
+        
+        // Set name
+        contactObject.name = formatter.string(from: contact) ?? "No Name"
+        
+        // Check for count
+        if contact.phoneNumbers.count > 0 {
+            // Iterate over items
+            for number in contact.phoneNumbers{
+                // print to test
+                print("Number: \((number.value.value(forKey: "digits" )!))")
                 
+                // Init the number
+                let digits = number.value.value(forKey: "digits") as! String
+                
+                // Append to object
+                contactObject.setPhoneRecords(phoneRecord: digits)
             }
-            if contact.emailAddresses.count > 0 {
-                // Iterate over array and pull value
-                for address in contact.emailAddresses {
-                    // Print to test
-                    print("Email : \(address.value)")
-                    
-                    // Append to object
-                    contactObject.setEmailRecords(emailAddress: address.value as String)
-                }
-            }
-            if contact.imageDataAvailable {
+            
+        }
+        if contact.emailAddresses.count > 0 {
+            // Iterate over array and pull value
+            for address in contact.emailAddresses {
                 // Print to test
-                print("Has IMAGE Data")
-                
-                // Create ID and add to dictionary
-                // Image data png
-                let imageData = contact.imageData!
-                print(imageData)
-                
-                // Assign asset name and type
-                let idString = contactObject.randomString(length: 20)
-                
-                // Name image with id string
-                let fname = idString
-                let mimetype = "image/png"
-                
-                // Create image dictionary
-                let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
-                
-                // Upload image to amazon?
-                
+                print("Email : \(address.value)")
                 
                 // Append to object
-                contactObject.setContactImageId(id: idString)
-                contactObject.imageDictionary = imageDict
-                
+                contactObject.setEmailRecords(emailAddress: address.value as String)
             }
-            if contact.urlAddresses.count > 0{
-                // Iterate over items
-                for address in contact.urlAddresses {
-                    // Print to test
-                    print("Website : \(address.value as String)")
-                    
-                    // Append to object
-                    contactObject.setWebsites(websiteRecord: address.value as String)
-                }
+        }
+        if contact.imageDataAvailable {
+            // Print to test
+            print("Has IMAGE Data")
+            
+            // Create ID and add to dictionary
+            // Image data png
+            let imageData = contact.imageData!
+            print(imageData)
+            
+            // Assign asset name and type
+            let idString = contactObject.randomString(length: 20)
+            
+            // Name image with id string
+            let fname = idString
+            let mimetype = "image/png"
+            
+            // Create image dictionary
+            let imageDict = ["image_id":idString, "image_data": imageData, "file_name": fname, "type": mimetype] as [String : Any]
+            
+            // Upload image to amazon?
+            
+            
+            // Append to object
+            contactObject.setContactImageId(id: idString)
+            contactObject.imageDictionary = imageDict
+            
+        }
+        if contact.urlAddresses.count > 0{
+            // Iterate over items
+            for address in contact.urlAddresses {
+                // Print to test
+                print("Website : \(address.value as String)")
                 
-            }
-            if contact.socialProfiles.count > 0{
-                // Iterate over items
-                for profile in contact.socialProfiles {
-                    // Print to test
-                    print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
-                    
-                    // Create temp link
-                    let link = profile.value.value(forKey: "urlString")  as! String
-                    
-                    // Append to object
-                    contactObject.setSocialLinks(socialLink: link)
-                }
-                
+                // Append to object
+                contactObject.setWebsites(websiteRecord: address.value as String)
             }
             
-            if contact.jobTitle != "" {
-                //Print to test
-                print("Job Title: \(contact.jobTitle)")
+        }
+        if contact.socialProfiles.count > 0{
+            // Iterate over items
+            for profile in contact.socialProfiles {
+                // Print to test
+                print("Social Profile : \((profile.value.value(forKey: "urlString") as! String))")
+                
+                // Create temp link
+                let link = profile.value.value(forKey: "urlString")  as! String
                 
                 // Append to object
-                contactObject.setTitleRecords(title: contact.jobTitle)
-            }
-            if contact.organizationName != "" {
-                //print to test
-                print("Organization : \(contact.organizationName)")
-                
-                // Append to object
-                contactObject.setOrganizations(organization: contact.organizationName)
-            }
-            if contact.note != "" {
-                //print to test
-                print(contact.note)
-                
-                // Append to object
-                contactObject.setNotes(note: contact.note)
-                
+                contactObject.setSocialLinks(socialLink: link)
             }
             
-            // Test object
-            print("Contact >> \n\(contactObject.toAnyObject()))")
+        }
+        
+        if contact.jobTitle != "" {
+            //Print to test
+            print("Job Title: \(contact.jobTitle)")
+            
+            // Append to object
+            contactObject.setTitleRecords(title: contact.jobTitle)
+        }
+        if contact.organizationName != "" {
+            //print to test
+            print("Organization : \(contact.organizationName)")
+            
+            // Append to object
+            contactObject.setOrganizations(organization: contact.organizationName)
+        }
+        if contact.note != "" {
+            //print to test
+            print(contact.note)
+            
+            // Append to object
+            contactObject.setNotes(note: contact.note)
+            
+        }
+        
+        // Test object
+        print("Contact >> \n\(contactObject.toAnyObject()))")
         
         
         return contactObject
     }
-
+    
     func syncContact() {
         
         // Init CNContact Object
@@ -2383,7 +2391,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         present(alert, animated: true)
     }
     
-
+    
     
     func createTransaction(type: String) {
         // Configure trans for CNContact
@@ -2413,7 +2421,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             self.transaction.recipientEmails = []
             self.transaction.recipientEmails?.append(contactEmail)
             self.transaction.recipientEmails?.append(recipientEmail)
-        
+            
         }
         
         if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
@@ -2458,34 +2466,34 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             transaction.location = self.notesLabel.text ?? ""
             
             /*
-            if self.syncContactSwitch.isOn == true {
-                
-                // Set bool for contact sync
-                ContactManager.sharedManager.syncIntroContactSwitch = true
-                
-                
-                // Upload sync contact record
-                //self.syncContact()
-                
-                
-            }*/
-
+             if self.syncContactSwitch.isOn == true {
+             
+             // Set bool for contact sync
+             ContactManager.sharedManager.syncIntroContactSwitch = true
+             
+             
+             // Upload sync contact record
+             //self.syncContact()
+             
+             
+             }*/
+            
         }
         
         
         // Show progress hud
         
-       /* let conf = KVNProgressConfiguration.default()
-        conf?.isFullScreen = true
-        conf?.statusColor = UIColor.white
-        conf?.successColor = UIColor.white
-        conf?.circleSize = 170
-        conf?.lineWidth = 10
-        conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
-        conf?.circleStrokeBackgroundColor = UIColor.white
-        conf?.circleStrokeForegroundColor = UIColor.white
-        conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
-        KVNProgress.setConfiguration(conf)*/
+        /* let conf = KVNProgressConfiguration.default()
+         conf?.isFullScreen = true
+         conf?.statusColor = UIColor.white
+         conf?.successColor = UIColor.white
+         conf?.circleSize = 170
+         conf?.lineWidth = 10
+         conf?.statusFont = UIFont(name: ".SFUIText-Medium", size: CGFloat(25))
+         conf?.circleStrokeBackgroundColor = UIColor.white
+         conf?.circleStrokeForegroundColor = UIColor.white
+         conf?.backgroundTintColor = UIColor(red: 0.173, green: 0.263, blue: 0.856, alpha: 0.4)
+         KVNProgress.setConfiguration(conf)*/
         
         KVNProgress.show(withStatus: "Sending your card...")
         
@@ -2499,12 +2507,12 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             if error == nil {
                 print("Transaction Created Response ---> \(String(describing: response))")
                 
-
+                
                 // Show success indicator
                 KVNProgress.showSuccess(withStatus: "You are now connected!")
-               
+                
                 /*
-                if self.syncContactSwitch.isOn == true {
+                 if self.syncContactSwitch.isOn == true {
                  // Upload sync contact record
                  self.syncContact()
                  }*/
@@ -2594,13 +2602,13 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
     
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

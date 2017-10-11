@@ -346,7 +346,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 let country = add["country"] ?? ""
                 
                 // Create Address String
-                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                let addressString = "\(street) \(city) \(state) \(zip) \(country)"
                 
                 // Append values
                 addresses.append(addressString)
@@ -1102,7 +1102,14 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Create Cell
-        _ = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        
+        // Deselect row
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // Set bg to white to make sure
+        cell.backgroundColor = UIColor.white
+        
 
         // Set Checkmark
         let selectedCell = tableView.cellForRow(at: indexPath)

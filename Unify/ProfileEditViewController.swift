@@ -472,6 +472,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -480,7 +481,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                     }
                                 }

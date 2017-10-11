@@ -554,6 +554,20 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Set name
             contactObject.name = formatter.string(from: contact) ?? "No Name"
             
+            
+            var fullNameArr = contactObject.name.components(separatedBy: " ")  //split(contactName) {$0 == " "}
+            let firstName: String = fullNameArr[0]
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
+            
+            if lastName.isEmpty{
+                lastName = "#"
+            }
+            
+            // Add names individually
+            contactObject.first = firstName
+            contactObject.last = lastName
+            
+            
             // Check for count
             if contact.phoneNumbers.count > 0 {
                 // Iterate over items
@@ -1032,9 +1046,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     }
                     
                     // Sort list
-                    //self.sortTransactionList(list: self.searchTransactionList)
-                    
-                    
+                    self.sortSearchResultContacts()
                     
                     
                     // Update the table values
@@ -1178,38 +1190,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
 
         }
         
-        /*
-        // Apple contacts
-        for contact in self.phoneContacts{
-            // Init contact name
-            var contactName : String = self.formatter.string(from: contact) ?? "No Name"
-            // Uppercase the name
-            contactName = contactName.uppercased()
-            
-            var fullNameArr = contactName.components(separatedBy: " ")  //split(contactName) {$0 == " "}
-            
-            let firstName: String = fullNameArr[0]
-            var lastName: String = fullNameArr.count > 1 ? fullNameArr[1] : firstName
-            
-            
-            // Check if section exists
-            if contactsHashTable[String(describing: lastName.characters.first ?? "#")] == nil{
-                //print("Hash Section Empty!")
-                // If empty, initialize list
-               contactsHashTable[String(describing: lastName.characters.first ?? "#")] = []
-            }
-            // Add contact to list
-            //let charString = self.formatter.string(from: contact)?.uppercased() ?? "NO NAME"
-            let startIndex = String(describing: lastName.characters.first ?? "#")
-            print("Start Index: >> \(startIndex)")
-            
-            
-            contactsHashTable[startIndex]!.append(contact)
-            //print("Section count for added item")
-            //print(contactsHashTable[startIndex]?.count)
-        }*/
-        
-        
         // Unify Contacts
         for contact in self.contactObjectList{
             // Init contact name
@@ -1269,42 +1249,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         
-        
-        /*
-        // Sort list
-        for (section, list) in contactObjectTable {
-            
-            // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
-            
-            let array = list.sorted(by: { (object1, object2) -> Bool in
-                object1.name < object2.name
-            })
-            
-            // Set sorted array
-            contactObjectTable[section] = array
-            
-            // Test output
-            print("THE unify contacts hash table section list count")
-            print(contacts[section]?.count)
-            print(list)
-        }
-        
-        // Sort list
-        for (section, list) in contactsHashTable {
-            
-            // contacts[section] = list.sorted{ $0.givenName > $1.givenName}
-            
-            let array = list.sorted(by: { (object1, object2) -> Bool in
-                object1.givenName < object2.givenName
-            })
-            
-            // Set sorted array
-            contactsHashTable[section] = array
-            
-        }
-        */
-        
-        
         // Assign table data 
         //self.tableData = contactsHashTable
         
@@ -1324,6 +1268,28 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
 
     }
+
+    // Sorting search results list
+    
+    func sortSearchResultContacts() {
+        
+        // Sort by last name
+        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
+        
+        
+        DispatchQueue.main.async {
+            
+            // Reload data
+            self.tblSearchResults.reloadData()
+        }
+        
+        // Set hash to contact manager
+        //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
+        
+    }
+
+    
+    
     
     
     func addGestureToImage(image: UIImageView, index: IndexPath) {

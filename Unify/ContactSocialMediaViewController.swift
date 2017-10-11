@@ -61,6 +61,9 @@ class ContactSocialMediaViewController: UIViewController , UICollectionViewDeleg
         
         mediaCollectionView.register(MediaThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+        self.title = "Social Media"
+        
+        
         // galleryCollectionView.register(ProjectThumbnailViewCell.self, forCellWithReuseIdentifier: "GalleryThumbnailCell")
         
         

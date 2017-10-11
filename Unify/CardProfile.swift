@@ -61,6 +61,9 @@ public class CardProfile{
 
     }
     
+    // For viewing mixed badges on carosel
+    var corpImageList = [NSDictionary]()
+    var socialImageList = [UIImage]()
     
     // Initializers
     

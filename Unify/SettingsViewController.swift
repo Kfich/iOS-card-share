@@ -106,8 +106,20 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    func sayHello(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        // Drop view
+        print("Hello there!!")
+        
+        // Show edit alert view
+        self.showAlertWithTextField()
+        
+    }
+    
     func pencilTappedForEdit(tapGestureRecognizer: UITapGestureRecognizer)
     {
+        
+        print("Hello!!")
         
         // Show edit alert view
         self.showAlertWithTextField()
@@ -219,20 +231,33 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         changelbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         // Config lable
         changelbl.textAlignment = .center
-        
+            
         
         // Add label to the view
         let lbl = UILabel(frame: CGRect(0, containerView.frame.height - 5, containerView.frame.width, 20))
         lbl.font = UIFont.systemFont(ofSize: 22)
         lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
+        
         // Config lable
         lbl.textAlignment = .center
+        
+        // Add action tap gesture to view object
+        let labelAction = UITapGestureRecognizer(target: self, action: #selector(sayHello(tapGestureRecognizer:)))
+        let labelAction2 = UITapGestureRecognizer(target: self, action: #selector(pencilTappedForEdit(tapGestureRecognizer:)))
+        
+        // Config label for action
+        lbl.isUserInteractionEnabled = true
+        lbl.addGestureRecognizer(labelAction)
         
         // Init pencil icon
         let pencilImageView = UIImageView()
         // Set frame
         pencilImageView.frame = CGRect(x: lbl.frame.width, y: lbl.frame.origin.y - 1 , width: 25, height: 25)
         pencilImageView.image = UIImage(named: "pencil")
+        
+        // Add gesture to penicl
+        pencilImageView.isUserInteractionEnabled = true
+        pencilImageView.addGestureRecognizer(labelAction)
         
         
         if editNameSelected {
@@ -245,22 +270,15 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         // Add action tap gesture to view object
-        let labelAction = UITapGestureRecognizer(target: self, action: #selector(showAlertWithTextField))
-        // Config label for action
-        lbl.isUserInteractionEnabled = true
-        lbl.addGestureRecognizer(labelAction)
-        
-        // Add gesture to penicl
-        pencilImageView.isUserInteractionEnabled = true
-        pencilImageView.addGestureRecognizer(labelAction)
-        
-        
-        // Add action tap gesture to view object
         let imageAction = UITapGestureRecognizer(target: self, action: #selector(editImageSelected(sender:)))
         
         // Add action to imageView
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(imageAction)
+        
+        // Test
+        lbl.addGestureRecognizer(labelAction)
+        pencilImageView.addGestureRecognizer(labelAction2)
         
         // Assign tag to image to identify what index in the array user lies
         //containerView.tag = tag
@@ -477,6 +495,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     // Alert Controller to Add CardName
     
     func showAlertWithTextField(){
+        
+        print("Show alert view")
         
         // Dismiss the incognito popover
         self.alert.hideView()

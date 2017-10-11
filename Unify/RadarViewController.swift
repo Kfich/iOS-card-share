@@ -492,46 +492,54 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
         print("\n\nCurrent User ID >>> \(currentUser.userId)")
         
         if self.radarListContainer.isHidden {
-            // Send from the radar
             
-            // Dyamically set selected card here
-            
-            // Iterate through selected card list
-            for contact in selectedUserList {
-                // Check if isSelected
-                if contact.isSelected{
-                    // Init user from list
-                    let user = radarUsers[contact.index]
-                    // Set id to recipient list
-                    selectedUserIds.append(user.userId)
-                    // Add recipient names 
-                    self.transaction.recipientNames?.append(user.getName())
+            // Check if card selected is the empty one
+            if ContactManager.sharedManager.selectedCard.cardId == "" {
+                print("Show alert that card is empty")
+            }else{
+                
+                // Send from the radar
+                
+                // Dyamically set selected card here
+                
+                // Iterate through selected card list
+                for contact in selectedUserList {
+                    // Check if isSelected
+                    if contact.isSelected{
+                        // Init user from list
+                        let user = radarUsers[contact.index]
+                        // Set id to recipient list
+                        selectedUserIds.append(user.userId)
+                        // Add recipient names
+                        self.transaction.recipientNames?.append(user.getName())
+                    }
                 }
+                
+                // Set selected ids to trans and values
+                // Set temp id for transaction
+                transaction.recipientList = selectedUserIds
+                transaction.setTransactionDate()
+                transaction.senderName = ContactManager.sharedManager.currentUser.getName()
+                transaction.senderId = ContactManager.sharedManager.currentUser.userId
+                transaction.type = "connection"
+                transaction.scope = "transaction"
+                transaction.latitude = self.lat
+                transaction.longitude = self.long
+                transaction.location = self.address
+                // Attach card id
+                transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
+                transaction.senderImageId = ContactManager.sharedManager.currentUser.profileImageId
+                
+                
+                // Print tranny
+                transaction.printTransaction()
+                
+                // Call create transaction function
+                createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
+                
+                Countly.sharedInstance().recordEvent("shared contacts from radar")
             }
             
-            // Set selected ids to trans and values
-            // Set temp id for transaction
-            transaction.recipientList = selectedUserIds
-            transaction.setTransactionDate()
-            transaction.senderName = ContactManager.sharedManager.currentUser.getName()
-            transaction.senderId = ContactManager.sharedManager.currentUser.userId
-            transaction.type = "connection"
-            transaction.scope = "transaction"
-            transaction.latitude = self.lat
-            transaction.longitude = self.long
-            transaction.location = self.address
-            // Attach card id
-            transaction.senderCardId = ContactManager.sharedManager.selectedCard.cardId!
-            transaction.senderImageId = ContactManager.sharedManager.currentUser.profileImageId
-            
-            
-            // Print tranny
-            transaction.printTransaction()
-            
-            // Call create transaction function
-            createTransaction(type: "connection", uuid: ContactManager.sharedManager.currentUser.userId)
-            
-            Countly.sharedInstance().recordEvent("shared contacts from radar")
             
         }else{
             // Post notification for radar list to handle the sending

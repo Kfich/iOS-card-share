@@ -138,10 +138,10 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
         
         
         // Dismiss view
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
         
         // Dismiss VC
-        navigationController?.popViewController(animated: true)
+        //navigationController?.popViewController(animated: true)
     }
     
     @IBAction func backButtonPressed(_ sender: AnyObject) {
@@ -272,8 +272,8 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
         self.contactImageView.image = image
         
         // Config textfields
-        self.firstNameTextField.placeholder = "First name"
-        self.lastNameTextField.placeholder = "Last name"
+        self.firstNameTextField.placeholder = "First Name"
+        self.lastNameTextField.placeholder = "Last Name"
         
         
         self.configureSelectedImageView(imageView: self.contactImageView)
@@ -444,7 +444,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             
@@ -454,13 +454,13 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                 // Iterate through array and set val
                                 for val in organizations{
                                     $0 <<< NameRow() {
-                                        $0.placeholder = "Name"
+                                        $0.placeholder = "Company"
                                         $0.value = val
                                         
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             
@@ -538,7 +538,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Phone"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             if row.indexPath != nil{
@@ -587,7 +587,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Phone"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             cell.titleLabel?.text = self.phoneLabels[(cell.row.indexPath?.row)!]
@@ -638,7 +638,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Phone"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             if row.indexPath != nil{
@@ -686,7 +686,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                         }.cellUpdate { cell, row in
                                             // Reconfig alignment
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Phone"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             // Add gesture to cell
@@ -731,7 +731,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Url"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             // Config auto correct
@@ -753,7 +753,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                                         }.cellUpdate { cell, row in
                                             
                                             cell.textField.textAlignment = .left
-                                            cell.textField.placeholder = "(left alignment)"
+                                            cell.textField.placeholder = "Url"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
                                             
@@ -1362,8 +1362,10 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
             print(error)
         }
         
-        // Drop view
         
+        // Dismiss VC
+        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil) 
         
         // Post notification for refresh
         //self.postRefreshNotification()
@@ -1381,7 +1383,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
         let fname = imageDictionary["file_name"] as! String
         
         // Show progress HUD
-        KVNProgress.show(withStatus: "Generating profile..")
+        //KVNProgress.show(withStatus: "Generating profile..")
         
         // Upload image with Alamo
         Alamofire.upload(multipartFormData: { multipartFormData in
@@ -1409,7 +1411,7 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
                 }
                 
                 // Upload the contact
-                self.uploadContactRecord()
+                //self.uploadContactRecord()
                 
             case .failure(let encodingError):
                 print("\n\n\n\n error....")

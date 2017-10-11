@@ -43,6 +43,18 @@ class ContactManager{
     var userSelectedNewContactForIntro = false
     var userSelectedNewRecipientForIntro = false
     
+    // Check for edit attempts
+    var editRecipient = false
+    var editContact = false
+    
+    // Check if objects have been added
+    var contactAdded = false
+    var recipientAdded = false
+    
+    // Toggle on selection
+    var addContactSelected = false
+    var addRecipientSelected = false
+    
     // Conatct syncing on intro
     var syncIntroContactSwitch = true
     

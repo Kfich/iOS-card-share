@@ -1,8 +1,8 @@
 //
-//  Contacts-TableViewController.swift
+//  SelectContactViewController.swift
 //  Unify
 //
-//  Created by Ryan Hickman on 4/4/17.
+//  Created by Kevin Fich on 10/11/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
@@ -15,8 +15,7 @@ import CoreLocation
 import Skeleton
 import Contacts
 
-
-class SelectRecipientViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate
+class SelectContactViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CustomSearchControllerDelegate
 {
     
     // IBOutlets
@@ -92,7 +91,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             self.dataArray = ContactManager.sharedManager.dataArray
             self.tuples = ContactManager.sharedManager.tuples
             self.contactObjectTable = ContactManager.sharedManager.contactObjectTable
-
+            
             
             // Fetch from server
             //self.sortContacts()
@@ -101,7 +100,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             // Fetch contacts here
             self.getContacts()
         }
-
+        
         
         // Uncomment the following line to enable the default search controller.
         // configureSearchController()
@@ -164,7 +163,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         }else{
             return letters[section]
         }
-
+        
     }
     
     
@@ -186,14 +185,14 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             if contact.imageId != "" {
                 
                 /*print("Has IMAGE")
-                // Set id
-                let id = contact.imageId
-                
-                // Set image for contact
-                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
-                //let placeholderImage = UIImage(named: "profile")!
-                // Set image
-                cell.contactImageView?.setImageWith(url)*/
+                 // Set id
+                 let id = contact.imageId
+                 
+                 // Set image for contact
+                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                 //let placeholderImage = UIImage(named: "profile")!
+                 // Set image
+                 cell.contactImageView?.setImageWith(url)*/
                 
                 // Set from default
                 cell.contactImageView.image = UIImage(data: contact.imageData)
@@ -218,14 +217,14 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
             if contact?.imageId != "" {
                 
                 /*print("Has IMAGE")
-                // Set id
-                let id = contact?.imageId
-                
-                // Set image for contact
-                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
-                //let placeholderImage = UIImage(named: "profile")!
-                // Set image
-                cell.contactImageView?.setImageWith(url)*/
+                 // Set id
+                 let id = contact?.imageId
+                 
+                 // Set image for contact
+                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(id ?? "").jpg")!
+                 //let placeholderImage = UIImage(named: "profile")!
+                 // Set image
+                 cell.contactImageView?.setImageWith(url)*/
                 
                 // Set from data
                 cell.contactImageView.image = UIImage(data: (contact?.imageData)!)
@@ -313,139 +312,142 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         // Make conditional checks to see where user navigated from
         
         
-        /*if ContactManager.sharedManager.userArrivedFromIntro != true {
+        /*if ContactManager.sharedManager.userArrivedFromIntro != true {*/
             
-            // Set bool to true
-            ContactManager.sharedManager.userArrivedFromIntro = true
-            
-            // Set bool to false
-            ContactManager.sharedManager.userSelectedNewContactForIntro = false
-            
-            // Set Contact on Manager
-            ContactManager.sharedManager.contactToIntro = selectedContact
-            
-            print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
-            print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
-            
-            // Notification for intro screen
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
-            
-            // Drop view
-            dismiss(animated: true, completion: nil)
-            // Drop view
-            self.navigationController?.popViewController(animated: true)
-        }else{*/
         
+        // Set bool to true
+        ContactManager.sharedManager.userArrivedFromIntro = true
+        
+        // Set bool to false
+        ContactManager.sharedManager.userSelectedNewContactForIntro = false
         
         // Set Contact on Manager
-        ContactManager.sharedManager.recipientToIntro = selectedContact
+        ContactManager.sharedManager.contactToIntro = selectedContact
         
-        print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
-        print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+        print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+        print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
         
-        // Post for recipient selected
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
-        // Drop View
+        // Notification for intro screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+        
+        // Drop view
         dismiss(animated: true, completion: nil)
         // Drop view
         self.navigationController?.popViewController(animated: true)
-       
-    //}
+        
+        
+        //}
+        
+        
+        /*else{
+            // Set Contact on Manager
+            ContactManager.sharedManager.recipientToIntro = selectedContact
+            
+            print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+            print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+            
+            // Post for recipient selected
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+            // Drop View
+            dismiss(animated: true, completion: nil)
+            // Drop view
+            self.navigationController?.popViewController(animated: true)
+        }*/
         
         
         
         /*
-        /* contactListTableView.deselectRow(at: indexPath, animated: true)
+         /* contactListTableView.deselectRow(at: indexPath, animated: true)
          
          print("You selected Conact --> \(ContactManager.sharedManager.phoneContactList[indexPath.row])")
          // Assign selected contact
          selectedContact = ContactManager.sharedManager.phoneContactList[indexPath.row]
          // Pass in segue
          self.performSegue(withIdentifier: "showContactProfile", sender: indexPath.row) */
-        
-        var selectedId = ""
-        
-        if shouldShowSearchResults {
-            // Show results from filtered array
-            print("Index path", indexPath)
-            print(filteredArray[indexPath.row])
-            
-            // Search for contact by name in list
-            for item in self.tuples {
-                if item.1 == filteredArray[indexPath.row] {
-                    // This is the selected item
-                    print("Selected Item: >> \(item)")
-                    // Set Id
-                    selectedId = item.0
-                }
-                
-                
-            }
-            
-            
-        }else{
-            //print("Index path for data array", indexPath)
-            //print(dataArray[indexPath.row])
-            
-            // Search for contact by name in list
-            for item in self.tuples {
-                if item.1 == contacts[letters[indexPath.section]]?[indexPath.row] {
-                    // This is the selected item
-                    print("Selected Item: >> \(item)")
-                    // Set Id
-                    selectedId = item.0
-                }
-                
-                
-            }
-            
-            //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
-        }
-        
-        // Set contact from list
-        for item in contactTuples{
-            if item.0 == selectedId {
-                // Set contact object
-                self.selectedContact = item.1
-                
-                // Print to test
-                print(self.selectedContact.givenName)
-                // Make conditional checks to see where user navigated from
-                if ContactManager.sharedManager.userArrivedFromIntro != true {
-                    
-                    // Set bool to true
-                    ContactManager.sharedManager.userArrivedFromIntro = true
-                    
-                    // Set bool to false
-                    ContactManager.sharedManager.userSelectedNewContactForIntro = false
-                    
-                    // Set Contact on Manager
-                    ContactManager.sharedManager.contactToIntro = selectedContact
-                    
-                    print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
-                    print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
-                    
-                    // Notification for intro screen
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
-                    
-                    // Drop view
-                    dismiss(animated: true, completion: nil)
-                }else{
-                    // Set Contact on Manager
-                    ContactManager.sharedManager.recipientToIntro = selectedContact
-                    
-                    print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
-                    print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
-                    
-                    // Post for recipient selected
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
-                    // Drop View
-                    dismiss(animated: true, completion: nil)
-                }
-                
-                
-            }
-        }*/
+         
+         var selectedId = ""
+         
+         if shouldShowSearchResults {
+         // Show results from filtered array
+         print("Index path", indexPath)
+         print(filteredArray[indexPath.row])
+         
+         // Search for contact by name in list
+         for item in self.tuples {
+         if item.1 == filteredArray[indexPath.row] {
+         // This is the selected item
+         print("Selected Item: >> \(item)")
+         // Set Id
+         selectedId = item.0
+         }
+         
+         
+         }
+         
+         
+         }else{
+         //print("Index path for data array", indexPath)
+         //print(dataArray[indexPath.row])
+         
+         // Search for contact by name in list
+         for item in self.tuples {
+         if item.1 == contacts[letters[indexPath.section]]?[indexPath.row] {
+         // This is the selected item
+         print("Selected Item: >> \(item)")
+         // Set Id
+         selectedId = item.0
+         }
+         
+         
+         }
+         
+         //print("The output <> \(String(describing: contacts[letters[indexPath.section]]?[indexPath.row]))")
+         }
+         
+         // Set contact from list
+         for item in contactTuples{
+         if item.0 == selectedId {
+         // Set contact object
+         self.selectedContact = item.1
+         
+         // Print to test
+         print(self.selectedContact.givenName)
+         // Make conditional checks to see where user navigated from
+         if ContactManager.sharedManager.userArrivedFromIntro != true {
+         
+         // Set bool to true
+         ContactManager.sharedManager.userArrivedFromIntro = true
+         
+         // Set bool to false
+         ContactManager.sharedManager.userSelectedNewContactForIntro = false
+         
+         // Set Contact on Manager
+         ContactManager.sharedManager.contactToIntro = selectedContact
+         
+         print("User arrived from intro on first selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+         print("User selected form contact \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+         
+         // Notification for intro screen
+         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ContactSelected"), object: self)
+         
+         // Drop view
+         dismiss(animated: true, completion: nil)
+         }else{
+         // Set Contact on Manager
+         ContactManager.sharedManager.recipientToIntro = selectedContact
+         
+         print("User arrived from intro on second selection \(ContactManager.sharedManager.userArrivedFromIntro)")
+         print("User selected form contact on second selection \(ContactManager.sharedManager.userSelectedNewContactForIntro)")
+         
+         // Post for recipient selected
+         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RecipientSelected"), object: self)
+         // Drop View
+         dismiss(animated: true, completion: nil)
+         }
+         
+         
+         }
+         }*/
         
     }
     
@@ -618,7 +620,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         })
         
     }
-
+    
     
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
@@ -836,7 +838,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                 // **** Check here if contact image valid --> This caused lyss' phone to crash ***** \\
                 
                 if let imageData = contact.imageData{
-                   
+                    
                     // Set image data for local use
                     contactObject.imageData = imageData
                     
@@ -856,13 +858,13 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
                     contactObject.imageDictionary = imageDict
                     
                     /*
-                    if self.synced != true {
-                        // Upload Record
-                        ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
-                    }else{
-                        //
-                        print("The users image has been uploaded already")
-                    }*/
+                     if self.synced != true {
+                     // Upload Record
+                     ImageURLS.sharedManager.uploadImageToDev(imageDict: imageDict)
+                     }else{
+                     //
+                     print("The users image has been uploaded already")
+                     }*/
                     
                 }
                 
@@ -1031,15 +1033,15 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         }
         
         /*
-        // Filter the data array and get only those countries that match the search text.
-        filteredArray = dataArray.filter({ (country) -> Bool in
-            let countryText:NSString = country as NSString
-            
-            return (countryText.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
-        
-        // Reload the tableview.
-        contactListTableView.reloadData()*/
+         // Filter the data array and get only those countries that match the search text.
+         filteredArray = dataArray.filter({ (country) -> Bool in
+         let countryText:NSString = country as NSString
+         
+         return (countryText.range(of: searchString, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+         })
+         
+         // Reload the tableview.
+         contactListTableView.reloadData()*/
     }
     
     
@@ -1654,16 +1656,4 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
     }
     
-}
-
-
-
-
-
-extension UIColor {
-    func brightened(by factor: CGFloat) -> UIColor {
-        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-        getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-        return UIColor(hue: h, saturation: s, brightness: b * factor, alpha: a)
-    }
 }

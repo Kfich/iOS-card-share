@@ -236,13 +236,26 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Add label to the view
         let lbl = UILabel(frame: CGRect(30, 9, 100, 15))
         // Empty header if searching
-        if shouldShowSearchResults {
+        if shouldShowSearchResults || self.segmentedControl.selectedSegmentIndex != 0{
             // Empty header
             lbl.text = ""
         }else{
-            lbl.text = sections[section]//"Recents"
+            
+            /*if self.segmentedControl.selectedSegmentIndex == 0{
+                // Show section from
+            }*/
+            
+            if sections.count > 0 {
+                // Set text from label list
+                lbl.text = sections[section]
+            }else{
+             
+                // Set to blank otherwise
+                lbl.text = "Recents"
+            }
         }
 
+        
         lbl.textAlignment = .left
         lbl.textColor = UIColor.white
         lbl.font = UIFont(name: "Avenir", size: CGFloat(14))
@@ -536,6 +549,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             // Hit search endpoint
             self.tableView.reloadData()
         }
+        
+        // Clear results list
+        self.searchTransactionList.removeAll()
+        
+        // Execute search
         self.searchTransactions()
     }
     
@@ -1421,8 +1439,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
             
             if duration < 24.0 {
-                // Send to recents
                 
+                // Send to recents
                 if self.tableData["Today"] == nil {
                     
                     // Init section
@@ -2128,11 +2146,29 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.connectionLocationIcon.isHidden = true
         }
         
-        // Add tag to view
-        //cell.connectionCardWrapperView.tag = index
-        //cell.connectionApproveButton.tag = index
-        // Make rejection tag index + 1 to identify the users action intent
-        //cell.connectionRejectButton.tag = index
+        
+        
+        // Check if user sent card
+        if trans.senderId == self.currentUser.userId {
+            // Set card name to recipient
+            if (trans.type != "quick_share" && trans.type != "introduction") {
+                // Add recipient card name
+                name = (trans.recipientCard?.cardHolderName)!
+            }else{
+                // Add from recipient names
+                name = trans.recipientNames?[0] ?? "No name"
+            }
+            
+        }else{
+            // Set to recipient
+            name = trans.senderName
+            if trans.approved && trans.type == "connection"{
+                // Set description text
+                cell.connectionDescriptionLabel.text = "\(trans.senderName) shared their profile with you"
+            }
+            
+            
+        }
         
         
     }

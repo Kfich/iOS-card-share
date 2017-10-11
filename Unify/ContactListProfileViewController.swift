@@ -1697,10 +1697,14 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             
             
             // Set card link from cardID
-            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+            //let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
             
             // Test String
-            let str = "\n\n\n \(cardLink)"
+            //let str = "\n\n\n \(cardLink)"
+            
+            
+            // Temp string until he changes his mind again
+            let str = ""
             
             // Set string as message body
             composeVC.body = str
@@ -1746,12 +1750,16 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         // Create Message
         
         // Set card link from cardID
-        let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+        //let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
         
-        let str = "Hi, I'd like to connect with you. Here's my information\n\nBest, \n\(currentUser.getName())\n\n\(cardLink)"
+        //let str = "Hi, I'd like to connect with you. Here's my information\n\nBest, \n\(currentUser.getName())\n\n\(cardLink)"
         
         // Test String
         //let str = "\n\n\n\(cardLink)"
+        
+        // Temp 
+        let str = ""
+        
         
         // Create Message
         mailComposerVC.setToRecipients([selectedUserEmail])

@@ -695,7 +695,7 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                 let country = add["country"]!
                 
                 // Create Address String
-                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                let addressString = "\(street) \(city) \(state) \(zip) \(country)"
                 
                 // Append values
                 addresses.append(addressString)

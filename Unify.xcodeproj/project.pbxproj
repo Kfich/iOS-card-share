@@ -152,6 +152,8 @@
 		FBA1F5191F38FA5400CDCB76 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */; };
 		FBB797D71F68CF65004153C8 /* CustomNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBB797D51F68CF65004153C8 /* CustomNib.xib */; };
 		FBB797D81F68CF65004153C8 /* CustomPostalRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB797D61F68CF65004153C8 /* CustomPostalRow.swift */; };
+		FBC74A101F8E84410081B7F7 /* ContactOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC74A0F1F8E84410081B7F7 /* ContactOptionsViewController.swift */; };
+		FBC74A121F8E844D0081B7F7 /* SelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC74A111F8E844D0081B7F7 /* SelectContactViewController.swift */; };
 		FBD0C0941F3B8FF500BFE62C /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD0C0931F3B8FF500BFE62C /* CollectionTableViewCell.swift */; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
 		FBDD5B681F4DF716002B66B8 /* ProfileImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD5B671F4DF716002B66B8 /* ProfileImageCell.swift */; };
@@ -447,6 +449,8 @@
 		FBA1F5181F38FA5400CDCB76 /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		FBB797D51F68CF65004153C8 /* CustomNib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNib.xib; sourceTree = "<group>"; };
 		FBB797D61F68CF65004153C8 /* CustomPostalRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPostalRow.swift; sourceTree = "<group>"; };
+		FBC74A0F1F8E84410081B7F7 /* ContactOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactOptionsViewController.swift; sourceTree = "<group>"; };
+		FBC74A111F8E844D0081B7F7 /* SelectContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectContactViewController.swift; sourceTree = "<group>"; };
 		FBD0C0931F3B8FF500BFE62C /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
 		FBDD5B671F4DF716002B66B8 /* ProfileImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageCell.swift; sourceTree = "<group>"; };
@@ -755,6 +759,8 @@
 				1CB31C9A1E9407B000A0C4A5 /* Intro-ViewController.swift */,
 				1CB31C9C1E94087100A0C4A5 /* SelectRecipient-ViewController.swift */,
 				FB199CFA1F2A560000FFFCC1 /* RecipientOptionsViewController.swift */,
+				FBC74A0F1F8E84410081B7F7 /* ContactOptionsViewController.swift */,
+				FBC74A111F8E844D0081B7F7 /* SelectContactViewController.swift */,
 			);
 			name = Intro;
 			sourceTree = "<group>";
@@ -1293,6 +1299,7 @@
 				FBE807571F06D12C00A05292 /* CreateProfileViewController.swift in Sources */,
 				FBDD5B681F4DF716002B66B8 /* ProfileImageCell.swift in Sources */,
 				FB767D331F429DD40065F46E /* RSKImageScrollView.m in Sources */,
+				FBC74A121F8E844D0081B7F7 /* SelectContactViewController.swift in Sources */,
 				FB199CFD1F324F6D00FFFCC1 /* RadarListViewController.swift in Sources */,
 				1CB31C9B1E9407B000A0C4A5 /* Intro-ViewController.swift in Sources */,
 				1C151D3A1F1DBE73004B23CE /* CountlyViewTracking.m in Sources */,
@@ -1313,6 +1320,7 @@
 				1CAE5B841E913A06006EFF40 /* AppDelegate.swift in Sources */,
 				1C31040C1E94A1F700F4D70D /* EditProfile-TableViewController.swift in Sources */,
 				1CB31CA71E94273E00A0C4A5 /* QuickShare-ViewController.swift in Sources */,
+				FBC74A101F8E84410081B7F7 /* ContactOptionsViewController.swift in Sources */,
 				FB90A8AD1F265E9900E67B1E /* EditCardViewController.swift in Sources */,
 				FB90A8AF1F265F0600E67B1E /* CardRecipientListViewController.swift in Sources */,
 				FBE76C831EDF43F200E37E0C /* AddCardViewController.swift in Sources */,

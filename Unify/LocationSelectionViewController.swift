@@ -29,6 +29,12 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CL
     }
 
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        delay(0.1) { self.searchController?.searchBar.becomeFirstResponder() }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +53,6 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CL
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
-        
         
         
         let subView = UIView(frame: CGRect(x: 0, y: 65.0, width: self.view.frame.width, height: 45.0))
@@ -75,6 +80,8 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CL
             print("Location is updating")
             locationManager.startUpdatingLocation()
         }
+        
+        
 
     }
     
@@ -90,6 +97,8 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CL
         
         // Test
         print("Showing")
+        
+        self.searchController?.searchBar.becomeFirstResponder()
         
     }
     
@@ -140,9 +149,17 @@ class LocationSelectionViewController: UIViewController, UISearchBarDelegate, CL
         // Add coordinate bounds
         resultsViewController?.autocompleteBounds = bounds
         
+        resultsViewController?.setEditing(true, animated: true)
+        
         
     }
     
+    // Custom methods
+    
+    func delay(_ delay: Double, closure: @escaping ()->()) {
+        let when = DispatchTime.now() + delay
+        DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
+    }
     
     
     
@@ -178,12 +195,12 @@ extension LocationSelectionViewController: GMSAutocompleteResultsViewControllerD
         
     }
     
+    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didSelect prediction: GMSAutocompletePrediction) -> Bool {
         //
      
         return true
     }
-    
     
     
     func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
@@ -210,4 +227,6 @@ extension LocationSelectionViewController: GMSAutocompleteResultsViewControllerD
     func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+    
+    
 }

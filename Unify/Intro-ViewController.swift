@@ -34,6 +34,25 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
     var selectedPhone = ""
     
     
+    // For checking intent
+    var addContactAttempts = 0
+    var addRecipientAttempts = 0
+    
+    
+    // Check for edit attempts
+    var editRecipient = false
+    var editContact = false
+    
+    // Check if objects have been added
+    var contactAdded = false
+    var recipientAdded = false
+    
+    // Toggle on selection
+    var addContactSelected = false
+    var addRecipientSelected = false
+    
+    
+    
     // Contact formatter
     let formatter = CNContactFormatter()
     
@@ -78,6 +97,16 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         self.configureSelectedImageView(imageView: contactImageView)
         self.configureSelectedImageView(imageView: recipientImageView)
         
+        print("Contact Added", addContactSelected)
+        print("Recipient Added", addRecipientSelected)
+        
+        print("Edit Contact", editContact)
+        print("Edit Recipient", editRecipient)
+        
+        print("Add Contact Attempts", addContactAttempts)
+        print("Add Recipient Attempts", addRecipientAttempts)
+        
+        
     }
     
     override func viewDidLoad() {
@@ -87,9 +116,16 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         currentUser = ContactManager.sharedManager.currentUser
         
         // Add Tap Gesture to imageviews
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showContactList))
+        let addContactGesture = UITapGestureRecognizer(target: self, action: #selector(showAddContact))
+        let addRecipientGesture = UITapGestureRecognizer(target: self, action: #selector(showAddRecipient))
         
-        self.view.addGestureRecognizer(tapGestureRecognizer)
+        //self.view.addGestureRecognizer(tapGestureRecognizer)
+        
+        // Add gesture to views
+        self.contactWrapperView.isUserInteractionEnabled = true
+        self.contactWrapperView.addGestureRecognizer(addContactGesture)
+        self.recipientWrapperView.isUserInteractionEnabled = true
+        self.recipientWrapperView.addGestureRecognizer(addRecipientGesture)
         
         // Hide cancel button
         cancelIntroButton.isHidden = true
@@ -1299,6 +1335,73 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         }
     }
     
+    func showAddRecipient() {
+        
+        // Increment attempts
+        addRecipientAttempts = addRecipientAttempts + 1
+        
+        // Toggle Selection
+        addRecipientSelected = true
+        
+        // Check which attempt this is
+        if addRecipientAttempts > 1 {
+            // Toggle Edit
+            editRecipient = true
+            
+            // Send to options screen
+            self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
+            
+            
+        }else if ContactManager.sharedManager.userSelectedNewRecipientForIntro && ContactManager.sharedManager.userArrivedFromIntro{
+            
+            // Check manager nav intents
+            self.performSegue(withIdentifier: "showIntroContactList", sender: self)
+            
+        }else{
+            
+            // Show recipient options again bacuse they
+            self.performSegue(withIdentifier: "showRecipientOptions", sender: self)
+            
+        }
+        
+    }
+    
+    func showAddContact() {
+        
+        
+        // Increment attempts
+        addContactAttempts = addContactAttempts + 1
+        
+        // Toggle Selection
+        addContactSelected = true
+        
+        // Check which attempt this is
+        if addContactAttempts > 1 {
+            // Toggle Edit
+            editContact = true
+            // Set manager toggle
+            ContactManager.sharedManager.editContact = true
+            
+            
+            // Send to options screen
+            self.performSegue(withIdentifier: "showContactOptions", sender: self)
+            
+            
+        }else if ContactManager.sharedManager.userSelectedNewContactForIntro && ContactManager.sharedManager.userArrivedFromIntro{
+            
+            // Check manager nav intents
+            self.performSegue(withIdentifier: "showIntroList", sender: self)
+        
+        }else{
+            
+            // Show recipient options again bacuse they
+            self.performSegue(withIdentifier: "showContactOptions", sender: self)
+            
+        }
+    }
+    
+    
+    
     func resetViews() {
         
         // Set Label
@@ -1318,6 +1421,14 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         ContactManager.sharedManager.userArrivedFromIntro = false
         ContactManager.sharedManager.userSelectedNewContactForIntro = false
         ContactManager.sharedManager.userSelectedNewRecipientForIntro = false
+        
+        // Clear nav intents
+        editContact = false
+        editRecipient = false
+        
+        // Clear attempts
+        addContactAttempts = 0
+        addRecipientAttempts = 0
         
         
         // Hide shared button

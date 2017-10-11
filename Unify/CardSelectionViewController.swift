@@ -408,7 +408,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
                 let country = add["country"] ?? ""
                 
                 // Create Address String
-                let addressString = "\(street), \(city) \(state), \(zip), \(country)"
+                let addressString = "\(street) \(city) \(state) \(zip) \(country)"
                 
                 // Append values
                 addresses.append(addressString)
@@ -443,6 +443,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         // Reload table data 
         profileInfoTableView.reloadData()
+        
         
         // Set card name label 
         self.nameLabel.text = selectedCard.cardHolderName ?? ""
