@@ -1913,7 +1913,7 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             sections.append("Phone Numbers")
             for number in ContactManager.sharedManager.currentUser.userProfile.phoneNumbers{
                 // Format phone number
-                phoneNumbers.append(self.format(phoneNumber:(number.values.first!))!)
+                phoneNumbers.append(self.format(phoneNumber:(number.values.first ?? "")) ?? "")
                 phoneNumberLabels.append(number.keys.first!)
             }
             // Create section data

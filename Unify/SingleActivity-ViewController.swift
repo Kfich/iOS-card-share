@@ -689,18 +689,18 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
                 
                 
                 // Set all values for the cells
-                let street = add["street"]!
-                let city = add["city"]!
-                let state = add["state"]!
-                let zip = add["zip"]!
-                let country = add["country"]!
+                let street = add["street"] ?? ""
+                let city = add["city"] ?? ""
+                let state = add["state"] ?? ""
+                let zip = add["zip"] ?? ""
+                let country = add["country"] ?? ""
                 
                 // Create Address String
                 let addressString = "\(street) \(city) \(state) \(zip) \(country)"
                 
                 // Append values
                 addresses.append(addressString)
-                addressLabels.append(add["type"]!)
+                addressLabels.append(add["type"] ?? "")
                 
             }
             // Create section data

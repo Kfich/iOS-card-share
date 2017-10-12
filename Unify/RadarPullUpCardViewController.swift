@@ -518,10 +518,33 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 cell.cardPhone.text = self.format(phoneNumber: currentCard.cardProfile.phoneNumbers[0].values.first!)
             }
             if currentCard.cardProfile.images.count > 0 {
+                print("Profile is greater than 0")
+                
                 // Populate image view
                 let imageData = currentCard.cardProfile.images[0]["image_data"]
                 cell.cardImage.image = UIImage(data: imageData as! Data)
+            }else if currentCard.cardProfile.imageId != ""{
+                
+                print("Profile image id not nil")
+                
+                // Init id
+                let idString = currentCard.cardProfile.imageId
+                // Set image for contact
+                let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(idString ).jpg")!
+                let placeholderImage = UIImage(named: "profile")!
+                
+                // Set image from url
+                cell.cardImage.setImageWith(url, placeholderImage: placeholderImage)
+            }else{
+                print("Profile met neither")
+                
+                cell.cardImage.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+                print(currentCard.cardProfile.imageId)
+                print(currentCard.imageId)
             }
+            
+            
+            
             if currentCard.cardName != nil{
                 cell.cardName.text = currentCard.cardName
             }
@@ -631,8 +654,6 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     }
     
     func snapToNearestCell(_ collectionView: UICollectionView) {
-        
-        
         
         /* *collectionView.numberOfItems(inSection: 0) + 1*/
         for i in 0...ContactManager.sharedManager.viewableUserCards.count + 1{

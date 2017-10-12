@@ -114,6 +114,7 @@ public class User{
         
     }
     
+    
     init(snapshot: NSDictionary) {
         
         userId = snapshot.object(forKey: "unify_uuid") as? String ?? ""
@@ -144,6 +145,36 @@ public class User{
         // Testing to see if populated
         //printUser()
     }
+    
+    
+    init(arraySnapshot: NSDictionary) {
+        
+        userId = arraySnapshot.object(forKey: "unify_uuid") as? String ?? ""
+        firstName = arraySnapshot["first_name"] as? String ?? ""
+        lastName = arraySnapshot["last_name"] as? String ?? ""
+        scope = arraySnapshot["scope"] as? String ?? ""
+        //profileImages = (snapshot["profile_image"] as? [[String : Any]])!
+        
+        profileImageId = arraySnapshot["profile_image_id"] as? String ?? ""
+        
+        deviceToken = arraySnapshot["device_token"] as? String ?? ""
+        
+        userPhoneForVerification = arraySnapshot.object(forKey: "userPhoneVerified") as? String ?? ""
+        userPhoneVerified = arraySnapshot.object(forKey: "userPhoneVerified") as? Bool ?? false
+        
+        // Create card profile
+        userProfile = CardProfile(arraySnapshot: arraySnapshot["profile"] as! NSDictionary)
+        
+        // To get full username
+        fullName = getName()
+        
+        
+        // Testing to see if populated
+        printUser()
+    }
+    
+    
+    
     
     init(snapshotWithLiteProfile: NSDictionary) {
         
@@ -262,9 +293,11 @@ public class User{
         
         // Check for incognito
         //userIsIncognito = withRadarSnapshot["isIncognito"] as! Bool
-        
-        
     }
+    
+    
+    
+    
     
     // Custom Methods
     // ---------------------------------

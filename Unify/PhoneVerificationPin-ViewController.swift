@@ -30,6 +30,10 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     var pinEntry: String!
     
+    // For downloading user profile image in bg
+    var imageView = UIImageView()
+    
+    
     enum Stage {
         case Pin
         case Pin2
@@ -92,6 +96,20 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         self.view.becomeFirstResponder()
         
         print("Phone pin appeared")
+        
+        print("Phone pin isCurrent", isCurrentUser)
+        
+        if isCurrentUser && currentUser.profileImageId != ""{
+            
+            // Grab the image
+            let imageView = currentUser.userProfile.downloadUserImage(idString: currentUser.profileImageId)
+            
+            // Assign it
+            self.imageView = imageView
+            
+        }
+        
+        
         /*
         
         // Notifications for keyboard delegate
@@ -218,7 +236,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         // Drop keyboard
         self.view.endEditing(true)
         
-        
+        // Remove obserers
         NotificationCenter.default.removeObserver(self)
 
     }
@@ -344,6 +362,34 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     // Process Pin on confirmation
     
     func processPin(){
+        
+        // Get user image
+        
+        if isCurrentUser && currentUser.profileImageId != ""{
+            
+            print("Processing pin and looking for image", currentUser.profileImageId)
+            // Get image data
+            let imageData = UIImageJPEGRepresentation(self.imageView.image!, 0.5)
+            print(imageData!)
+            
+            // Generate id string for image
+            let idString = currentUser.profileImageId
+            
+            // Assign asset name and type
+            let fname = idString
+            let mimetype = "image/png"
+            
+            // Create image dictionary
+            let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+            
+            // Add image to user profile images
+            self.currentUser.setImages(imageRecords: imageDict)
+            ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
+            
+            // Store user to device
+            //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
+            
+        }
         
         userPin = pinCodeArea.text ?? ""
         
@@ -533,6 +579,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                     
                     // Set Manager navigation path
                     ContactManager.sharedManager.userIsRemoteUser = true
+
                     
                     // Show homepage
                     DispatchQueue.main.async {

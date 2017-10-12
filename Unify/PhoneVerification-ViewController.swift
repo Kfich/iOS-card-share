@@ -365,7 +365,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
                     print("IsCurrentUser >> \(self.isCurrentUser) && The user dictionary >> Nil")
                     
                     // Init the user here from the dictionary response
-                    self.currentUser = User(snapshot: dictionary["user"] as! NSDictionary)
+                    self.currentUser = User(arraySnapshot: dictionary["user"] as! NSDictionary)
                     
                     // Set user to manager object
                     ContactManager.sharedManager.currentUser = self.currentUser

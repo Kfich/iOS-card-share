@@ -5806,9 +5806,9 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Badges" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7S6-jD-xqI">
-                            <rect key="frame" x="5" y="224" width="50" height="12"/>
+                            <rect key="frame" x="5" y="222" width="50" height="17"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="12" id="c4b-bo-Vo1"/>
+                                <constraint firstAttribute="height" constant="17" id="c4b-bo-Vo1"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                             <color key="textColor" red="0.01176470588" green="0.30196078430000001" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -5862,18 +5862,18 @@
                         <constraint firstItem="d5i-zI-5Za" firstAttribute="top" secondItem="qJI-uY-U3I" secondAttribute="bottom" constant="42" id="4DX-b1-bOf"/>
                         <constraint firstItem="d5i-zI-5Za" firstAttribute="leading" secondItem="hb9-Ba-PlZ" secondAttribute="leading" id="5QN-8Y-Z1r"/>
                         <constraint firstAttribute="trailing" secondItem="gPw-U3-s0W" secondAttribute="trailing" constant="2" id="FmS-t9-Do2"/>
-                        <constraint firstItem="7S6-jD-xqI" firstAttribute="top" secondItem="d5i-zI-5Za" secondAttribute="bottom" constant="43" id="IlW-fL-O9r"/>
+                        <constraint firstItem="7S6-jD-xqI" firstAttribute="top" secondItem="d5i-zI-5Za" secondAttribute="bottom" constant="41" id="IlW-fL-O9r"/>
                         <constraint firstItem="gPw-U3-s0W" firstAttribute="leading" secondItem="Y1y-VH-VMI" secondAttribute="leading" constant="-2" id="Jgx-71-i42"/>
                         <constraint firstAttribute="trailing" secondItem="qJI-uY-U3I" secondAttribute="trailing" id="Jmo-Xc-oCi"/>
                         <constraint firstItem="qJI-uY-U3I" firstAttribute="top" secondItem="Y1y-VH-VMI" secondAttribute="top" constant="55" id="Knb-Ky-oCR"/>
-                        <constraint firstItem="7S6-jD-xqI" firstAttribute="top" secondItem="gPw-U3-s0W" secondAttribute="bottom" constant="3" id="LDG-4r-hLA"/>
+                        <constraint firstItem="7S6-jD-xqI" firstAttribute="top" secondItem="gPw-U3-s0W" secondAttribute="bottom" constant="1" id="LDG-4r-hLA"/>
                         <constraint firstItem="gPw-U3-s0W" firstAttribute="top" secondItem="qW6-AZ-Zex" secondAttribute="bottom" constant="52" id="M65-hR-JFw"/>
                         <constraint firstItem="qJI-uY-U3I" firstAttribute="trailing" secondItem="d5i-zI-5Za" secondAttribute="trailing" id="Sjp-fe-W5S"/>
                         <constraint firstItem="7S6-jD-xqI" firstAttribute="leading" secondItem="Y1y-VH-VMI" secondAttribute="leading" constant="5" id="eTV-HN-vi6"/>
                         <constraint firstItem="d5i-zI-5Za" firstAttribute="top" secondItem="qW6-AZ-Zex" secondAttribute="bottom" constant="12" id="fYc-fD-Ofz"/>
                         <constraint firstItem="d5i-zI-5Za" firstAttribute="leading" secondItem="Y1y-VH-VMI" secondAttribute="leading" id="iLc-XN-Gnf"/>
                         <constraint firstItem="d5i-zI-5Za" firstAttribute="trailing" secondItem="hb9-Ba-PlZ" secondAttribute="trailing" id="nBm-IH-Szg"/>
-                        <constraint firstItem="hb9-Ba-PlZ" firstAttribute="top" secondItem="7S6-jD-xqI" secondAttribute="bottom" constant="6" id="oZE-V8-VcY"/>
+                        <constraint firstItem="hb9-Ba-PlZ" firstAttribute="top" secondItem="7S6-jD-xqI" secondAttribute="bottom" constant="3" id="oZE-V8-VcY"/>
                         <constraint firstItem="qW6-AZ-Zex" firstAttribute="centerX" secondItem="d5i-zI-5Za" secondAttribute="centerX" constant="-2.5" id="unB-cc-gUB"/>
                     </constraints>
                 </view>
@@ -5999,7 +5999,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="5732" y="938"/>
+            <point key="canvasLocation" x="6161" y="1221"/>
         </scene>
         <!--New Contact-->
         <scene sceneID="W5g-2l-ffk">
@@ -9000,8 +9000,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="359" height="210"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Social Badges" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rXc-n7-0hY">
-                            <rect key="frame" x="5" y="141" width="94" height="18"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Badges" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rXc-n7-0hY">
+                            <rect key="frame" x="5" y="141" width="50" height="18"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="kmU-jV-npZ"/>
                             </constraints>
