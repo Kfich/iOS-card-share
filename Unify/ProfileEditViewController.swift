@@ -2213,6 +2213,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         // Add image to user profile images
         ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
+        ContactManager.sharedManager.currentUser.userProfile.imageIds.append(["image_id": idString])
         
         print("Contact Manager total images count: >> \(ContactManager.sharedManager.currentUser.profileImages.count)")
         

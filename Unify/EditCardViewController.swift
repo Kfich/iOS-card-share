@@ -407,6 +407,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         card.cardHolderName = currentUser.fullName
         // Assign card image id
         card.cardProfile.imageIds.append(["card_image_id": idString])
+        
+        
         // Set ownerid on card
         card.ownerId = currentUser.userId
         
@@ -472,7 +474,6 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         if ContactManager.sharedManager.viewableUserCards.count == 1 {
             // Show alert
-            
             // Configure alertview
             let alertView = UIAlertController(title: "", message: "You must have at least one card", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
@@ -1926,8 +1927,8 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             // Add section
             sections.append("Emails")
             for email in ContactManager.sharedManager.currentUser.userProfile.emails{
-                emails.append(email["email"]!)
-                emailLabels.append(email["type"]!)
+                emails.append(email["email"] ?? "")
+                emailLabels.append(email["type"] ?? "")
             }
             // Create section data
             self.tableData["Emails"] = emails
@@ -2331,7 +2332,41 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
             profileImageView.image = UIImage(data: card.cardProfile.images[0]["image_data"] as! Data)
             profileImageViewSingleWrapper.image = UIImage(data: card.cardProfile.images[0]["image_data"] as! Data)
             profileImageViewEmptyWrapper.image = UIImage(data: card.cardProfile.images[0]["image_data"] as! Data)
+        
+        }else if card.cardProfile.imageIds.count > 0{
+            
+            print("Profile image id not nil on selection", card.cardProfile.imageIds[0]["card_image_id"] as! String)
+            print(card.cardProfile.imageIds)
+            
+            // Init id
+            let idString = card.cardProfile.imageIds[0]["card_image_id"] as! String
+            
+            print("ID String :", idString)
+            
+            // Set image for contact
+            let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(idString).jpg")!
+            let placeholderImage = UIImage(named: "profile")!
+            
+            print("URL String :", url)
+            
+            // Set image from url
+            profileImageView.setImageWith(url, placeholderImage: placeholderImage)
+            profileImageViewSingleWrapper.setImageWith(url, placeholderImage: placeholderImage)
+            profileImageViewEmptyWrapper.setImageWith(url, placeholderImage: placeholderImage)
+        }else{
+            print("Profile met neither on selection")
+            
+            profileImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            profileImageViewSingleWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            profileImageViewEmptyWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            print(card.cardProfile.imageId)
+            print(card.imageId)
         }
+        
+        
+        
+        
+        
         // Populate label fields
         if let name = card.cardHolderName{
             nameLabel.text = name

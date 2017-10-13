@@ -72,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarPullUpCardViewController.swift"
-            timestampString = "529469227.349427"
+            timestampString = "529520563.79061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "820"
-            endingLineNumber = "820"
+            startingLineNumber = "849"
+            endingLineNumber = "849"
             landmarkName = "pullUpViewController(_:maximumHeightForBottomViewController:maximumAvailableHeight:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -180,11 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarPullUpCardViewController.swift"
-            timestampString = "529469227.349427"
+            timestampString = "529520563.79061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1184"
-            endingLineNumber = "1184"
+            startingLineNumber = "1227"
+            endingLineNumber = "1227"
             landmarkName = "configureViews(cell:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -324,11 +324,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/RadarPullUpCardViewController.swift"
-            timestampString = "526935190.766771"
+            timestampString = "529520563.79061"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>

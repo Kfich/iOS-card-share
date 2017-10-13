@@ -124,21 +124,22 @@ public class CardProfile{
 
     init(fromDefaultsWithDictionary: NSDictionary) {
         
-        bios = fromDefaultsWithDictionary["bios"] as! [[String : String]]
-        workInformationList = fromDefaultsWithDictionary["work_info"] as! [[String : String]]
-        titles = fromDefaultsWithDictionary["titles"] as! [[String : String]]
-        emails = fromDefaultsWithDictionary["emails"] as! [[String : String]]
-        phoneNumbers = fromDefaultsWithDictionary["phone_numbers"] as! [[String : String]]
-        socialLinks = fromDefaultsWithDictionary["social_links"] as! [[String : String]]
-        tags = fromDefaultsWithDictionary["tags"] as! [[String : String]]
-        notes = fromDefaultsWithDictionary["notes"] as! [[String : String]]
-        websites = fromDefaultsWithDictionary["websites"] as! [[String : String]]
-        organizations = fromDefaultsWithDictionary["organizations"] as! [[String : String]]
+        bios = fromDefaultsWithDictionary["bios"] as? [[String : String]] ?? [[String : String]]()
+        workInformationList = fromDefaultsWithDictionary["work_info"] as? [[String : String]] ?? [[String : String]]()
+        titles = fromDefaultsWithDictionary["titles"] as? [[String : String]] ?? [[String : String]]()
+        emails = fromDefaultsWithDictionary["emails"] as? [[String : String]] ?? [[String : String]]()
+        phoneNumbers = fromDefaultsWithDictionary["phone_numbers"] as? [[String : String]] ?? [[String : String]]()
+        socialLinks = fromDefaultsWithDictionary["social_links"] as? [[String : String]] ?? [[String : String]]()
+        tags = fromDefaultsWithDictionary["tags"] as? [[String : String]] ?? [[String : String]]()
+        notes = fromDefaultsWithDictionary["notes"] as? [[String : String]] ?? [[String : String]]()
+        websites = fromDefaultsWithDictionary["websites"] as? [[String : String]] ?? [[String : String]]()
+        organizations = fromDefaultsWithDictionary["organizations"] as? [[String : String]] ?? [[String : String]]()
         addresses = fromDefaultsWithDictionary["addresses"] as? [[String : String]] ?? [[String : String]]()
         
-        //imageIds = fromDefaultsWithDictionary["image_ids"] as! [[String : Any]]
+        imageIds = fromDefaultsWithDictionary["image_ids"] as! [[String : Any]]
         
-        images = fromDefaultsWithDictionary["images"] as! [[String : Any]]
+        images = fromDefaultsWithDictionary["images"] as? [[String : String]] ?? [[String : String]]()
+        
         badges = fromDefaultsWithDictionary["badges"] as? [String] ?? [String]()
         badgeDictionaryList = fromDefaultsWithDictionary["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
         
@@ -162,6 +163,7 @@ public class CardProfile{
         imageId = arraySnapshot["image_id"] as? String ?? ""
         badges = arraySnapshot["badges"] as? [String] ?? [String]()
         badgeList = arraySnapshot["badgeList"] as? [Bagde] ?? [Bagde]()
+        imageIds = arraySnapshot["image_ids"] as? [[String : Any]] ?? [[String : Any]]()
         
         badgeDictionaryList = arraySnapshot["badge_list"] as? [NSDictionary] ?? [NSDictionary]()
         
@@ -506,18 +508,44 @@ public class CardProfile{
             
             print("Phone numbers list raw >", dict)
             
-            if dict.count > 1{
-                print("The phone list raw > 1")
+            if dict.count > 0{
+                print("The phone list raw >")
                 // Loop through and grab keys
                 for number in dict {
                     
-                    let stringDict = [number.key as? String ?? "": number.value as? String ?? ""]
-                    print("Phone numbers list parsed >", stringDict)
+                    // Check if value is a string
+                    if number.value is String {
                     
-                    // Add dict values to list
-                    phoneNumbers.append(stringDict)
+                        let stringDict = [number.key as? String ?? "": number.value as? String ?? ""]
+                        print("Phone numbers list parsed >", stringDict)
+                        
+                        // Add dict values to list
+                        phoneNumbers.append(stringDict)
+                        
+                    }else{
+                        // If not string then its an array
+                        let list = number.value as? NSArray ?? NSArray()
+                        
+                        print("The phone list after check > Not a string: ", list)
+                        
+                        // Iterate over list
+                        for item in list{
+                            // Init phone record
+                            let phoneRecord = [number.key as? String ?? "phone" : item as? String ?? ""]
+                            
+                            // Store to array
+                            phoneNumbers.append(phoneRecord)
+                        }
+                        
+                    }
+                    // Test
+                    print("Phone list after additions", phoneNumbers)
+                    
                 }
-            }else{
+            }
+            
+                /*
+            else{
                 
                 let list = dict.value(forKey: dict.allKeys.first as! String)
                 
@@ -528,13 +556,15 @@ public class CardProfile{
                     
                 }
                 
-            }
+            }*/
             
             // Test output
             print("The phones")
             print(phoneNumbers)
             
         }
+        
+        
         if emailList.count > 0 {
             
             let dict = emailList[0] as! NSDictionary

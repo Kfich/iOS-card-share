@@ -681,6 +681,8 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 // Add to viewable
                 ContactManager.sharedManager.viewableBadgeList = ContactManager.sharedManager.currentUser.userProfile.badgeList
                 
+            
+                
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")
@@ -689,6 +691,12 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
             }
             // Hide indicator
             KVNProgress.dismiss()
+        
+            // Set phone verified
+            ContactManager.sharedManager.currentUser.setVerificationPhoneStatus(status: true)
+            
+            // Store user to device
+            UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
         }
         
     }

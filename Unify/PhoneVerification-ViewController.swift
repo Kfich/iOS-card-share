@@ -290,7 +290,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         let result = String(phoneNumberInput.text!.characters.filter { "01234567890.".characters.contains($0) })
         print("Filtered Phone String >> \(result)")
         
-        currentUser.userProfile.setPhoneRecords(phoneRecords: ["phone": result])
+        currentUser.userProfile.setPhoneRecords(phoneRecords: ["mobile": result])
         currentUser.setVerificationPhone(phone: result)
         
         // Save verification number on device
@@ -298,7 +298,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
 
         
         // Assign phone to card
-        ContactManager.sharedManager.selectedCard.cardProfile.setPhoneRecords(phoneRecords: ["phone" : phoneNumberInput.text!])
+        ContactManager.sharedManager.selectedCard.cardProfile.setPhoneRecords(phoneRecords: ["mobile" : phoneNumberInput.text!])
         
         
         // Save user to device if callback successful

@@ -257,6 +257,10 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
         // Add image to user profile images
         self.newUser.setImages(imageRecords: imageDict)
+            
+            // Set id for upload ref
+        self.newUser.userProfile.imageIds.append(["image_id": idString])
+        
         
         
         // Upload to Server

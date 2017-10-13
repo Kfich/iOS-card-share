@@ -715,14 +715,17 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         // Set bool for auth to false
         ContactManager.sharedManager.currentUser.setVerificationPhoneStatus(status: false)
         
+        // Store user to device
+        UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
+        // Set array to defualts
+        UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+        
         // Clear manager
         ContactManager.sharedManager.currentUserCards.removeAll()
         ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
         ContactManager.sharedManager.viewableUserCards.removeAll()
         //ContactManager.sharedManager.currentUser = User()
         
-        // Store user to device
-        UDWrapper.setDictionary("user", value: ContactManager.sharedManager.currentUser.toAnyObjectWithImage())
         
         // Send to verification screen
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -756,6 +759,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             let incognitoCell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsViewCell
             incognitoCell.incongnitoSwitch.isOn = self.hidden
             incognitoCell.textLabel?.text = "Public Profile"
+            incognitoCell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             // Hide and disable switch
             incognitoCell.incongnitoSwitch.isHidden = true
             incognitoCell.incongnitoSwitch.isEnabled = false
@@ -767,6 +771,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Show incognito cell
             cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
             cell.textLabel?.text = "Contacts Settings"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             // Set accessory
             cell.accessoryType = .disclosureIndicator
             
@@ -774,6 +779,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Show incognito cell
             cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
             cell.textLabel?.text = "Radar Settings"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             // Set accessory
             cell.accessoryType = .disclosureIndicator
             
@@ -781,6 +787,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Show incognito cell
             cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
             cell.textLabel?.text = "Calendar Settings"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             // Set accessory
             cell.accessoryType = .disclosureIndicator
             
@@ -788,6 +795,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             // Show incognito cell
             cell = tableView.dequeueReusableCell(withIdentifier: "HideCardsCell", for: indexPath) as! SettingsViewCell
             cell.textLabel?.text = "Push Notification Settings"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             // Set accessory
             cell.accessoryType = .disclosureIndicator
             
@@ -798,18 +806,22 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }else if indexPath.row == 6{
             // Show privacy cell
             cell = tableView.dequeueReusableCell(withIdentifier: "HideBadgesCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             
         }else if indexPath.row == 7{
             // Show privacy cell
             cell = tableView.dequeueReusableCell(withIdentifier: "ContactUsCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             
         }else if indexPath.row == 8{
             // Show privacy cell
             cell = tableView.dequeueReusableCell(withIdentifier: "PrivacyCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             
         }else if indexPath.row == 9{
             // Show logout cell
             cell = tableView.dequeueReusableCell(withIdentifier: "LogoutCell", for: indexPath) as! SettingsViewCell
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
         }
         
         return cell

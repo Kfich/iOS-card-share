@@ -81,23 +81,44 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         
         if let cards = UDWrapper.getArray("contact_cards"){
+            
+            print("Dictionary card count", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+            print("Current card count", ContactManager.sharedManager.currentUserCards.count)
+            print("Viewable card count", ContactManager.sharedManager.viewableUserCards.count)
+            print("Current user card count", self.currentUser.cards.count)
+            print("Current user card count on Manager", ContactManager.sharedManager.currentUser.cards.count)
+            
+            
             // Assign array to contact manager object
 
             ContactManager.sharedManager.currentUserCardsDictionaryArray = cards as! [[NSDictionary]]
+            
+            print("The entire cards array!\n", ContactManager.sharedManager.currentUserCardsDictionaryArray)
+            
+            
             // Reload table data
             for card in ContactManager.sharedManager.currentUserCardsDictionaryArray {
+                
                 let contactCard = ContactCard(withSnapshotFromDefaults: card[0])
+                
                 //let profile = CardProfile(snapshot: card[0]["card_profile"])
                 
                 //print(profile)
                 print("PROFILE PRINTING")
                 ContactManager.sharedManager.currentUserCards.append(contactCard)
-                //contactCard.printCard()
+                print("Card From Dictionary\n", contactCard.toAnyObjectWithImage())
                 
                 let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: contactCard)
                 ContactManager.sharedManager.cardBagdeLists["\(contactCard.cardId!)"] = list
                 
             }
+            
+            
+            print("Dictionary card count after", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+            print("Current card count after", ContactManager.sharedManager.currentUserCards.count)
+            print("Viewable card count after", ContactManager.sharedManager.viewableUserCards.count)
+            print("Current user card count after", self.currentUser.cards.count)
+            print("Current user card count on Manager after", ContactManager.sharedManager.currentUser.cards.count)
             
             // Add dummy card to array for 'Add Card' Cell
             //let addCardView = ContactCard()
@@ -114,8 +135,16 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             // Set Selected card
             if ContactManager.sharedManager.currentUserCards.count > 0 {
-              ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
+                
+                // Set here
+                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.currentUserCards[0]
+                // Set page control
+                self.pageControl.currentPage = 0
             }
+            
+            // Toggle remote off
+            ContactManager.sharedManager.userIsRemoteUser = false
+            
             
             print("User has cards!")
             
@@ -523,12 +552,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 // Populate image view
                 let imageData = currentCard.cardProfile.images[0]["image_data"]
                 cell.cardImage.image = UIImage(data: imageData as! Data)
-            }else if currentCard.cardProfile.imageId != ""{
+            }else if currentCard.cardProfile.imageIds.count > 0{
                 
                 print("Profile image id not nil")
                 
                 // Init id
-                let idString = currentCard.cardProfile.imageId
+                let idString = currentCard.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
                 // Set image for contact
                 let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(idString ).jpg")!
                 let placeholderImage = UIImage(named: "profile")!
@@ -974,13 +1003,21 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 let dictionary : NSArray = response as! NSArray
                 print("\n\nCards Found From PullUpVC")
                 print(dictionary)
+
+                
+                print("Dictionary card count before", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+                print("Current card count before", ContactManager.sharedManager.currentUserCards.count)
+                print("Viewable card count before", ContactManager.sharedManager.viewableUserCards.count)
+                print("Current user card count before", self.currentUser.cards.count)
+                print("Current user card count on Manager before", ContactManager.sharedManager.currentUser.cards.count)
                 
                 for item in dictionary{
                     
                     let card = ContactCard(snapshot: item as! NSDictionary)
                     
-                    //print("Printing the card from the call")
+                    print("Printing the card from the call, IsRemoteUser: ", ContactManager.sharedManager.userIsRemoteUser)
                     //card.printCard()
+                   
                     if ContactManager.sharedManager.userIsRemoteUser == true{
                         // If user remote, cards need to be parsed and added to manager
                         ContactManager.sharedManager.currentUserCards.append(card)
@@ -1022,6 +1059,12 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                         }
                     }
                 }
+                
+                print("Dictionary card count after", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+                print("Current card count after", ContactManager.sharedManager.currentUserCards.count)
+                print("Viewable card count after", ContactManager.sharedManager.viewableUserCards.count)
+                print("Current user card count after", self.currentUser.cards.count)
+                print("Current user card count on Manager after", ContactManager.sharedManager.currentUser.cards.count)
                 
                 // Get designs
                 self.fetchCardDesigns(cards: ContactManager.sharedManager.viewableUserCards)

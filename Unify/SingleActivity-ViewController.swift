@@ -453,6 +453,8 @@ class SingleActivityViewController: UIViewController, UITableViewDelegate, UITab
         // Fill profile with example info
         currentUser = ContactManager.sharedManager.currentUser
         
+        print("Profile Current User\n", currentUser.toAnyObjectWithImage())
+        
         // Config image views
         self.configureSelectedImageView(imageView: self.contactImageView)
         self.configureSelectedImageView(imageView: self.contactImageViewSingleWrapper)

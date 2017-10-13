@@ -274,7 +274,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             sections.append("Phone Numbers")
             for number in currentUser.userProfile.phoneNumbers{
                 // Format number
-                phoneNumbers.append(self.format(phoneNumber: number.values.first!)!)
+                phoneNumbers.append(self.format(phoneNumber: number.values.first ?? "") ?? "")
                 phoneNumberLabels.append(number.keys.first!)
                 // Make record
                 let record = [number.keys.first! : number.values.first!]
@@ -289,11 +289,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             // Add section
             sections.append("Emails")
             for email in currentUser.userProfile.emails{
-                emails.append(email["email"]!)
-                emailLabels.append(email["type"]!)
+                emails.append(email["email"] ?? "")
+                emailLabels.append(email["type"] ?? "")
                 
                 // Make record
-                let record = ["email" : email["email"]!, "type" : email["type"]!]
+                let record = ["email" : email["email"] ?? "", "type" : email["type"] ?? ""]
                 // Test
                 print("Email record", record)
                 

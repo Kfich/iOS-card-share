@@ -200,6 +200,9 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     
     @IBAction func calendarSelected(_ sender: Any) {
         
+        // Check for access
+        self.checkCalendarAuthorizationStatus()
+        
          // Check status
          let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
          
@@ -510,8 +513,21 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         // Check section for click actions
         if sections[indexPath.section] == "Phone Numbers"{
             
+            // Init tableview cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
+            
             // Call option
-            self.callSelected(self)
+            //self.callSelected(self)
+            let phone = cell.descriptionLabel.text
+            
+            // configure call
+            if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
         }
         
         if sections[indexPath.section] == "Emails"{
@@ -642,7 +658,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         //tableView.tableFooterView = self.profileImageCollectionView
         
         // Request calendar access
-        checkCalendarAuthorizationStatus()
+        //checkCalendarAuthorizationStatus()
     }
     
     // Custom methods

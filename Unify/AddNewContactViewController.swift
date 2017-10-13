@@ -244,6 +244,13 @@ class AddNewContactViewController: FormViewController, UICollectionViewDelegate,
     
     // Page setup
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        // MAke sure nav is showing
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

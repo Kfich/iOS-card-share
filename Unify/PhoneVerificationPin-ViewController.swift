@@ -32,6 +32,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     // For downloading user profile image in bg
     var imageView = UIImageView()
+    var userImageList = [UIImageView]()
     
     
     enum Stage {
@@ -78,6 +79,8 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         pinCodeArea.text = nil
     }
     
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         
         //set height to zero so assets move to bottom for smoother transaition
@@ -99,15 +102,70 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         
         print("Phone pin isCurrent", isCurrentUser)
         
+        // Observers
+        self.addObservers()
+
+        
         if isCurrentUser && currentUser.profileImageId != ""{
+            print("Current user has profile image")
             
-            // Grab the image
-            let imageView = currentUser.userProfile.downloadUserImage(idString: currentUser.profileImageId)
+            if  currentUser.userProfile.imageIds.count > 0{
+                
+                print("Current user has profile image ids")
+                
+                // Iterate over list
+                for img in currentUser.userProfile.imageIds {
+                   
+                    print("Image id Object", img)
+                
+                    if img["image_id"] is String{
+                        
+                        // Process string here
+                        print("Current user image count was low")
+                        // Grab the image
+                        let imageView = currentUser.userProfile.downloadUserImage(idString: currentUser.profileImageId)
+                        
+                        // Append image to list
+                        self.userImageList.append(imageView)
+                        
+                        
+                    }else{
+                        
+                        let list = img["image_id"] as? NSArray ?? NSArray()
+                        
+                        for item in list{
+                            
+                            // Grab the image
+                            let imageView = currentUser.userProfile.downloadUserImage(idString: item as! String)
+                            // Add to list
+                            self.userImageList.append(imageView)
+                            
+                            print("User Image List\n", self.userImageList)
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }else{
+                
+                // No images
+                print("User has no profile images")
+    
+            }
             
-            // Assign it
-            self.imageView = imageView
             
         }
+        
+        if isCurrentUser{
+            
+            // Get cards and download images
+           self.fetchUserCards()
+            
+        }
+        
+        
         
         
         /*
@@ -194,8 +252,6 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         
         
         // Test to see if user passed successfully 
@@ -359,6 +415,200 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     
     // Custom Methods
     
+    // For sending notifications to the default center for other VC's that are listening
+    func addObservers() {
+        
+        // Download images for cards after download if user remote
+        NotificationCenter.default.addObserver(self, selector: #selector(PhoneVerificationPinViewController.donwloadCardImages), name: NSNotification.Name(rawValue: "DoneFetchingCards"), object: nil)
+        
+        
+    }
+
+    // Notifications
+    
+    func postNotification() {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DoneFetchingCards"), object: self)
+        
+        
+    }
+    
+    // For fetching card images
+    func donwloadCardImages() {
+        
+        print("Download Images executing")
+        
+        // Remove all from dictionary array
+        ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        
+        
+        // Iterate over cards and gather images
+        for card in ContactManager.sharedManager.currentUserCards {
+            
+            print("Card in array", card.cardId ?? "No Id", card.cardName ?? "No name")
+            
+            print("Card profile image ids", card.cardProfile.imageIds)
+            
+            // Init imageview to render image
+            let tempImageView = currentUser.userProfile.downloadUserImage(idString: card.cardProfile.imageIds[0]["card_image_id"] as? String ?? "")
+            
+            // Image data png
+            let imageData = UIImagePNGRepresentation(tempImageView.image!)
+            print("Card Image Data\n", imageData!)
+            
+            // Assign asset name and type
+            //idString = newUser.randomString(length: 20)
+            
+            
+            // Name image with id string
+            let idString = card.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
+            let fname = card.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
+            let mimetype = "image/png"
+            
+            // Create image dictionary
+            let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+            
+            print("Image Dict on download\n", imageDict)
+            
+            // Assign card image id
+            card.cardProfile.imageIds.append(["card_image_id": idString])
+            
+            // Add image to contact card profile images
+            card.cardProfile.setImages(imageRecords: imageDict)
+            print(imageDict)
+            
+            // Get
+            let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: card)
+            ContactManager.sharedManager.cardBagdeLists["\(card.cardId!)"] = list
+            
+            
+            // Test
+            print("Card After Image Added\n", card.toAnyObjectWithImage())
+            
+            // Add to array of dictionaries
+            ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+            
+            // Test additions
+            print("Dictionary card count", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+        }
+        
+        // Save dictionary to wrapper defaults
+        UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+        
+        // Toggle bool on Manager
+        ContactManager.sharedManager.userIsRemoteUser = false
+        
+        // Clear array again
+        // Remove all from dictionary array
+        ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+        ContactManager.sharedManager.currentUserCards.removeAll()
+        ContactManager.sharedManager.viewableUserCards.removeAll()
+
+        // Remove from current user on manager
+        ContactManager.sharedManager.currentUser.cards.removeAll()
+        self.currentUser.cards.removeAll()
+        
+        print("Dictionary card count", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+        print("Current card count", ContactManager.sharedManager.currentUserCards.count)
+        print("Viewable card count", ContactManager.sharedManager.viewableUserCards.count)
+        print("Current user card count", self.currentUser.cards.count)
+        print("Current user card count on Manager", ContactManager.sharedManager.currentUser.cards.count)
+    }
+    
+    
+    func fetchUserCards() {
+        // Fetch cards from server
+        let parameters = ["uuid" : self.currentUser.userId]
+        
+        print("\n\nThe card from the PullUpVC - ToAny()")
+        print(parameters)
+        
+        // Temp card list
+        var tempCardList = [ContactCard]()
+        
+        // Connect to server
+        Connection(configuration: nil).getCardsCall(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                //print("Card Fetch Response ---> \(String(describing: response))")
+                
+                // Set card uuid with response from network
+                let dictionary : NSArray = response as! NSArray
+                print("\n\nCards Found From PullUpVC")
+                print(dictionary)
+                
+                for item in dictionary{
+                    
+                    let card = ContactCard(snapshot: item as! NSDictionary)
+                    
+                    print("Printing the card from the call, IsRemoteUser: ", ContactManager.sharedManager.userIsRemoteUser)
+                    //card.printCard()
+                    
+                    // If user remote, cards need to be parsed and added to manager
+                    ContactManager.sharedManager.currentUserCards.append(card)
+                    
+                    // Add dictionary to dictionary cards array
+                    ContactManager.sharedManager.currentUserCardsDictionaryArray.append([item as! NSDictionary])
+                    
+                    print("Current User Cards Count From PullUP \(ContactManager.sharedManager.currentUserCards.count)")
+                    print("Current User Dictionary Cards Count From PullUP \(ContactManager.sharedManager.currentUserCardsDictionaryArray.count)")
+                    
+                    
+                    if card.isVerified{
+                        ContactManager.sharedManager.currentUserCards.append(card)
+                        //ContactManager.sharedManager.viewableUserCards.append(card)
+                    }
+                    tempCardList.append(card)
+                }
+                
+                
+                for card in ContactManager.sharedManager.currentUserCards{
+                    
+                    for temp in tempCardList{
+                        // Check for match
+                        if temp.cardId == card.cardId{
+                            // Test
+                            print("Found an ID match")
+                            // Set the field
+                            card.isVerified = temp.isVerified
+                            card.isHidden = temp.isHidden
+                            
+                            
+                            if card.isHidden != true{
+                                // Add to viewable
+                                ContactManager.sharedManager.viewableUserCards.append(card)
+                                print("Viewable card count")
+                            }
+                        }
+                    }
+                }
+                
+                // Add dummy cell
+                let dummyCard = ContactCard()
+                ContactManager.sharedManager.viewableUserCards.append(dummyCard)
+                
+                // Set page control count
+                ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[0]
+                
+                // Post notification for image retrieval
+                self.postNotification()
+        
+                
+                
+            } else {
+                print("Card Fetch Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                //KVNProgress.showError(withStatus: "There was an error retrieving your cards. Please try again.")
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+        
+    }
+    
+    
+    
+    
     // Process Pin on confirmation
     
     func processPin(){
@@ -367,24 +617,33 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
         
         if isCurrentUser && currentUser.profileImageId != ""{
             
-            print("Processing pin and looking for image", currentUser.profileImageId)
-            // Get image data
-            let imageData = UIImageJPEGRepresentation(self.imageView.image!, 0.5)
-            print(imageData!)
+            // Iterate over image list and retrieve all
+            for imageView in self.userImageList {
+                
+                print("Processing pin and looking for image", currentUser.profileImageId)
+                // Get image data
+                let imageData = UIImageJPEGRepresentation(imageView.image!, 0.5)
+                print(imageData!)
+                
+                // Generate id string for image
+                let idString = currentUser.profileImageId
+                
+                // Assign asset name and type
+                let fname = idString
+                let mimetype = "image/png"
+                
+                // Create image dictionary
+                let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+                
+                // Add image to user profile images
+                //self.currentUser.setImages(imageRecords: imageDict)
+                ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
+                
+                print("Image count on manager", ContactManager.sharedManager.currentUser.profileImages.count)
+                print("Image count on regular", self.currentUser.profileImages.count)
+                
+            }
             
-            // Generate id string for image
-            let idString = currentUser.profileImageId
-            
-            // Assign asset name and type
-            let fname = idString
-            let mimetype = "image/png"
-            
-            // Create image dictionary
-            let imageDict = ["image_id": idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
-            
-            // Add image to user profile images
-            self.currentUser.setImages(imageRecords: imageDict)
-            ContactManager.sharedManager.currentUser.setImages(imageRecords: imageDict)
             
             // Store user to device
             //UDWrapper.setDictionary("user", value: self.currentUser.toAnyObjectWithImage())
@@ -580,6 +839,8 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                     // Set Manager navigation path
                     ContactManager.sharedManager.userIsRemoteUser = true
 
+                    
+                    
                     
                     // Show homepage
                     DispatchQueue.main.async {

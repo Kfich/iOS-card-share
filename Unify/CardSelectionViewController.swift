@@ -773,6 +773,8 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
     }
     
+    
+    
     // Format textfield for phone numbers
     func format(phoneNumber sourcePhoneNumber: String) -> String? {
         
@@ -1013,6 +1015,7 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
         
         // Populate image view
         if selectedCard.cardProfile.images.count > 0{
+            print("Profile images on selection greater.")
             contactImageView.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
             contactImageViewSingleWrapper.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
             contactImageViewEmptyWrapper.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
@@ -1020,6 +1023,34 @@ class CardSelectionViewController: UIViewController ,UITableViewDelegate, UITabl
             contactImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
             contactImageViewSingleWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
             contactImageViewEmptyWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+        }else if selectedCard.cardProfile.imageIds.count > 0{
+            
+            print("Profile image id not nil on selection", selectedCard.cardProfile.imageIds[0]["card_image_id"] as! String)
+            print(selectedCard.cardProfile.imageIds)
+            
+            // Init id
+            let idString = selectedCard.cardProfile.imageIds[0]["card_image_id"] as! String
+            
+            print("ID String :", idString)
+            
+            // Set image for contact
+            let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(idString).jpg")!
+            let placeholderImage = UIImage(named: "profile")!
+            
+             print("URL String :", url)
+            
+            // Set image from url
+            contactImageView.setImageWith(url, placeholderImage: placeholderImage)
+            contactImageViewSingleWrapper.setImageWith(url, placeholderImage: placeholderImage)
+            contactImageViewEmptyWrapper.setImageWith(url, placeholderImage: placeholderImage)
+        }else{
+            print("Profile met neither on selection")
+            
+            contactImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            contactImageViewSingleWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            contactImageViewEmptyWrapper.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            print(selectedCard.cardProfile.imageId)
+            print(selectedCard.imageId)
         }
         
         // Populate label fields
