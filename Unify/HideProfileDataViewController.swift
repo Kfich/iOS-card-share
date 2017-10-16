@@ -32,10 +32,10 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         // Set title 
         if ContactManager.sharedManager.hideCardsSelected {
             // Set titleview
-            self.viewTitleLabel.text = "Manage Cards"
+            self.viewTitleLabel.text = "Hide Selected Cards"
         }else{
             // Set titleview
-            self.viewTitleLabel.text = "Manage Badges"
+            self.viewTitleLabel.text = "Hide Selected Badges"
         }
 
         
@@ -52,10 +52,10 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Set titleview
-            self.viewTitleLabel.text = "Manage Cards"
+            self.viewTitleLabel.text = "Hide Selected Cards"
         }else{
             // Set titleview
-            self.viewTitleLabel.text = "Manage Badges"
+            self.viewTitleLabel.text = "Hide Selected Badges"
         }
         
         // Parse for verified cards 
@@ -139,7 +139,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Return count
-             return ContactManager.sharedManager.viewableUserCards.count - 1
+             return ContactManager.sharedManager.currentUserCards.count
             
         }else{
             // Set titleview
@@ -158,7 +158,7 @@ class HideProfileDataViewController: UIViewController, UITableViewDataSource, UI
         
         if ContactManager.sharedManager.hideCardsSelected {
             // Set current card
-            cell.currentCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
+            cell.currentCard = ContactManager.sharedManager.currentUserCards[indexPath.row]
             
             // Toggle switch based on value
             //cell.toggleSwitchOnInit()

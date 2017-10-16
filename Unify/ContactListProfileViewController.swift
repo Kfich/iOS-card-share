@@ -516,12 +516,13 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             // Init tableview cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "BioInfoCell", for: indexPath) as! CardOptionsViewCell
             
+            let phone = tableData[sections[indexPath.section]]?[indexPath.row]
             // Call option
-            //self.callSelected(self)
-            let phone = cell.descriptionLabel.text
+            let result = String(phone!.characters.filter { "01234567890.".characters.contains($0) })
+            print("Filtered Phone String >> \(phone!)", cell.descriptionLabel.text!, result)
             
             // configure call
-            if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
+            if let url = URL(string: "tel://\(result)"), UIApplication.shared.canOpenURL(url) {
                 if #available(iOS 10, *) {
                     UIApplication.shared.open(url)
                 } else {

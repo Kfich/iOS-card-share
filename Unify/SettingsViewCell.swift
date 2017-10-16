@@ -112,7 +112,7 @@ class SettingsViewCell: UITableViewCell {
         if ContactManager.sharedManager.hideCardsSelected {
             // Follow hide card flow
             // Update card & Send to server
-            self.toggleCardVisibility(card: currentCard, status: boolStatus)
+            self.toggleCardVisibility(card: currentCard, status: !boolStatus)
         }else{
             // Follow badge flow
             self.toggleBadgeVisibility(badge: currentBadge, status: boolStatus)
@@ -171,7 +171,12 @@ class SettingsViewCell: UITableViewCell {
     
     func toggleCardVisibility(card: ContactCard, status: Bool) {
         // Check original status
+        
+        print("Bool Status Intent: ", status)
         print("Card Toggle Original >> \(card.isHidden)")
+        
+        print("Card name", card.cardName!, card.cardId!)
+        
         
         // Set status
         card.isHidden = status
@@ -179,9 +184,13 @@ class SettingsViewCell: UITableViewCell {
         // Check post status
         print("Card Toggle Changed >> \(card.isHidden)")
         
+        ContactManager.sharedManager.setCardToVisible(cardIdString: card.cardId!, status: status)
         
-        var viewableIndex = 0
         
+        //var viewableIndex = 0
+        
+        
+        /*
         // Viewable cards
         for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count{
             
@@ -195,7 +204,7 @@ class SettingsViewCell: UITableViewCell {
         }
         
         // Contact manager set status
-        ContactManager.sharedManager.setCardToVisible(cardIdString: currentCard.cardId!, status: status)
+        ContactManager.sharedManager.setCardToVisible(cardIdString: currentCard.cardId!, status: status)*/
 
     }
     

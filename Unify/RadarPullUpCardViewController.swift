@@ -212,7 +212,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         var viewableIndex = 0
         
         // Viewable cards
-        for viewable in 0..<ContactManager.sharedManager.currentUserCards.count - 1{
+        for viewable in 0..<ContactManager.sharedManager.currentUserCards.count{
             
             let viewableCard = ContactManager.sharedManager.currentUserCards[viewableIndex]
             
@@ -226,7 +226,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 
                 
                 print("Card To Add To Visbile -> \(viewableCard.cardName ?? "No Name") with count \(ContactManager.sharedManager.viewableUserCards.count)")
-                print(viewableCard.cardName ?? "")
+                print("The card that was added", viewableCard.cardName ?? "")
                 
             }
             

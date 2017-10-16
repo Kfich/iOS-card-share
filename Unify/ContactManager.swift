@@ -504,16 +504,42 @@ class ContactManager{
     }
     
     func setCardToVisible(cardIdString : String, status: Bool) {
-        //  Iterate over cards
+        
+        
+        
+        for card in viewableUserCards {
+            // Check for id match
+            
+            if card.cardId! == cardIdString {
+                
+                print("Matching ID Strings!", card.cardId, cardIdString)
+                
+                // remove card from array
+                viewableUserCards.remove(at: viewableUserCards.index(of: card)!)
+                
+                // Exit loop
+                break
+            }
+        }
+        
+        
+        /*//  Iterate over cards
         var index = 0
         var selectedCardId = ""
         
-        for card in 0..<viewableUserCards.count - 1 {
+        for card in 0..<viewableUserCards.count {
+            
+            print("The card on manager serCardToVisible index: ", card)
+            
             // Find id match
             let card = viewableUserCards[index]
             
+            print("Manager serCardToVisible name: ", card.cardName ?? "No Name")
+            print("Manager CardId: ", card.cardName ?? "No Name")
+            
             if card.cardId == cardIdString {
                 
+                print("Manager CardId Match!!: ", card.cardName ?? "No Name")
                 // Set card ID
                 selectedCardId = card.cardId!
                 
@@ -538,7 +564,7 @@ class ContactManager{
         var viewableIndex = 0
         
         // Viewable cards
-        for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count - 1{
+        for viewable in 0..<ContactManager.sharedManager.viewableUserCards.count{
             
             let viewableCard = ContactManager.sharedManager.viewableUserCards[viewableIndex]
             
@@ -553,18 +579,22 @@ class ContactManager{
                 break
             }
             
-        }
+        }*/
         
         // Post refresh
         
-        print("Where the refresh would post for viewable \(viewableUserCards.count)")
-        print("Where the refresh would post for current array \(currentUserCards.count)")
+        //print("Where the refresh would post for viewable \(viewableUserCards.count)")
+        //print("Where the refresh would post for current array \(currentUserCards.count)")
         
         postNotificationForCardRefresh()
         
     }
     
     func postNotificationForCardRefresh() {
+        
+        print("Refresh notification posting on setting hide card")
+        print("Refresh table")
+        
         // Notify other VC's to update cardviews
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshViewable"), object: self)
         

@@ -770,6 +770,8 @@ public class CardProfile{
     }
     
     func downloadUserImage(idString: String) -> UIImageView {
+
+        
         // Init imageview
         let imageView = UIImageView()
         imageView.frame = CGRect(x: 0, y: 0, width: 90, height: 90)

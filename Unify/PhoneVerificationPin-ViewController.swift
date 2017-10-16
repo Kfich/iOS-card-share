@@ -450,47 +450,53 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
             
             print("Card profile image ids", card.cardProfile.imageIds)
             
-            // Init imageview to render image
-            let tempImageView = currentUser.userProfile.downloadUserImage(idString: card.cardProfile.imageIds[0]["card_image_id"] as? String ?? "")
+            if card.cardProfile.imageIds.count > 0 {
+                
+                // Init imageview to render image
+                let tempImageView = currentUser.userProfile.downloadUserImage(idString: card.cardProfile.imageIds[0]["card_image_id"] as? String ?? "")
+                
+                // Image data png
+                let imageData = UIImagePNGRepresentation(tempImageView.image!)
+                print("Card Image Data\n", imageData!)
+                
+                // Assign asset name and type
+                //idString = newUser.randomString(length: 20)
+                
+                
+                // Name image with id string
+                let idString = card.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
+                let fname = card.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
+                let mimetype = "image/png"
+                
+                // Create image dictionary
+                let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+                
+                print("Image Dict on download\n", imageDict)
+                
+                // Assign card image id
+                card.cardProfile.imageIds.append(["card_image_id": idString])
+                
+                // Add image to contact card profile images
+                card.cardProfile.setImages(imageRecords: imageDict)
+                print(imageDict)
+                
+                // Get
+                let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: card)
+                ContactManager.sharedManager.cardBagdeLists["\(card.cardId!)"] = list
+                
+                
+                // Test
+                print("Card After Image Added\n", card.toAnyObjectWithImage())
+                
+                // Add to array of dictionaries
+                ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
+                
+                // Test additions
+                print("Dictionary card count", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+                
+            }
             
-            // Image data png
-            let imageData = UIImagePNGRepresentation(tempImageView.image!)
-            print("Card Image Data\n", imageData!)
-            
-            // Assign asset name and type
-            //idString = newUser.randomString(length: 20)
-            
-            
-            // Name image with id string
-            let idString = card.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
-            let fname = card.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
-            let mimetype = "image/png"
-            
-            // Create image dictionary
-            let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
-            
-            print("Image Dict on download\n", imageDict)
-            
-            // Assign card image id
-            card.cardProfile.imageIds.append(["card_image_id": idString])
-            
-            // Add image to contact card profile images
-            card.cardProfile.setImages(imageRecords: imageDict)
-            print(imageDict)
-            
-            // Get
-            let list = ContactManager.sharedManager.parseContactCardForSocialIcons(card: card)
-            ContactManager.sharedManager.cardBagdeLists["\(card.cardId!)"] = list
-            
-            
-            // Test
-            print("Card After Image Added\n", card.toAnyObjectWithImage())
-            
-            // Add to array of dictionaries
-            ContactManager.sharedManager.currentUserCardsDictionaryArray.insert([card.toAnyObjectWithImage()], at: 0)
-            
-            // Test additions
-            print("Dictionary card count", ContactManager.sharedManager.currentUserCardsDictionaryArray.count)
+        
         }
         
         // Save dictionary to wrapper defaults
