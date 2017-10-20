@@ -364,7 +364,7 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         
         // Add card ownerId
         card.ownerId = newUser.userId
-        card.cardProfile.setPhoneRecords(phoneRecords: ["phone": newUser.userProfile.phoneNumbers[0]["phone"]!])
+        card.cardProfile.setPhoneRecords(phoneRecords: ["mobile": newUser.userProfile.phoneNumbers[0]["mobile"]!])
         
         // Populate card 
         self.populateFirstCard()

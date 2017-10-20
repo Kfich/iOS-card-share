@@ -13,8 +13,15 @@ import Contacts
 
 class ViewController: UIViewController {
 
+    // Properties
+    // -------------------------------
     var store: CNContactStore!
 
+    // IBOutlets
+    // -------------------------------
+    @IBOutlet weak var bgView: UIView!
+    @IBOutlet weak var bgView2: UIView!
+    @IBOutlet weak var getStartedButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +44,11 @@ class ViewController: UIViewController {
         
         self.view.backgroundColor = UIColor(patternImage: image)
 
+        
+        // Add action to view
+        let showProfileGesture = UITapGestureRecognizer(target: self, action: #selector(showCreateProfile))
+        self.bgView2.isUserInteractionEnabled = true
+        self.bgView2.addGestureRecognizer(showProfileGesture)
         
         // Configure onboarding vcs
         DispatchQueue.main.async {
@@ -73,14 +85,25 @@ class ViewController: UIViewController {
                 
             }
             
-            secondPage.actionButton.layer.cornerRadius = secondPage.actionButton.frame.height / 2
+            // Set bg views
+            firstPage.view = self.bgView
+            secondPage.view = self.bgView2
+            
+            
+            // Config button
+            secondPage.actionButton.layer.cornerRadius = self.getStartedButton.frame.height / 2
             secondPage.actionButton.backgroundColor = UIColor.white
             secondPage.actionButton.setTitleColor(UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0), for: .normal)
             
+            // Config button
+            //self.getStartedButton.frame = secondPage.actionButton.frame
+            self.getStartedButton.layer.cornerRadius = self.getStartedButton.frame.height / 2
+            self.getStartedButton.backgroundColor = UIColor.white
+            self.getStartedButton.setTitleColor(UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0), for: .normal)
+               
+            
             // Add Content controller to the main VC
             onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "backgroundGradient"), contents: [firstPage, secondPage])
-            
-            
             onboardingVC?.shouldMaskBackground = false
             
             //let images = [UIImage(named: "onboard"), UIImage(named: "onboard_bg")]
@@ -91,7 +114,24 @@ class ViewController: UIViewController {
             
         }
     }
+    
+    
+    // IBActions
+    // ----------------------------------------
+    
+    
+    @IBAction func getStarted(_ sender: Any) {
+        
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CreateProfileNotification"), object: self)
+    }
 
+
+    func showCreateProfile() {
+        // Post notification
+        // Notification for radar screen
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CreateProfileNotification"), object: self)
+    }
     
     // Notification Center
     func addObservers() {

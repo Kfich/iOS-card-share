@@ -110,6 +110,12 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         print("Add Contact Attempts", addContactAttempts)
         print("Add Recipient Attempts", addRecipientAttempts)
         
+        // Resize images based on device sice
+        let modelName = UIDevice.current.modelName
+        
+        print("Model Name \(modelName)")
+        
+        
         
     }
     
@@ -151,6 +157,98 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         self.recipientWrapperView.isUserInteractionEnabled = true
         self.recipientWrapperView.addGestureRecognizer(tapGestureRecognizer)*/
         
+        // Resize images based on device sice
+        let modelName = UIDevice.current.modelName
+        
+        print("Model Name \(modelName)")
+        
+        // Resize images for the ipad
+        if modelName == "iPhone 6" || modelName == "iPhone 6s" || modelName == "iPhone 7" {
+            print("Iphone 6 landia my friend")
+            //plus device
+            
+            
+            //radarLogoImage.frame.origin.y = radarLogoImage.frame.origin.y + 100
+            
+            
+        }else if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
+            //standard device
+            
+        }else{
+            
+            // Set the frames for imageviews to minimum
+            self.contactWrapperView.frame = CGRect(self.contactWrapperView.frame.origin.x, self.contactWrapperView.frame.origin.y, self.contactWrapperView.frame.width, 200)
+            
+            self.recipientWrapperView.frame = CGRect(self.recipientWrapperView.frame.origin.x, self.recipientWrapperView.frame.origin.y, self.recipientWrapperView.frame.width, 200)
+            
+            self.recipientImageView.frame = CGRect(self.recipientImageView.frame.origin.x, self.recipientImageView.frame.origin.y, 120, 120)
+            self.contactImageView.frame = CGRect(self.contactImageView.frame.origin.x, self.contactImageView.frame.origin.y, 120, 120)
+            
+            
+            // Center the image
+            //self.contactImageView.center = self.contactWrapperView.center
+            // Center the image
+            //self.recipientImageView.center = self.recipientWrapperView.center
+            
+            // Layout subviews
+            // Reload views
+            self.view.layoutSubviews()
+            self.view.layoutIfNeeded()
+            
+        }
+
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        // Resize images based on device sice
+        let modelName = UIDevice.current.modelName
+        
+        print("Model Name \(modelName)")
+        
+        // Resize images for the ipad
+        if modelName == "iPhone 6" || modelName == "iPhone 6s" || modelName == "iPhone 7" {
+            print("Iphone 6 landia my friend")
+            //plus device
+            
+            
+            //radarLogoImage.frame.origin.y = radarLogoImage.frame.origin.y + 100
+            
+            
+        }else if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
+            //standard device
+            
+        }else{
+            
+            /*
+            
+            // Set the frames for imageviews to minimum
+            self.contactWrapperView.frame = CGRect(self.contactWrapperView.frame.origin.x, self.contactWrapperView.frame.origin.y, self.contactWrapperView.frame.width, 200)
+            
+            self.recipientWrapperView.frame = CGRect(self.recipientWrapperView.frame.origin.x, self.recipientWrapperView.frame.origin.y, self.recipientWrapperView.frame.width, 200)
+            
+            self.recipientImageView.frame = CGRect(self.recipientImageView.frame.origin.x, self.recipientImageView.frame.origin.y, 100, 100)
+            self.contactImageView.frame = CGRect(self.contactImageView.frame.origin.x, self.contactImageView.frame.origin.y, 100, 100)
+            
+            
+            // Center the image
+            //self.contactImageView.center = self.contactWrapperView.center
+            // Center the image
+            //self.recipientImageView.center = self.recipientWrapperView.center
+            
+            // Layout subviews
+            // Reload views
+            self.view.layoutSubviews()
+            self.view.layoutIfNeeded()*/
+            
+        }
+        
+        
+
     }
     
     

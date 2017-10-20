@@ -67,8 +67,35 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Make sure locked
         pullUpController.isLocked = true
+        
+        // Resize images based on device sice
+        let modelName = UIDevice.current.modelName
+        
+        print("Model Name \(modelName)")
+        
+        // Resize images for the ipad
+        if modelName == "iPhone 6" || modelName == "iPhone 6s" || modelName == "iPhone 7" {
+            print("Iphone 6 landia my friend")
+            //plus device
+            
+            
+        }else if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
+            //standard device
+            
+        }else{
+            // Set size
+            // Make sure locked
+            pullUpController.isLocked = false
+            
+            
+        }
+
+        // Make sure locked
+        //pullUpController.isLocked = true
         
         
         //fetchCurrentUser()
@@ -850,8 +877,36 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, minimumHeightForBottomViewController bottomVC: UIViewController) -> CGFloat {
          /*topView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height;*/
-        return 250
         
+        // Resize images based on device sice
+        let modelName = UIDevice.current.modelName
+        
+        print("Model Name \(modelName)")
+        
+        // init size
+        var size = CGFloat()
+        
+        // Resize images for the ipad
+        if modelName == "iPhone 6" || modelName == "iPhone 6s" || modelName == "iPhone 7" {
+            print("Iphone 6 landia my friend")
+            //plus device
+            
+            // Set size
+            size = 250
+            
+        }else if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
+            //standard device
+            // Set size
+            size = 250
+            
+        }else{
+            // Set size
+            size = 100//self.view.frame.height / 2
+            
+        }
+        
+        return size
     }
     
     func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, targetHeightForBottomViewController bottomVC: UIViewController, fromCurrentHeight height: CGFloat) -> CGFloat {

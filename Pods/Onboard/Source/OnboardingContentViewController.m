@@ -290,6 +290,9 @@ NSString * const kOnboardActionButtonAccessibilityIdentifier = @"OnboardActionBu
     CGFloat xPadding = (viewWidth - contentWidth) / 2.0;
 
     [self.iconImageView setFrame:CGRectMake((viewWidth / 2.0) - (self.iconWidth / 2.0), self.topPadding, self.iconWidth, self.iconHeight)];
+    
+    // Set content mode
+    //self.iconImageView.contentMode = UIViewContentModeScaleToFill;
 
     CGFloat titleYOrigin = CGRectGetMaxY(self.iconImageView.frame) + self.underIconPadding;
 

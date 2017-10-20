@@ -342,6 +342,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
     // Keyboard Delegate Methods
     func keyboardWillShow(notification: NSNotification) {
         
+        /*
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y == 0{
                 let height = keyboardSize.height
@@ -366,7 +367,7 @@ class PhoneVerificationPinViewController: UIViewController, UITextFieldDelegate{
                 
             }
             
-        }
+        }*/
         
     }
     

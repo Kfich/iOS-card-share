@@ -12,7 +12,8 @@ import PopupDialog
 import UIDropDown
 
 
-class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
+
+class PhoneVerificationViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate{
     
     // Properties
     // --------------------------------
@@ -35,7 +36,9 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     // IBOutlets
     // --------------------------------
-
+    
+    @IBOutlet var bgScrollView: UIScrollView!
+    
     @IBOutlet weak var termsBox: UIView!
     
     @IBOutlet weak var phoneVerBox: UIView!
@@ -120,6 +123,34 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             print("Current user stays blank")
         }
         */
+        
+        // Resize images based on device sice
+        let modelName = UIDevice.current.modelName
+        
+        print("Model Name \(modelName)")
+        
+        // Resize images for the ipad
+        if modelName == "iPhone 6" || modelName == "iPhone 6s" || modelName == "iPhone 7" {
+            print("Iphone 6 landia my friend")
+            //Disable scroll
+            self.bgScrollView = UIScrollView(frame: bgScrollView.bounds)
+            self.bgScrollView.isScrollEnabled = false
+            
+            
+        }else if modelName == "iPhone 6 Plus" || modelName == "iPhone 6s Plus" || modelName == "iPhone 7 Plus"{
+            print("Now entering iphone plus landia my friend to tread light")
+            //standard device
+            //Disable scroll
+            self.bgScrollView = UIScrollView(frame: bgScrollView.bounds)
+            self.bgScrollView.isScrollEnabled = false
+            
+        }else{
+            
+            //Disable scroll
+            self.bgScrollView.isScrollEnabled = true
+            
+        }
+
         
         
     }
