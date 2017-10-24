@@ -443,7 +443,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         tableView.tableFooterView = self.profileImageCollectionView
         
         //tableView.separ
-        tableView.separatorStyle = .none
+        //tableView.separatorStyle = .none
         
         // Set bg
         tableView.backgroundColor = UIColor.white
@@ -472,7 +472,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
-                                            
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -481,7 +481,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                     }
                                 }
@@ -502,13 +502,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         print("Printing section index ", index)
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         
                                         }.cellUpdate { cell, row in
@@ -545,13 +546,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 }
                                             }
                                         
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             headerView.accessibilityIdentifier = "header"
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                             
                                     
@@ -572,7 +574,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Title"
                                         $0.value = val
                                         
-                                        
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
@@ -580,7 +582,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
                                         $0.cell.addSubview(headerView)
-                                        
+                                        */
                                         
                                         print("section index: ", $0.indexPath ?? IndexPath())
                                         
@@ -590,6 +592,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "Title"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -610,7 +613,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
            
                                     }
 
@@ -635,6 +638,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -643,7 +647,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -651,13 +655,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                     
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         
                                         }.cellUpdate { cell, row in
@@ -666,6 +671,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -686,7 +692,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                             
                                     }
@@ -698,6 +704,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Company"
                                         $0.value = val
                                         
+                                        /*
                                         // Add lineview
                                         // Init line view
                                         let headerView = UIView()
@@ -705,7 +712,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -713,6 +720,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "Company"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
+                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -733,7 +742,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                     }
 
@@ -755,6 +764,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         }.cellUpdate { cell, row in
                             cell.textLabel?.textAlignment = .left
                             
+                            /*
                             // Init line view
                             let headerView = UIView()
                             
@@ -763,7 +773,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                             
                             
                             // Add seperator to label
-                            cell.addSubview(headerView)
+                            cell.addSubview(headerView)*/
                     }
                 }
                 $0.multivaluedRowToInsertAt = { index in
@@ -774,13 +784,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         self.count = self.count + 1
                         //$0.tag = "Add Bio"
                         
+                        /*
                         // Init line view
                         let headerView = UIView()
                         headerView.accessibilityIdentifier = "header"
                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                         headerView.backgroundColor = UIColor.lightGray
                         // Add seperator to label
-                        $0.cell.addSubview(headerView)
+                        $0.cell.addSubview(headerView)*/
                         
                         }.cellUpdate { cell, row in
                             
@@ -788,6 +799,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                             cell.textField.placeholder = "Bio"
                             cell.titleLabel?.textColor = self.view.tintColor
                             
+                            /*
                             // Check if view exists
                             for view in cell.subviews{
                                 
@@ -808,7 +820,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                             headerView.backgroundColor = UIColor.lightGray
                             // Add seperator to label
-                            cell.addSubview(headerView)
+                            cell.addSubview(headerView)*/
                             
                     }
                 }
@@ -822,18 +834,20 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         $0.placeholder = "Bio"
                         $0.value = val
                         
+                        /*
                         // Init line view
                         let headerView = UIView()
                         headerView.accessibilityIdentifier = "header"
                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                         headerView.backgroundColor = UIColor.lightGray
                         // Add seperator to label
-                        $0.cell.addSubview(headerView)
+                        $0.cell.addSubview(headerView)*/
                         
                         
                     }.cellUpdate({ (cell, row) in
                         
                         
+                        /*
                         // Check if view exists
                         for view in cell.subviews{
                             
@@ -854,7 +868,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                         headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                         headerView.backgroundColor = UIColor.lightGray
                         // Add seperator to label
-                        cell.addSubview(headerView)
+                        cell.addSubview(headerView)*/
                     })
                 }
                 
@@ -879,6 +893,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textLabel?.textAlignment = .left
                                             
                                            
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -887,7 +902,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -903,13 +918,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         self.phoneLabels.append("mobile")
                                         self.phoneNumbers.append(["mobile" : ""])
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -922,7 +938,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             if row.indexPath != nil{
                                                 // Add to label
-                                                self.addGestureToLabel(label: cell.textLabel!, index: row.indexPath!)
+                                                self.addPhoneLabel(label: cell.textLabel!, index: row.indexPath!)
                                                 
                                                 // Test 
                                                 print("Cell updating with index Path", row.indexPath!)
@@ -930,6 +946,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 
                                             }
                                             
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -950,7 +967,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                     }
                                     
@@ -974,14 +991,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         // Set label
                                         $0.title = val.keys.first!
                                         
-                                        
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         
                                         //$0.tag = "Phone Numbers"
@@ -994,6 +1011,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             // Set the label frame to align the values against left edge
                                             cell.titleLabel!.frame = CGRect(x: (cell.titleLabel?.frame.origin.x)!, y: (cell.titleLabel?.frame.origin.x)!, width: 160.0 , height: (cell.titleLabel?.frame.height)!)
                                             
+                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1014,13 +1033,13 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                             cell.titleLabel?.text = self.phoneLabels[(cell.row.indexPath?.row)!]
                                             
                                             
                                             // Add gesture to cell
-                                            self.addGestureToLabel(label: cell.textLabel!, index: cell.row.indexPath!)
+                                            self.addPhoneLabel(label: cell.textLabel!, index: cell.row.indexPath!)
                                             
                                             
                                     }
@@ -1045,6 +1064,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -1053,7 +1073,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -1076,13 +1096,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                         $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -1104,6 +1125,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                 print("Cell updating with index Path", row.indexPath!)
                                                 
                                             }
+                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1124,7 +1147,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                            
                                             
@@ -1146,13 +1169,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.value = val["email"]!
                                         $0.title = val["type"] ?? "work"
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate { cell, row in
                                             // Reconfig alignment
@@ -1165,6 +1189,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             cell.titleLabel?.text = val["type"] ?? "work"
                                             
+                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1185,7 +1211,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                     }
 
@@ -1208,6 +1234,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -1216,7 +1243,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -1224,13 +1251,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.cell.titleLabel?.textColor = self.view.tintColor
                                         
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         //$0.add(rule: RuleURL())
                                         
@@ -1244,6 +1272,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                             cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                             
+                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1264,7 +1294,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                         
                                             
@@ -1278,13 +1308,14 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Site"
                                         $0.value = val
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate { cell, row in
                                             
@@ -1292,6 +1323,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             cell.textField.placeholder = "Url"
                                             cell.titleLabel?.textColor = self.view.tintColor
                                             
+                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1312,7 +1345,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                             
                                             
                                     }
@@ -1339,6 +1372,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -1347,7 +1381,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -1465,6 +1499,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                         
                                                     }
                                                     
+                                                    /*
                                                     // Init line view
                                                     let headerView = UIView()
                                                     
@@ -1473,7 +1508,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                                     
                                                     
                                                     // Add seperator to label
-                                                    cell.addSubview(headerView)
+                                                    cell.addSubview(headerView)*/
                                                     
                                                 }
                                             }
@@ -1494,6 +1529,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -1502,26 +1538,28 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
                                     return NameRow("tagRow_\(index)") {
                                         $0.placeholder = "Tag"
                                         
+                                        
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         //$0.cell.textField.autocorrectionType = UITextAutocorrectionType.no
                                         //$0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.none
                                         //$0.tag = "Add Media Info"
                                     }.cellUpdate({ (cell, row) in
-                                        
+                                        /*
                                         // Check if view exists
                                         for view in cell.subviews{
                                             
@@ -1542,7 +1580,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        cell.addSubview(headerView)
+                                        cell.addSubview(headerView)*/
                                     })
                                 }
                                 
@@ -1552,16 +1590,19 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Tag"
                                         $0.value = val
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate({ (cell, row) in
                                             
+                                            
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1582,7 +1623,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                         })
                                 }
             }
@@ -1603,6 +1644,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         }.cellUpdate { cell, row in
                                             cell.textLabel?.textAlignment = .left
                                             
+                                            /*
                                             // Init line view
                                             let headerView = UIView()
                                             
@@ -1611,7 +1653,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             
                                             
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                     }
                                 }
                                 $0.multivaluedRowToInsertAt = { index in
@@ -1621,16 +1663,18 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.cell.textField.autocapitalizationType = UITextAutocapitalizationType.sentences
                                         //$0.tag = "Add Media Info"
                                         
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate({ (cell, row) in
                                             
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1651,7 +1695,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                         })
                                 }
                                 
@@ -1661,16 +1705,19 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                         $0.placeholder = "Note"
                                         $0.value = val
                                         
+                                        
+                                        /*
                                         // Init line view
                                         let headerView = UIView()
                                         headerView.accessibilityIdentifier = "header"
                                         headerView.frame = CGRect(x: 0, y: $0.cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                         headerView.backgroundColor = UIColor.lightGray
                                         // Add seperator to label
-                                        $0.cell.addSubview(headerView)
+                                        $0.cell.addSubview(headerView)*/
                                         
                                         }.cellUpdate({ (cell, row) in
                                             
+                                            /*
                                             // Check if view exists
                                             for view in cell.subviews{
                                                 
@@ -1691,7 +1738,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                                             headerView.frame = CGRect(x: 0, y: cell.frame.height - 0.5, width: self.tableView.frame.width, height: 0.5)
                                             headerView.backgroundColor = UIColor.lightGray
                                             // Add seperator to label
-                                            cell.addSubview(headerView)
+                                            cell.addSubview(headerView)*/
                                         })
                                 }
         }
@@ -2585,6 +2632,21 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
     
     }
     
+    // Add labels to phone number fields
+    func addPhoneLabel(label: UILabel, index: IndexPath) {
+        // Init tap gesture
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(setSelectedPhoneLabel(sender:)))
+        label.isUserInteractionEnabled = true
+        // Add gesture to image
+        label.addGestureRecognizer(tapGestureRecognizer)
+        // Set image index
+        label.tag = index.row
+        // Set string identifier for view
+        label.accessibilityIdentifier = String(describing: index)
+        
+        
+    }
+    
     func setSelectedTransaction(sender: UITapGestureRecognizer){
         
         let label = sender.view as! UILabel
@@ -2601,6 +2663,25 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         
         // Show selection screen
         showSelectionWithOptions(cellPath: indexPath)
+    }
+    
+    
+    func setSelectedPhoneLabel(sender: UITapGestureRecognizer){
+        
+        let label = sender.view as! UILabel
+        let intent = label.text!
+        
+        print("Sender Index: \((sender.view?.tag)!)")
+        print("Sender Index Path: \((sender.view?.accessibilityIdentifier)!)")
+        print("Intent : \(intent)")
+        
+        
+        let path = (sender.view?.accessibilityIdentifier)!.characters.filter { "01234567890.".characters.contains($0) }
+        print(path, "Path")
+        let indexPath = IndexPath(row: Int(String(path[1]))!, section: Int(String(path[0]))!)
+        
+        // Show selection screen
+        showPhoneSelectionWithOptions(cellPath: indexPath)
     }
     
     func updateCellLabel(){
@@ -2647,7 +2728,7 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     print("The Cell Label val", cell.baseCell.textLabel?.text!)
                     
                     // Overwrite previous value for update
-                    self.phoneNumbers[cellIndex.row] = [newLabelValue : phoneNumbers[cellIndex.row].values.first!]
+                    self.phoneNumbers[cellIndex.row] = [newLabelValue : phoneNumbers[cellIndex.row].values.first ?? ""]
                     
                     self.phoneLabels[cellIndex.row] = newLabelValue
                     
@@ -2664,7 +2745,6 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                 }
             }
             
-            
         case "Email Section":
             print("Emails")
             
@@ -2674,7 +2754,8 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
                     print("The Cell Label val", cell.baseCell.textLabel?.text)
                     
                     // Overwrite previous value for update
-                    self.emails[cellIndex.row] = [newLabelValue : emails[cellIndex.row].values.first!]
+                    
+                    self.emails[cellIndex.row] = [newLabelValue : emails[cellIndex.row].values.first ?? ""]
                     self.emailLabels[cellIndex.row] = newLabelValue
                     
                     print("The phone emails array index value", self.emails[cellIndex.row])
@@ -2756,6 +2837,20 @@ class ProfileEditViewController: FormViewController, UICollectionViewDelegate, U
         // Call the viewController
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "LabelSelectVC")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func showPhoneSelectionWithOptions(cellPath: IndexPath) {
+        
+        print("The selected index path", cellPath)
+        // Set path
+        ContactManager.sharedManager.labelPathWithIntent["index"] = cellPath
+        
+        print("Manager label path", ContactManager.sharedManager.labelPathWithIntent)
+        
+        // Call the viewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "PhoneLabelSelectVC")
         self.present(controller, animated: true, completion: nil)
     }
 

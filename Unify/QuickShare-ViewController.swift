@@ -491,10 +491,36 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
     func populateCards(){
         // Senders card config
         
+        print("Selected card count", selectedCard.cardProfile.images.count, selectedCard.cardProfile.images)
+        
         // Populate image view
         if selectedCard.cardProfile.images.count > 0{
+            // Set to card pic
             profileImageView.image = UIImage(data: selectedCard.cardProfile.images[0]["image_data"] as! Data)
-        }else if selectedCard.isVerified{
+        
+        }else if selectedCard.cardProfile.imageIds.count > 0{
+            
+            print("Profile image id not nil")
+            
+            // Init id
+            let idString = selectedCard.cardProfile.imageIds[0]["card_image_id"] as? String ?? ""
+            // Set image for contact
+            let url = URL(string: "\(ImageURLS.sharedManager.getFromDevelopmentURL)\(idString ).jpg")!
+            let placeholderImage = UIImage(named: "profile")!
+            
+            // Set image from url
+            profileImageView.setImageWith(url, placeholderImage: placeholderImage)
+        }else{
+            print("Profile met neither")
+            
+            profileImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
+            print(selectedCard.cardProfile.imageId)
+            print(selectedCard.imageId)
+        }
+        
+        
+        // Different set for verified
+        if selectedCard.isVerified{
             profileImageView.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
             
         }
@@ -529,18 +555,27 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
         
         // Here, configure form validation
         
-        if (firstNameTextField.text == nil || lastNameTextField.text == nil || emailTextField.text == nil) {
+        if (firstNameTextField.text == "" || lastNameTextField.text == "" || (emailTextField.text == "" && ContactManager.sharedManager.quickshareEmailSelected) || (phoneTextField.text == "" && ContactManager.sharedManager.quickshareSMSSelected)) {
+            
+            // Init message
+            var message = ""
+            
+            if (emailTextField.text == "" && ContactManager.sharedManager.quickshareEmailSelected) {
+                // Config message for email missing
+                message = "Please enter a valid email address"
+                
+            }else if (phoneTextField.text == "" && ContactManager.sharedManager.quickshareSMSSelected){
+                // Config message for sms missing
+                message = "Please enter a valid phone number"
+            }
             
             // form invalid
-            let message = "Please enter valid contact information"
+            //let message = "Please enter valid contact information"
             let title = "There was an error"
             
             // Configure alertview
             let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
             let cancel = UIAlertAction(title: "Ok", style: .default, handler: { (alert) in
-                
-                // Dismiss alert
-                self.dismiss(animated: true, completion: nil)
                 
             })
             

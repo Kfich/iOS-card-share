@@ -1,15 +1,15 @@
 //
-//  LabelSelectionViewController.swift
+//  ValueSelectionViewController.swift
 //  Unify
 //
-//  Created by Kevin Fich on 9/13/17.
+//  Created by Kevin Fich on 10/24/17.
 //  Copyright © 2017 Crane by Elly. All rights reserved.
 //
 
 import UIKit
 import Eureka
 
-class LabelSelectionViewController: FormViewController {
+class ValueSelectionViewController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class LabelSelectionViewController: FormViewController {
                 }.cellUpdate { cell, row in
                     cell.textLabel?.textAlignment = .left
                     cell.textLabel?.textColor = UIColor.black
-                
+                    
                 }.onCellSelection({ (cell, row) in
                     
                     // Set path
@@ -33,13 +33,13 @@ class LabelSelectionViewController: FormViewController {
                     // Post notif
                     self.postNotificationForUpdate()
                     
-                
-                    self.dismiss(animated: true, completion: {
-                    // Print to test
-                    print("Home selected")
                     
+                    self.dismiss(animated: true, completion: {
+                        // Print to test
+                        print("Home selected")
+                        
+                    })
                 })
-            })
             <<< ButtonRow(){
                 $0.title = "work"
                 }.cellUpdate { cell, row in
@@ -62,31 +62,31 @@ class LabelSelectionViewController: FormViewController {
                     })
                 })
             /*
-            <<< ButtonRow(){
-                $0.title = "Personal"
-                
-                }.cellUpdate { cell, row in
-                    cell.textLabel?.textAlignment = .left
-                    
-                }.onCellSelection({ (cell, row) in
-                    
-                    // Set path
-                    ContactManager.sharedManager.labelPathWithIntent["label_value"] = "personal"
-                    
-                    print("Manager label path with intent", ContactManager.sharedManager.labelPathWithIntent)
-                    
-                    // Post notif
-                    self.postNotificationForUpdate()
-                    
-                    self.dismiss(animated: true, completion: {
-                        // Print to test
-                        print("Personal selected")
-                    })
-                })*/
-            /*
+             <<< ButtonRow(){
+             $0.title = "Personal"
+             
+             }.cellUpdate { cell, row in
+             cell.textLabel?.textAlignment = .left
+             
+             }.onCellSelection({ (cell, row) in
+             
+             // Set path
+             ContactManager.sharedManager.labelPathWithIntent["label_value"] = "personal"
+             
+             print("Manager label path with intent", ContactManager.sharedManager.labelPathWithIntent)
+             
+             // Post notif
+             self.postNotificationForUpdate()
+             
+             self.dismiss(animated: true, completion: {
+             // Print to test
+             print("Personal selected")
+             })
+             })*/
+            
             <<< ButtonRow(){
                 $0.title = "mobile"
-        
+                
                 }.cellUpdate { cell, row in
                     cell.textLabel?.textAlignment = .left
                     cell.textLabel?.textColor = UIColor.black
@@ -105,7 +105,7 @@ class LabelSelectionViewController: FormViewController {
                         // Print to test
                         print("Mobile selected")
                     })
-                })*/
+                })
             <<< ButtonRow(){
                 $0.title = "other"
                 
@@ -128,7 +128,7 @@ class LabelSelectionViewController: FormViewController {
                         print("Other selected")
                     })
                 })
-
+        
     }
     
     func postNotificationForUpdate() {

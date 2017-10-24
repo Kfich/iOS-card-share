@@ -42,6 +42,7 @@ class ContactManager{
     var userSentCardFromRadarList = false
     var userSelectedNewContactForIntro = false
     var userSelectedNewRecipientForIntro = false
+    var userSelectedPhoneLabelValue = false
     
     // Check for edit attempts
     var editRecipient = false
@@ -72,7 +73,9 @@ class ContactManager{
     var quickshareEmailSelected = false
     
     // Incognito toggle 
-    var userIsIncognito = false 
+    var userIsIncognito = false
+    var incognitoImage: UIImage? 
+    var incognitoName = ""
     
     // Account for nav from card send view
     var userSMSCard = false
@@ -957,6 +960,22 @@ class ContactManager{
             
             // Set name
             contactObject.name = formatter.string(from: contact) ?? "No Name"
+            
+            
+            var fullNameArr = contactObject.name.components(separatedBy: " ")  //split(contactName) {$0 == " "}
+            let firstName: String = fullNameArr[0]
+            var lastName: String = fullNameArr.count > 1 ? fullNameArr.last! : firstName
+            
+            if lastName.isEmpty{
+                lastName = "#"
+            }
+            
+            // Add names individually
+            contactObject.first = firstName
+            contactObject.last = lastName
+            
+            print("First ", contactObject.first, "Last ", contactObject.last)
+            
             
             // Check for count
             if contact.phoneNumbers.count > 0 {

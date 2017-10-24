@@ -195,6 +195,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         if editImageSelected {
             // Set to image selected by user
             image = selectedImage
+        }else if ContactManager.sharedManager.incognitoImage != nil{
+            // Set from manager
+            image = ContactManager.sharedManager.incognitoImage!
+           
         }else{
             
             // Check if user has an image
@@ -203,7 +207,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             }else{
                 image = UIImage(named: "search")!
             }
-
+ 
         }
         
         // Set image to imageview
@@ -225,22 +229,24 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         imageView.frame = CGRect(x: 10, y: 0 , width: 125, height: 125)
         
         // Add label to the view
-        let changelbl = UILabel(frame: CGRect(0, containerView.frame.height - 55, containerView.frame.width, 20))
+        let changelbl = UILabel(frame: CGRect(0, containerView.frame.height - 85, containerView.frame.width, 20))
         changelbl.font = UIFont.systemFont(ofSize: 17)
-        changelbl.text = "change picture"
+        changelbl.text = "Edit Picture"
         changelbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         // Config lable
         changelbl.textAlignment = .center
             
         
         // Add label to the view
-        let lbl = UILabel(frame: CGRect(0, containerView.frame.height - 30, containerView.frame.width - 10, 45))
+        let lbl = UILabel(frame: CGRect(0, containerView.frame.height - 60, containerView.frame.width - 10, 45))
         lbl.font = UIFont.systemFont(ofSize: 22)
         lbl.textColor = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         //lbl.backgroundColor = UIColor.blue
         
         // Config lable
         lbl.textAlignment = .center
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.minimumScaleFactor = 0.4
         
         // Add action tap gesture to view object
         let labelAction = UITapGestureRecognizer(target: self, action: #selector(sayHello(tapGestureRecognizer:)))
@@ -251,7 +257,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         // Init pencil icon
-        let pencilImageView = UIImageView(frame: CGRect(x: lbl.frame.width - 10, y: lbl.frame.origin.y + 10 , width: 25, height: 25))
+        let pencilImageView = UIImageView(frame: CGRect(x: lbl.frame.width - 1, y: lbl.frame.origin.y + 10 , width: 25, height: 25))
         //pencilImageView.backgroundColor = UIColor.green
         // Set image
         pencilImageView.image = UIImage(named: "pencil")
@@ -266,6 +272,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         if editNameSelected {
             // Set to selected name
             lbl.text = self.selectedName
+        }else if ContactManager.sharedManager.incognitoName != ""{
+            // Set name to label
+            lbl.text = ContactManager.sharedManager.incognitoName
         }else{
             // Set name to label
             lbl.text = currentUser.getName() // Set to current user name
@@ -505,7 +514,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         self.alert.hideView()
         
         // Init alert
-        let alertVC = PMAlertController(title: "", description: "Enter your incognito name", image: nil, style: .alert)
+        let alertVC = PMAlertController(title: "", description: "Enter your Public Profile name", image: nil, style: .alert)
         
         alertVC.addTextField { (textField) in
             textField?.placeholder = "Name"
@@ -521,6 +530,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 // Set selected name 
                 self.selectedName = alertVC.textFields[0].text!
+                ContactManager.sharedManager.incognitoName = alertVC.textFields[0].text!
                 
                 // Show popover again
                 self.configureAndShowIncognitoAlert()
@@ -555,6 +565,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             
             // Set selectedImage
             self.selectedImage = image!
+            ContactManager.sharedManager.incognitoImage = UIImage()
+            ContactManager.sharedManager.incognitoImage = image!
             
             // Toggle new image switch
             self.editImageSelected = true
@@ -677,7 +689,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func configurePhotoPicker() {
         //Initial setup
         photoPicker.disableEntitlements = false // If you don't want use iCloud entitlement just set this value True
-        photoPicker.alertTitle = "Select Incognito Image"
+        photoPicker.alertTitle = "Select Public Profile Image"
         photoPicker.alertMessage = ""
         photoPicker.resizeImage = CGSize(width: 150, height: 150)
         photoPicker.allowDestructive = false
@@ -689,6 +701,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         photoPicker.actionTitleLibrary = "Photo Library"
         photoPicker.actionTitleLastPhoto = "Last Photo"
         photoPicker.actionTitleTakePhoto = "Take Photo"
+        photoPicker.actionTitleOther = "Import From..."
         photoPicker.actionTitleCancel = "Cancel"
         //photoPicker.actionTitleOther = "Import From..."
     }
@@ -746,7 +759,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10 // your number of cell here
+        return 9 // your number of cell here
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

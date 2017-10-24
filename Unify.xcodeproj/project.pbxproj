@@ -155,6 +155,7 @@
 		FBC74A101F8E84410081B7F7 /* ContactOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC74A0F1F8E84410081B7F7 /* ContactOptionsViewController.swift */; };
 		FBC74A121F8E844D0081B7F7 /* SelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC74A111F8E844D0081B7F7 /* SelectContactViewController.swift */; };
 		FBD0C0941F3B8FF500BFE62C /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD0C0931F3B8FF500BFE62C /* CollectionTableViewCell.swift */; };
+		FBD2C8CA1F9F81C000771C22 /* ValueSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD2C8C91F9F81BF00771C22 /* ValueSelectionViewController.swift */; };
 		FBDD57AA1EF0670C000C4C03 /* EditProfileContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */; };
 		FBDD5B681F4DF716002B66B8 /* ProfileImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDD5B671F4DF716002B66B8 /* ProfileImageCell.swift */; };
 		FBE76C811EDF395000E37E0C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE76C801EDF395000E37E0C /* ProfileViewController.swift */; };
@@ -452,6 +453,7 @@
 		FBC74A0F1F8E84410081B7F7 /* ContactOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactOptionsViewController.swift; sourceTree = "<group>"; };
 		FBC74A111F8E844D0081B7F7 /* SelectContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectContactViewController.swift; sourceTree = "<group>"; };
 		FBD0C0931F3B8FF500BFE62C /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
+		FBD2C8C91F9F81BF00771C22 /* ValueSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueSelectionViewController.swift; sourceTree = "<group>"; };
 		FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileContainerViewController.swift; sourceTree = "<group>"; };
 		FBDD5B671F4DF716002B66B8 /* ProfileImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageCell.swift; sourceTree = "<group>"; };
 		FBE76C801EDF395000E37E0C /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -805,6 +807,7 @@
 				FB199D021F339A0E00FFFCC1 /* SocialMediaViewController.swift */,
 				FB199D061F339D7300FFFCC1 /* SocialMediaDetailViewController.swift */,
 				FB6975AD1F69BF8300D68C09 /* LabelSelectionViewController.swift */,
+				FBD2C8C91F9F81BF00771C22 /* ValueSelectionViewController.swift */,
 				FB90A8B21F278F6D00E67B1E /* Settings */,
 			);
 			name = Profile;
@@ -1278,6 +1281,7 @@
 				FBD0C0941F3B8FF500BFE62C /* CollectionTableViewCell.swift in Sources */,
 				1CB31C8B1E93533A00A0C4A5 /* PhoneVerification-ViewController.swift in Sources */,
 				FB6975B41F6C50F300D68C09 /* ContactListProfileViewController.swift in Sources */,
+				FBD2C8CA1F9F81C000771C22 /* ValueSelectionViewController.swift in Sources */,
 				FB019AA21F28EE7C00908A67 /* Contact.swift in Sources */,
 				FB90A8B61F27941600E67B1E /* ContactUsViewController.swift in Sources */,
 				FBA1F5171F38FA1300CDCB76 /* CustomSearchBar.swift in Sources */,

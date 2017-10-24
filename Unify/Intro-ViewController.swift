@@ -326,15 +326,8 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             
             // Check if they both have email
             
-            if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
-                
-                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
-                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
-                
-                // Launch text client
-                showSMSCard()
-                
-            }else if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
+            
+            if contact.emailAddresses.count > 0 && recipient.emailAddresses.count > 0 {
                 
                 let contactEmail = contact.emailAddresses[0].value as String
                 let recipientEmail = recipient.emailAddresses[0].value as String
@@ -342,6 +335,14 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
                 
                 // Launch Email client
                 showEmailCard()
+                
+            } else if contact.phoneNumbers.count > 0 && recipient.phoneNumbers.count > 0 {
+                
+                let contactPhone = (contact.phoneNumbers[0].value).value(forKey: "digits") as? String
+                let recipientPhone = (recipient.phoneNumbers[0].value).value(forKey: "digits") as? String
+                
+                // Launch text client
+                showSMSCard()
                 
             }else{
                 // No mutual way to connect

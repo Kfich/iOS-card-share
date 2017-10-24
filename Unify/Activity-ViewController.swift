@@ -581,7 +581,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     // Action sheet 
     func showActionAlert(phones: [String], emails: [String]) {
         // Config action 
-        let actionSheetController: UIAlertController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .actionSheet)
+        let actionSheetController: UIAlertController = UIAlertController(title: "Select option", message: "", preferredStyle: .actionSheet)
         
         // Make Button
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -603,13 +603,16 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         
         if self.selectedTransaction.type == "introduction"{
-            if selectedUserEmails.count > 0{
+            if selectedUserEmails.count > 0 && selectedUserEmails[0] != ""{
                 // Add action
                 actionSheetController.addAction(emailAction)
             }
         }else{
-            // Add action
-            actionSheetController.addAction(emailAction)
+            
+            if selectedUserEmails.count > 0 && selectedUserEmails[0] != ""{
+                // Add action
+                actionSheetController.addAction(emailAction)
+            }
             
         }
         
@@ -624,13 +627,17 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         if self.selectedTransaction.type == "introduction"{
-            if selectedUserPhones.count > 0{
+            if selectedUserPhones.count > 0 && selectedUserPhones[0] != ""{
                 // Add action
                 actionSheetController.addAction(textAction)
             }
         }else{
-            // Add action
-            actionSheetController.addAction(textAction)
+            if selectedUserPhones.count > 0 && selectedUserPhones[0] != ""{
+                
+                print("Checking for phones ", selectedUserPhones)
+                // Add action
+                actionSheetController.addAction(textAction)
+            }
             
         }
 
@@ -673,8 +680,11 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
     
         if self.selectedTransaction.type != "introduction"{
         
-            //  Add action
-            actionSheetController.addAction(callAction)
+            if selectedUserPhones.count > 0 && selectedUserPhones[0] != ""{
+                print("Checking for phones on text", selectedUserPhones)
+                // Add action
+                actionSheetController.addAction(callAction)
+            }
         }
         
         self.present(actionSheetController, animated: true, completion: nil)
@@ -1551,8 +1561,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Fetch cards from server
         let parameters = ["uuid" : selectedTransaction.senderCardId]
         
-        print("\n\nTHE CARD TO ANY - PARAMS")
-        print(parameters)
+        print("\n\nFetch Transaction Card")
+        //print(parameters)
         
         
         // Connect to server
@@ -1562,8 +1572,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Set card uuid with response from network
                 let dictionary : NSDictionary = response as! NSDictionary
-                print("\n\nCard List")
-                print(dictionary)
+                print("\n\nSingle Card returned from call")
+               // print(dictionary)
                 
                 // Init card
                 let card = ContactCard(snapshot: dictionary)
@@ -1582,6 +1592,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Set lists
                 self.selectedUserEmails = [self.senderEmail]
                 self.selectedUserPhones = [self.senderPhone]
+                
+                print("Selected phones ", self.selectedUserPhones)
+                print("Selected emails ", self.selectedUserEmails)
+                
                 
                 // Show alert
                 self.showActionAlert(phones: self.selectedUserPhones, emails: self.selectedUserEmails)
@@ -2317,10 +2331,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             composeVC.messageComposeDelegate = self
             
             // Set card link from cardID
-            let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+            //let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
             
             // Configure message
-            let str = "\n\n\n\(cardLink)"
+            let str = ""
             
             // Set message string
             composeVC.body = str
@@ -2344,10 +2358,10 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
     
         // Set card link from cardID
-        let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
+       // let cardLink = "https://project-unify-node-server.herokuapp.com/card/render/\(ContactManager.sharedManager.selectedCard.cardId!)"
         
         // Configure message
-        let str = "\n\n\n\(cardLink)"
+        let str = "\n\n\n"
         
         var mail = [String]()
         

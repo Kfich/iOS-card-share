@@ -52,6 +52,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     var sectionTitles = [String]()
     
     var contactObjectTable = [String: [Contact]]()
+    var searchResultsTable = [String: [Contact]]()
     var contactsHashTable = [String: [CNContact]]()
     var tableData = [String: [CNContact]]()
     
@@ -600,6 +601,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             contactObject.first = firstName
             contactObject.last = lastName
             
+            print("First ", contactObject.first, "Last ", contactObject.last)
+            
             
             // Check for count
             if contact.phoneNumbers.count > 0 {
@@ -991,7 +994,17 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Init search results
             let results = self.fuse.search(self.searchText, in: self.contactObjectList)
             
-            self.contactSearchResults = results.map { (index, _, matchedRanges) in
+            let match = results.filter {$0.score < 0.1}
+            
+            let inRange = results.filter {$0.score > 0.01}
+            
+            print("Match Results Count", match.count)
+            print("In Range Results ", inRange.count)
+            
+            self.contactSearchResults = match.map { (index, score, matchedRanges) in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
                 
                 // Init contact from results
                 let contact = self.contactObjectList[index]
@@ -999,13 +1012,47 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 return contact
                 
             }
-            // Refresh table
-            self.tblSearchResults.reloadData()
             
-            // Drop it
-            KVNProgress.dismiss()
+            print("Match Results ", self.contactSearchResults)
+            
+            let closeResults = inRange.map{ (index, score, matchedRanges) -> Contact in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            print("In Range ", closeResults)
+            
+            // Make table
+           // self.searchResultsTable[""] = []
+           // self.searchResultsTable[""] = self.contactSearchResults
+            
+          //  self.searchResultsTable["Other"] = []
+          //  self.searchResultsTable["Other"] = closeResults
+            
+            
+            
+            print("Results table ", self.searchResultsTable)
+            
+            
+            
+            // Sort results
+            self.sortSearchResultContacts()
+            
+            
+            
+            
+            // Refresh table
+            //self.tblSearchResults.reloadData()
+            
         }
-
+        
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
             // Hit search endpoint
@@ -1198,7 +1245,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
-                print("\n\nAdded >>>> \(list + [name])")
+                //print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
@@ -1209,7 +1256,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Move to end of array
             letters = self.rearrange(array: letters, fromIndex: 0, toIndex: letters.endIndex)
             // Test
-            print("The new letters array\n\(letters)")
+            //print("The new letters array\n\(letters)")
         }
         
         
@@ -1309,19 +1356,30 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func sortSearchResultContacts() {
         
-        // Sort by last name
-        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
+        var nameList = contactSearchResults.map {$0.last}
+        print("Original Search list\n", nameList)
         
+        // Sort by last name
+        contactSearchResults = contactSearchResults.sorted { $0.name < $1.name }
+        
+        print("Sorting the names")
+        
+        nameList.removeAll()
+        nameList = contactSearchResults.map {$0.last}
+        
+        print("Sorted Search list\n", nameList)
         
         DispatchQueue.main.async {
             
             // Reload data
             self.tblSearchResults.reloadData()
+            // Drop it
+            KVNProgress.dismiss()
         }
         
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
-        
+        self.tblSearchResults.reloadData()
     }
 
     

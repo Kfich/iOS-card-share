@@ -143,6 +143,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set current user
         currentUser = ContactManager.sharedManager.currentUser
         
+        
+        
         // Set image 
         // If user has default image, set as container view
         if currentUser.profileImages.count > 0{
@@ -1057,6 +1059,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
+        
+        cell.selectionStyle = .none
         
         // Set checkmark
         cell.accessoryType = selectedCells.contains(indexPath as NSIndexPath) ? .checkmark : .none
