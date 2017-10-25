@@ -1108,13 +1108,20 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         // Create Cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
         
+        cell.selectionStyle = .none
+        
         // Deselect row
         tableView.deselectRow(at: indexPath, animated: true)
+        cardOptionsTableView.deselectRow(at: indexPath, animated: true)
+        
+        
         
         // Set bg to white to make sure
-        cell.backgroundColor = UIColor.white
+        //cell.backgroundColor = UIColor.white
         
-
+        // Reset label value
+        cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
+        
         // Set Checkmark
         let selectedCell = tableView.cellForRow(at: indexPath)
         
@@ -1130,7 +1137,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
             
             selectedCell?.accessoryType = .checkmark
         }
-
+        
         // Switch case to find right section
         switch sections[indexPath.section] {
         case "Bios":
@@ -1152,6 +1159,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 print("Card Bios Before Removal\n", card.cardProfile.bios)
                 // Remove the item from card by filtering list
@@ -1168,6 +1176,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Append bio to list if not selected
                 card.cardProfile.setBioRecords(emailRecords: ["bio" : bios[indexPath.row]])
+                
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
+                
                 
                 print("The card added bio", card.cardProfile.bios)
             }
@@ -1196,6 +1209,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.titles = card.cardProfile.titles.filter{ $0["title"] != titles[indexPath.row]}
@@ -1222,6 +1236,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 self.selectedTitles.append(titles[indexPath.row])
                 
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
                 
                 if card.cardProfile.titles.count > 0 {
                     card.cardProfile.titles[0] = ["title" : titles[indexPath.row]]
@@ -1258,6 +1275,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.emails = card.cardProfile.emails.filter{ $0["email"] != emails[indexPath.row]}
@@ -1283,6 +1301,10 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 // Append to list
                 card.cardProfile.emails.append(["email" : emails[indexPath.row]])
                 
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
+                
                 // Test
                 print(card.cardProfile.emails as Any)
                 
@@ -1295,8 +1317,8 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 
             }
-
-           
+            
+            
         case "Phone Numbers":
             
             // Add dictionary value to cardProfile
@@ -1317,9 +1339,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.phoneNumbers = card.cardProfile.phoneNumbers.filter{ $0.values.first! != phoneNumbers[indexPath.row]}
+                
                 
                 print("Card Phones Post Removal\n", card.cardProfile.phoneNumbers)
                 
@@ -1345,12 +1369,16 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 // Print for testing
                 print(card.cardProfile.phoneNumbers as Any)
                 
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
+                
                 // Assign label value
                 self.numberLabel.text = phoneNumbers[indexPath.row]
                 self.numberLabelSingleWrapper.text = phoneNumbers[indexPath.row]
                 self.numberLabelEmptyWrapper.text = phoneNumbers[indexPath.row]
             }
-
+            
             
         case "Tags":
             //card.cardProfile.tags.append(["tag" : tags[indexPath.row]])
@@ -1368,6 +1396,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.tags = card.cardProfile.tags.filter{ $0["tag"] != tags[indexPath.row]}
@@ -1386,6 +1415,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Append to array
                 card.cardProfile.tags.append(["tag" : tags[indexPath.row]])
+                
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
+                
                 // Print for test
                 print(card.cardProfile.tags as Any)
             }
@@ -1408,6 +1442,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.websites = card.cardProfile.websites.filter{ $0["website"] != websites[indexPath.row]}
@@ -1426,6 +1461,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Append to array
                 card.cardProfile.websites.append(["website" : websites[indexPath.row]])
+                
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
+                
                 // Print for test
                 print(card.cardProfile.websites as Any)
             }
@@ -1446,6 +1486,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.organizations = card.cardProfile.organizations.filter{ $0["organization"] != organizations[indexPath.row]}
@@ -1472,7 +1513,9 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                     card.cardProfile.organizations.append(["organization" : organizations[indexPath.row]])
                 }
                 
-               
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
                 
                 // Print for test
                 print(card.cardProfile.organizations as Any)
@@ -1495,6 +1538,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.notes = card.cardProfile.notes.filter{ $0["note"] != notes[indexPath.row]}
@@ -1511,6 +1555,11 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Append to array
                 card.cardProfile.notes.append(["note" : notes[indexPath.row]])
+                
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
+                
                 // Print for test
                 print(card.cardProfile.notes as Any)
             }
@@ -1531,6 +1580,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Set accessory
                 selectedCell?.accessoryType = .none
+                cell.accessoryType = .none
                 
                 // Remove the item from card by filtering list
                 card.cardProfile.addresses = card.cardProfile.addresses.filter{ $0 != addressObjects[indexPath.row] as! [String : String]}
@@ -1549,10 +1599,15 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Append to array
                 card.cardProfile.addresses.append(addressObjects[indexPath.row] as! [String : String])
+                
+                // Set cell accessory
+                cell.accessoryType = .checkmark
+                selectedCell?.accessoryType = .checkmark
+                
                 // Print for test
                 print(card.cardProfile.addresses as Any)
             }
-
+            
         default:
             print("Nothing doing here..")
         }
@@ -1561,7 +1616,7 @@ class CreateCardViewController: UIViewController, UITableViewDelegate, UITableVi
         //Change the selected background view of the cell.
         cardOptionsTableView.deselectRow(at: indexPath, animated: true)
         
-        // reload data 
+        // reload data
         cardOptionsTableView.reloadData()
         
         // Print card to test
