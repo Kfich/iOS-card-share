@@ -595,8 +595,8 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                 print("Profile met neither")
                 
                 cell.cardImage.image = UIImage(data: ContactManager.sharedManager.currentUser.profileImages[0]["image_data"] as! Data)
-                print(currentCard.cardProfile.imageId)
-                print(currentCard.imageId)
+                print("Profile ID List", currentCard.cardProfile.imageId)
+                print("Straight up card link ", currentCard.imageId)
             }
             
             

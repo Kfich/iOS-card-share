@@ -8,6 +8,7 @@
 
 import UIKit
 import MBPhotoPicker
+import Alamofire
 
 class EditCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, RSKImageCropViewControllerDelegate {
     
@@ -346,26 +347,77 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         let imageData = UIImagePNGRepresentation(self.profileImageView.image!)
         print(imageData!)
         
-        // Assign asset name and type
-        let fname = "asset.png"
-        let mimetype = "image/png"
-        
         let idString = currentUser.randomString(length: 20)
         
+        // Assign asset name and type
+        let fname = idString
+        let mimetype = "image/png"
+        
         // Create image dictionary
-        let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": fname, "type": mimetype] as [String : Any]
+        let imageDict = ["image_id":idString, "image_data": imageData!, "file_name": idString, "type": mimetype] as [String : Any]
+        
+        
+        // Overwrite index
+        //self.card.cardProfile.images[0] = imageDict
         
         
         if self.card.cardProfile.images.count > 0 {
             // Overwrite index
             self.card.cardProfile.images[0] = imageDict
+            print("Index Overridden ", self.card.cardProfile.images[0])
         }else{
             
             // Add image to contact card profile images
             self.card.cardProfile.images.append(imageDict)
+            print("Index appended ", self.card.cardProfile.images)
            // print(imageDict)
         }
         
+        // Init imageURLS
+        let urls = ImageURLS()
+        
+        // Create URL For Prod
+        //let prodURL = urls.uploadToStagingURL
+        
+        // Create URL For Test
+        let testURL = urls.uploadToDevelopmentURL
+        
+        
+        // Upload image with Alamo
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(imageData!, withName: "files", fileName: "\(fname).jpg", mimeType: "image/jpg")
+            
+            print("Multipart Data >>> \(multipartFormData)")
+            /*for (key, value) in parameters {
+             multipartFormData.append((value as AnyObject).data(using: String.Encoding.utf8.rawValue)!, withName: key)
+             }*/
+            
+            // Currently Set to point to Prod Server
+        }, to:testURL)
+        { (result) in
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                
+                upload.responseJSON { response in
+                    print("\n\n\n\n successfully uploaded the image...")
+                    print(response.result.value ?? "Successful upload")
+                    
+                    // Dismiss hud
+                    //KVNProgress.dismiss()
+                }
+                
+            case .failure(let encodingError):
+                print("\n\n\n\n error....")
+                print(encodingError)
+                // Show error message
+                KVNProgress.showError(withStatus: "There was an error generating your profile. Please try again.")
+            }
+        }
+
         
         // Clear arrays for badges
         self.card.cardProfile.badgeDictionaryList.removeAll()
@@ -406,8 +458,9 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         // Set user name to card
         card.cardHolderName = currentUser.fullName
         // Assign card image id
-        card.cardProfile.imageIds.append(["card_image_id": idString])
+        card.cardProfile.imageIds[0] = ["card_image_id": idString]
         
+        print("Card ID List", card.cardProfile.imageIds[0])
         
         // Set ownerid on card
         card.ownerId = currentUser.userId
