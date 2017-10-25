@@ -1310,13 +1310,17 @@ class EditCardViewController: UIViewController, UITableViewDelegate, UITableView
         // Create Cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileBioInfoCell", for: indexPath) as! CardOptionsViewCell
         
+        cell.selectionStyle = .none
         
         // Deselect row
         tableView.deselectRow(at: indexPath, animated: true)
+        cardOptionsTableView.deselectRow(at: indexPath, animated: true)
         
-        // Set bg to white for cell
-        cell.backgroundColor = UIColor.white
+        // Set bg to white to make sure
+        //cell.backgroundColor = UIColor.white
         
+        // Reset label value
+        cell.descriptionLabel.text = tableData[sections[indexPath.section]]?[indexPath.row]
         
         // Set Checkmark
         let selectedCell = tableView.cellForRow(at: indexPath)
