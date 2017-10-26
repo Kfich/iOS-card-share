@@ -546,11 +546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Unify/ContactListViewController.swift"
-            timestampString = "530553547.813284"
+            timestampString = "530738775.1783"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1227"
-            endingLineNumber = "1227"
+            startingLineNumber = "1216"
+            endingLineNumber = "1216"
             landmarkName = "sortContacts()"
             landmarkType = "7">
          </BreakpointContent>

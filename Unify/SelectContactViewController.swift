@@ -1054,6 +1054,70 @@ class SelectContactViewController: UIViewController, UITableViewDataSource, UITa
     
     
     func didTapOnSearchButton() {
+        
+        // Clear search results array
+        self.contactSearchResults.removeAll()
+        
+        KVNProgress.show(withStatus: "Searching...")
+        
+        DispatchQueue.main.async {
+            
+            //    KVNProgress.show(withStatus: "Searching...")
+            
+            // Init search results
+            let results = self.fuse.search(self.searchText, in: self.contactObjectList)
+            
+            let match = results.filter {$0.score < 0.1}
+            
+            let inRange = results.filter {$0.score > 0.01}
+            
+            print("Match Results Count", match.count)
+            print("In Range Results ", inRange.count)
+            
+            self.contactSearchResults = match.map { (index, score, matchedRanges) in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            print("Match Results ", self.contactSearchResults)
+            
+            let closeResults = inRange.map{ (index, score, matchedRanges) -> Contact in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            print("In Range ", closeResults)
+            
+            // Sort results
+            self.sortSearchResultContacts()
+            
+            
+            // Refresh table
+            //self.tblSearchResults.reloadData()
+            
+        }
+        
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            // Hit search endpoint
+            self.contactListTableView.reloadData()
+        }
+        
+        /*
         // Clear search results array
         self.contactSearchResults.removeAll()
         
@@ -1087,7 +1151,7 @@ class SelectContactViewController: UIViewController, UITableViewDataSource, UITa
         }
         
         // Refresh table
-        self.contactListTableView.reloadData()
+        self.contactListTableView.reloadData()*/
         
     }
     
@@ -1379,9 +1443,18 @@ class SelectContactViewController: UIViewController, UITableViewDataSource, UITa
     
     func sortSearchResultContacts() {
         
-        // Sort by last name
-        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
+        var nameList = contactSearchResults.map {$0.last}
+        print("Original Search list\n", nameList)
         
+        // Sort by last name
+        contactSearchResults = contactSearchResults.sorted { $0.name < $1.name }
+        
+        print("Sorting the names")
+        
+        nameList.removeAll()
+        nameList = contactSearchResults.map {$0.last}
+        
+        print("Sorted Search list\n", nameList)
         
         DispatchQueue.main.async {
             
@@ -1389,11 +1462,13 @@ class SelectContactViewController: UIViewController, UITableViewDataSource, UITa
             self.contactListTableView.reloadData()
         }
         
+        // Drop it
+        KVNProgress.dismiss()
+        
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
-        
+        self.contactListTableView.reloadData()
     }
-    
     
     func addGestureToImage(image: UIImageView, index: IndexPath) {
         // Init tap gesture

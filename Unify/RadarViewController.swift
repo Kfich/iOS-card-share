@@ -724,24 +724,39 @@ class RadarViewController: UIViewController, ISHPullUpContentDelegate, CLLocatio
                 print("\n\nUser from get call")
                 print(dictionary)
                 
-                let profileDict = dictionary["data"]
+                if dictionary.count > 0{
+                    
+                    let profileDict = dictionary["data"]
+                    
+                    let user = User(snapshot: profileDict as! NSDictionary)
+                    
+                    // Set current user
+                    self.currentUser = user
+                    
+                    print("Current user to any", self.currentUser.toAnyObject())
+                    
+                    // Set manager badges
+                    ContactManager.sharedManager.currentUser.userProfile.badges = self.currentUser.userProfile.badges
+                    
+                    print("RadarViewController FetchUser >> Badges tho >> \(self.currentUser.userProfile.badges)")
+                    
+                    // Fetch cards
+                    //self.fetchUserCards()
+                    
+                    self.fetchUserBadges()
+                    
+                }else{
+                    print("The user is null - Redirect to auth")
+                    
+                    
+                    // Send to verification screen
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let phoneVerificationController = mainStoryboard.instantiateViewController(withIdentifier: "phoneVerificationSegue") as!
+                    PhoneVerificationViewController
+                    let window = UIApplication.shared.delegate?.window
+                    window!?.rootViewController = phoneVerificationController
+                }
                 
-                let user = User(snapshot: profileDict as! NSDictionary)
-                
-                // Set current user
-                self.currentUser = user
-                
-                print("Current user to any", self.currentUser.toAnyObject())
-                
-                // Set manager badges
-                ContactManager.sharedManager.currentUser.userProfile.badges = self.currentUser.userProfile.badges
-                
-                print("RadarViewController FetchUser >> Badges tho >> \(self.currentUser.userProfile.badges)")
-                
-                // Fetch cards 
-                //self.fetchUserCards()
-                
-                self.fetchUserBadges()
                 
             } else {
                 print("Card Created Error Response ---> \(String(describing: error))")

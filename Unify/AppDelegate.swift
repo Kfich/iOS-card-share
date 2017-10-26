@@ -81,12 +81,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if status == .denied || status == .restricted {
             
             print("Permission status >> \(status)")
+            ContactManager.sharedManager.synced = false
         }else{
             
             // Not denied
             print("Access is not denied to contacts")
             // Get contacts if access allowed
             ContactManager.sharedManager.getContacts()
+            ContactManager.sharedManager.synced = true
         }
 
         

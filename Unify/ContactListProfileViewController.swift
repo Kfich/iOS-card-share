@@ -755,18 +755,20 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 // print to test
                 // Phone number with format style
                 
+                //print("Humin phone ", number)
+                
                 if (number.values.first?.isPhoneNumber)! {
                     // Format and add to list
-                    phoneNumbers.append(self.format(phoneNumber: number.values.first ?? "")!)
+                    phoneNumbers.append(self.format(phoneNumber: number.values.first ?? "") ?? "")
                 }else{
                     // Add unformatted number
-                    phoneNumbers.append(number.values.first!)
+                    phoneNumbers.append(number.values.first ?? "")
                 }
                 // Add label
                 phoneNumberLabels.append(number.keys.first!)
                 
                 // Init record
-                let record = [number.keys.first! : number.values.first!]
+                let record = [number.keys.first ?? "" : number.values.first ?? ""]
                 // Test
                 print("Phone record", record)
                 
@@ -1541,7 +1543,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         
         // Check for supported phone number length
         guard /*length == 7 ||*/ length == 10 || (length == 11 && hasLeadingOne) else {
-            return nil
+            return sourcePhoneNumber ?? ""
         }
         
         let hasAreaCode = (length >= 10)

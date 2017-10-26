@@ -1782,7 +1782,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         }else{
             
             // Convert from cncontact to contact
-            let contactList = [ContactManager.sharedManager.contactToIntro]
+            let contactList = [ContactManager.sharedManager.recipientToIntro]
             
             // Init contact object
             let newContact = self.createContactRecords(phoneContactList: contactList)

@@ -35,8 +35,10 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     var filteredArray = [CNContact]()
     var contactSearchResults = [Contact]()
+    var contactSearchResultsInRange = [Contact]()
     
     var shouldShowSearchResults = false
+    var searchInProgress = false
     
     var searchController: UISearchController!
     
@@ -77,6 +79,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        // Add obersevrs
+        self.addObservers()
+        
         tblSearchResults.delegate = self
         tblSearchResults.dataSource = self
         
@@ -95,11 +100,13 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tblSearchResults.addSubview(refreshControl)
         
+        // Init custom search
+        configureCustomSearchController()
         
         //loadListOfCountries()
         
         if ContactManager.sharedManager.contactObjectList.count != 0 {
-            print("The manager count ", ContactManager.sharedManager.contactObjectList.count)
+            print("The manager array greater than zero on ConListVC ", ContactManager.sharedManager.contactObjectList.count)
             
             // Set contact list from manager
             self.phoneContacts = ContactManager.sharedManager.phoneContactList
@@ -112,21 +119,24 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             // Hide button
             self.importContactsButton.isHidden = true
             
+            // Show search bar
+            self.customSearchController.customSearchBar.isHidden = false
+            
+            //KVNProgress.show(withStatus: "Syncing contacts...", on: self.tblSearchResults.backgroundView)
+            
             // Fetch from server
             //self.sortContacts()
             
         }else{
             // Fetch contacts here
-            self.getContacts()
+            //self.getContacts()
+            
+            print("The sync on ContactListVC happening")
+            //KVNProgress.show(withStatus: "Syncing contacts...", on: self.tblSearchResults.backgroundView)
         }
         
         //self.fetchContactsForUser()
         
-        // Uncomment the following line to enable the default search controller.
-        // configureSearchController()
-        
-        // Comment out the next line to disable the customized search controller and search bar and use the default ones. Also, uncomment the above line.
-        configureCustomSearchController()
     }
     
     override func didReceiveMemoryWarning() {
@@ -166,7 +176,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         }
         else {
             //print("Section row count >>", contactsHashTable[letters[section]]!.count)
-            return contactObjectTable[letters[section]]!.count
+            return contactObjectTable[letters[section]]?.count ?? 0
         }
     }
     
@@ -338,37 +348,50 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func refresh(sender:AnyObject) {
         // Code to refresh table view
         
-        DispatchQueue.main.async {
-            
-            /*
-            // Reset all the arrays
-            self.letters.removeAll()
-            self.contacts.removeAll()
-            self.contactObjectTable.removeAll()
-            //contactsHashTable.removeAll()
-            self.tuples.removeAll()
-            self.contactTuples.removeAll()
-            self.dataArray.removeAll()*/
-            
-            
-            
-            // Fetch contact list
-            self.getContacts()
-            //fetchContactsForUser()
-            
+        if !shouldShowSearchResults || customSearchController.searchBar.text == ""{
+            // Make sure search not in progress
+            DispatchQueue.main.async {
+                
+                /*
+                 // Reset all the arrays
+                 self.letters.removeAll()
+                 self.contacts.removeAll()
+                 self.contactObjectTable.removeAll()
+                 //contactsHashTable.removeAll()
+                 self.tuples.removeAll()
+                 self.contactTuples.removeAll()
+                 self.dataArray.removeAll()*/
+                
+                
+                
+                // Fetch contact list
+                self.getContacts()
+                //fetchContactsForUser()
+                
+            }
         }
+        
     }
     
     // For sending notifications to the default center for other VC's that are listening
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTable), name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: nil)
         
+        // RefreshContactList
+        NotificationCenter.default.addObserver(self, selector: #selector(ContactListViewController.refreshTable), name: NSNotification.Name(rawValue: "RefreshContactList"), object: nil)
+        
     }
     
     func refreshTable() {
         
+        // Hide button
+        self.importContactsButton.isHidden = true
+        
         if ContactManager.sharedManager.contactObjectList.count != 0 {
-            print("The manager count ", ContactManager.sharedManager.contactObjectList.count)
+            print("The manager count on refresh ", ContactManager.sharedManager.contactObjectList.count)
+            
+            // Hit the search config
+            self.configureCustomSearchController()
             
             // Set contact list from manager
             self.phoneContacts = ContactManager.sharedManager.phoneContactList
@@ -376,9 +399,26 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             self.letters = ContactManager.sharedManager.letters
             self.dataArray = ContactManager.sharedManager.dataArray
             self.tuples = ContactManager.sharedManager.tuples
+            self.contactObjectTable = ContactManager.sharedManager.contactObjectTable
+            
+            // Show bar
+            self.customSearchController.customSearchBar.isHidden = false
+
+            
+            DispatchQueue.main.async {
+                // Reload table
+                self.tblSearchResults.reloadData()
+                
+                // Show the bar
+                self.customSearchController.customSearchBar.isHidden = false
+                
+                // Dismiss progress view
+                KVNProgress.dismiss()
+            }
+
             
             // Fetch from server
-            self.sortContacts()
+            //self.sortContacts()
             
         }else{
             
@@ -403,7 +443,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
 
         }
         
-    
+        
     }
     
     func configureSelectedImageView(imageView: UIImageView) {
@@ -473,6 +513,9 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         // Hide import button
         self.importContactsButton.isHidden = true
         
+        // Show alert
+        //KVNProgress.show(withStatus: "Syncing contacts on get contacts call...")
+        
         
         // open it
         
@@ -539,7 +582,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             // Find out if contacts synced
             self.synced = UDWrapper.getBool("contacts_synced")
-            print("Contacts sync value!! >> \(self.synced)")
+            print("Contacts sync value on ListVC!! >> \(self.synced)")
             
             // Sync up with main queue
             DispatchQueue.main.async {
@@ -548,7 +591,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 // Check if data synced
                 if self.synced{
                     
-                    print("Contacts synced!! >> \(self.synced)")
+                    print("Contacts synced for ListVC!! >> \(self.synced)")
                     //Set bool to indicate contacts have been synced
                     //UDWrapper.setBool("contacts_synced", value: true)
                     
@@ -783,7 +826,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             
             // Print count
-            print("List Count ... \(contactObjectList.count)")
+            print("List Count On ContactListVC... \(contactObjectList.count)")
         }
         
         return contactObjectList
@@ -832,6 +875,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         //tblSearchResults.tableHeaderView = customSearchController.customSearchBar
         
         customSearchController.customDelegate = self
+        customSearchController.customSearchBar.isHidden = true
         
         // Add to view
         self.searchBarWrapperView.addSubview(customSearchController.customSearchBar)
@@ -894,7 +938,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
             }*/
             // Refresh table
-            //self.tblSearchResults.reloadData()
+            //
+            
             
         }
         
@@ -919,84 +964,32 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Update results
         //updateSearchResults(for: self.customSearchController)
-        
-        
-        //self.tblSearchResults.reloadData()
+        self.tblSearchResults.reloadData()
     }
     
     
     func didTapOnSearchButton() {
+       
+        // Toggle progress
+        self.searchInProgress = true
+        
         
         // Clear search results array
         self.contactSearchResults.removeAll()
-       
-        /*
-        DispatchQueue.main.async {
         
-            self.fuse.search(self.searchText, in: self.contactObjectList) { (result) in
-                // Handle
-                print(result)
-                
-                self.contactSearchResults = result.map { (index, _, matchedRanges) in
-                    
-                    // Init contact from results
-                    let contact = self.contactObjectList[index]
-                    
-                    return contact
-                    
-                }
-                
-                // Refresh table
-                self.tblSearchResults.reloadData()
-                
-                
-            }
-            
-        }*/
-        
-        /*
-        self.fuse.search(self.searchText, in: contactObjectList, chunkSize: (contactObjectList.count / 20)) { (item) in
-            
-            print(item)
-            
-            
-            self.contactSearchResults = item.map { (index, _, matchedRanges) in
-                
-                // Init contact from results
-                let contact = self.contactObjectList[index]
-                
-                return contact
-                
-            }
-            
-            // Refresh table
-            self.tblSearchResults.reloadData()
-            
-            /*
-            DispatchQueue.main.async {
-                
-                
-                // Refresh table
-                self.tblSearchResults.reloadData()
-            }*/
-
-            
-        }*/
-        
-        
-        
-        //KVNProgress.show(withStatus: "Searching...")
-        
+        // Async on queue
         DispatchQueue.main.async {
             
+            // Show progress
             KVNProgress.show(withStatus: "Searching...")
+            
             
             // Init search results
             let results = self.fuse.search(self.searchText, in: self.contactObjectList)
             
-            let match = results.filter {$0.score < 0.1}
+            let match = results.filter {$0.score < 0.05}
             
-            let inRange = results.filter {$0.score > 0.01}
+            let inRange = results.filter {$0.score > 0.05 && $0.score < 0.125}
             
             print("Match Results Count", match.count)
             print("In Range Results ", inRange.count)
@@ -1015,7 +1008,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
             
             print("Match Results ", self.contactSearchResults)
             
-            let closeResults = inRange.map{ (index, score, matchedRanges) -> Contact in
+            self.contactSearchResultsInRange = inRange.map{ (index, score, matchedRanges) -> Contact in
                 
                 print("Score ", score)
                 //print("Ranges Matched ", matchedRanges.)
@@ -1027,7 +1020,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
             }
             
-            print("In Range ", closeResults)
+            print("In Range ", self.contactSearchResultsInRange)
             
             // Make table
            // self.searchResultsTable[""] = []
@@ -1036,22 +1029,18 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
           //  self.searchResultsTable["Other"] = []
           //  self.searchResultsTable["Other"] = closeResults
             
-            
-            
             print("Results table ", self.searchResultsTable)
-            
-            
             
             // Sort results
             self.sortSearchResultContacts()
             
-            
-            
-            
+
             // Refresh table
             //self.tblSearchResults.reloadData()
             
         }
+        
+        // Toggle bool
         
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
@@ -1067,9 +1056,11 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func didTapOnCancelButton() {
         shouldShowSearchResults = false
+        searchInProgress = false
         // Empty list
         self.contactSearchResults.removeAll()
         self.tblSearchResults.reloadData()
+        
     }
     
     func didChangeSearchText(_ searchText: String) {
@@ -1133,8 +1124,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                     self.tblSearchResults.reloadData()
                     
                     
-                    // Show sucess
-                    KVNProgress.showSuccess()
                 }else{
                     print("Array empty !!!!")
                     // dismiss HUD
@@ -1338,6 +1327,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         //print("The Table Count >> ", contactObjectTable.count)
         
+        
         DispatchQueue.main.async {
             
             // Reload data
@@ -1361,6 +1351,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Sort by last name
         contactSearchResults = contactSearchResults.sorted { $0.name < $1.name }
+        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
         
         print("Sorting the names")
         
@@ -1369,13 +1360,25 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         print("Sorted Search list\n", nameList)
         
+        // Sort range list
+        contactSearchResultsInRange = contactSearchResultsInRange.sorted { $0.last < $1.last }
+        
+        // Append results out of range to bottom of list
+        contactSearchResults += self.contactSearchResultsInRange
+        
+        
+        
         DispatchQueue.main.async {
             
             // Reload data
             self.tblSearchResults.reloadData()
+            
             // Drop it
             KVNProgress.dismiss()
         }
+        
+        // Toggle bool off
+        self.searchInProgress = false
         
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
@@ -1972,7 +1975,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
                 
             }
             // Regardless, hide hud
-            KVNProgress.dismiss()
+            //KVNProgress.dismiss()
             
         })
         
@@ -1983,19 +1986,8 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     // Settings
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-        
-        // All arrays are empty
-        /*if checkForEmptyData() == true {
-         return true
-         }else{
-         return false
-         }*/
-        if shouldShowSearchResults {
             
-            return false
-        }else{
-            return true
-        }
+        return true
         
     }
     
@@ -2011,8 +2003,25 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         // Configure string
+        var emptyString = ""
         
-        let emptyString = "Contacts Not Imported"
+        if ContactManager.sharedManager.synced && !shouldShowSearchResults{
+            // Show syncing progress
+            emptyString = "Syncing contacts..."
+            
+            // Hide button
+            self.importContactsButton.isHidden = true
+            
+        }else if searchInProgress{
+            // Show syncing progress
+            emptyString = "Searching contacts..."
+            
+        }else if !ContactManager.sharedManager.synced{
+            // Contacts not imported
+            emptyString = "Contacts Not Imported"
+        }
+        
+        // Make attrib string
         let attrString = NSAttributedString(string: emptyString)
         
         return attrString
@@ -2021,7 +2030,18 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         // Config Message for user
         
-        let emptyString = "Syncing your contacts enables you to enjoy the full Unify experience"
+        // Configure string
+        var emptyString = ""
+        
+        if ContactManager.sharedManager.synced && !shouldShowSearchResults{
+            // Show syncing progress
+            emptyString = "This may take a moment"
+        }else if !ContactManager.sharedManager.synced{
+            // Contacts not imported
+            emptyString = "Syncing your contacts enables you to enjoy the full Unify experience"
+        }
+    
+        // Init attrib string
         let attrString = NSAttributedString(string: emptyString)
         
         return attrString
@@ -2030,8 +2050,15 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
     
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
         // Config button for data set
+        var emptyString = ""
         
-        let emptyString = "Import"
+        if ContactManager.sharedManager.synced {
+            // Show syncing progress
+            emptyString = ""
+        }else{
+            // Contacts not imported
+            emptyString = "Import"
+        }
         
         let blue = UIColor(red: 3/255.0, green: 77/255.0, blue: 135/255.0, alpha: 1.0)
         let attributes = [ NSForegroundColorAttributeName: blue ]
@@ -2056,7 +2083,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         print("The Button Was tapped")
         
         // Sync contact list
-        self.getContacts()
+        self.refreshTable()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

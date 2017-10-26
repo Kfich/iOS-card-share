@@ -100,13 +100,13 @@ public class Contact: Fuseable{
             FuseProperty(name: "last", weight: 1.0),
             FuseProperty(name: "name", weight: 1.0),
             FuseProperty(name: "phoneNumber", weight: 1.0),
-            FuseProperty(name: "organization", weight: 0.3),
-            FuseProperty(name: "title", weight: 0.3),
-            FuseProperty(name: "email", weight: 0.3),
+            //FuseProperty(name: "organization", weight: 0.1),
+            //FuseProperty(name: "title", weight: 0.1),
+            FuseProperty(name: "email", weight: 0.1),
             //FuseProperty(name: "website", weight: 0.3),
-            FuseProperty(name: "socialLink", weight: 0.3),
-            FuseProperty(name: "note", weight: 0.3),
-            FuseProperty(name: "tag", weight: 0.3)
+            FuseProperty(name: "socialLink", weight: 0.1),
+            //FuseProperty(name: "note", weight: 0.001),
+            //FuseProperty(name: "tag", weight: 0.001)
             //FuseProperty(name: "address", weight: 0.5)
         ]
     }

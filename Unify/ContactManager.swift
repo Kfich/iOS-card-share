@@ -819,6 +819,9 @@ class ContactManager{
             return
         }
         
+        // Show progress
+        //KVNProgress.show(withStatus: "Syncing contacts...")
+        
         
         // open it
         
@@ -885,7 +888,7 @@ class ContactManager{
             
             // Find out if contacts synced
             self.synced = UDWrapper.getBool("contacts_synced")
-            print("Contacts sync value!! >> \(self.synced)")
+            print("Contacts sync value on manager!! >> \(self.synced)")
             
             // Sync up with main queue
             DispatchQueue.main.async {
@@ -894,7 +897,7 @@ class ContactManager{
                 // Check if data synced
                 if self.synced{
                     
-                    print("Contacts synced!! >> \(self.synced)")
+                    print("Contacts synced on manager!! >> \(self.synced)")
                     
                     // Notification for intro screen
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshContactsTable"), object: self)
@@ -1078,14 +1081,17 @@ class ContactManager{
             }
             
             // Test object
-            print("Contact >> \n\(contactObject.toAnyObject()))")
+            //print("Contact >> \n\(contactObject.toAnyObject()))")
+            
+            // Parse own record
+            contactObject.parseContactRecord()
             
             // Append object to contactObjectList
             contactObjectList.append(contactObject)
             
             
             // Print count
-            print("List Count ... \(contactObjectList.count)")
+            print("List Count on manager ... \(contactObjectList.count)")
         }
         
         return contactObjectList
@@ -1339,7 +1345,7 @@ class ContactManager{
             }else{
                 
                 // Otherwise return #
-                print("Not a string", String(lastName[lastName.startIndex]))
+                print("Not a string on Manager", String(lastName[lastName.startIndex]))
                 return "#"
             }
         }
@@ -1351,7 +1357,7 @@ class ContactManager{
         letters = letters.reduce([], { (list, name) -> [String] in
             if !list.contains(name) {
                 // Test to see if letters added
-                print("\n\nAdded >>>> \(list + [name])")
+                //print("\n\nAdded >>>> \(list + [name])")
                 return list + [name]
             }
             return list
@@ -1362,7 +1368,7 @@ class ContactManager{
             // Move to end of array
             letters = self.rearrange(array: letters, fromIndex: 0, toIndex: letters.endIndex)
             // Test
-            print("The new letters array\n\(letters)")
+            //print("The new letters array\n\(letters)")
         }
         
         
@@ -1433,8 +1439,14 @@ class ContactManager{
         }
         
         // Print to test 
-        print("The contact object list")
+        print("The contact object list on Manager Sort")
         //print(contactObjectList)
+        
+        // Show success
+        //KVNProgress.showSuccess()
+        
+        // Post notification 
+        self.postContactListRefresh()
 
         
     }

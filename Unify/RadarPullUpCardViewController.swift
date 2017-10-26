@@ -423,7 +423,7 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
         
         // Check for supported phone number length
         guard /*length == 7 ||*/ length == 10 || (length == 11 && hasLeadingOne) else {
-            return nil
+            return sourcePhoneNumber ?? ""
         }
         
         let hasAreaCode = (length >= 10)

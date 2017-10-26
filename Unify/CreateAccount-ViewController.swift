@@ -123,6 +123,19 @@ class CreateAccountViewController: UIViewController, RSKImageCropViewControllerD
         // Det image to default to acoid crash on no select 
         self.selectedImage = self.profileImageContainerView.image!
         
+        //UDWrapper.setArray("contact_cards", value: ContactManager.sharedManager.currentUserCardsDictionaryArray as NSArray)
+        if let cards = UDWrapper.getArray("contact_cards"){
+        
+            // Remove cards - users without profiles shouldn't have cards
+            UDWrapper.removeObject("contact_cards")
+            print("Cards deleted from UD")
+            ContactManager.sharedManager.currentUserCards.removeAll()
+            ContactManager.sharedManager.viewableUserCards.removeAll()
+            ContactManager.sharedManager.currentUserCardsDictionaryArray.removeAll()
+            
+            //cards = nil
+        
+        }
     }
     
     

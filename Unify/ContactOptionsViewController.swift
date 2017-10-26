@@ -748,6 +748,70 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
     
     
     func didTapOnSearchButton() {
+        
+        // Clear search results array
+        self.contactSearchResults.removeAll()
+        
+        KVNProgress.show(withStatus: "Searching...")
+        
+        DispatchQueue.main.async {
+            
+            //    KVNProgress.show(withStatus: "Searching...")
+            
+            // Init search results
+            let results = self.fuse.search(self.searchText, in: self.contactObjectList)
+            
+            let match = results.filter {$0.score < 0.1}
+            
+            let inRange = results.filter {$0.score > 0.01}
+            
+            print("Match Results Count", match.count)
+            print("In Range Results ", inRange.count)
+            
+            self.contactSearchResults = match.map { (index, score, matchedRanges) in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            print("Match Results ", self.contactSearchResults)
+            
+            let closeResults = inRange.map{ (index, score, matchedRanges) -> Contact in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            print("In Range ", closeResults)
+            
+            // Sort results
+            self.sortSearchResultContacts()
+            
+            
+            // Refresh table
+            //self.tblSearchResults.reloadData()
+            
+        }
+        
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            // Hit search endpoint
+            self.tableView.reloadData()
+        }
+        
+        /*
         // Clear search results array
         self.contactSearchResults.removeAll()
         
@@ -781,7 +845,7 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
         }
         
         // Refresh table
-        self.tableView.reloadData()
+        self.tableView.reloadData()*/
     }
     
     
@@ -1361,9 +1425,18 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
     
     func sortSearchResultContacts() {
         
-        // Sort by last name
-        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
+        var nameList = contactSearchResults.map {$0.last}
+        print("Original Search list\n", nameList)
         
+        // Sort by last name
+        contactSearchResults = contactSearchResults.sorted { $0.name < $1.name }
+        
+        print("Sorting the names")
+        
+        nameList.removeAll()
+        nameList = contactSearchResults.map {$0.last}
+        
+        print("Sorted Search list\n", nameList)
         
         DispatchQueue.main.async {
             
@@ -1371,9 +1444,12 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
             self.tableView.reloadData()
         }
         
+        // Drop it
+        KVNProgress.dismiss()
+        
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
-        
+        self.tableView.reloadData()
     }
     
     
