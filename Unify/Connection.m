@@ -149,6 +149,11 @@
     return [self genericPostCall:parameters completionBlock:completionBlock urlString: kGetVCards];
 }
 
+- (NSURLSessionDataTask*)getVerifiedContact:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString: kGetVerified];
+}
+
+// getVerifiedContact
 
 
 // Events

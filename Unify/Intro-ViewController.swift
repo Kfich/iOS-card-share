@@ -1698,7 +1698,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             let newContact = self.createContactRecords(phoneContactList: contactList)
             
             // Upload new record
-            self.getConatctVCards(contact: newContact[0])
+            self.getConatctVCards(contact: ContactManager.sharedManager.contactObjectForIntro)
             
         }
         
@@ -1772,7 +1772,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
         if ContactManager.sharedManager.userSelectedNewRecipientForIntro {
             
             // Get VCard
-            self.getRecipientVCards(contact: ContactManager.sharedManager.contactObjectForIntro)
+            self.getRecipientVCards(contact: ContactManager.sharedManager.recipientObjectForIntro)
             
             //let cnContact = contactToCNContact(contact: ContactManager.sharedManager.contactObjectForIntro)
             
@@ -1788,7 +1788,7 @@ class IntroViewController: UIViewController, MFMessageComposeViewControllerDeleg
             let newContact = self.createContactRecords(phoneContactList: contactList)
             
             // Upload new record
-            self.getRecipientVCards(contact: newContact[0])
+            self.getRecipientVCards(contact: ContactManager.sharedManager.recipientObjectForIntro)
             
         }
         

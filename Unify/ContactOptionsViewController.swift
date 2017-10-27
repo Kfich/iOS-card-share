@@ -595,7 +595,9 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
         // Set selected contact from conversion
         self.selectedContact = self.contactToCNContact(contact: self.selectedContactObject)
         
-        print("The object after selection\n\n\(selectedContact)")
+        ContactManager.sharedManager.contactObjectForIntro = self.selectedContactObject
+        
+        print("The object after selection\n\n\(selectedContactObject.toAnyObject())")
         
         // Print to test
         print(self.selectedContact.givenName)
@@ -1430,6 +1432,7 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
         
         // Sort by last name
         contactSearchResults = contactSearchResults.sorted { $0.name < $1.name }
+        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
         
         print("Sorting the names")
         
@@ -1438,18 +1441,28 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
         
         print("Sorted Search list\n", nameList)
         
+        // Sort range list
+        //contactSearchResultsInRange = contactSearchResultsInRange.sorted { $0.last < $1.last }
+        
+        // Append results out of range to bottom of list
+        //contactSearchResults += self.contactSearchResultsInRange
+        
+        
         DispatchQueue.main.async {
             
             // Reload data
             self.tableView.reloadData()
+            
+            // Drop it
+            KVNProgress.dismiss()
         }
         
-        // Drop it
-        KVNProgress.dismiss()
+        // Toggle bool off
+        //self.searchInProgress = false
         
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
-        self.tableView.reloadData()
+        //self.tblSearchResults.reloadData()
     }
     
     
@@ -2127,6 +2140,8 @@ class ContactOptionsViewController: UIViewController, UITableViewDelegate, UITab
             
             // Set manager navigation path
             ContactManager.sharedManager.userSelectedNewContactForIntro = true
+            
+            print("On Selection, the contact ,\n", self.contact.toAnyObject())
             
             // Set as manager contact to intro
             ContactManager.sharedManager.contactObjectForIntro = self.contact

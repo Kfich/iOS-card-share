@@ -567,6 +567,10 @@ class QuickShareViewController: UIViewController, MFMessageComposeViewController
             }else if (phoneTextField.text == "" && ContactManager.sharedManager.quickshareSMSSelected){
                 // Config message for sms missing
                 message = "Please enter a valid phone number"
+            }else{
+                
+                // Config
+                message = "Please enter a valid first and last name"
             }
             
             // form invalid

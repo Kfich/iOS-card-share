@@ -36,7 +36,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     var filteredArray = [String]()
     
     var shouldShowSearchResults = false
-    
+    var searchInProgress = false
+
     var searchController: UISearchController!
     
     var customSearchController: CustomSearchController!
@@ -62,6 +63,8 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
     var tableData = [String: [CNContact]]()
     var contactObjectList = [Contact]()
     var contactSearchResults = [Contact]()
+    var contactSearchResultsInRange = [Contact]()
+
     
     
     var searchText = ""
@@ -1051,7 +1054,93 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         contactListTableView.reloadData()
     }
     
+    func didTapOnSearchButton() {
+        
+        // Toggle progress
+        self.searchInProgress = true
+        
+        
+        // Clear search results array
+        self.contactSearchResults.removeAll()
+        
+        // Async on queue
+        DispatchQueue.main.async {
+            
+            // Show progress
+            KVNProgress.show(withStatus: "Searching...")
+            
+            
+            // Init search results
+            let results = self.fuse.search(self.searchText, in: self.contactObjectList)
+            
+            let match = results.filter {$0.score < 0.05}
+            
+            let inRange = results.filter {$0.score > 0.05 && $0.score < 0.125}
+            
+            print("Match Results Count", match.count)
+            print("In Range Results ", inRange.count)
+            
+            self.contactSearchResults = match.map { (index, score, matchedRanges) in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            print("Match Results ", self.contactSearchResults)
+            
+            self.contactSearchResultsInRange = inRange.map{ (index, score, matchedRanges) -> Contact in
+                
+                print("Score ", score)
+                //print("Ranges Matched ", matchedRanges.)
+                
+                // Init contact from results
+                let contact = self.contactObjectList[index]
+                
+                return contact
+                
+            }
+            
+            print("In Range ", self.contactSearchResultsInRange)
+            
+            // Make table
+            // self.searchResultsTable[""] = []
+            // self.searchResultsTable[""] = self.contactSearchResults
+            
+            //  self.searchResultsTable["Other"] = []
+            //  self.searchResultsTable["Other"] = closeResults
+            
+            //print("Results table ", self.searchResultsTable)
+            
+            // Sort results
+            self.sortSearchResultContacts()
+            
+            
+            // Refresh table
+            //self.tblSearchResults.reloadData()
+            
+        }
+        
+        // Toggle bool
+        
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            // Hit search endpoint
+            self.contactListTableView.reloadData()
+        }
+        
+        // Refresh table
+        //self.tblSearchResults.reloadData()
+        
+    }
+
     
+    /*
     func didTapOnSearchButton() {
         // Clear search results array
         self.contactSearchResults.removeAll()
@@ -1147,7 +1236,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         // Refresh table
         self.contactListTableView.reloadData()*/
         
-    }
+    }*/
     
     
     func didTapOnCancelButton() {
@@ -1443,6 +1532,7 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         // Sort by last name
         contactSearchResults = contactSearchResults.sorted { $0.name < $1.name }
+        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
         
         print("Sorting the names")
         
@@ -1451,18 +1541,29 @@ class SelectRecipientViewController: UIViewController, UITableViewDataSource, UI
         
         print("Sorted Search list\n", nameList)
         
+        // Sort range list
+        contactSearchResultsInRange = contactSearchResultsInRange.sorted { $0.last < $1.last }
+        
+        // Append results out of range to bottom of list
+        contactSearchResults += self.contactSearchResultsInRange
+        
+        
+        
         DispatchQueue.main.async {
             
             // Reload data
             self.contactListTableView.reloadData()
+            
+            // Drop it
+            KVNProgress.dismiss()
         }
         
-        // Drop it
-        KVNProgress.dismiss()
+        // Toggle bool off
+        self.searchInProgress = false
         
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
-        self.contactListTableView.reloadData()
+        //self.contactListTableView.reloadData()
     }
     
     

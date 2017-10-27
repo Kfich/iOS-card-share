@@ -1367,7 +1367,6 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         contactSearchResults += self.contactSearchResultsInRange
         
         
-        
         DispatchQueue.main.async {
             
             // Reload data
@@ -1382,7 +1381,7 @@ class ContactListViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
-        self.tblSearchResults.reloadData()
+        //self.tblSearchResults.reloadData()
     }
 
     

@@ -241,7 +241,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         }
         
         // Set contact in case of edit
-        contact = ContactManager.sharedManager.contactObjectForIntro
+        contact = ContactManager.sharedManager.recipientObjectForIntro
         
         // Populate form data in case of edit
         if contact.first != "" {
@@ -562,20 +562,21 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             
             // Set selected contact
             self.selectedContactObject = contactSearchResults[indexPath.row]
-            print("The selected contact \(self.selectedContactObject.toAnyObject())")
+            print("The selected Recipient \(self.selectedContactObject.toAnyObject())")
             
         }else{
             // Set selected contact
             self.selectedContactObject = (contactObjectTable[letters[indexPath.section]]?[indexPath.row])!
-            print("The selected contact \(self.selectedContactObject.toAnyObject())")
+            print("The selected recipient \(self.selectedContactObject.toAnyObject())")
         }
         
         
 
         // Set selected contact from conversion
         self.selectedContact = self.contactToCNContact(contact: self.selectedContactObject)
+        ContactManager.sharedManager.recipientObjectForIntro = self.selectedContactObject
         
-        print("The object after selection\n\n\(selectedContact)")
+        print("The object after selection\n\n\(ContactManager.sharedManager.recipientObjectForIntro.toAnyObject())")
         
         // Print to test
         print(self.selectedContact.givenName)
@@ -1413,6 +1414,7 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         // Sort by last name
         contactSearchResults = contactSearchResults.sorted { $0.name < $1.name }
+        contactSearchResults = contactSearchResults.sorted { $0.last < $1.last }
         
         print("Sorting the names")
         
@@ -1421,18 +1423,28 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
         
         print("Sorted Search list\n", nameList)
         
+        // Sort range list
+        //contactSearchResultsInRange = contactSearchResultsInRange.sorted { $0.last < $1.last }
+        
+        // Append results out of range to bottom of list
+        //contactSearchResults += self.contactSearchResultsInRange
+        
+        
         DispatchQueue.main.async {
             
             // Reload data
             self.tableView.reloadData()
+            
+            // Drop it
+            KVNProgress.dismiss()
         }
         
-        // Drop it
-        KVNProgress.dismiss()
+        // Toggle bool off
+        //self.searchInProgress = false
         
         // Set hash to contact manager
         //ContactManager.sharedManager.contactsHashTable = self.contactsHashTable
-        self.tableView.reloadData()
+        //self.tblSearchResults.reloadData()
     }
     
     func createContactRecords(phoneContactList: [CNContact]) -> [Contact] {
@@ -2112,7 +2124,9 @@ class RecipientOptionsViewController: UIViewController, UITableViewDelegate, UIT
             ContactManager.sharedManager.userSelectedNewContactForIntro = true
             
             // Set as manager contact to intro
-            ContactManager.sharedManager.contactObjectForIntro = self.contact
+            ContactManager.sharedManager.recipientObjectForIntro = self.contact
+            
+            print("The recipient on selection \n", ContactManager.sharedManager.recipientObjectForIntro.toAnyObject())
             
             // Check intent
            /* if ContactManager.sharedManager.userArrivedFromIntro != true {
