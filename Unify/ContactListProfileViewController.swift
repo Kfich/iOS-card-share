@@ -268,6 +268,35 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
         }
     }
     
+    func fetchCorporateInfo() {
+        // 
+        
+        // Save card to DB
+        let parameters = ["emails": self.emails]
+        print(parameters)
+        
+        // Send to server
+        Connection(configuration: nil).getVerifiedContact(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Verified contact ---> \(String(describing: response))")
+                
+                // Hide HUD
+                KVNProgress.showSuccess(withStatus: "Introduction made successfully!")
+               
+                
+            } else {
+                print("Card Created Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            // Hide indicator
+            KVNProgress.dismiss()
+        }
+
+    }
+    
+    
     // Send user to app settings
     func showGeneralSettings() {
         // Push to settings
@@ -798,6 +827,12 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 
                 print(emails.count)
             }
+            
+            // Fetch corp
+            self.fetchCorporateInfo()
+            
+            
+            
             // Create section data
             self.tableData["Emails"] = emails
         }

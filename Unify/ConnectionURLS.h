@@ -56,6 +56,8 @@
 #define kDeleteContacts       kServerURL(kAppwsServerURL, @"contacts/deleteAll")
 #define kGetVCards            kServerURL(kAppwsServerURL, @"contacts/vcard")
 #define kGetVerified          kServerURL(kAppwsServerURL, @"contacts/getVerified")
+#define kGetBadges            kServerURL(kAppwsServerURL, @"contacts/getVerified")
+
 
 
 // Events
