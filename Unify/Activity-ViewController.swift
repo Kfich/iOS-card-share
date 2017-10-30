@@ -1021,7 +1021,6 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         
         }
-        
         // Cast mutable contact back to regular contact
         //cnObject = contactToAdd as CNContact
         

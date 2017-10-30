@@ -287,21 +287,25 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 let res = response as? NSDictionary ?? NSDictionary()
                 
                 let logo = res["logo"] as? String ?? ""
-                 
-                 // Set image for contact
-                let url = URL(string: "\(logo)") ?? URL(string: "")
-                 //let placeholderImage = UIImage(named: "profile")!
-                 // Set image
-                 //contactImageView?.setImageWith(url)
-                 self.badgeImageView.setImageWith(url ?? URL(string: "")!)
-                 self.badgeImageViewSingleWrapper.setImageWith(url ?? URL(string: "")!)
-                 self.badgeImageViewEmptyWrapper.setImageWith(url ?? URL(string: "")!)
+                
+                if logo != ""{
+                    
+                    // Set image for contact
+                    let url = URL(string: "\(logo)") ?? URL(string: "")
+                    //let placeholderImage = UIImage(named: "profile")!
+                    // Set image
+                    //contactImageView?.setImageWith(url)
+                    self.badgeImageView.setImageWith(url ?? URL(string: "")!)
+                    self.badgeImageViewSingleWrapper.setImageWith(url ?? URL(string: "")!)
+                    self.badgeImageViewEmptyWrapper.setImageWith(url ?? URL(string: "")!)
+                }
+                
                 
                 
             } else {
                 print("Fetch Corp Info Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                //KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
             }
             
