@@ -687,6 +687,13 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
             
             let containerView = self.createAddNewCell(cell: cell)
             cell.contentView.addSubview(containerView)
+            
+        }else{
+            
+            // Set selected card
+            //.ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
+            
+            //print("Card on will display \n", ContactManager.sharedManager.selectedCard.toAnyObject())
         }
         
     }
@@ -730,16 +737,19 @@ class RadarPullUpCardViewController: UIViewController, ISHPullUpSizingDelegate, 
                     // Set selected card
                     ContactManager.sharedManager.selectedCard = ContactManager.sharedManager.viewableUserCards[indexPath.row]
                     
+                    // Test
+                    print("The selected card \n", ContactManager.sharedManager.selectedCard.toAnyObject())
+                    
                     // Parse card for socials
                     //let cell = collectionView.cellForItem(at: indexPath) as! CardCollectionViewCell
                     // Set badgelist
                     //cell.badgeList = self.parseCardForBagdes(card: ContactManager.sharedManager.viewableUserCards[indexPath.row])
                     
-                    print("Page control value on center!! \(self.pageControl.currentPage)")
+                    //print("Page control value on center!! \(self.pageControl.currentPage)")
                     
                 }else{
                     // Test
-                    print("You hit the end of the list")
+                    //print("You hit the end of the list")
                     // Set page control
                     self.pageControl.currentPage = indexPath.row
                 }

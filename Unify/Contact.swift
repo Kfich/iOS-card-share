@@ -25,9 +25,12 @@ public class Contact: Fuseable{
     var notes = [[String : String]]()
     var tags = [[String : String]]()
     var addresses = [[String : String]]()
+    
+    
 
     // Image handling for local store
     var imageData = Data()
+    var pictureData: Data? 
 
     
     var emailList = NSArray()
@@ -397,104 +400,57 @@ public class Contact: Fuseable{
 
         }
         
+        
         // Check for count
         if phoneNumberList.count > 0 {
-            /*
-            // Iterate and fetch items
-            for item in phoneNumberList {
-                
-                print("Phone item raw >> \(item)")
-                
-                if item is String {
-                    // Loop and collect
-                    print("Phone item as string> \(item)")
-                    // Set org
-                    setPhoneRecords(phoneRecord: item as! String)
-                }else{
-                    let value = item as! NSDictionary
-                    print("Phone record", value)
-                    
-                    let list = value.value(forKey: value.allKeys.first! as! String)
-                    
-                    //phoneNumbers.append(value as! [String : String])
-                    
-                    //setPhoneRecords(phoneRecord: item as! String)
-                    
-                }
-                
-            }*/
             
             let dict = phoneNumberList[0] as! NSDictionary
             
-            print("Phone numbers list raw >", dict)
+            print("Phone numbers list raw On Contact>", dict)
             
-            if dict.count > 1{
-                print("The phone list raw > 1")
+            if dict.count > 0{
+                print("The phone list raw >")
                 // Loop through and grab keys
                 for number in dict {
                     
-                    let stringDict = [number.key as! String : number.value as! String]
-                    print("Phone numbers list parsed >", stringDict)
-                    
-                    // Add dict values to list
-                    phoneNumbers.append(stringDict)
-                }
-            }else{
-                
-                let list = dict.value(forKey: dict.allKeys.first as! String)
-                
-                if list is String {
-                    print("Outhere phone string", list as! String)
-                    // Set org
-                    setPhoneRecords(phoneRecord: list as! String)
-                    
-                }
-                
-            }
-            
-            /*
-            let list = dict.value(forKey: dict.allKeys.first as! String)
-            
-            if list is String {
-                print("Outhere phone string", list as! String)
-                // Set org
-                setPhoneRecords(phoneRecord: list as! String)
-                
-            }else{
-                // Init phones array
-                let phonesArray = list as? NSArray ?? NSArray()
-                
-                // Test
-                print("Outhere phones array", phonesArray)
-                
-                // Iterate and fetch items
-                for item in phonesArray {
-                    
-                    if item is String {
-                        // Loop and collect
-                        print("Phone item > \(item)")
-                        // Set org
-                        setPhoneRecords(phoneRecord: item as! String)
+                    // Check if value is a string
+                    if number.value is String {
+                        
+                        let stringDict = [number.key as? String ?? "": number.value as? String ?? ""]
+                        print("Phone numbers list parsed >", stringDict)
+                        
+                        // Add dict values to list
+                        phoneNumbers.append(stringDict)
+                        
                     }else{
+                        // If not string then its an array
+                        let list = number.value as? NSArray ?? NSArray()
                         
-                        let value = item as! NSDictionary
+                        print("The phone list after check > Not a string: ", list)
                         
-                        print("Phone record", value)
-                        phoneNumbers.append(value as! [String : String])
-                        
-                        //setPhoneRecords(phoneRecord: item as! String)
+                        // Iterate over list
+                        for item in list{
+                            // Init phone record
+                            let phoneRecord = [number.key as? String ?? "phone" : item as? String ?? ""]
+                            
+                            // Store to array
+                            phoneNumbers.append(phoneRecord)
+                        }
                         
                     }
+                    // Test
+                    print("Phone list after additions", phoneNumbers)
                     
                 }
-                
-            }*/
-
+            }
+            
             // Test output
             print("The phones")
             print(phoneNumbers)
             
         }
+        
+        
         if emailList.count > 0 {
             
             let dict = emailList[0] as! NSDictionary
@@ -677,6 +633,7 @@ public class Contact: Fuseable{
                 
                 print("The new address \n\([value["type"] as? String ?? "home" : addy])")
                 addresses.append([value["type"] as? String ?? "home" : addy])
+                
             }
             
             print("The addresses")
@@ -737,10 +694,24 @@ public class Contact: Fuseable{
             // Add to list
             badgeList.append(badge)
         }
-
         
+        /*
+        // Get image data
+        if  imageId != ""{
+            
+            print("Contact has image id")
+ 
+            // Process string here
+
+            // Grab the image
+            let imageView = CardProfile().downloadUserImage(idString: imageId)
+            
+            // Assign data
+            pictureData = UIImagePNGRepresentation(imageView.image!)!
+        }*/
         
     }
+    
     
     func parseContactRecord(){
         

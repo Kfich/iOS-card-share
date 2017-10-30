@@ -749,6 +749,32 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         let mobileValue = CNLabeledValue(label: CNLabelPhoneNumberMobile, value: mobileNumber)
         contactToAdd.phoneNumbers = [mobileValue]*/
         
+        /*
+        let cardImage = UIImageView()
+        
+        if contact.imageId != "" {
+            // Add image data
+            print("The id exsists ", contact.imageId)
+            
+            // Init imageview
+            //let imageView = UIImageView()
+            cardImage.frame = CGRect(x: 0, y: 0, width: 90, height: 90)
+            
+            let link = "\(ImageURLS().getFromDevelopmentURL)\(contact.imageId).jpg"
+            
+            print("The badge link ", link)
+            
+            // Set image for contact
+            let url = URL(string: link)!
+            
+            let placeholderImage = UIImage(named: "profile")!
+            
+            // Set image
+            cardImage.setImageWith(url, placeholderImage: placeholderImage)
+            
+        }*/
+
+        
         
         // Set organizations
         if contact.organizations.count > 0 {
@@ -757,15 +783,19 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         
+        print("Contact on conversion call: \n", contact.toAnyObject())
         
         // Check for count
         if contact.phoneNumbers.count > 0 {
+            print("Phone number count > 0")
             
             var mobiles = [CNLabeledValue<CNPhoneNumber>]()
             // Iterate over items
             for number in contact.phoneNumbers{
                 // print to test
-                //print("Number: \((number.value.value(forKey: "digits" )!))")
+                //print("Number: \((number.value)")
+                
+                print("Number: \(number.values.first ?? "No Phone")")
                 
                 // Parse for mobile
                 let mobileNumber = CNPhoneNumber(stringValue: (number.values.first ?? ""))
@@ -773,6 +803,8 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Add objects to phone list
                 mobiles.append(mobileValue)
+                
+                print("Phone numbers array \n", mobiles.last!)
             }
             // Add phones as value
             contactToAdd.phoneNumbers = mobiles
@@ -856,18 +888,22 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 print("The badge on contact convert", corp)
                 
-                if corp["website"] is String {
+                if corp["url"] is String {
+                    
+                    print("The badge link is a string, ", corp["url"])
                     
                     // Add to list
                     contactToAdd.urlAddresses.append(CNLabeledValue(
-                        label: "badge", value: corp["url"] as? NSString ?? ""))
+                        label: "badgeURL", value: corp["url"] as? NSString ?? ""))
                     
                     // Add to list
                     contactToAdd.urlAddresses.append(CNLabeledValue(
                         label: "imageURL", value: corp["image"] as? NSString ?? ""))
                 }else{
                     
-                    let websiteArray = corp["image"] as? NSArray ?? NSArray()
+                    let websiteArray = corp["url"] as? NSArray ?? NSArray()
+                    
+                    print("Badge NSArray ", websiteArray)
                     
                     for item in websiteArray {
                         // Append items individually
@@ -876,7 +912,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                             label: "badgeURL", value: item as? NSString ?? ""))
                     }
 
-                    let imageArray = corp["url"] as? NSArray ?? NSArray()
+                    let imageArray = corp["image"] as? NSArray ?? NSArray()
                     
                     for item in imageArray {
                         // Append items individually
@@ -885,10 +921,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                             label: "imageURL", value: item as? NSString ?? ""))
                         
                     }
-
-                    
                     
                 }
+                
                 
                 
 
@@ -964,28 +999,28 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         
         
         // Parse address info
-        if contact.addresses.count > 0 {
+        if contact.addressList.count > 0 {
             // Format in notes field
             
-            for address in contact.addresses {
+            for address in contact.addressList {
+                
+                let add = address as! NSDictionary
                 
                 // Parse address
                 let postal = CNMutablePostalAddress()
-                postal.street = address["street"] ?? ""
-                postal.city = address["city"] ?? ""
-                postal.state = address["state"] ?? ""
-                postal.postalCode = address["zip"] ?? ""
-                postal.country = address["country"] ?? ""
+                postal.street = add["street"] as? String ?? ""
+                postal.city = add["city"] as? String ?? ""
+                postal.state = add["state"] as? String ?? ""
+                postal.postalCode = add["zip"] as? String ?? ""
+                postal.country = add["country"] as? String ?? ""
                 
                 let home = CNLabeledValue<CNPostalAddress>(label:CNLabelHome, value:postal)
                 
                 contactToAdd.postalAddresses = [home]
                 
             }
-            
-            
-        }
         
+        }
         
         // Cast mutable contact back to regular contact
         //cnObject = contactToAdd as CNContact
@@ -1442,9 +1477,9 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             print(trans.sortDate!)
             
             let elapsedTime = NSDate().timeIntervalSince(trans.sortDate!)
-            print("Right Nows DateTime: > \(Date())")
+            //print("Right Nows DateTime: > \(Date())")
             let duration = Double(elapsedTime) / (60.0 * 60.0)
-            print("The Elapsed Time Since Transaction >>> \(duration)")
+            //print("The Elapsed Time Since Transaction >>> \(duration)")
             
             
             
@@ -1463,7 +1498,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Send to recents
                 self.tableData["Today"]!.append(trans)
                
-                print("older then ")
+                //print("older then ")
                 
             }else if (duration >= 24.0 && duration < 48.0){
                 // Check if section exists
@@ -1491,7 +1526,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Send to the old trans list
                 self.tableData["This Week"]!.append(trans)
-                print("Within the week")
+                //print("Within the week")
                 
             }else{
                 
@@ -1506,14 +1541,14 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // Send to the old trans list
                 self.tableData["Older"]!.append(trans)
-                print("Over a week old")
+                //print("Over a week old")
                 
             }
             
          }
         
         // Test
-        print("The Table Data: >> \n", self.tableData)
+        //print("The Table Data: >> \n", self.tableData)
         
         // Update the table values
         self.tableView.reloadData()
@@ -2073,7 +2108,7 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set description text
         cell.connectionDescriptionLabel.text = "You shared your profile with \(String(describing: name))"
         
-        print("recipientCard", trans.recipientCard )
+        //print("recipientCard", trans.recipientCard )
         
         //print("img", trans.recipientCard.imageURL)
         
@@ -2108,13 +2143,13 @@ class ActivtiyViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }else{
             // Set image
-            print("Image ID", trans.senderImageId)
+            //print("Image ID", trans.senderImageId)
             
             if trans.senderImageId != ""{
                 // Init url
                 let link = ImageURLS.sharedManager.getFromDevelopmentURL
                 let url = URL(string: "\(link)\(trans.senderImageId).jpg")
-                print("Link for image sender: \(link)\(trans.senderImageId).jpg")
+                //print("Link for image sender: \(link)\(trans.senderImageId).jpg")
                 cell.connectionOwnerProfileImage.setImageWith(url!, placeholderImage: placeholder)
             }else{
                 cell.connectionOwnerProfileImage.image = placeholder

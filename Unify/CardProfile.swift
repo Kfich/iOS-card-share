@@ -506,10 +506,10 @@ public class CardProfile{
             
             let dict = phoneNumberList[0] as! NSDictionary
             
-            print("Phone numbers list raw >", dict)
+            print("Phone numbers list raw On Profile>", dict)
             
             if dict.count > 0{
-                print("The phone list raw >")
+                //print("The phone list raw >")
                 // Loop through and grab keys
                 for number in dict {
                     

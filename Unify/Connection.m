@@ -152,6 +152,9 @@
 - (NSURLSessionDataTask*)getVerifiedContact:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
     return [self genericPostCall:parameters completionBlock:completionBlock urlString: kGetVerified];
 }
+- (NSURLSessionDataTask*)getContactBadges:(NSDictionary*)parameters completionBlock:(CompletionBlock)completionBlock {
+    return [self genericPostCall:parameters completionBlock:completionBlock urlString: kGetContactBadges];
+}
 
 // getVerifiedContact
 

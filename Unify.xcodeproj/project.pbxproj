@@ -806,6 +806,7 @@
 				FBDD57A91EF0670C000C4C03 /* EditProfileContainerViewController.swift */,
 				FB199D021F339A0E00FFFCC1 /* SocialMediaViewController.swift */,
 				FB199D061F339D7300FFFCC1 /* SocialMediaDetailViewController.swift */,
+				1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */,
 				FB6975AD1F69BF8300D68C09 /* LabelSelectionViewController.swift */,
 				FBD2C8C91F9F81BF00771C22 /* ValueSelectionViewController.swift */,
 				FB90A8B21F278F6D00E67B1E /* Settings */,
@@ -834,7 +835,6 @@
 		FB3738241EDDBE0E0074200F /* Radar */ = {
 			isa = PBXGroup;
 			children = (
-				1CDD50A41E914CF40073B893 /* Home-TableViewController.swift */,
 				FB1A34121EE1BC88003B5A73 /* RadarContainerViewController.swift */,
 				FB1A34141EE1BE7D003B5A73 /* RadarPullUpCardViewController.swift */,
 				FB1A340E1EE1B661003B5A73 /* RadarViewController.swift */,

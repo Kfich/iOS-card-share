@@ -24,6 +24,8 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     var selectedContact = CNContact()
     var transaction = Transaction()
     
+    var isVerified = false
+    
     // Parsed profile arrays
     var bios = [String]()
     var workInformation = [String]()
@@ -39,6 +41,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
     var tags = [String]()
     var addresses = [String]()
     var addressLabels = [String]()
+    var badgeLinks = [String]()
     
     // Selected items
     var selectedUserPhone = ""
@@ -280,20 +283,106 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             if error == nil {
                 print("Verified contact ---> \(String(describing: response))")
                 
-                // Hide HUD
-                KVNProgress.showSuccess(withStatus: "Introduction made successfully!")
-               
+                // Set logo here
+                let res = response as? NSDictionary ?? NSDictionary()
+                
+                let logo = res["logo"] as? String ?? ""
+                 
+                 // Set image for contact
+                let url = URL(string: "\(logo)") ?? URL(string: "")
+                 //let placeholderImage = UIImage(named: "profile")!
+                 // Set image
+                 //contactImageView?.setImageWith(url)
+                 self.badgeImageView.setImageWith(url ?? URL(string: "")!)
+                 self.badgeImageViewSingleWrapper.setImageWith(url ?? URL(string: "")!)
+                 self.badgeImageViewEmptyWrapper.setImageWith(url ?? URL(string: "")!)
+                
                 
             } else {
-                print("Card Created Error Response ---> \(String(describing: error))")
+                print("Fetch Corp Info Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
                 KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
             }
-            // Hide indicator
-            KVNProgress.dismiss()
+            
         }
 
+    }
+    
+    func fetchCorporateBadges() {
+        //
+        
+        // Save card to DB
+        let parameters = ["emails": self.emails, "urls": self.websites]
+        print("Get badges params \n", parameters)
+        
+        // Send to server
+        Connection(configuration: nil).getContactBadges(parameters as [AnyHashable : Any]){ response, error in
+            if error == nil {
+                print("Verified badges ---> \(String(describing: response))")
+                
+                // Add to corp badges
+                let resArray = response as? NSArray ?? NSArray()
+                
+                // Iterate and get logos
+                for item in resArray{
+                    // Cast the type
+                    let link = item as? String
+                    
+                    // Check for null
+                    if link != nil{
+                        // Init image
+                        print("The link not null ", link!)
+                        // Add to social links array
+                        self.badgeLinks.append(link ?? "")
+                        
+                        // Init imageview
+                        let imageView = UIImageView()
+                        imageView.frame = CGRect(x: 0, y: 0, width: 90, height: 90)
+                        
+                        // Set image for contact
+                        let url = URL(string: link!)!
+                        let placeholderImage = UIImage(named: "profile")!
+                        
+                        // Set image
+                        imageView.setImageWith(url, placeholderImage: placeholderImage)
+                        
+                        let when = DispatchTime.now() + 3 // change 3 to desired number of seconds
+                        DispatchQueue.main.asyncAfter(deadline: when) {
+                            // Your code with delay
+                            // Add image to list
+                            self.socialBadges.append(imageView.image!)
+                            
+                            self.socialLinks.append(link ?? "")
+                            
+                            // Reload table data
+                            self.socialBadgeCollectionView.reloadData()
+                            self.badgeCollectionView.reloadData()
+                            self.singleWrapperCollectionView.reloadData()
+                        }
+                        
+                        // Add image to list
+                        //self.socialBadges.append(imageView.image!)
+                    }
+                
+                    
+                }
+                
+                
+                // Set logo here
+                //let res = response as! NSDictionary
+                
+                
+                
+            } else {
+                print("Fetch Corp Badges Error Response ---> \(String(describing: error))")
+                // Show user popup of error message
+                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                
+            }
+            
+        }
+        
     }
     
     
@@ -856,6 +945,10 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             // Create section data
             self.tableData["Websites"] = websites
             self.labels["Websites"] = labelList
+            
+            
+            // Get badges
+            fetchCorporateBadges()
             
         }
         if contact.socialLinks.count > 0{
@@ -1670,7 +1763,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
                 KVNProgress.dismiss()
                 
             } else {
-                print("Card Created Error Response ---> \(error)")
+                print("Create Trans Error Response ---> \(error)")
                 // Show user popup of error message
                 KVNProgress.showError(withStatus: "There was an error with your connection request. Please try again.")
                 
