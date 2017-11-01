@@ -381,7 +381,7 @@ class ContactListProfileViewController: UIViewController, UITableViewDelegate, U
             } else {
                 print("Fetch Corp Badges Error Response ---> \(String(describing: error))")
                 // Show user popup of error message
-                KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
+                // KVNProgress.showError(withStatus: "There was an error with your introduction. Please try again.")
                 
             }
             
