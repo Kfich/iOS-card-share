@@ -27,14 +27,14 @@ PODS:
   - FirebaseAnalytics (3.7.0):
     - FirebaseCore (~> 3.5)
     - FirebaseInstanceID (~> 1.0)
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
   - FirebaseCore (3.5.2):
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
   - FirebaseDatabase (3.1.2):
     - FirebaseAnalytics (~> 3.7)
   - FirebaseInstanceID (1.0.9)
   - GoogleToolboxForMac/Defines (2.1.1)
-  - GoogleToolboxForMac/NSData+zlib (2.1.1):
+  - "GoogleToolboxForMac/NSData+zlib (2.1.1)":
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - InstantSearch-Core-Swift (1.0):
     - AlgoliaSearch-Client-Swift (~> 4.0)
@@ -79,6 +79,33 @@ DEPENDENCIES:
   - SwiftyJSON
   - TTRangeSlider (from `https://github.com/TomThorpe/TTRangeSlider`, branch `master`)
   - UIDropDown
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ACFloatingTextfield-Swift
+    - AFNetworking
+    - Alamofire
+    - AlgoliaSearch-Client-Swift
+    - BMInputBox
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseDatabase
+    - FirebaseInstanceID
+    - GoogleToolboxForMac
+    - InstantSearch-Core-Swift
+    - MBPhotoPicker
+    - MMPulseView
+    - Onboard
+    - PopupDialog
+    - PulsingHalo
+    - Reachability
+    - RKParallaxEffect
+    - Segmentio
+    - Skeleton
+    - SwiftAddressBook
+    - SwiftyJSON
+    - UIDropDown
 
 EXTERNAL SOURCES:
   PinCodeTextField:
@@ -125,4 +152,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f40a716237c8a37310328c03447569e1dfa4080f
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.5.3
