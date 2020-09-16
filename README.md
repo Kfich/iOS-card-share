@@ -1,4 +1,3 @@
-# Project-Unify-iOS-App
-Unify native iOS app
+# Card Share App Template iOS
 
 

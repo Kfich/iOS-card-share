@@ -1,6 +1,0 @@
-framework module RKParallaxEffect {
-  umbrella header "RKParallaxEffect-umbrella.h"
-
-  export *
-  module * { export * }
-}

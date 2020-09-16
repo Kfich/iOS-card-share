@@ -1,6 +1,0 @@
-framework module MMPulseView {
-  umbrella header "MMPulseView-umbrella.h"
-
-  export *
-  module * { export * }
-}

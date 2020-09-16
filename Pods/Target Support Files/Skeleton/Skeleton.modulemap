@@ -1,6 +1,0 @@
-framework module Skeleton {
-  umbrella header "Skeleton-umbrella.h"
-
-  export *
-  module * { export * }
-}
